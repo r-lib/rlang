@@ -6,7 +6,9 @@
 \description{
 Condition formatting is a set of operations applied to raw inputs for error messages that includes:
 \itemize{
-\item Transforming a character vector of lines to a width-wrapped list of error bullets. This makes it easy to write messages in a list format where each bullet conveys a single important point.\if{html}{\out{<div class="sourceCode r">}}\preformatted{abort(c(
+\item Transforming a character vector of lines to a width-wrapped list of error bullets. This makes it easy to write messages in a list format where each bullet conveys a single important point.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{abort(c(
   "The error header",
   "*" = "An error bullet",
   "i" = "An info bullet",
@@ -26,14 +28,18 @@ See the \href{https://style.tidyverse.org/error-messages.html}{tidyverse error s
 While the rlang package embeds rudimentary formatting routines, the main formatting engine is implemented in the \href{https://cli.r-lib.org/}{cli package}.
 \subsection{Formatting messages with cli}{
 
-By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the \href{https://cli.r-lib.org/}{cli package} by using \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[cli:cli_abort]{cli::cli_inform()}} instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long \code{!} bullet is broken with an indented newline:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::global_entrace(class = "errorr")
+By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the \href{https://cli.r-lib.org/}{cli package} by using \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[cli:cli_abort]{cli::cli_inform()}} instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long \code{!} bullet is broken with an indented newline:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::global_entrace(class = "errorr")
 #> Error in `rlang::global_entrace()`:
 #> ! `class` must be one of "error", "warning", or "message",
 #>   not "errorr".
 #> i Did you mean "error"?
 }\if{html}{\out{</div>}}
 
-The cli wrappers also add many features such as interpolation, semantic formatting of text elements, and pluralisation:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inform_marbles <- function(n_marbles) \{
+The cli wrappers also add many features such as interpolation, semantic formatting of text elements, and pluralisation:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{inform_marbles <- function(n_marbles) \{
   cli::cli_inform(c(
     "i" = "I have \{n_marbles\} shiny marble\{?s\} in my bag.",
     "v" = "Way to go \{.code cli::cli_inform()\}!"
@@ -52,12 +58,16 @@ inform_marbles(2)
 
 \subsection{Transitioning from \code{abort()} to \code{cli_abort()}}{
 
-If you plan to mass-rename calls from \code{abort()} to \code{cli::cli_abort()}, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly \href{https://xkcd.com/327/}{unexpected behaviour}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
+If you plan to mass-rename calls from \code{abort()} to \code{cli::cli_abort()}, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly \href{https://xkcd.com/327/}{unexpected behaviour}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
 cli::cli_abort(sprintf("Can't handle input `\%s`.", user_input))
 #> Error: Wrong message.
 }\if{html}{\out{</div>}}
 
-To avoid this, protect your error messages by using cli to assemble the pieces:\if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
+To avoid this, protect your error messages by using cli to assemble the pieces:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
 cli::cli_abort("Can't handle input \{.code \{user_input\}\}.")
 #> Error:
 #> ! Can't handle input `\{base::stop('Wrong message.', call. = FALSE)\}`.
@@ -66,7 +76,9 @@ cli::cli_abort("Can't handle input \{.code \{user_input\}\}.")
 
 \subsection{Enabling cli formatting globally}{
 
-To enable cli formatting for all \code{abort()} calls in your namespace, call \code{\link[=local_use_cli]{local_use_cli()}} in the \code{onLoad} hook of your package. Using \code{\link[=on_load]{on_load()}} (make sure to call \code{\link[=run_on_load]{run_on_load()}} in your hook):\if{html}{\out{<div class="sourceCode r">}}\preformatted{on_load(local_use_cli())
+To enable cli formatting for all \code{abort()} calls in your namespace, call \code{\link[=local_use_cli]{local_use_cli()}} in the \code{onLoad} hook of your package. Using \code{\link[=on_load]{on_load()}} (make sure to call \code{\link[=run_on_load]{run_on_load()}} in your hook):
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{on_load(local_use_cli())
 }\if{html}{\out{</div>}}
 
 Enabling cli formatting in \code{abort()} is useful for:

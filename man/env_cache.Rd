@@ -9,7 +9,7 @@ env_cache(env, nm, default)
 \arguments{
 \item{env}{An environment.}
 
-\item{nm}{Names of bindings. \code{nm} must be a single string.}
+\item{nm}{Name of binding, a string.}
 
 \item{default}{The default value to store in \code{env} if \code{nm} does not
 exist yet.}

@@ -345,7 +345,8 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' @inheritParams get_env
 #' @inheritParams env_has
-#' @param nm,nms Names of bindings. `nm` must be a single string.
+#' @param nm Name of binding, a string.
+#' @param nms Names of bindings, a character vector.
 #' @param default A default value in case there is no binding for `nm`
 #'   in `env`.
 #' @param last Last environment inspected when `inherit` is `TRUE`.

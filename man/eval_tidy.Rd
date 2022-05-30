@@ -51,7 +51,9 @@ Note that unwrapping a quosure with \code{\link[=quo_get_expr]{quo_get_expr()}} 
 guarantee that there is no quosures inside the expression. Quosures
 might be unquoted anywhere in the expression tree. For instance,
 the following does not work reliably in the presence of nested
-quosures:\preformatted{my_quoting_fn <- function(x) \{
+quosures:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{my_quoting_fn <- function(x) \{
   x <- enquo(x)
   expr <- quo_get_expr(x)
   env <- quo_get_env(x)
@@ -63,7 +65,7 @@ my_quoting_fn(toupper(letters))
 
 # Fails because of a nested quosure:
 my_quoting_fn(toupper(!!quo(letters)))
-}
+}\if{html}{\out{</div>}}
 }
 
 \section{Stack semantics of \code{eval_tidy()}}{

@@ -4,7 +4,9 @@
 \alias{topic-error-call}
 \title{Including function calls in error messages}
 \description{
-Starting with rlang 1.0, \code{abort()} includes the erroring function in the message by default:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function() \{
+Starting with rlang 1.0, \code{abort()} includes the erroring function in the message by default:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function() \{
   abort("Can't do that.")
 \}
 
@@ -18,11 +20,15 @@ This works well when \code{abort()} is called directly within the failing functi
 \section{Passing the user context}{
 There are two main kinds of error helpers:
 \itemize{
-\item Simple \code{abort()} wrappers. These often aim at adding classes and attributes to an error condition in a structured way:\if{html}{\out{<div class="sourceCode r">}}\preformatted{stop_my_class <- function(message) \{
+\item Simple \code{abort()} wrappers. These often aim at adding classes and attributes to an error condition in a structured way:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{stop_my_class <- function(message) \{
   abort(message, class = "my_class")
 \}
 }\if{html}{\out{</div>}}
-\item Input checking functions. An input checker is typically passed an input and an argument name. It throws an error if the input doesn't conform to expectations:\if{html}{\out{<div class="sourceCode r">}}\preformatted{check_string <- function(x, arg = "x") \{
+\item Input checking functions. An input checker is typically passed an input and an argument name. It throws an error if the input doesn't conform to expectations:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{check_string <- function(x, arg = "x") \{
   if (!is_string(x)) \{
     cli::cli_abort("\{.arg \{arg\}\} must be a string.")
   \}
@@ -30,19 +36,27 @@ There are two main kinds of error helpers:
 }\if{html}{\out{</div>}}
 }
 
-In both cases, the default error call is not very helpful to the end user because it reflects an internal function rather than a user function:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(x) \{
+In both cases, the default error call is not very helpful to the end user because it reflects an internal function rather than a user function:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(x) \{
   check_string(x)
   stop_my_class("Unimplemented")
 \}
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(NA)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(NA)
 #> Error in `check_string()`:
 #> ! `x` must be a string.
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function("foo")
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function("foo")
 #> Error in `stop_my_class()`:
 #> ! Unimplemented
 }\if{html}{\out{</div>}}
 
-To fix this, let \code{abort()} knows about the function that it is throwing the error for by passing the corresponding function environment as \code{call} argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{stop_my_class <- function(message, call = caller_env()) \{
+To fix this, let \code{abort()} knows about the function that it is throwing the error for by passing the corresponding function environment as \code{call} argument:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{stop_my_class <- function(message, call = caller_env()) \{
   abort(message, class = "my_class", call = call)
 \}
 
@@ -51,16 +65,22 @@ check_string <- function(x, arg = "x", call = caller_env()) \{
     cli::cli_abort("\{.arg \{arg\}\} must be a string.", call = call)
   \}
 \}
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(NA)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function(NA)
 #> Error in `my_function()`:
 #> ! `x` must be a string.
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function("foo")
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function("foo")
 #> Error in `my_function()`:
 #> ! Unimplemented
 }\if{html}{\out{</div>}}
 \subsection{Input checkers and \code{caller_arg()}}{
 
-The \code{caller_arg()} helper is useful in input checkers which check an input on the behalf of another function. Instead of hard-coding \code{arg = "x"}, and forcing the callers to supply it if \code{"x"} is not the name of the argument being checked, use \code{caller_arg()}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{check_string <- function(x,
+The \code{caller_arg()} helper is useful in input checkers which check an input on the behalf of another function. Instead of hard-coding \code{arg = "x"}, and forcing the callers to supply it if \code{"x"} is not the name of the argument being checked, use \code{caller_arg()}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{check_string <- function(x,
                          arg = caller_arg(x),
                          call = caller_env()) \{
   if (!is_string(x)) \{
@@ -69,7 +89,9 @@ The \code{caller_arg()} helper is useful in input checkers which check an input 
 \}
 }\if{html}{\out{</div>}}
 
-It is a combination of \code{substitute()} and \code{rlang::as_label()} which provides a more generally applicable default:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(my_arg) \{
+It is a combination of \code{substitute()} and \code{rlang::as_label()} which provides a more generally applicable default:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function(my_arg) \{
   check_string(my_arg)
 \}
 
@@ -81,7 +103,9 @@ my_function(NA)
 }
 
 \section{Side benefit: backtrace trimming}{
-Another benefit of passing \code{caller_env()} as \code{call} is that it allows \code{abort()} to automatically hide the error helpers\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function() \{
+Another benefit of passing \code{caller_env()} as \code{call} is that it allows \code{abort()} to automatically hide the error helpers
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function() \{
   their_function()
 \}
 their_function <- function() \{
@@ -98,11 +122,15 @@ error_helper2 <- function(call = caller_env()) \{
     abort("Can't do this")
   \}
 \}
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- FALSE
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- FALSE
 their_function()
 #> Error in `error_helper2()`:
 #> ! Can't do this
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
 #> <error/rlang_error>
 #> Error in `error_helper2()`:
 #> ! Can't do this
@@ -114,11 +142,15 @@ their_function()
 #> Run `rlang::last_trace()` to see the full context.
 }\if{html}{\out{</div>}}
 
-With the correct \code{call}, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- TRUE
+With the correct \code{call}, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- TRUE
 their_function()
 #> Error in `their_function()`:
 #> ! Can't do this
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
 #> <error/rlang_error>
 #> Error in `their_function()`:
 #> ! Can't do this
@@ -134,7 +166,9 @@ Error snapshots are the main way of checking that the correct error call is incl
 
 This display is not applied to all packages yet. With testthat 3.1.2, depend explicitly on rlang >= 1.0.0 to opt in. Starting from testthat 3.1.3, depending on rlang, no matter the version, is sufficient to opt in. In the future, the new display will be enabled for all packages.
 
-Once enabled, create error snapshots with:\if{html}{\out{<div class="sourceCode r">}}\preformatted{expect_snapshot(error = TRUE, \{
+Once enabled, create error snapshots with:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{expect_snapshot(error = TRUE, \{
   my_function()
 \})
 

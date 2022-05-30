@@ -42,25 +42,31 @@ constructors.
 object: a symbol, another call (e.g. a \code{$} or \code{[[} call), or a
 function to inline. \code{base::call()} only supports strings and you
 need to use \code{base::as.call()} to construct a call with a callable
-object.\preformatted{call2(list, 1, 2)
+object.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{call2(list, 1, 2)
 
 as.call(list(list, 1, 2))
-}
-\item The \code{.ns} argument is convenient for creating namespaced calls.\preformatted{call2("list", 1, 2, .ns = "base")
+}\if{html}{\out{</div>}}
+\item The \code{.ns} argument is convenient for creating namespaced calls.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{call2("list", 1, 2, .ns = "base")
 
 # Equivalent to
 ns_call <- call("::", as.symbol("list"), as.symbol("base"))
 as.call(list(ns_call, 1, 2))
-}
+}\if{html}{\out{</div>}}
 \item \code{call2()} has \link[=list2]{dynamic dots} support. You can splice lists
 of arguments with \verb{!!!} or unquote an argument name with glue
-syntax.\preformatted{args <- list(na.rm = TRUE, trim = 0)
+syntax.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{args <- list(na.rm = TRUE, trim = 0)
 
 call2("mean", 1:10, !!!args)
 
 # Equivalent to
 as.call(c(list(as.symbol("mean"), 1:10), args))
-}
+}\if{html}{\out{</div>}}
 }
 }
 

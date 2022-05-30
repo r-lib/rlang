@@ -115,9 +115,11 @@ they throw an error when the defused expressions are not simple
 symbols. They also support strings which are interpreted as
 symbols. These functions are modelled on the behaviour of the
 left-hand side of \code{=} and \verb{<-} where you can supply symbols and
-strings interchangeably.\preformatted{"foo" <- NULL
+strings interchangeably.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{"foo" <- NULL
 list("foo" = NULL)
-}
+}\if{html}{\out{</div>}}
 \item \code{enquo0} and \code{enquos0()} are like \code{enquo()} and \code{enquos()} but
 without injection support. The injection operators \verb{!!}, \verb{!!!},
 and \verb{\{\{} are not processed, instead they are preserved in the

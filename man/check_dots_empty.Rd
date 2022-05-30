@@ -31,8 +31,10 @@ fully name the details arguments. In this case, supplying data in
 that \code{...} is empty and fails otherwise.
 }
 \details{
-In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::args_dots_empty
-}
+In packages, document \code{...} with this standard tag:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ @inheritParams rlang::args_dots_empty
+}\if{html}{\out{</div>}}
 }
 \examples{
 f <- function(x, ..., foofy = 8) {

@@ -48,28 +48,48 @@ quosure containing the missing argument object.
 
 The base function \code{\link[=missing]{missing()}} makes a distinction between default
 values supplied explicitly and default values generated through a
-missing argument:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) base::missing(x)
+missing argument:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) base::missing(x)
 
 fn()
-}\if{html}{\out{</div>}}\preformatted{## [1] TRUE
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
-}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
-}
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] TRUE
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
+}\if{html}{\out{</div>}}
 
 This only happens within a function. If the default value has been
-generated in a calling function, it is never treated as missing:\if{html}{\out{<div class="sourceCode r">}}\preformatted{caller <- function(x = 1) fn(x)
+generated in a calling function, it is never treated as missing:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{caller <- function(x = 1) fn(x)
 caller()
-}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
-}
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
+}\if{html}{\out{</div>}}
 
 \code{rlang::is_missing()} simplifies these rules by never treating
-default arguments as missing, even in internal contexts:\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) rlang::is_missing(x)
+default arguments as missing, even in internal contexts:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) rlang::is_missing(x)
 
 fn()
-}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
-}\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
-}\if{html}{\out{</div>}}\preformatted{## [1] FALSE
-}
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
+}\if{html}{\out{</div>}}
 
 This is a little less flexible because you can't specialise
 behaviour based on implicitly supplied default values. However,
@@ -90,7 +110,9 @@ even when the result is the missing object.
 
 However, as soon as the missing argument is passed down between
 functions through a bare variable, it is likely to cause a missing
-argument error:\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- missing_arg()
+argument error:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- missing_arg()
 list(x)
 #> Error:
 #> ! argument "x" is missing, with no default
@@ -98,7 +120,9 @@ list(x)
 
 To work around this, \code{is_missing()} and \code{maybe_missing(x)} use a
 bit of magic to determine if the input is the missing argument
-without triggering a missing error.\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- missing_arg()
+without triggering a missing error.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- missing_arg()
 list(maybe_missing(x))
 #> [[1]]
 #>

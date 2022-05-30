@@ -31,8 +31,10 @@ this often indicates a programming error. Call \code{check_dots_used()}
 to fail with an error when unused arguments are detected.
 }
 \details{
-In packages, document \code{...} with this standard tag:\preformatted{ @inheritParams rlang::args_dots_used
-}
+In packages, document \code{...} with this standard tag:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ @inheritParams rlang::args_dots_used
+}\if{html}{\out{</div>}}
 
 \code{check_dots_used()} implicitly calls \code{\link[=on.exit]{on.exit()}} to check that all
 elements of \code{...} have been used when the function exits. If you

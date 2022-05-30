@@ -6,7 +6,9 @@
 \description{
 In this guide we compare ways of taking multiple columns in a single function argument.
 
-As a refresher (see the \link[=topic-data-mask-programming]{programming patterns} article), there are two common ways of passing arguments to \link[=topic-data-mask]{data-masking} functions. For single arguments, embrace with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
+As a refresher (see the \link[=topic-data-mask-programming]{programming patterns} article), there are two common ways of passing arguments to \link[=topic-data-mask]{data-masking} functions. For single arguments, embrace with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
   data \%>\% dplyr::group_by(\{\{ var \}\})
 \}
 
@@ -15,7 +17,9 @@ my_pivot_longer <- function(data, var) \{
 \}
 }\if{html}{\out{</div>}}
 
-For multiple arguments in \code{...}, pass them on to functions that also take \code{...} like \code{group_by()}, or pass them within \code{c()} for functions taking tidy selection in a single argument like \code{pivot_longer()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Pass dots through
+For multiple arguments in \code{...}, pass them on to functions that also take \code{...} like \code{group_by()}, or pass them within \code{c()} for functions taking tidy selection in a single argument like \code{pivot_longer()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Pass dots through
 my_group_by <- function(.data, ...) \{
   .data \%>\% dplyr::group_by(...)
 \}
@@ -28,17 +32,23 @@ my_pivot_longer <- function(.data, ...) \{
 But what if you want to take multiple columns in a single named argument rather than in \code{...}?
 }
 \section{Using tidy selections}{
-The idiomatic tidyverse way of taking multiple columns in a single argument is to take a \emph{tidy selection} (see the \link[=topic-data-mask-programming]{Argument behaviours} section). In tidy selections, the syntax for passing multiple columns in a single argument is \code{c()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% tidyr::pivot_longer(c(am, cyl, vs))
+The idiomatic tidyverse way of taking multiple columns in a single argument is to take a \emph{tidy selection} (see the \link[=topic-data-mask-programming]{Argument behaviours} section). In tidy selections, the syntax for passing multiple columns in a single argument is \code{c()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% tidyr::pivot_longer(c(am, cyl, vs))
 }\if{html}{\out{</div>}}
 
-Since \verb{\{\{} inherits behaviour, this implementation of \code{my_pivot_longer()} automatically allows multiple columns passing:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, var) \{
+Since \verb{\{\{} inherits behaviour, this implementation of \code{my_pivot_longer()} automatically allows multiple columns passing:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_pivot_longer <- function(data, var) \{
   data \%>\% tidyr::pivot_longer(\{\{ var \}\})
 \}
 
 mtcars \%>\% my_pivot_longer(c(am, cyl, vs))
 }\if{html}{\out{</div>}}
 
-For \code{group_by()}, which takes data-masked arguments, we'll use \code{across()} as a \emph{bridge} (see \link[=topic-data-mask-programming]{Bridge patterns}).\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
+For \code{group_by()}, which takes data-masked arguments, we'll use \code{across()} as a \emph{bridge} (see \link[=topic-data-mask-programming]{Bridge patterns}).
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, var) \{
   data \%>\% dplyr::group_by(across(\{\{ var \}\}))
 \}
 
@@ -51,25 +61,33 @@ When embracing in tidyselect context or using \code{across()} is not possible, y
 \section{Using external defusal}{
 To implement an argument with tidyselect behaviour, it is necessary to \link[=topic-defuse]{defuse} the argument. However defusing an argument which had historically behaved like a regular argument is a rather disruptive breaking change. This is why we could not implement tidy selections in ggplot2 facetting functions like \code{facet_grid()} and \code{facet_wrap()}.
 
-An alternative is to use external defusal of arguments. This is what formula interfaces do for instance. A modelling function takes a formula in a regular argument and the formula defuses the user code:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_lm <- function(data, f, ...) \{
+An alternative is to use external defusal of arguments. This is what formula interfaces do for instance. A modelling function takes a formula in a regular argument and the formula defuses the user code:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_lm <- function(data, f, ...) \{
   lm(f, data, ...)
 \}
 
 mtcars \%>\% my_lm(disp ~ drat)
 }\if{html}{\out{</div>}}
 
-Once created, the defused expressions contained in the formula are passed around like a normal argument. A similar approach was taken to update \code{facet_} functions to tidy eval. The \code{vars()} function (a simple alias to \code{\link[=quos]{quos()}}) is provided so that users can defuse their arguments externally.\if{html}{\out{<div class="sourceCode r">}}\preformatted{ggplot2::facet_grid(
+Once created, the defused expressions contained in the formula are passed around like a normal argument. A similar approach was taken to update \code{facet_} functions to tidy eval. The \code{vars()} function (a simple alias to \code{\link[=quos]{quos()}}) is provided so that users can defuse their arguments externally.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{ggplot2::facet_grid(
   ggplot2::vars(cyl),
   ggplot2::vars(am, vs)
 )
 }\if{html}{\out{</div>}}
 
-You can implement this approach by simply taking a list of defused expressions as argument. This list can be passed the usual way to other functions taking such lists:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_facet_grid <- function(rows, cols, ...) \{
+You can implement this approach by simply taking a list of defused expressions as argument. This list can be passed the usual way to other functions taking such lists:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_facet_grid <- function(rows, cols, ...) \{
   ggplot2::facet_grid(rows, cols, ...)
 \}
 }\if{html}{\out{</div>}}
 
-Or it can be spliced with \code{\link{!!!}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
+Or it can be spliced with \code{\link{!!!}}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
   stopifnot(is_quosures(vars))
   data \%>\% dplyr::group_by(!!!vars)
 \}
@@ -79,7 +97,9 @@ mtcars \%>\% my_group_by(dplyr::vars(cyl, am))
 }
 
 \section{A non-approach: Parsing lists}{
-Intuitively, many programmers who want to take a list of expressions in a single argument try to defuse an argument and parse it. The user is expected to supply multiple arguments within a \code{list()} expression. When such a call is detected, the arguments are retrieved and spliced with \verb{!!!}. Otherwise, the user is assumed to have supplied a single argument which is injected with \verb{!!}. An implementation along these lines might look like this:\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
+Intuitively, many programmers who want to take a list of expressions in a single argument try to defuse an argument and parse it. The user is expected to supply multiple arguments within a \code{list()} expression. When such a call is detected, the arguments are retrieved and spliced with \verb{!!!}. Otherwise, the user is assumed to have supplied a single argument which is injected with \verb{!!}. An implementation along these lines might look like this:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(data, vars) \{
   vars <- enquo(vars)
 
   if (quo_is_call(vars, "list")) \{
@@ -93,14 +113,18 @@ Intuitively, many programmers who want to take a list of expressions in a single
 \}
 }\if{html}{\out{</div>}}
 
-This does work in simple cases:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(cyl) \%>\% dplyr::group_vars()
+This does work in simple cases:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(cyl) \%>\% dplyr::group_vars()
 #> [1] "cyl"
 
 mtcars \%>\% my_group_by(list(cyl, am)) \%>\% dplyr::group_vars()
 #> [1] "cyl" "am"
 }\if{html}{\out{</div>}}
 
-However this parsing approach quickly shows limits:\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(list2(cyl, am))
+However this parsing approach quickly shows limits:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(list2(cyl, am))
 #> Error in `group_by()`: Can't add columns.
 #> ℹ `..1 = list2(cyl, am)`.
 #> ℹ `..1` must be size 32 or 1, not 2.

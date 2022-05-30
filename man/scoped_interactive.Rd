@@ -16,17 +16,13 @@ scoped_bindings(..., .env = .frame, .frame = caller_env())
 \item{value}{A single \code{TRUE} or \code{FALSE}. This overrides the return
 value of \code{is_interactive()}.}
 
-\item{frame}{The environment of a running function which defines
+\item{frame, .frame}{The environment of a running function which defines
 the scope of the temporary options. When the function returns,
 the options are reset to their original values.}
 
 \item{...}{For \code{local_options()} and \code{push_options()}, named
 values defining new option values. For \code{peek_options()}, strings
 or character vectors of option names.}
-
-\item{.frame}{The environment of a running function which defines
-the scope of the temporary options. When the function returns,
-the options are reset to their original values.}
 
 \item{.env}{An environment.}
 }

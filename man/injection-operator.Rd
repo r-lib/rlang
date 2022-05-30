@@ -46,13 +46,17 @@ refer to column names in your computations. This comes at the price
 of data mask ambiguity: if you have defined an env-variable of the
 same name as a data-variable, you get a name collisions. This
 collision is always resolved by giving precedence to the
-data-variable (it masks the env-variable):\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- c(100, 110)
+data-variable (it masks the env-variable):
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- c(100, 110)
 with(mtcars, mean(cyl))
 #> [1] 6.1875
 }\if{html}{\out{</div>}}
 
 The injection operator offers one way of solving this. Use it to
-inject the env-variable inside the data-masked expression:\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(
+inject the env-variable inside the data-masked expression:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(
   with(mtcars, mean(!!cyl))
 )
 #> [1] 105
@@ -68,7 +72,9 @@ this.
 
 Injection is also useful for modifying parts of a \link[=topic-defuse]{defused expression}. In the following example we use the
 \link[=topic-metaprogramming]{symbolise-and-inject pattern} to
-inject a column name inside a data-masked expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- sym("cyl")
+inject a column name inside a data-masked expression.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{var <- sym("cyl")
 inject(
   with(mtcars, mean(!!var))
 )
@@ -87,13 +93,17 @@ pre-computed value instead.
 
 With tidyverse APIs, injecting expressions with \verb{!!} is no longer a
 common pattern. First, the \code{\link{.env}} pronoun solves the
-ambiguity problem in a more intuitive way:\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- 100
+ambiguity problem in a more intuitive way:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cyl <- 100
 mtcars \%>\% dplyr::mutate(cyl = cyl * .env$cyl)
 }\if{html}{\out{</div>}}
 
 Second, the embrace operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} makes the
 \link[=topic-metaprogramming]{defuse-and-inject pattern} easier to
-learn and use.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+learn and use.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   data \%>\% dplyr::summarise(mean(\{\{ var \}\}))
 \}
 

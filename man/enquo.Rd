@@ -73,7 +73,9 @@ in most applications.
 
 
 Arguments defused with \code{enquo()} and \code{enquos()} automatically gain
-\link[=topic-inject]{injection} support.\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
+\link[=topic-inject]{injection} support.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
   var <- enquo(var)
   dplyr::summarise(data, mean(!!var))
 \}

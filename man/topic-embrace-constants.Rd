@@ -4,13 +4,17 @@
 \alias{topic-embrace-constants}
 \title{Why are strings and other constants enquosed in the empty environment?}
 \description{
-Function arguments are \link[=topic-defuse]{defused} into \link[=topic-quosure]{quosures} that keep track of the environment of the defused expression.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quo(1 + 1)
+Function arguments are \link[=topic-defuse]{defused} into \link[=topic-quosure]{quosures} that keep track of the environment of the defused expression.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{quo(1 + 1)
 #> <quosure>
 #> expr: ^1 + 1
 #> env:  global
 }\if{html}{\out{</div>}}
 
-You might have noticed that when constants are supplied, the quosure tracks the empty environment instead of the current environmnent.\if{html}{\out{<div class="sourceCode r">}}\preformatted{quos("foo", 1, NULL)
+You might have noticed that when constants are supplied, the quosure tracks the empty environment instead of the current environmnent.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{quos("foo", 1, NULL)
 #> <list_of<quosure>>
 #>
 #> [[1]]
@@ -32,7 +36,9 @@ You might have noticed that when constants are supplied, the quosure tracks the 
 The reason for this has to do with compilation of R code which makes it impossible to consistently capture environments of constants from function arguments. Argument defusing relies on the \emph{promise} mechanism of R for lazy evaluation of arguments. When functions are compiled and R notices that an argument is constant, it avoids creating a promise since they slow down function evaluation. Instead, the function is directly supplied a naked constant instead of constant wrapped in a promise.
 }
 \section{Concrete case of promise unwrapping by compilation}{
-We can observe this optimisation by calling into the C-level \code{findVar()} function to capture promises.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the object bound to `arg` without triggering evaluation of
+We can observe this optimisation by calling into the C-level \code{findVar()} function to capture promises.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the object bound to `arg` without triggering evaluation of
 # promises
 f <- function(arg) \{
   rlang:::find_var(current_env(), sym("arg"))
@@ -52,11 +58,15 @@ f <- compiler::cmpfun(f)
 g <- compiler::cmpfun(g)
 }\if{html}{\out{</div>}}
 
-When \code{f()} is called with a symbolic argument, we get the promise object created by R.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = TRUE)
+When \code{f()} is called with a symbolic argument, we get the promise object created by R.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = TRUE)
 #> <promise: 0x7ffd79bac130>
 }\if{html}{\out{</div>}}
 
-However, supplying a constant to \code{"f"} returns the constant directly.\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = FALSE)
+However, supplying a constant to \code{"f"} returns the constant directly.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{g(symbolic = FALSE)
 #> [1] "foo"
 }\if{html}{\out{</div>}}
 

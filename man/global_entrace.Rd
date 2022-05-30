@@ -26,8 +26,10 @@ When global entracing is enabled, all errors behave as if they had
 been thrown with \code{\link[=abort]{abort()}}, even the ones thrown with
 \code{\link[=stop]{stop()}} or from native code.
 
-Set global entracing in your RProfile with:\preformatted{rlang::global_entrace()
-}
+Set global entracing in your RProfile with:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{rlang::global_entrace()
+}\if{html}{\out{</div>}}
 }
 \section{Under the hood}{
 

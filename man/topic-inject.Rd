@@ -17,13 +17,17 @@ The injection operators are extensions of R implemented by rlang to modify a pie
 Unlike regular \code{...}, \link[=dyn-dots]{dynamic dots} are programmable with injection operators.
 \subsection{Splicing with \verb{!!!}}{
 
-For instance, take a function like \code{rbind()} which takes data in \code{...}. To bind rows, you supply them as separate arguments:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind(a = 1:2, b = 3:4)
+For instance, take a function like \code{rbind()} which takes data in \code{...}. To bind rows, you supply them as separate arguments:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind(a = 1:2, b = 3:4)
 #>   [,1] [,2]
 #> a    1    2
 #> b    3    4
 }\if{html}{\out{</div>}}
 
-But how do you bind a variable number of rows stored in a list? The base R solution is to invoke \code{rbind()} with \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rows <- list(a = 1:2, b = 3:4)
+But how do you bind a variable number of rows stored in a list? The base R solution is to invoke \code{rbind()} with \code{do.call()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rows <- list(a = 1:2, b = 3:4)
 
 do.call("rbind", rows)
 #>   [,1] [,2]
@@ -31,18 +35,24 @@ do.call("rbind", rows)
 #> b    3    4
 }\if{html}{\out{</div>}}
 
-Functions that implement dynamic dots include a built-in way of folding a list of arguments in \code{...}. To illustrate this, we'll create a variant of \code{rbind()} that takes dynamic dots by collecting \code{...} with \code{\link[=list2]{list2()}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
+Functions that implement dynamic dots include a built-in way of folding a list of arguments in \code{...}. To illustrate this, we'll create a variant of \code{rbind()} that takes dynamic dots by collecting \code{...} with \code{\link[=list2]{list2()}}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
   do.call("rbind", list2(...))
 \}
 }\if{html}{\out{</div>}}
 
-It can be used just like \code{rbind()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(a = 1:2, b = 3:4)
+It can be used just like \code{rbind()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(a = 1:2, b = 3:4)
 #>   [,1] [,2]
 #> a    1    2
 #> b    3    4
 }\if{html}{\out{</div>}}
 
-And a list of arguments can be supplied by \emph{splicing} the list with \code{\link{!!!}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(!!!rows, c = 5:6)
+And a list of arguments can be supplied by \emph{splicing} the list with \code{\link{!!!}}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2(!!!rows, c = 5:6)
 #>   [,1] [,2]
 #> a    1    2
 #> b    3    4
@@ -52,7 +62,9 @@ And a list of arguments can be supplied by \emph{splicing} the list with \code{\
 
 \subsection{Injecting names with \verb{"\{"}}{
 
-A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using \href{https://glue.tidyverse.org/}{glue syntax} with \ifelse{html}{\code{\link[=glue-operators]{"\{"}}}{\verb{"\{"}}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
+A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using \href{https://glue.tidyverse.org/}{glue syntax} with \ifelse{html}{\code{\link[=glue-operators]{"\{"}}}{\verb{"\{"}}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
 
 rbind2("\{name\}" := 1:2, bar = 3:4)
 #>     [,1] [,2]
@@ -71,7 +83,9 @@ rbind2("prefix_\{name\}" := 1:2, bar = 3:4)
 \link[=topic-data-mask]{Data-masked} arguments support the following injection operators. They can also be explicitly enabled with \code{\link[=inject]{inject()}}.
 \subsection{Embracing with \verb{\{\{}}{
 
-The embracing operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} is made specially for function arguments. It \link[=topic-defuse]{defuses} the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a \link[=topic-data-mask]{data mask}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Inject function arguments that might contain
+The embracing operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} is made specially for function arguments. It \link[=topic-defuse]{defuses} the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a \link[=topic-data-mask]{data mask}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Inject function arguments that might contain
 # data-variables by embracing them with \{\{ \}\}
 mean_by <- function(data, by, var) \{
   data \%>\%
@@ -96,7 +110,9 @@ Learn more about this pattern in \ifelse{html}{\link[=topic-data-mask-programmin
 
 \subsection{Injecting with \verb{!!}}{
 
-Unlike \code{\link{!!!}} which injects a list of arguments, the injection operator \code{\link{!!}} (pronounced "bang-bang") injects a \emph{single} object. One use case for \verb{!!}  is to substitute an environment-variable (created with \verb{<-}) with a data-variable (inside a data frame).\if{html}{\out{<div class="sourceCode r">}}\preformatted{# The env-variable `var` contains a data-symbol object, in this
+Unlike \code{\link{!!!}} which injects a list of arguments, the injection operator \code{\link{!!}} (pronounced "bang-bang") injects a \emph{single} object. One use case for \verb{!!}  is to substitute an environment-variable (created with \verb{<-}) with a data-variable (inside a data frame).
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# The env-variable `var` contains a data-symbol object, in this
 # case a reference to the data-variable `height`
 var <- data_sym("disp")
 
@@ -109,7 +125,9 @@ mtcars \%>\%
 #> 1  231.
 }\if{html}{\out{</div>}}
 
-Another use case is to inject a variable by value to avoid \link[=topic-data-mask-ambiguity]{name collisions}.\if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(x = 1)
+Another use case is to inject a variable by value to avoid \link[=topic-data-mask-ambiguity]{name collisions}.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(x = 1)
 
 # This name conflicts with a column in `df`
 x <- 100
@@ -126,7 +144,9 @@ Note that in most cases you don't need injection with \verb{!!}. For instance, t
 
 \subsection{Splicing with \verb{!!!}}{
 
-The splice operator \code{\link{!!!}} of dynamic dots can also be used in metaprogramming context (inside \link[=topic-data-mask]{data-masked} arguments and inside \code{\link[=inject]{inject()}}). For instance, we could reimplement the \code{rbind2()} function presented above using \code{inject()} instead of \code{do.call()}:\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
+The splice operator \code{\link{!!!}} of dynamic dots can also be used in metaprogramming context (inside \link[=topic-data-mask]{data-masked} arguments and inside \code{\link[=inject]{inject()}}). For instance, we could reimplement the \code{rbind2()} function presented above using \code{inject()} instead of \code{do.call()}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{rbind2 <- function(...) \{
   inject(rbind(!!!list2(...)))
 \}
 }\if{html}{\out{</div>}}

@@ -18,7 +18,7 @@ env_get_list(
 \arguments{
 \item{env}{An environment.}
 
-\item{nm, nms}{Names of bindings. \code{nm} must be a single string.}
+\item{nm}{Name of binding, a string.}
 
 \item{default}{A default value in case there is no binding for \code{nm}
 in \code{env}.}
@@ -28,6 +28,8 @@ environments.}
 
 \item{last}{Last environment inspected when \code{inherit} is \code{TRUE}.
 Can be useful in conjunction with \code{\link[base:ns-topenv]{base::topenv()}}.}
+
+\item{nms}{Names of bindings, a character vector.}
 }
 \value{
 An object if it exists. Otherwise, throws an error.
