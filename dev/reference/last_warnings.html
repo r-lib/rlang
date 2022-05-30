@@ -138,10 +138,12 @@ conditions with a full backtrace.</p>
     
 
 
-<p>Enable backtrace capture with <code><a href="global_entrace.html">global_entrace()</a></code>:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/global_entrace.html">global_entrace</a></span><span class="op">(</span><span class="op">)</span></code></pre><p></p></div>
+<p>Enable backtrace capture with <code><a href="global_entrace.html">global_entrace()</a></code>:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/global_entrace.html">global_entrace</a></span><span class="op">(</span><span class="op">)</span></code></pre><p></p></div>
 <p>Signal some warnings in nested functions. The warnings inform about
 which function emitted a warning but they don't provide information
-about the call stack:</p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span>; <span class="fu">g</span><span class="op">(</span><span class="op">)</span> <span class="op">}</span>
+about the call stack:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span>; <span class="fu">g</span><span class="op">(</span><span class="op">)</span> <span class="op">}</span>
 <span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span> <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"bar"</span>, immediate. <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>; <span class="fu">h</span><span class="op">(</span><span class="op">)</span> <span class="op">}</span>
 <span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"baz"</span><span class="op">)</span>
 
@@ -150,7 +152,8 @@ about the call stack:</p><div class="sourceCode r"><pre><code><span class="va">f
 <span class="co">#&gt; Warning messages:</span>
 <span class="co">#&gt; 1: In f() : foo</span>
 <span class="co">#&gt; 2: In h() : baz</span></code></pre><p></p></div>
-<p>Call <code>last_warnings()</code> to see backtraces for each of these warnings:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/last_warnings.html">last_warnings</a></span><span class="op">(</span><span class="op">)</span>
+<p>Call <code>last_warnings()</code> to see backtraces for each of these warnings:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/last_warnings.html">last_warnings</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; &lt;warning/rlang_warning&gt;</span>
 <span class="co">#&gt; Warning in `f()`: foo</span>
@@ -172,7 +175,8 @@ about the call stack:</p><div class="sourceCode r"><pre><code><span class="va">f
 <span class="co">#&gt;  2. global g()</span>
 <span class="co">#&gt;  3. global h()</span></code></pre><p></p></div>
 <p>To get a full backtrace, use <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>. In this case the full
-backtraces do not include more information:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/last_warnings.html">last_warnings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+backtraces do not include more information:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/last_warnings.html">last_warnings</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; &lt;warning/rlang_warning&gt;</span>
 <span class="co">#&gt; Warning in `f()`:</span>

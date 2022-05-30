@@ -177,19 +177,8 @@ the <code>.data</code> pronoun, or when you need to support quosures.</p>
 guarantee that there is no quosures inside the expression. Quosures
 might be unquoted anywhere in the expression tree. For instance,
 the following does not work reliably in the presence of nested
-quosures:</p><div class="sourceCode"><pre><code><span class="va">my_quoting_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="va">expr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure-tools.html">quo_get_expr</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quosure-tools.html">quo_get_env</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">expr</span>, <span class="va">env</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># Works:</span>
-<span class="fu">my_quoting_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Fails because of a nested quosure:</span>
-<span class="fu">my_quoting_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-
+quosures:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="stack-semantics-of-eval-tidy-">Stack semantics of <code>eval_tidy()</code><a class="anchor" aria-label="anchor" href="#stack-semantics-of-eval-tidy-"></a></h2>

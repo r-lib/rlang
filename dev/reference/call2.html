@@ -165,22 +165,14 @@ or symbol.</p></dd>
 object: a symbol, another call (e.g. a <code>$</code> or <code>[[</code> call), or a
 function to inline. <code><a href="https://rdrr.io/r/base/call.html" class="external-link">base::call()</a></code> only supports strings and you
 need to use <code><a href="https://rdrr.io/r/base/call.html" class="external-link">base::as.call()</a></code> to construct a call with a callable
-object.</p><div class="sourceCode"><pre><code><span class="fu"><a href="../reference/call2.html">call2</a></span><span class="op">(</span><span class="va">list</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">as.call</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">list</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div></li>
-<li><p>The <code>.ns</code> argument is convenient for creating namespaced calls.</p><div class="sourceCode"><pre><code><span class="fu"><a href="../reference/call2.html">call2</a></span><span class="op">(</span><span class="st">"list"</span>, <span class="fl">1</span>, <span class="fl">2</span>, .ns <span class="op">=</span> <span class="st">"base"</span><span class="op">)</span>
-
-<span class="co"># Equivalent to</span>
-<span class="va">ns_call</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"::"</span>, <span class="fu"><a href="https://rdrr.io/r/base/name.html" class="external-link">as.symbol</a></span><span class="op">(</span><span class="st">"list"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/name.html" class="external-link">as.symbol</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">as.call</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ns_call</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div></li>
+object.</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div></li>
+<li><p>The <code>.ns</code> argument is convenient for creating namespaced calls.</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div></li>
 <li><p><code>call2()</code> has <a href="list2.html">dynamic dots</a> support. You can splice lists
 of arguments with <code>!!!</code> or unquote an argument name with glue
-syntax.</p><div class="sourceCode"><pre><code><span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span>, trim <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/call2.html">call2</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">args</span><span class="op">)</span>
-
-<span class="co"># Equivalent to</span>
-<span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">as.call</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/name.html" class="external-link">as.symbol</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>, <span class="va">args</span><span class="op">)</span><span class="op">)</span></code></pre></div></li>
+syntax.</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div></li>
 </ul></div>
     <div class="section level2">
     <h2 id="caveats-of-inlining-objects-in-calls">Caveats of inlining objects in calls<a class="anchor" aria-label="anchor" href="#caveats-of-inlining-objects-in-calls"></a></h2>

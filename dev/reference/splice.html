@@ -188,13 +188,13 @@ if you use a standard function taking tidy dots within a quoting
 function, the <code>!!!</code> operator will disaggregate its argument because
 the behaviour of the quasiquoting function has priority. You might
 then observe some performance cost in edge cases. Here is one
-example where this would happen:</p><div class="sourceCode"><pre><code><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/rerun.html" class="external-link">rerun</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-
+example where this would happen:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p><code><a href="https://purrr.tidyverse.org/reference/rerun.html" class="external-link">purrr::rerun()</a></code> is a quoting function and <code><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">dplyr::bind_rows()</a></code> is
 a standard function. Because <code>bind_rows()</code> is called <em>inside</em>
 <code>rerun()</code>, the list <code>x</code> will be disaggregated into a pairlist of
-arguments. To avoid this you can use <code>splice()</code> instead:</p><div class="sourceCode"><pre><code><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/rerun.html" class="external-link">rerun</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="fu"><a href="../reference/splice.html">splice</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-
+arguments. To avoid this you can use <code>splice()</code> instead:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="life-cycle">Life cycle<a class="anchor" aria-label="anchor" href="#life-cycle"></a></h2>

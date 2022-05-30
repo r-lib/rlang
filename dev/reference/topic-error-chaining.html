@@ -5,7 +5,8 @@ Mentioning the pipeline step in which a user error occured. This is a major use-
 Mentioning the iteration context in which a user error occurred. For instance, the input file when processing documents, or the iteration number or key when running user code in a loop.
 
 
-Here is an example of a chained error from dplyr that shows the pipeline step (mutate()) and the iteration context (group ID) in which a function called by the user failed:add &amp;lt;- function(x, y) x + y
+Here is an example of a chained error from dplyr that shows the pipeline step (mutate()) and the iteration context (group ID) in which a function called by the user failed:
+add &amp;lt;- function(x, y) x + y
 
 mtcars |&amp;gt;
   dplyr::group_by(cyl) |&amp;gt;
@@ -27,7 +28,8 @@ Mentioning the pipeline step in which a user error occured. This is a major use-
 Mentioning the iteration context in which a user error occurred. For instance, the input file when processing documents, or the iteration number or key when running user code in a loop.
 
 
-Here is an example of a chained error from dplyr that shows the pipeline step (mutate()) and the iteration context (group ID) in which a function called by the user failed:add &amp;lt;- function(x, y) x + y
+Here is an example of a chained error from dplyr that shows the pipeline step (mutate()) and the iteration context (group ID) in which a function called by the user failed:
+add &amp;lt;- function(x, y) x + y
 
 mtcars |&amp;gt;
   dplyr::group_by(cyl) |&amp;gt;
@@ -147,7 +149,8 @@ There may be more than one contextual error in an error chain, but there is alwa
     <p>Error chaining is a mechanism for providing contextual information when an error occurs. There are multiple situations in which you might be able to provide context that is helpful to quickly understand the cause or origin of an error:</p><ul><li><p>Mentioning the <em>high level context</em> in which a low level error arised. E.g. chaining a low-level HTTP error to a high-level download error.</p></li>
 <li><p>Mentioning the <em>pipeline step</em> in which a user error occured. This is a major use-case for NSE interfaces in the tidyverse, e.g. in dplyr, tidymodels or ggplot2.</p></li>
 <li><p>Mentioning the <em>iteration context</em> in which a user error occurred. For instance, the input file when processing documents, or the iteration number or key when running user code in a loop.</p></li>
-</ul><p>Here is an example of a chained error from dplyr that shows the pipeline step (<code>mutate()</code>) and the iteration context (group ID) in which a function called by the user failed:</p><div class="sourceCode r"><pre><code><span class="va">add</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span>
+</ul><p>Here is an example of a chained error from dplyr that shows the pipeline step (<code>mutate()</code>) and the iteration context (group ID) in which a function called by the user failed:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">add</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span>
 
 <span class="va">mtcars</span> |&gt;
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span> |&gt;
@@ -168,7 +171,8 @@ There may be more than one contextual error in an error chain, but there is alwa
     <p>To create an error chain, you must first capture causal errors when they occur. We recommend using <code><a href="try_fetch.html">try_fetch()</a></code> instead of <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> or <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>.</p><ul><li><p>Compared to <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>, <code><a href="try_fetch.html">try_fetch()</a></code> fully preserves the context of the error. This is important for debugging because it ensures complete backtraces are reported to users (e.g. via <code><a href="last_error.html">last_error()</a></code>) and allows <code>options(error = recover)</code> to reach into the deepest error context.</p></li>
 <li><p>Compared to <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>, which also preserves the error context, <code><a href="try_fetch.html">try_fetch()</a></code> is able to catch stack overflow errors on R versions &gt;= 4.2.0 (unreleased at the time of writing).</p></li>
 </ul><p>In practice, <code><a href="try_fetch.html">try_fetch()</a></code> works just like <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>. It takes pairs of error class names and handling functions. To chain an error, simply rethrow it from an error handler by passing it as <code>parent</code> argument.</p>
-<p>In this example, we'll create a <code>with_</code> function. That is, a function that sets up some configuration (in this case, chained errors) before executing code supplied as input:</p><div class="sourceCode r"><pre><code><span class="va">with_chained_errors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">{</span>
+<p>In this example, we'll create a <code>with_</code> function. That is, a function that sets up some configuration (in this case, chained errors) before executing code supplied as input:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">with_chained_errors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span>
     <span class="va">expr</span>,
     error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="op">{</span>
@@ -182,7 +186,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; ! Problem during step.</span>
 <span class="co">#&gt; Caused by error in `1 + ""`:</span>
 <span class="co">#&gt; ! non-numeric argument to binary operator</span></code></pre><p></p></div>
-<p>Typically, you'll use this error helper from another user-facing function.</p><div class="sourceCode r"><pre><code><span class="va">my_verb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">{</span>
+<p>Typically, you'll use this error helper from another user-facing function.</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_verb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu">with_chained_errors</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>
 <span class="op">}</span>
 
@@ -192,7 +197,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; Caused by error in `x + y`:</span>
 <span class="co">#&gt; ! non-numeric argument to binary operator</span></code></pre><p></p></div>
 <p>Altough we have created a chained error, the error call of the contextual error is not quite right. It mentions the name of the error helper instead of the name of the user-facing function.</p>
-<p>If you've read <a href="topic-error-call.html">Including function calls in error messages</a>, you may suspect that we need to pass a <code>call</code> argument to <code><a href="abort.html">abort()</a></code>. That's exactly what needs to happen to fix the call and backtrace issues:</p><div class="sourceCode r"><pre><code><span class="va">with_chained_errors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+<p>If you've read <a href="topic-error-call.html">Including function calls in error messages</a>, you may suspect that we need to pass a <code>call</code> argument to <code><a href="abort.html">abort()</a></code>. That's exactly what needs to happen to fix the call and backtrace issues:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">with_chained_errors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span>
     <span class="va">expr</span>,
     error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="op">{</span>
@@ -200,7 +206,8 @@ There may be more than one contextual error in an error chain, but there is alwa
     <span class="op">}</span>
   <span class="op">)</span>
 <span class="op">}</span></code></pre><p></p></div>
-<p>Now that we've passed the caller environment as <code>call</code> argument, <code><a href="abort.html">abort()</a></code> automatically picks up the correspondin function call from the execution frame:</p><div class="sourceCode r"><pre><code><span class="fu">my_verb</span><span class="op">(</span><span class="fu">add</span><span class="op">(</span><span class="fl">1</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span>
+<p>Now that we've passed the caller environment as <code>call</code> argument, <code><a href="abort.html">abort()</a></code> automatically picks up the correspondin function call from the execution frame:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu">my_verb</span><span class="op">(</span><span class="fu">add</span><span class="op">(</span><span class="fl">1</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error in `my_verb()`:</span>
 <span class="co">#&gt; ! Problem during step.</span>
 <span class="co">#&gt; Caused by error in `x + y`:</span>
@@ -208,12 +215,14 @@ There may be more than one contextual error in an error chain, but there is alwa
 <h3 id="side-note-about-missing-arguments">Side note about missing arguments<a class="anchor" aria-label="anchor" href="#side-note-about-missing-arguments"></a></h3>
 
 
-<p><code>my_verb()</code> is implemented with a lazy evaluation pattern. The user input kept unevaluated until the error chain context is set up. A downside of this arrangement is that missing argument errors are reported in the wrong context:</p><div class="sourceCode r"><pre><code><span class="fu">my_verb</span><span class="op">(</span><span class="op">)</span>
+<p><code>my_verb()</code> is implemented with a lazy evaluation pattern. The user input kept unevaluated until the error chain context is set up. A downside of this arrangement is that missing argument errors are reported in the wrong context:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu">my_verb</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Error in `my_verb()`:</span>
 <span class="co">#&gt; ! Problem during step.</span>
 <span class="co">#&gt; Caused by error in `withCallingHandlers()`:</span>
 <span class="co">#&gt; ! argument "expr" is missing, with no default</span></code></pre><p></p></div>
-<p>To fix this, simply require these arguments before setting up the chained error context, for instance with the <code><a href="check_required.html">check_required()</a></code> input checker exported from rlang:</p><div class="sourceCode r"><pre><code><span class="va">my_verb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">{</span>
+<p>To fix this, simply require these arguments before setting up the chained error context, for instance with the <code><a href="check_required.html">check_required()</a></code> input checker exported from rlang:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_verb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/check_required.html">check_required</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>
   <span class="fu">with_chained_errors</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>
 <span class="op">}</span>
@@ -229,7 +238,8 @@ There may be more than one contextual error in an error chain, but there is alwa
     <p>It is also possible to completely take ownership of a causal error and rethrow it with a more user-friendly error message. In this case, the original error is completely hidden from the end user. Opting for his approach instead of chaining should be carefully considered because hiding the causal error may deprive users from precious debugging information.</p><ul><li><p>In general, hiding <em>user errors</em> (e.g. dplyr inputs) in this way is likely a bad idea.</p></li>
 <li><p>It may be appropriate to hide low-level errors, e.g. replacing HTTP errors by a high-level download error. Similarly, tidyverse packages like dplyr are replacing low-level vctrs errors with higher level errors of their own crafting.</p></li>
 <li><p>Hiding causal errors indiscriminately should likely be avoided because it may suppress information about unexpected errors. In general, rethrowing an unchained errors should only be done with specific error classes.</p></li>
-</ul><p>To rethow an error without chaining it, and completely take over the causal error from the user point of view, fetch it with <code><a href="try_fetch.html">try_fetch()</a></code> and throw a new error. The only difference with throwing a chained error is that the <code>parent</code> argument is set to <code>NA</code>. You could also omit the <code>parent</code> argument entirely, but passing <code>NA</code> lets <code><a href="abort.html">abort()</a></code> know it is rethrowing an error from a handler and that it should hide the corresponding error helpers in the backtrace.</p><div class="sourceCode r"><pre><code><span class="va">with_own_scalar_errors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+</ul><p>To rethow an error without chaining it, and completely take over the causal error from the user point of view, fetch it with <code><a href="try_fetch.html">try_fetch()</a></code> and throw a new error. The only difference with throwing a chained error is that the <code>parent</code> argument is set to <code>NA</code>. You could also omit the <code>parent</code> argument entirely, but passing <code>NA</code> lets <code><a href="abort.html">abort()</a></code> know it is rethrowing an error from a handler and that it should hide the corresponding error helpers in the backtrace.</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">with_own_scalar_errors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span>
     <span class="va">expr</span>,
     vctrs_error_scalar_type <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="op">{</span>
@@ -253,7 +263,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="fu">my_verb</span><span class="op">(</span><span class="fu"><a href="../reference/env.html">env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Error in `my_verb()`:</span>
 <span class="co">#&gt; ! Must supply a vector.</span></code></pre><p></p></div>
-<p>When a low-level error is overtaken, it is good practice to store it in the high-level error object, so that it can be inspected for debugging purposes. In the snippet above, we stored it in the <code>error</code> field. Here is one way of accessing the original error by subsetting the object returned by <code><a href="last_error.html">last_error()</a></code>:</p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">error</span>
+<p>When a low-level error is overtaken, it is good practice to store it in the high-level error object, so that it can be inspected for debugging purposes. In the snippet above, we stored it in the <code>error</code> field. Here is one way of accessing the original error by subsetting the object returned by <code><a href="last_error.html">last_error()</a></code>:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">error</span>
 <span class="co">#&gt; &lt;error/vctrs_error_scalar_type&gt;</span>
 <span class="co">#&gt; Error in `my_verb()`:</span>
 <span class="co">#&gt; ! `expr` must be a vector, not an environment.</span>
@@ -264,7 +275,8 @@ There may be more than one contextual error in an error chain, but there is alwa
     <div class="section level2">
     <h2 id="case-study-mapping-with-chained-errors">Case study: Mapping with chained errors<a class="anchor" aria-label="anchor" href="#case-study-mapping-with-chained-errors"></a></h2>
     <p>One good use case for chained errors is adding information about the iteration state when looping over a set of inputs. To illustrate this, we'll implement a version of <code>map()</code> / <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> that chains an iteration error to any captured user error.</p>
-<p>Here is a minimal implementation of <code>map()</code>:</p><div class="sourceCode r"><pre><code><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.xs</span>, <span class="va">.fn</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<p>Here is a minimal implementation of <code>map()</code>:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.xs</span>, <span class="va">.fn</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new-vector.html">new_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">.xs</span><span class="op">)</span><span class="op">)</span>
 
   <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">.xs</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -280,12 +292,14 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [[2]]</span>
 <span class="co">#&gt; [1] 102</span></code></pre><p></p></div>
-<p>With this implementation, the user has no idea which iteration failed when an error occurs:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"foo"</span><span class="op">)</span> |&gt; <span class="fu">my_map</span><span class="op">(</span><span class="va">add</span>, <span class="fl">100</span><span class="op">)</span>
+<p>With this implementation, the user has no idea which iteration failed when an error occurs:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"foo"</span><span class="op">)</span> |&gt; <span class="fu">my_map</span><span class="op">(</span><span class="va">add</span>, <span class="fl">100</span><span class="op">)</span>
 <span class="co">#&gt; Error in x + y: non-numeric argument to binary operator</span></code></pre><p></p></div><div class="section">
 <h3 id="rethrowing-with-iteration-information">Rethrowing with iteration information<a class="anchor" aria-label="anchor" href="#rethrowing-with-iteration-information"></a></h3>
 
 
-<p>To improve on this we'll wrap the loop in a <code><a href="try_fetch.html">try_fetch()</a></code> call that rethrow errors with iteration information. Make sure to call <code><a href="try_fetch.html">try_fetch()</a></code> on the outside of the loop to avoid a massive performance hit:</p><div class="sourceCode r"><pre><code><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.xs</span>, <span class="va">.fn</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<p>To improve on this we'll wrap the loop in a <code><a href="try_fetch.html">try_fetch()</a></code> call that rethrow errors with iteration information. Make sure to call <code><a href="try_fetch.html">try_fetch()</a></code> on the outside of the loop to avoid a massive performance hit:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.xs</span>, <span class="va">.fn</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/new-vector.html">new_list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">.xs</span><span class="op">)</span><span class="op">)</span>
   <span class="va">i</span> <span class="op">&lt;-</span> <span class="fl">0L</span>
 
@@ -303,7 +317,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 
   <span class="va">out</span>
 <span class="op">}</span></code></pre><p></p></div>
-<p>And that's it, the error chain created by the rethrowing handler now provides users with the number of the failing iteration:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"foo"</span><span class="op">)</span> |&gt; <span class="fu">my_map</span><span class="op">(</span><span class="va">add</span>, <span class="fl">100</span><span class="op">)</span>
+<p>And that's it, the error chain created by the rethrowing handler now provides users with the number of the failing iteration:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"foo"</span><span class="op">)</span> |&gt; <span class="fu">my_map</span><span class="op">(</span><span class="va">add</span>, <span class="fl">100</span><span class="op">)</span>
 <span class="co">#&gt; Error in `my_map()`:</span>
 <span class="co">#&gt; ! Problem while mapping element 2.</span>
 <span class="co">#&gt; Caused by error in `x + y`:</span>
@@ -314,7 +329,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 <h3 id="dealing-with-errors-thrown-from-the-mapped-function">Dealing with errors thrown from the mapped function<a class="anchor" aria-label="anchor" href="#dealing-with-errors-thrown-from-the-mapped-function"></a></h3>
 
 
-<p>One problem though, is that the user error call is not very informative when the error occurs immediately in the function supplied to <code>my_map()</code>:</p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+<p>One problem though, is that the user error call is not very informative when the error occurs immediately in the function supplied to <code>my_map()</code>:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"`x` must be a string."</span><span class="op">)</span>
   <span class="op">}</span>
@@ -326,7 +342,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span class="co">#&gt; Caused by error in `.fn()`:</span>
 <span class="co">#&gt; ! `x` must be a string.</span></code></pre><p></p></div>
 <p>Functions have no names by themselves. Only the variable that refers to the function has a name. In this case, the mapped function is passed by argument to the variable <code>.fn</code>. So, when an error happens, this is the name that is reported to users.</p>
-<p>One approach to fix this is to inspect the <code>call</code> field of the error. When we detect a <code>.fn</code> call, we replace it by the defused code supplied as <code>.fn</code> argument:</p><div class="sourceCode r"><pre><code><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.xs</span>, <span class="va">.fn</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<p>One approach to fix this is to inspect the <code>call</code> field of the error. When we detect a <code>.fn</code> call, we replace it by the defused code supplied as <code>.fn</code> argument:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_map</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.xs</span>, <span class="va">.fn</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   <span class="co"># Capture the defused code supplied as `.fn`</span>
   <span class="va">fn_code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a></span><span class="op">(</span><span class="va">.fn</span><span class="op">)</span>
 
@@ -352,7 +369,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 
   <span class="va">out</span>
 <span class="op">}</span></code></pre><p></p></div>
-<p>And voilà!</p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"foo"</span><span class="op">)</span> |&gt; <span class="fu">my_map</span><span class="op">(</span><span class="va">my_function</span><span class="op">)</span>
+<p>And voilà!</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"foo"</span><span class="op">)</span> |&gt; <span class="fu">my_map</span><span class="op">(</span><span class="va">my_function</span><span class="op">)</span>
 <span class="co">#&gt; Error in `my_map()`:</span>
 <span class="co">#&gt; ! Problem while mapping element 1.</span>
 <span class="co">#&gt; Caused by error in `my_function()`:</span>

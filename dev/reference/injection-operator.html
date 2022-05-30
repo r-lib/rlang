@@ -146,11 +146,13 @@ refer to column names in your computations. This comes at the price
 of data mask ambiguity: if you have defined an env-variable of the
 same name as a data-variable, you get a name collisions. This
 collision is always resolved by giving precedence to the
-data-variable (it masks the env-variable):</p><div class="sourceCode r"><pre><code><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">110</span><span class="op">)</span>
+data-variable (it masks the env-variable):</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">110</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 6.1875</span></code></pre><p></p></div>
 <p>The injection operator offers one way of solving this. Use it to
-inject the env-variable inside the data-masked expression:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span>
+inject the env-variable inside the data-masked expression:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt; [1] 105</span></code></pre><p></p></div>
@@ -165,7 +167,8 @@ this.</p>
 
 <p>Injection is also useful for modifying parts of a <a href="topic-defuse.html">defused expression</a>. In the following example we use the
 <a href="topic-metaprogramming.html">symbolise-and-inject pattern</a> to
-inject a column name inside a data-masked expression.</p><div class="sourceCode r"><pre><code><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"cyl"</span><span class="op">)</span>
+inject a column name inside a data-masked expression.</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"cyl"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span>
   <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span>
@@ -183,11 +186,13 @@ pre-computed value instead.</p>
 
 <p>With tidyverse APIs, injecting expressions with <code>!!</code> is no longer a
 common pattern. First, the <code><a href="dot-data.html">.env</a></code> pronoun solves the
-ambiguity problem in a more intuitive way:</p><div class="sourceCode r"><pre><code><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fl">100</span>
+ambiguity problem in a more intuitive way:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fl">100</span>
 <span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="va">.env</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span></code></pre><p></p></div>
 <p>Second, the embrace operator <code><a href="embrace-operator.html">{{</a></code> makes the
 <a href="topic-metaprogramming.html">defuse-and-inject pattern</a> easier to
-learn and use.</p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+learn and use.</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 

@@ -139,9 +139,8 @@ this e.g. to demote an error into a warning.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>In packages, document <code>...</code> with this standard tag:</p><div class="sourceCode"><pre><code> @inheritParams rlang::args_dots_used
-</code></pre></div>
-
+    <p>In packages, document <code>...</code> with this standard tag:</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p><code>check_dots_used()</code> implicitly calls <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit()</a></code> to check that all
 elements of <code>...</code> have been used when the function exits. If you
 use <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit()</a></code> elsewhere in your function, make sure to use <code>add = TRUE</code> so that you don't override the handler set up by

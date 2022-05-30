@@ -9,19 +9,22 @@ Recover from conditions with a value. In this case the computation of
 expr is aborted and the recovery value is returned from
 try_fetch(). Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
-catching site instead.# Recover with the value 0
+catching site instead.
+# Recover with the value 0
 try_fetch(1 + &quot;&quot;, error = function(cnd) 0)
 
 Rethrow conditions, e.g. using abort(msg, parent = cnd).
 See the parent argument of abort(). This is typically done to
 add information to low-level errors about the high-level context
-in which they occurred.try_fetch(1 + &quot;&quot;, error = function(cnd) abort(&quot;Failed.&quot;, parent = cnd))
+in which they occurred.
+try_fetch(1 + &quot;&quot;, error = function(cnd) abort(&quot;Failed.&quot;, parent = cnd))
 
 Inspect conditions, for instance to log data about warnings
 or errors. In this case, the handler must return the zap()
 sentinel to instruct try_fetch() to ignore (or zap) that
 particular handler. The next matching handler is called if any,
-and errors bubble up to the user if no handler remains.log &amp;lt;- NULL
+and errors bubble up to the user if no handler remains.
+log &amp;lt;- NULL
 try_fetch(1 + &quot;&quot;, error = function(cnd) {
   log &amp;lt;&amp;lt;- cnd
   zap()
@@ -45,19 +48,22 @@ Recover from conditions with a value. In this case the computation of
 expr is aborted and the recovery value is returned from
 try_fetch(). Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
-catching site instead.# Recover with the value 0
+catching site instead.
+# Recover with the value 0
 try_fetch(1 + &quot;&quot;, error = function(cnd) 0)
 
 Rethrow conditions, e.g. using abort(msg, parent = cnd).
 See the parent argument of abort(). This is typically done to
 add information to low-level errors about the high-level context
-in which they occurred.try_fetch(1 + &quot;&quot;, error = function(cnd) abort(&quot;Failed.&quot;, parent = cnd))
+in which they occurred.
+try_fetch(1 + &quot;&quot;, error = function(cnd) abort(&quot;Failed.&quot;, parent = cnd))
 
 Inspect conditions, for instance to log data about warnings
 or errors. In this case, the handler must return the zap()
 sentinel to instruct try_fetch() to ignore (or zap) that
 particular handler. The next matching handler is called if any,
-and errors bubble up to the user if no handler remains.log &amp;lt;- NULL
+and errors bubble up to the user if no handler remains.
+log &amp;lt;- NULL
 try_fetch(1 + &quot;&quot;, error = function(cnd) {
   log &amp;lt;&amp;lt;- cnd
   zap()
@@ -181,21 +187,19 @@ corresponding condition class has been signalled.</p>
 <code>expr</code> is aborted and the recovery value is returned from
 <code>try_fetch()</code>. Error recovery is useful when you don't want
 errors to abruptly interrupt your program but resume at the
-catching site instead.</p><div class="sourceCode"><pre><code><span class="co"># Recover with the value 0</span>
-<span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="st">""</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="fl">0</span><span class="op">)</span></code></pre></div></li>
+catching site instead.</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div></li>
 <li><p><strong>Rethrow conditions</strong>, e.g. using <code>abort(msg, parent = cnd)</code>.
 See the <code>parent</code> argument of <code><a href="abort.html">abort()</a></code>. This is typically done to
 add information to low-level errors about the high-level context
-in which they occurred.</p><div class="sourceCode"><pre><code><span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="st">""</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Failed."</span>, parent <span class="op">=</span> <span class="va">cnd</span><span class="op">)</span><span class="op">)</span></code></pre></div></li>
+in which they occurred.</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div></li>
 <li><p><strong>Inspect conditions</strong>, for instance to log data about warnings
 or errors. In this case, the handler must return the <code><a href="zap.html">zap()</a></code>
 sentinel to instruct <code>try_fetch()</code> to ignore (or zap) that
 particular handler. The next matching handler is called if any,
-and errors bubble up to the user if no handler remains.</p><div class="sourceCode"><pre><code><span class="va">log</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
-<span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="st">""</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">log</span> <span class="op">&lt;&lt;-</span> <span class="va">cnd</span>
-  <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div></li>
+and errors bubble up to the user if no handler remains.</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div></li>
 </ul><p>Whereas <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> catches conditions (discarding any running
 code along the way) and then calls the handler, <code>try_fetch()</code> first
 calls the handler with the condition on top of the currently
@@ -226,11 +230,8 @@ handler will be called.</p></dd>
 
 <p>A stack overflow occurs when a program keeps adding to itself until
 the stack memory (whose size is very limited unlike heap memory) is
-exhausted.</p><div class="sourceCode"><pre><code><span class="co"># A function that calls itself indefinitely causes stack overflows</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">f</span><span class="op">(</span><span class="op">)</span>
-<span class="fu">f</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Error: C stack usage  9525680 is too close to the limit</span></code></pre></div>
-
+exhausted.</p>
+<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
 <p>Because memory is very limited when these errors happen, it is not
 possible to call the handlers on the existing program stack.
 Instead, error conditions are first caught by <code>try_fetch()</code> and only

@@ -159,7 +159,8 @@ perform the roles of both <code><a href="https://rdrr.io/r/base/conditions.html"
 error. If you don't explicitly jump with an <em>error</em> or a <em>value</em>
 throw, nothing happens.</p>
 <p>Since we don't want to throw an error, we'll throw a value using
-<code><a href="https://rdrr.io/r/base/callCC.html" class="external-link">callCC()</a></code>:</p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
+<code><a href="https://rdrr.io/r/base/callCC.html" class="external-link">callCC()</a></code>:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">parent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cnd.html">error_cnd</a></span><span class="op">(</span><span class="st">"bar"</span>, message <span class="op">=</span> <span class="st">"Bar"</span><span class="op">)</span>
   <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Foo"</span>, parent <span class="op">=</span> <span class="va">parent</span><span class="op">)</span>
 <span class="op">}</span>
@@ -184,7 +185,8 @@ throw, nothing happens.</p>
 <p>This pattern is easier with <code><a href="try_fetch.html">try_fetch()</a></code>. Like
 <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>, it doesn't capture a matching error right
 away. Instead, it captures it only if the handler doesn't return a
-<code><a href="zap.html">zap()</a></code> value.</p><div class="sourceCode r"><pre><code><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span>
+<code><a href="zap.html">zap()</a></code> value.</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/try_fetch.html">try_fetch</a></span><span class="op">(</span>
   <span class="fu">f</span><span class="op">(</span><span class="op">)</span>,
   error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="../reference/cnd_inherits.html">cnd_inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"bar"</span><span class="op">)</span><span class="op">)</span> <span class="va">x</span> <span class="kw">else</span> <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>

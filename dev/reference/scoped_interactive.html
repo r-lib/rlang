@@ -123,7 +123,7 @@ local_options(), or local_bindings() instead."><meta property="og:image" content
     <dl><dt>value</dt>
 <dd><p>A single <code>TRUE</code> or <code>FALSE</code>. This overrides the return
 value of <code><a href="is_interactive.html">is_interactive()</a></code>.</p></dd>
-<dt>frame</dt>
+<dt>frame, .frame</dt>
 <dd><p>The environment of a running function which defines
 the scope of the temporary options. When the function returns,
 the options are reset to their original values.</p></dd>
@@ -131,10 +131,6 @@ the options are reset to their original values.</p></dd>
 <dd><p>For <code><a href="local_options.html">local_options()</a></code> and <code><a href="local_options.html">push_options()</a></code>, named
 values defining new option values. For <code><a href="local_options.html">peek_options()</a></code>, strings
 or character vectors of option names.</p></dd>
-<dt>.frame</dt>
-<dd><p>The environment of a running function which defines
-the scope of the temporary options. When the function returns,
-the options are reset to their original values.</p></dd>
 <dt>.env</dt>
 <dd><p>An environment.</p></dd>
 </dl></div>

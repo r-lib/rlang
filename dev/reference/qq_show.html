@@ -121,7 +121,8 @@ for debugging injection code.</p>
 
 
 <p><code>qq_show()</code> shows the intermediary expression before it is
-evaluated by R:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
+evaluated by R:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [1] 1</span>
 <span class="co">#&gt; </span>
@@ -134,7 +135,8 @@ evaluated by R:</p><div class="sourceCode r"><pre><code><span class="fu"><a href
 <span class="fu"><a href="../reference/qq_show.html">qq_show</a></span><span class="op">(</span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; list2(1L, 2L, 3L)</span></code></pre><p></p></div>
 <p>It is especially useful inside functions to reveal what an injected
-expression looks like:</p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+expression looks like:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/qq_show.html">qq_show</a></span><span class="op">(</span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 

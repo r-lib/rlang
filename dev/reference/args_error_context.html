@@ -133,11 +133,20 @@ argument to <code><a href="abort.html">abort()</a></code>. See also <code><a hre
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>arg, error_arg</dt>
+    <dl><dt>arg</dt>
 <dd><p>An argument name as a string. This argument
 will be mentioned in error messages as the input that is at the
 origin of a problem.</p></dd>
-<dt>call, error_call</dt>
+<dt>error_arg</dt>
+<dd><p>An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.</p></dd>
+<dt>call</dt>
+<dd><p>The execution environment of a currently
+running function, e.g. <code><a href="stack.html">caller_env()</a></code>. The function will be
+mentioned in error messages as the source of the error. See the
+<code>call</code> argument of <code><a href="abort.html">abort()</a></code> for more information.</p></dd>
+<dt>error_call</dt>
 <dd><p>The execution environment of a currently
 running function, e.g. <code><a href="stack.html">caller_env()</a></code>. The function will be
 mentioned in error messages as the source of the error. See the
