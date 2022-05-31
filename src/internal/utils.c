@@ -40,6 +40,20 @@ void rlang_print_backtrace(bool full) {
   return;
 }
 
+/* Print an environment in a debugging session.
+ *
+ * ```
+ * expr R_GetCCallable("rlang", "rlang_env_print")(obj)
+ * ```
+ */
+void rlang_env_print(r_obj* x) {
+  r_obj* call = KEEP(r_parse("base::print(rlang::env_print(x))"));
+  r_eval_with_x(call, x, r_envs.base);
+
+  FREE(1);
+  return;
+}
+
 
 static r_obj* signal_soft_deprecated_call = NULL;
 void signal_soft_deprecated(const char* msg,

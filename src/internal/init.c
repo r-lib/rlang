@@ -302,6 +302,7 @@ void R_init_rlang(DllInfo* dll) {
 
   // Only for debugging - no stability guaranteed
   R_RegisterCCallable("rlang", "rlang_print_backtrace",     (DL_FUNC) &rlang_print_backtrace);
+  R_RegisterCCallable("rlang", "rlang_env_print",           (DL_FUNC) &rlang_env_print);
 
   R_registerRoutines(dll, NULL, r_callables, NULL, externals);
   R_useDynamicSymbols(dll, FALSE);
