@@ -921,9 +921,58 @@ trace_root <- function() {
 trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
   check_dots_empty()
 
-  # Avoids namespace loading issues
-  lapply(pkgs, requireNamespace, quietly = TRUE)
+  if (length(regexp) == 1) {
+    regexp <- rep_along(pkgs, regexp)
+  }
 
+  fns <- lapply(seq_along(pkgs), function(i) {
+    fns <- as.list(ns_env(pkgs[[i]]))
+    fns <- keep(fns, is_closure)
+    fns <- names(fns)
+
+    if (!is_null(regexp)) {
+      fns <- fns[grepl(regexp[[i]], fns)]
+    }
+
+    fns
+  })
+  names(fns) <- pkgs
+
+  trace_fns(fns)
+}
+
+trace_fns <- function(fns, max_level = Inf) {
+  stopifnot(
+    is_list(fns),
+    every(fns, is_character)
+  )
+
+  c(tracer, exit) %<-% new_tracers(max_level)
+
+  pkgs <- names(fns)
+
+  for (i in seq_along(pkgs)) {
+    nms <- fns[[i]]
+    pkg <- pkgs[[i]]
+    ns <- ns_env(pkg)
+
+    suppressMessages(trace(
+      nms,
+      tracer = tracer,
+      exit = exit,
+      print = FALSE,
+      where = ns
+    ))
+
+    message(sprintf(
+      "Tracing %d functions in %s.",
+      length(nms),
+      pkg
+    ))
+  }
+}
+
+new_tracers <- function(max_level) {
   trace_level <- 0
 
   # Create a thunk because `trace()` sloppily transforms functions into calls
@@ -952,33 +1001,7 @@ trace_pkgs <- function(pkgs, max_level = Inf, ..., regexp = NULL) {
     trace_level <<- trace_level - 1
   })
 
-  if (length(regexp) == 1) {
-    regexp <- rep_along(pkgs, regexp)
-  }
-
-  for (i in seq_along(pkgs)) {
-    pkg <- pkgs[[i]]
-    ns <- ns_env(pkg)
-    ns_fns <- names(keep(as.list(ns), is.function))
-
-    if (!is_null(regexp)) {
-      ns_fns <- ns_fns[grepl(regexp[[i]], ns_fns)]
-    }
-
-    suppressMessages(trace(
-      ns_fns,
-      tracer = tracer,
-      exit = exit,
-      print = FALSE,
-      where = ns
-    ))
-
-    message(sprintf(
-      "Tracing %d functions in %s.",
-      length(ns_fns),
-      pkg
-    ))
-  }
+  list(tracer = tracer, exit = exit)
 }
 
 call_add_namespace <- function(call, fn) {
