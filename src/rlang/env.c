@@ -109,36 +109,47 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent) {
     parent = r_env_parent(env);
   }
 
-  r_obj* nms = KEEP(r_env_names(env));
-  r_obj* types = KEEP(r_env_binding_types(env, nms));
+  r_obj* out = KEEP(r_alloc_environment(r_length(env), parent));
+  r_env_coalesce(out, env);
+
+  FREE(1);
+  return out;
+}
+
+void r_env_coalesce(r_obj* env, r_obj* from) {
+  r_obj* nms = KEEP(r_env_names(from));
+  r_obj* types = KEEP(r_env_binding_types(from, nms));
 
   if (types == r_null) {
+    env_coalesce_plain(env, from, nms);
     FREE(2);
-    return env_clone_roundtrip(env, parent);
+    return;
   }
-
-  r_ssize n = r_length(nms);
-  r_obj* out = KEEP(r_alloc_environment(n, parent));
 
   // In older R versions there is no way of accessing the function of
   // an active binding except through env2list. This makes it
   // impossible to preserve active bindings without forcing promises.
 #if R_VERSION < R_Version(4, 0, 0)
-  r_obj* env_list = KEEP(eval_with_x(env2list_call, env));
+  r_obj* from_list = KEEP(eval_with_x(env2list_call, env));
 #else
   KEEP(r_null);
 #endif
 
+  r_ssize n = r_length(nms);
   r_obj* const * v_nms = r_chr_cbegin(nms);
   enum r_env_binding_type* v_types = (enum r_env_binding_type*) r_int_begin(types);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* sym = r_str_as_symbol(v_nms[i]);
 
+    if (r_env_has(env, sym)) {
+      continue;
+    }
+
     switch (v_types[i]) {
     case R_ENV_BINDING_TYPE_value:
     case R_ENV_BINDING_TYPE_promise:
-      r_env_poke(out, sym, r_env_find(env, sym));
+      r_env_poke(env, sym, r_env_find(from, sym));
       break;
 
     case R_ENV_BINDING_TYPE_active: {
@@ -147,25 +158,35 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent) {
       if (fn_idx < 0) {
         r_stop_internal("Can't find active binding in temporary list.");
       }
-      r_obj* fn = r_list_get(env_list, fn_idx);
+      r_obj* fn = r_list_get(from_list, fn_idx);
 #else
-      r_obj* fn = R_ActiveBindingFunction(sym, env);
+      r_obj* fn = R_ActiveBindingFunction(sym, from);
 #endif
-      r_env_poke_active(out, sym, fn);
+      r_env_poke_active(env, sym, fn);
       break;
     }}
   }
 
-  FREE(4);
-  return out;
+  FREE(3);
+  return;
 }
 
 static
-r_obj* env_clone_roundtrip(r_obj* env, r_obj* parent) {
-  r_obj* out_list = KEEP(r_env_as_list(env));
-  r_obj* out = r_list_as_environment(out_list, parent);
-  FREE(1);
-  return(out);
+void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* nms) {
+  r_ssize n = r_length(nms);
+  r_obj* const * v_nms = r_chr_cbegin(nms);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    r_obj* sym = r_str_as_symbol(v_nms[i]);
+
+    if (r_env_has(env, sym)) {
+      continue;
+    }
+
+    r_env_poke(env, sym, r_env_find(from, sym));
+  }
+
+  return;
 }
 
 r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {

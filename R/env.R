@@ -481,24 +481,62 @@ env_poke_parent <- function(env, new_env) {
 }
 
 
-#' Clone an environment
+#' Clone or coalesce an environment
 #'
-#' This creates a new environment containing exactly the same objects,
-#' optionally with a new parent. Active bindings and promises are
-#' preserved (the latter only on R >= 4.0.0).
+#' @description
+#' - `env_clone()` creates a new environment containing exactly the
+#'   same bindings as the input, optionally with a new parent.
+#'
+#' - `env_coalesce()` copies binding from the RHS environment into the
+#'   LHS. If the RHS already contains bindings with the same name as
+#'   in the LHS, those are kept as is.
+#'
+#' Both these functions preserve active bindings and promises (the
+#' latter are only preserved on R >= 4.0.0).
 #'
 #' @inheritParams get_env
 #' @param parent The parent of the cloned environment.
 #' @export
 #' @examples
-#' env <- env(!!! mtcars)
+#' # A clone initially contains the same bindings as the original
+#' # environment
+#' env <- env(a = 1, b = 2)
 #' clone <- env_clone(env)
-#' identical(env, clone)
-#' identical(env$cyl, clone$cyl)
+#'
+#' env_print(clone)
+#' env_print(env)
+#'
+#' # But it can acquire new bindings or change existing ones without
+#' # impacting the original environment
+#' env_bind(clone, a = "foo", c = 3)
+#'
+#' env_print(clone)
+#' env_print(env)
+#'
+#'
+#' # `env_coalesce()` copies bindings from one environment to another
+#' lhs <- env(a = 1)
+#' rhs <- env(a = "a", b = "b", c = "c")
+#' env_coalesce(lhs, rhs)
+#' env_print(lhs)
+#'
+#' # To copy all the bindings from `rhs` into `lhs`, first delete the
+#' # conflicting bindings from `rhs`
+#' env_unbind(lhs, env_names(rhs))
+#' env_coalesce(lhs, rhs)
+#' env_print(lhs)
 env_clone <- function(env, parent = env_parent(env)) {
   check_environment(env)
   check_environment(parent)
   .Call(ffi_env_clone, env, parent)
+}
+#' @rdname env_clone
+#' @param from Environment to copy bindings from.
+#' @export
+env_coalesce <- function(env, from) {
+  check_environment(env)
+  check_environment(from)
+  invisible(.Call(ffi_env_coalesce, env, from))
 }
 
 #' Does environment inherit from another environment?

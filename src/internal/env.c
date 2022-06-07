@@ -68,3 +68,8 @@ void r_env_unbind_anywhere_c_string(r_obj* env, const char* name) {
   names[0] = name;
   r_env_unbind_anywhere_c_strings(env, names, 1);
 }
+
+r_obj* ffi_env_coalesce(r_obj* env, r_obj* from) {
+  r_env_coalesce(env, from);
+  return r_null;
+}
