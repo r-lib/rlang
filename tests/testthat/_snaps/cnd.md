@@ -31,9 +31,9 @@
       ---
       Backtrace:
         1. rlang:::catch_error(f())
-        9. rlang f()
-       10. rlang g()
-       11. rlang h()
+        9. rlang (local) f()
+       10. rlang (local) g()
+       11. rlang (local) h()
 
 # Overlapping backtraces are printed separately
 
@@ -48,12 +48,12 @@
       ---
       Backtrace:
         1. rlang:::catch_error(a())
-        9. rlang a()
-       10. rlang b()
-       11. rlang c()
-       16. rlang f()
-       17. rlang g()
-       18. rlang h()
+        9. rlang (local) a()
+       10. rlang (local) b()
+       11. rlang (local) c()
+       16. rlang (local) f()
+       17. rlang (local) g()
+       18. rlang (local) h()
 
 ---
 
@@ -72,20 +72,20 @@
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
-        5. |   | \-base tryCatchList(expr, classes, parentenv, handlers)
-        6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
-        9. \-rlang a()
-       10.   \-rlang b()
-       11.     \-rlang c()
+        9. \-rlang (local) a()
+       10.   \-rlang (local) b()
+       11.     \-rlang (local) c()
        12.       +-base::tryCatch(...)
-       13.       | \-base tryCatchList(expr, classes, parentenv, handlers)
-       14.       |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       15.       |     \-base doTryCatch(return(expr), name, parentenv, handler)
-       16.       \-rlang f()
-       17.         \-rlang g()
-       18.           \-rlang h()
+       13.       | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       14.       |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       15.       |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+       16.       \-rlang (local) f()
+       17.         \-rlang (local) g()
+       18.           \-rlang (local) h()
        19.             \-rlang::abort("", "foobar", foobar_msg = "Low-level message")
 
 ---
@@ -106,20 +106,20 @@
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
-        5. |   | \-base tryCatchList(expr, classes, parentenv, handlers)
-        6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
-        9. \-rlang a()
-       10.   \-rlang b()
-       11.     \-rlang c()
+        9. \-rlang (local) a()
+       10.   \-rlang (local) b()
+       11.     \-rlang (local) c()
        12.       +-base::tryCatch(...)
-       13.       | \-base tryCatchList(expr, classes, parentenv, handlers)
-       14.       |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       15.       |     \-base doTryCatch(return(expr), name, parentenv, handler)
-       16.       \-rlang f()
-       17.         \-rlang g()
-       18.           \-rlang h()
+       13.       | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       14.       |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       15.       |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+       16.       \-rlang (local) f()
+       17.         \-rlang (local) g()
+       18.           \-rlang (local) h()
        19.             \-rlang::abort("", "foobar", foobar_msg = "Low-level message")
     Code
       # Collapsed
@@ -134,13 +134,13 @@
       Backtrace:
            x
         1. +-[ rlang:::catch_error(...) ] with 7 more calls
-        9. \-rlang a()
-       10.   \-rlang b()
-       11.     \-rlang c()
+        9. \-rlang (local) a()
+       10.   \-rlang (local) b()
+       11.     \-rlang (local) c()
        12.       +-[ base::tryCatch(...) ] with 3 more calls
-       16.       \-rlang f()
-       17.         \-rlang g()
-       18.           \-rlang h()
+       16.       \-rlang (local) f()
+       17.         \-rlang (local) g()
+       18.           \-rlang (local) h()
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
@@ -153,12 +153,12 @@
       ---
       Backtrace:
         1. rlang:::catch_error(a())
-        9. rlang a()
-       10. rlang b()
-       11. rlang c()
-       16. rlang f()
-       17. rlang g()
-       18. rlang h()
+        9. rlang (local) a()
+       10. rlang (local) b()
+       11. rlang (local) c()
+       16. rlang (local) f()
+       17. rlang (local) g()
+       18. rlang (local) h()
 
 # 3-level ancestry works (#1248)
 
@@ -190,21 +190,21 @@
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
-        5. |   | \-base tryCatchList(expr, classes, parentenv, handlers)
-        6. |   |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        7. |   |     \-base doTryCatch(return(expr), name, parentenv, handler)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
-        9. \-rlang a()
+        9. \-rlang (local) a()
        10.   +-base::tryCatch(b())
-       11.   | \-base tryCatchList(expr, classes, parentenv, handlers)
-       12.   \-rlang b()
-       13.     \-rlang c()
+       11.   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       12.   \-rlang (local) b()
+       13.     \-rlang (local) c()
        14.       +-base::withCallingHandlers(f(), error = handler)
-       15.       \-rlang f()
+       15.       \-rlang (local) f()
        16.         +-base::tryCatch(g())
-       17.         | \-base tryCatchList(expr, classes, parentenv, handlers)
-       18.         \-rlang g()
-       19.           \-rlang h()
+       17.         | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       18.         \-rlang (local) g()
+       19.           \-rlang (local) h()
        20.             \-rlang::abort("The low-level error message", foo = "foo")
 
 # don't print message or backtrace fields if empty
@@ -298,20 +298,20 @@
         1. +-rlang::catch_cnd(foo(), "error")
         2. | +-rlang::eval_bare(...)
         3. | +-base::tryCatch(...)
-        4. | | \-base tryCatchList(expr, classes, parentenv, handlers)
-        5. | |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        6. | |     \-base doTryCatch(return(expr), name, parentenv, handler)
+        4. | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        5. | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        6. | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
         7. | \-base::force(expr)
-        8. \-rlang foo()
-        9.   \-rlang bar()
-       10.     \-rlang baz()
+        8. \-rlang (local) foo()
+        9.   \-rlang (local) bar()
+       10.     \-rlang (local) baz()
        11.       +-base::tryCatch(f(), error = function(err) abort("bar", parent = err))
-       12.       | \-base tryCatchList(expr, classes, parentenv, handlers)
-       13.       |   \-base tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       14.       |     \-base doTryCatch(return(expr), name, parentenv, handler)
-       15.       \-rlang f()
-       16.         \-rlang g()
-       17.           \-rlang h()
+       12.       | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       13.       |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       14.       |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+       15.       \-rlang (local) f()
+       16.         \-rlang (local) g()
+       17.           \-rlang (local) h()
        18.             \-rlang::abort("foo")
     Code
       # Collapsed
@@ -326,13 +326,13 @@
       Backtrace:
            x
         1. +-[ rlang::catch_cnd(...) ] with 6 more calls
-        8. \-rlang foo()
-        9.   \-rlang bar()
-       10.     \-rlang baz()
+        8. \-rlang (local) foo()
+        9.   \-rlang (local) bar()
+       10.     \-rlang (local) baz()
        11.       +-[ base::tryCatch(...) ] with 3 more calls
-       15.       \-rlang f()
-       16.         \-rlang g()
-       17.           \-rlang h()
+       15.       \-rlang (local) f()
+       16.         \-rlang (local) g()
+       17.           \-rlang (local) h()
     Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
@@ -345,12 +345,12 @@
       ---
       Backtrace:
         1. rlang::catch_cnd(foo(), "error")
-        8. rlang foo()
-        9. rlang bar()
-       10. rlang baz()
-       15. rlang f()
-       16. rlang g()
-       17. rlang h()
+        8. rlang (local) foo()
+        9. rlang (local) bar()
+       10. rlang (local) baz()
+       15. rlang (local) f()
+       16. rlang (local) g()
+       17. rlang (local) h()
 
 # bare conditions must be subclassed
 

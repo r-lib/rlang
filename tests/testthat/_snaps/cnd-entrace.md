@@ -61,9 +61,9 @@
       ---
       Backtrace:
         1. rlang::catch_cnd(...)
-        9. rlang f()
-       10. rlang g()
-       11. rlang h()
+        9. rlang (local) f()
+       10. rlang (local) g()
+       11. rlang (local) h()
        12. base::identity(1 + "")
 
 # can set `entrace()` as a global handler
