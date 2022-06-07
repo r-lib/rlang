@@ -100,7 +100,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>Error messages now mention indexed calls like <code>foo$bar()</code>.</p></li>
+<ul><li><p>Calls to local functions that are not accessible through <code>::</code> or <code>:::</code> are now marked with <code>(local)</code> in backtraces (<a href="https://github.com/r-lib/rlang/issues/1399" class="external-link">#1399</a>).</p></li>
+<li><p>Error messages now mention indexed calls like <code>foo$bar()</code>.</p></li>
 <li><p>New <code><a href="../reference/env_clone.html">env_coalesce()</a></code> function to copy bindings from one environment to another. Unlike approaches based on looping with <code>[[&lt;-</code>, <code><a href="../reference/env_clone.html">env_coalesce()</a></code> preserves active and lazy bindings.</p></li>
 <li><p>Chaining errors at top-level (directly in the console instead of in a function) no longer fails (<a href="https://github.com/r-lib/rlang/issues/1405" class="external-link">#1405</a>).</p></li>
 <li><p>Warning style is propagated across parent errors in chained error messages (<a href="https://github.com/r-lib/rlang/issues/1387" class="external-link">#1387</a>).</p></li>
