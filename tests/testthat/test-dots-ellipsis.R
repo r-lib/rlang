@@ -124,3 +124,13 @@ test_that("empty dots error mentions info bullets if any unnamed element", {
     f(a = 1, 2)
   })
 })
+
+test_that("check_dots_empty() allows trailing missing arg (#1390)", {
+  fn <- function(..., a = NULL) check_dots_empty()
+
+  expect_null(fn(a = 1, ))
+
+  expect_snapshot({
+    (expect_error(fn(a = 1, b = )))
+  })
+})

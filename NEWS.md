@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `check_dots_empty()` now allows trailing missing arguments (#1390).
+
 * Calls to local functions that are not accessible through `::` or
   `:::` are now marked with `(local)` in backtraces (#1399).
 

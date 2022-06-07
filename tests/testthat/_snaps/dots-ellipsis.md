@@ -97,3 +97,14 @@
       * ..2 = 2
       i Did you forget to name an argument?
 
+# check_dots_empty() allows trailing missing arg (#1390)
+
+    Code
+      (expect_error(fn(a = 1, b = )))
+    Output
+      <error/rlib_error_dots_nonempty>
+      Error in `fn()`:
+      ! `...` must be empty.
+      x Problematic argument:
+      * b = <empty>
+

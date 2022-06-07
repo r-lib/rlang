@@ -150,8 +150,18 @@ check_dots_empty <- function(env = caller_env(),
                              call = caller_env(),
                              action = abort) {
   dots <- ellipsis_dots(env)
-  if (length(dots) == 0) {
+  n <- length(dots)
+
+  if (n == 0) {
     return()
+  }
+
+  if (n == 1) {
+    nms <- names(dots)
+    no_name <- is_null(nms) || identical(nms[[n]], "")
+    if (no_name && identical(dots[[n]], missing_arg())) {
+      return()
+    }
   }
 
   if (!is_named(dots)) {
