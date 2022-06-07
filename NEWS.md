@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* New `env_coalesce()` function to copy bindings from one environment
+  to another. Unlike approaches based on looping with `[[<-`,
+  `env_coalesce()` preserves active and lazy bindings.
+
 * Chaining errors at top-level (directly in the console instead of in
   a function) no longer fails (#1405).
 

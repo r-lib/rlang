@@ -69,6 +69,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_env_binding_types",            (DL_FUNC) &r_env_binding_types, 2},
   {"ffi_env_browse",                   (DL_FUNC) &ffi_env_browse, 2},
   {"ffi_env_clone",                    (DL_FUNC) &r_env_clone, 2},
+  {"ffi_env_coalesce",                 (DL_FUNC) &ffi_env_coalesce, 2},
   {"ffi_env_frame",                    (DL_FUNC) &ffi_env_frame, 1},
   {"ffi_env_get",                      (DL_FUNC) &ffi_env_get, 5},
   {"ffi_env_get_list",                 (DL_FUNC) &ffi_env_get_list, 5},

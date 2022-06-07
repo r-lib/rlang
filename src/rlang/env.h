@@ -85,6 +85,8 @@ r_obj* r_env_as_list(r_obj* x);
 r_obj* r_list_as_environment(r_obj* x, r_obj* parent);
 r_obj* r_env_clone(r_obj* env, r_obj* parent);
 
+void r_env_coalesce(r_obj* env, r_obj* from);
+
 
 // Silently ignores bindings that are not defined in `env`.
 static inline

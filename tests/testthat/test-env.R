@@ -433,6 +433,57 @@ test_that("env_clone() increases refcounts (#621)", {
   expect_identical(c$x, c(NA, 2L))
 })
 
+test_that("env_coalesce() merges environments", {
+  x <- env(x = 1, y = 2)
+  y <- env(x = "a", z = "c")
+
+  env_coalesce(x, y)
+
+  expect_equal(x, env(x = 1, y = 2, z = "c"))
+  expect_equal(y, env(x = "a", z = "c"))
+})
+
+test_that("env_coalesce() handles fancy bindings", {
+  old_r <- getRversion() < "4.0.0"
+
+  x <- env(x = 1, y = 2)
+  y <- env(x = "a", z = "c")
+  env_bind_lazy(y, lazy = { signal("", "lazy"); "lazy-value" })
+  env_bind_active(y, active = function() { signal("", "active"); "active-value" })
+
+  env_coalesce(x, y)
+
+  if (!old_r) {
+    expect_condition(
+      expect_equal(x$lazy, "lazy-value"),
+      class = "lazy"
+    )
+  }
+  expect_condition(
+    expect_equal(x$active, "active-value"),
+    class = "active"
+  )
+
+  expect_equal(x$x, 1)
+  expect_equal(x$y, 2)
+  expect_equal(x$z, "c")
+  expect_equal(x$active, "active-value")
+  expect_equal(x$lazy, "lazy-value")
+
+  # `y$lazy` was forced at the same time as `x$lazy`
+  expect_false(env_binding_are_lazy(y, "lazy"))
+
+  expect_condition(
+    expect_equal(y$active, "active-value"),
+    class = "active"
+  )
+
+  expect_equal(y$x, "a")
+  expect_equal(y$z, "c")
+  expect_equal(y$active, "active-value")
+  expect_equal(y$lazy, "lazy-value")
+})
+
 test_that("can subset `rlang_envs` list", {
   envs <- new_environments(list(env(), env(), env()))
 
