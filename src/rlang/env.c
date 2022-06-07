@@ -130,7 +130,7 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
   // an active binding except through env2list. This makes it
   // impossible to preserve active bindings without forcing promises.
 #if R_VERSION < R_Version(4, 0, 0)
-  r_obj* from_list = KEEP(eval_with_x(env2list_call, env));
+  r_obj* from_list = KEEP(eval_with_x(env2list_call, from));
 #else
   KEEP(r_null);
 #endif
