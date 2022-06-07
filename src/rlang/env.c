@@ -1,10 +1,8 @@
 #include "rlang.h"
-
 #include "decl/env-decl.h"
 
-r_obj* eval_with_x(r_obj* call, r_obj* x);
-r_obj* eval_with_xy(r_obj* call, r_obj* x, r_obj* y);
-r_obj* eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z);
+
+r_obj* rlang_ns_env;
 
 
 r_obj* r_ns_env(const char* pkg) {
@@ -20,7 +18,7 @@ r_obj* ns_env_get(r_obj* env, const char* name) {
   r_obj* obj = KEEP(r_env_find(env, r_sym(name)));
 
   // Can be a promise to a lazyLoadDBfetch() call
-  if (r_typeof(obj) == PROMSXP) {
+  if (r_typeof(obj) == R_TYPE_promise) {
     obj = r_eval(obj, r_envs.empty);
   }
   if (obj != r_syms.unbound) {
@@ -37,16 +35,10 @@ r_obj* r_base_ns_get(const char* name) {
 }
 
 
-r_obj* rlang_ns_env = NULL;
-
 r_obj* rlang_ns_get(const char* name) {
   return ns_env_get(rlang_ns_env, name);
 }
 
-
-static r_obj* new_env_call = NULL;
-static r_obj* new_env__parent_node = NULL;
-static r_obj* new_env__size_node = NULL;
 
 r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
   parent = parent ? parent : r_envs.empty;
@@ -64,16 +56,11 @@ r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
 }
 
 
-static r_obj* env2list_call = NULL;
-static r_obj* list2env_call = NULL;
-
-r_obj* r_env_as_list_compat(r_obj* env, r_obj* out);
-
 r_obj* r_env_as_list(r_obj* env) {
   r_obj* out = KEEP(eval_with_x(env2list_call, env));
 
 #if R_VERSION < R_Version(4, 0, 0)
-  out = r_env_as_list_compat(env, out);
+  out = env_as_list_compat(env, out);
 #endif
 
   FREE(1);
@@ -83,11 +70,12 @@ r_obj* r_env_as_list(r_obj* env) {
 // On R < 4.0, the active binding function is returned instead of
 // its value. We invoke the active bindings here to get consistent
 // behaviour in all supported R versions.
-r_obj* r_env_as_list_compat(r_obj* env, r_obj* out) {
+#if R_VERSION < R_Version(4, 0, 0)
+r_obj* env_as_list_compat(r_obj* env, r_obj* out) {
   r_obj* nms = KEEP(r_env_names(env));
   r_obj* types = KEEP(r_env_binding_types(env, nms));
 
-  if (types == R_NilValue) {
+  if (types == r_null) {
     FREE(2);
     return out;
   }
@@ -114,6 +102,7 @@ r_obj* r_env_as_list_compat(r_obj* env, r_obj* out) {
   FREE(2);
   return out;
 }
+#endif
 
 r_obj* r_env_clone(r_obj* env, r_obj* parent) {
   if (parent == NULL) {
@@ -129,26 +118,24 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent) {
   }
 
   r_ssize n = r_length(nms);
+  r_obj* out = KEEP(r_alloc_environment(n, parent));
 
-#if R_VERSION < R_Version(4, 0, 0)
   // In older R versions there is no way of accessing the function of
   // an active binding except through env2list. This makes it
   // impossible to preserve active bindings without forcing promises.
-
+#if R_VERSION < R_Version(4, 0, 0)
   r_obj* env_list = KEEP(eval_with_x(env2list_call, env));
-  r_obj* out = KEEP(r_list_as_environment(env_list, parent));
 #else
-  r_obj* out = KEEP(r_alloc_environment(n, parent));
   KEEP(r_null);
 #endif
 
   r_obj* const * v_nms = r_chr_cbegin(nms);
   enum r_env_binding_type* v_types = (enum r_env_binding_type*) r_int_begin(types);
 
-  for (r_ssize i = 0; i < n; ++i, ++v_nms, ++v_types) {
-    r_obj* sym = r_str_as_symbol(*v_nms);
+  for (r_ssize i = 0; i < n; ++i) {
+    r_obj* sym = r_str_as_symbol(v_nms[i]);
 
-    switch (*v_types) {
+    switch (v_types[i]) {
     case R_ENV_BINDING_TYPE_value:
     case R_ENV_BINDING_TYPE_promise:
       r_env_poke(out, sym, r_env_find(env, sym));
@@ -158,7 +145,7 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent) {
 #if R_VERSION < R_Version(4, 0, 0)
       r_ssize fn_idx = r_chr_detect_index(nms, r_sym_c_string(sym));
       if (fn_idx < 0) {
-        r_abort("Internal error: Can't find active binding in temporary list");
+        r_stop_internal("Can't find active binding in temporary list.");
       }
       r_obj* fn = r_list_get(env_list, fn_idx);
 #else
@@ -185,9 +172,6 @@ r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
   parent = parent ? parent : r_envs.empty;
   return eval_with_xy(list2env_call, x, parent);
 }
-
-static r_obj* poke_lazy_call = NULL;
-static r_obj* poke_lazy_value_node = NULL;
 
 void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
   KEEP(expr);
@@ -276,8 +260,6 @@ void r_init_rlang_ns_env() {
   rlang_ns_env = r_ns_env("rlang");
 }
 
-r_obj* r_methods_ns_env = NULL;
-
 void r_init_library_env() {
   new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_envs.base);
   r_preserve(new_env_call);
@@ -305,9 +287,32 @@ void r_init_library_env() {
   r_methods_ns_env = r_parse_eval("asNamespace('methods')", r_envs.base);
 }
 
+r_obj* rlang_ns_env = NULL;
+r_obj* r_methods_ns_env = NULL;
+
+static
+r_obj* new_env_call = NULL;
+
+static
+r_obj* new_env__parent_node = NULL;
+
+static
+r_obj* new_env__size_node = NULL;
 
 static
 r_obj* exists_call = NULL;
 
 static
 r_obj* remove_call = NULL;
+
+static
+r_obj* poke_lazy_call = NULL;
+
+static
+r_obj* poke_lazy_value_node = NULL;
+
+static
+r_obj* env2list_call = NULL;
+
+static
+r_obj* list2env_call = NULL;
