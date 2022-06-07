@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The `transpose()` compat is now more consistent with purrr when
+  inner names are not congruent (#1346).
+
 * New `reset_warning_verbosity()` and `reset_message_verbosity()`
   functions. These reset the verbosity of messages signalled with
   `warn()` and `inform()` with the `.frequency` argument. This is

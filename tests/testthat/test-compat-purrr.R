@@ -54,3 +54,23 @@ test_that("reduce/accumulate work", {
 test_that("transpose() handles empty list", {
   expect_equal(transpose(list()), list())
 })
+
+test_that("transpose() handles incongruent names consistently with purrr (#1346)", {
+  x <- list(
+    needles = list(a = 1, b = 2), 
+    condition = c("<", ">")
+  )
+  expect_equal(transpose(x), list(
+    a = list(needles = 1, condition = "<"),
+    b = list(needles = 2, condition = ">")
+  ))
+
+  x <- list(
+    needles = list(a = 1, b = 2),
+    condition = c(c = "<", d = ">")
+  )
+  expect_equal(transpose(x), list(
+    a = list(needles = 1, condition = NULL),
+    b = list(needles = 2, condition = NULL)
+  ))
+})
