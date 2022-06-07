@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* New `reset_warning_verbosity()` and `reset_message_verbosity()`
+  functions. These reset the verbosity of messages signalled with
+  `warn()` and `inform()` with the `.frequency` argument. This is
+  useful for testing verbosity in your package (#1414).
+
 * `check_dots_empty()` now allows trailing missing arguments (#1390).
 
 * Calls to local functions that are not accessible through `::` or

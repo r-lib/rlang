@@ -355,6 +355,32 @@ peek_verbosity <- function(opt, call = caller_env()) {
   )
 }
 
+#' @rdname abort
+#' @param id The identifying string of the condition that was supplied
+#'   as `.frequency_id` to `warn()` or `inform()`.
+#' @export
+reset_warning_verbosity <- function(id) {
+  reset_verbosity(id, "warning")
+}
+#' @rdname abort
+#' @export
+reset_message_verbosity <- function(id) {
+  reset_verbosity(id, "message")
+}
+reset_verbosity <- function(id, type = c("message", "warning")) {
+  check_string(id)
+  type <- arg_match(type)
+
+  env <- switch(
+    type,
+    message = message_freq_env,
+    warning = warning_freq_env
+  )
+  env[[id]] <- NULL
+
+  invisible(NULL)
+}
+
 message_freq <- function(message, frequency, type) {
   if (is_string(frequency, "always")) {
     return(chr())

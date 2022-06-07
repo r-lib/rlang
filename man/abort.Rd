@@ -5,6 +5,8 @@
 \alias{warn}
 \alias{inform}
 \alias{signal}
+\alias{reset_warning_verbosity}
+\alias{reset_message_verbosity}
 \title{Signal an error, warning, or message}
 \usage{
 abort(
@@ -49,6 +51,10 @@ inform(
 )
 
 signal(message, class, ..., .subclass = deprecated())
+
+reset_warning_verbosity(id)
+
+reset_message_verbosity(id)
 }
 \arguments{
 \item{message}{The message to display, formatted as a \strong{bulleted
@@ -150,6 +156,9 @@ time. If \code{"regularly"}, it is displayed once every 8 hours. If
 message. This is used when \code{.frequency} is supplied to recognise
 recurring conditions. This argument must be supplied if
 \code{.frequency} is not set to \code{"always"}.}
+
+\item{id}{The identifying string of the condition that was supplied
+as \code{.frequency_id} to \code{warn()} or \code{inform()}.}
 }
 \description{
 These functions are equivalent to base functions \code{\link[base:stop]{base::stop()}},

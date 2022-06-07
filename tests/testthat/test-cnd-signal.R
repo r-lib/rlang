@@ -299,6 +299,23 @@ test_that("cnd_signal() sets call", {
   expect_equal(cnd$call, quote(f()))
 })
 
+test_that("can reset verbosity", {
+  on.exit(reset_warning_verbosity("test_reset_verbosity"))
+
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "test_reset_verbosity")
+  )
+  expect_no_warning(
+    warn("foo", .frequency = "once", .frequency_id = "test_reset_verbosity")
+  )
+
+  reset_warning_verbosity("test_reset_verbosity")
+
+  expect_warning(
+    warn("foo", .frequency = "once", .frequency_id = "test_reset_verbosity")
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
