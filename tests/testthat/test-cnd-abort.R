@@ -363,9 +363,12 @@ test_that("NSE doesn't interfere with error call contexts", {
 })
 
 test_that("error_call() requires a symbol in function position", {
-  expect_null(format_error_call(quote(foo$bar())))
   expect_null(format_error_call(quote((function() NULL)())))
   expect_null(format_error_call(call2(function() NULL)))
+})
+
+test_that("error_call() preserves index calls", {
+  expect_equal(format_error_call(quote(foo$bar(...))), "`foo$bar()`")
 })
 
 test_that("error_call() preserves `if` (r-lib/testthat#1429)", {

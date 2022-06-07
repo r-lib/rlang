@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Error messages now mention indexed calls like `foo$bar()`.
+
 * New `env_coalesce()` function to copy bindings from one environment
   to another. Unlike approaches based on looping with `[[<-`,
   `env_coalesce()` preserves active and lazy bindings.

@@ -1125,7 +1125,11 @@ error_call_as_string <- function(call) {
   }
 
   if (!is_call_simple(call)) {
-    return(NULL)
+    if (is_expression(call) && is_call_index(call)) {
+      return(as_label(call[1]))
+    } else {
+      return(NULL)
+    }
   }
 
   # Remove namespace for now to simplify conversion

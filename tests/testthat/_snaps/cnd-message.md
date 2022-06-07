@@ -101,7 +101,7 @@
     Code
       writeLines(cnd_message_format_prefixed(err2))
     Output
-      Error:
+      Error in `foo$bar()`:
       ! msg
     Code
       writeLines(cnd_message_format_prefixed(err3))
