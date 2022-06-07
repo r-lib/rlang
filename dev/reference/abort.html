@@ -191,7 +191,11 @@ customised, see <a href="topic-condition-customisation.html">Customising conditi
   .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="fu">signal</span><span class="op">(</span><span class="va">message</span>, <span class="va">class</span>, <span class="va">...</span>, .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">signal</span><span class="op">(</span><span class="va">message</span>, <span class="va">class</span>, <span class="va">...</span>, .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu">reset_warning_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span>
+
+<span class="fu">reset_message_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -286,6 +290,9 @@ time. If <code>"regularly"</code>, it is displayed once every 8 hours. If
 message. This is used when <code>.frequency</code> is supplied to recognise
 recurring conditions. This argument must be supplied if
 <code>.frequency</code> is not set to <code>"always"</code>.</p></dd>
+<dt>id</dt>
+<dd><p>The identifying string of the condition that was supplied
+as <code>.frequency_id</code> to <code>warn()</code> or <code>inform()</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
