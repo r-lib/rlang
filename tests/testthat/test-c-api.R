@@ -1294,3 +1294,15 @@ local({
     })
   }
 })
+
+test_that("r_stop_internal() mentions expected namespace", {
+  fn <- function() {
+    .Call(get("ffi_test_stop_internal", envir = asNamespace("rlang")), "Message.")
+  }
+
+  environment(fn) <- ns_env("base")
+  expect_error(fn(), "in the base package")
+
+  environment(fn) <- ns_env("utils")
+  expect_error(fn(), "in the utils package")
+})

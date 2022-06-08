@@ -221,7 +221,7 @@ stop_internal <- function(message, ..., call = caller_env(2)) {
   abort(message, ..., call = call, .internal = TRUE)
 }
 
-stop_internal_c_lib <- function(file, line, call, message) {
+stop_internal_c_lib <- function(file, line, call, message, frame) {
   if (nzchar(file)) {
     message <- c(
       message,
@@ -241,7 +241,7 @@ stop_internal_c_lib <- function(file, line, call, message) {
     )
   }
 
-  abort(message, call = call, .internal = TRUE)
+  abort(message, call = call, .internal = TRUE, .frame = frame)
 }
 
 with_srcref <- function(src, env = caller_env(), file = NULL) {

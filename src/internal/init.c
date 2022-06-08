@@ -214,6 +214,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_test_parse_eval",              (DL_FUNC) &ffi_test_parse_eval, 2},
   {"ffi_test_r_on_exit",               (DL_FUNC) &r_on_exit, 2},
   {"ffi_test_r_warn",                  (DL_FUNC) &ffi_test_r_warn, 1},
+  {"ffi_test_stop_internal",           (DL_FUNC) &ffi_test_stop_internal, 1},
   {"ffi_test_sys_call",                (DL_FUNC) &ffi_test_sys_call, 1},
   {"ffi_test_sys_frame",               (DL_FUNC) &ffi_test_sys_frame, 1},
   {"ffi_true_length",                  (DL_FUNC) &ffi_true_length, 1},

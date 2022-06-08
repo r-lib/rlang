@@ -115,7 +115,8 @@ r_obj* stop_internal_cb(void* payload) {
     { r_sym("file"), KEEP(r_chr(data->file)) },
     { r_sym("line"), KEEP(r_int(data->line)) },
     { r_sym("call"), data->call },
-    { r_sym("message"), KEEP(r_chr(data->msg)) }
+    { r_sym("message"), KEEP(r_chr(data->msg)) },
+    { r_sym("frame"), KEEP(r_peek_frame()) }
   };
 
   r_exec_mask_n(r_null, r_sym("stop_internal_c_lib"),
@@ -138,6 +139,11 @@ void without_winch(void* payload) {
 
   r_poke_option("rlang_backtrace_on_error", data->old_on_error);
   r_poke_option("rlang_trace_use_winch", data->old_use_winch);
+}
+
+r_obj* ffi_test_stop_internal() {
+  r_stop_internal("foo");
+  return r_null;
 }
 
 
