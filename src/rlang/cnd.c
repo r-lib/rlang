@@ -55,16 +55,6 @@ void r_abort(const char* fmt, ...) {
 }
 
 r_no_return
-void (r_stop_c_internal)(const char* file,
-                         int line,
-                         const char* fn,
-                         const char* fmt, ...) {
-  char buf[BUFSIZE];
-  INTERP(buf, fmt, ...);
-  r_abort("TODO");
-}
-
-r_no_return
 void r_abort_n(const struct r_pair* args, int n) {
   r_exec_mask_n(r_null, r_syms.abort, args, n, r_peek_frame());
   r_stop_unreachable();
