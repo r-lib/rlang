@@ -972,6 +972,8 @@ trace_fns <- function(fns, max_level = Inf) {
   }
 }
 
+utils::globalVariables(c("tracer", "exit"))
+
 new_tracers <- function(max_level) {
   trace_level <- 0
 
