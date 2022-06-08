@@ -136,9 +136,9 @@ their_function()
 #> ! Can't do this
 #> ---
 #> Backtrace:
-#>  1. rlang their_function()
-#>  2. rlang error_helper1()
-#>  3. rlang error_helper2(call = call)
+#>  1. rlang (local) their_function()
+#>  2. rlang (local) error_helper1()
+#>  3. rlang (local) error_helper2(call = call)
 #> Run `rlang::last_trace()` to see the full context.
 }\if{html}{\out{</div>}}
 
@@ -156,7 +156,7 @@ their_function()
 #> ! Can't do this
 #> ---
 #> Backtrace:
-#>  1. rlang their_function()
+#>  1. rlang (local) their_function()
 #> Run `rlang::last_trace()` to see the full context.
 }\if{html}{\out{</div>}}
 }

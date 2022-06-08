@@ -164,7 +164,7 @@ When a low-level error is overtaken, it is good practice to store it in the high
 #> ! `expr` must be a vector, not an environment.
 #> ---
 #> Backtrace:
-#>  1. rlang my_verb(env())
+#>  1. rlang (local) my_verb(env())
 }\if{html}{\out{</div>}}
 }
 
