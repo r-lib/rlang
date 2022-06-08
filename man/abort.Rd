@@ -21,7 +21,8 @@ abort(
   use_cli_format = NULL,
   .internal = FALSE,
   .file = NULL,
-  .frame = NULL,
+  .frame = caller_env(),
+  .trace_bottom = NULL,
   .subclass = deprecated()
 )
 
@@ -135,12 +136,16 @@ incompatible with \code{footer}.}
 message. The default depends on the context, see the \code{stdout} vs
 \code{stderr} section.}
 
-\item{.frame}{The throwing context. Defaults to \code{call} if it is an
-environment, \code{\link[=caller_env]{caller_env()}} otherwise. This is used in the
-display of simplified backtraces as the last relevant call frame
-to show. This way, the irrelevant parts of backtraces
-corresponding to condition handling (\code{\link[=tryCatch]{tryCatch()}}, \code{\link[=try_fetch]{try_fetch()}},
-\code{abort()}, etc.) are hidden by default.}
+\item{.frame}{The throwing context. Used as default for
+\code{.trace_bottom}, and to determine the internal package to mention
+in internal errors when \code{.internal} is \code{TRUE}.}
+
+\item{.trace_bottom}{Used in the display of simplified backtraces
+as the last relevant call frame to show. This way, the irrelevant
+parts of backtraces corresponding to condition handling
+(\code{\link[=tryCatch]{tryCatch()}}, \code{\link[=try_fetch]{try_fetch()}}, \code{abort()}, etc.) are hidden by
+default. Defaults to \code{call} if it is an environment, or \code{.frame}
+otherwise. Without effect if \code{trace} is supplied.}
 
 \item{.subclass}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This argument
 was renamed to \code{class} in rlang 0.4.2 for consistency with our

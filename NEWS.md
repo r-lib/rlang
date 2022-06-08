@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `abort()` gains a `.trace_bottom` argument to disambiguate from
+  other `.frame`. This allows `cli::cli_abort()` to wrap `abort()` in
+  such a way that `.internal` mentions the correct package to report
+  the error in (#1386).
+
 * The `transpose()` compat is now more consistent with purrr when
   inner names are not congruent (#1346).
 

@@ -91,12 +91,15 @@
 #' @param .file A connection or a string specifying where to print the
 #'   message. The default depends on the context, see the `stdout` vs
 #'   `stderr` section.
-#' @param .frame The throwing context. Defaults to `call` if it is an
-#'   environment, [caller_env()] otherwise. This is used in the
-#'   display of simplified backtraces as the last relevant call frame
-#'   to show. This way, the irrelevant parts of backtraces
-#'   corresponding to condition handling ([tryCatch()], [try_fetch()],
-#'   `abort()`, etc.) are hidden by default.
+#' @param .frame The throwing context. Used as default for
+#'   `.trace_bottom`, and to determine the internal package to mention
+#'   in internal errors when `.internal` is `TRUE`.
+#' @param .trace_bottom Used in the display of simplified backtraces
+#'   as the last relevant call frame to show. This way, the irrelevant
+#'   parts of backtraces corresponding to condition handling
+#'   ([tryCatch()], [try_fetch()], `abort()`, etc.) are hidden by
+#'   default. Defaults to `call` if it is an environment, or `.frame`
+#'   otherwise. Without effect if `trace` is supplied.
 #' @param .subclass `r lifecycle::badge("deprecated")` This argument
 #'   was renamed to `class` in rlang 0.4.2 for consistency with our
 #'   conventions for class constructors documented in
@@ -247,10 +250,12 @@ abort <- function(message = NULL,
                   use_cli_format = NULL,
                   .internal = FALSE,
                   .file = NULL,
-                  .frame = NULL,
+                  .frame = caller_env(),
+                  .trace_bottom = NULL,
                   .subclass = deprecated()) {
+  check_environment(.frame)
+
   .__signal_frame__. <- TRUE
-  caller <- caller_env()
 
   rethrowing <- !is_null(parent)
   if (is_na(parent)) {
@@ -267,22 +272,22 @@ abort <- function(message = NULL,
   }
 
   # `.frame` is used to soft-truncate the backtrace
-  if (is_null(.frame)) {
+  if (is_null(.trace_bottom)) {
     if (rethrowing) {
-      .frame <- caller
+      .trace_bottom <- .frame
     } else {
       # Truncate backtrace up to `call` if it is a frame
       if (is_environment(maybe_missing(call))) {
-        .frame <- call
+        .trace_bottom <- call
       } else {
-        .frame <- caller
+        .trace_bottom <- .frame
       }
     }
   } else {
-    check_environment(.frame)
+    check_environment(.trace_bottom)
   }
 
-  info <- abort_context(.frame, rethrowing, maybe_missing(call))
+  info <- abort_context(.trace_bottom, rethrowing, maybe_missing(call))
 
   if (is_missing(call)) {
     if (is_null(info$from_handler)) {
@@ -301,7 +306,7 @@ abort <- function(message = NULL,
     message,
     body,
     footer,
-    caller,
+    .frame,
     use_cli_format = use_cli_format,
     internal = .internal
   )
