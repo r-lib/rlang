@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `list2(!!!x)` is now faster when `x` is a list. It is now returned
+  as is instead of being duplicated into a new list.
+
 * `abort()` gains a `.trace_bottom` argument to disambiguate from
   other `.frame`. This allows `cli::cli_abort()` to wrap `abort()` in
   such a way that `.internal` mentions the correct package to report
