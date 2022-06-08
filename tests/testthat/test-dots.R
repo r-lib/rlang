@@ -337,3 +337,15 @@ test_that("`.homonyms` error is thrown", {
   f <- function() dots_list(a = 1, a = 2, .homonyms = "error")
   expect_snapshot((expect_error(f())))
 })
+
+test_that("`list2(!!!x)` returns `x` without duplication", {
+  expect_snapshot({
+    x <- as.list(1:100)
+    with_memory_prof(out <- list2(!!!x))
+    expect_equal(out, as.list(x))
+
+    x <- 1:100 + 0L
+    with_memory_prof(out <- list2(!!!x))
+    expect_equal(out, as.list(x))
+  })
+})

@@ -52,3 +52,19 @@
       ! Arguments in `...` must have unique names.
       x Multiple arguments named `a` at positions 1 and 2.
 
+# `list2(!!!x)` returns `x` without duplication
+
+    Code
+      x <- as.list(1:100)
+      with_memory_prof(out <- list2(!!!x))
+    Output
+      [1] 0B
+    Code
+      expect_equal(out, as.list(x))
+      x <- 1:100 + 0L
+      with_memory_prof(out <- list2(!!!x))
+    Output
+      [1] 848B
+    Code
+      expect_equal(out, as.list(x))
+
