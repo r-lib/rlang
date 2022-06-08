@@ -22,7 +22,7 @@ stack."><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><me
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -211,19 +211,19 @@ support.</p></div>
 <span class="r-in"><span class="co"># With eval_bare(), we do get the expected environment:</span></span>
 <span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="va">eval_bare</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returned_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556f7b9cb940&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56368e1cda80&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $actual_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556f7b9cb940&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56368e1cda80&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># But that's not the case with base::eval():</span></span>
 <span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returned_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556f7b009330&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56368e156f58&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $actual_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556f7b009838&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x56368e156a50&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
