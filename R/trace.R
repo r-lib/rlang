@@ -400,16 +400,21 @@ format.rlang_trace <- function(x,
                                simplify = c("none", "collapse", "branch"),
                                max_frames = NULL,
                                dir = getwd(),
-                               srcrefs = NULL) {
+                               srcrefs = NULL,
+                               drop = FALSE) {
   switch(
     arg_match(simplify),
-    none = trace_format_full(x, max_frames, dir, srcrefs),
+    none = trace_format(x, max_frames, dir, srcrefs, drop = drop),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
   )
 }
 
-trace_format <- function(trace, max_frames, dir, srcrefs) {
+trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
+  if (is_false(drop) && length(trace$visible)) {
+    trace$visible <- TRUE
+  }
+
   if (!is_null(max_frames)) {
     msg <- "`max_frames` is currently only supported with `simplify = \"branch\"`"
     stop(msg, call. = FALSE)
@@ -421,16 +426,11 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
   cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs))
 }
 
-trace_format_full <- function(trace, max_frames, dir, srcrefs) {
-  if (length(trace$visible)) {
-    trace$visible <- TRUE
-  }
-  trace_format(trace, max_frames, dir, srcrefs)
-}
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
-  trace_format(trace, max_frames, dir, srcrefs)
+  trace_format(trace, max_frames, dir, srcrefs, drop = TRUE)
 }
+
 trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_branch(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)

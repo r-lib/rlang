@@ -378,19 +378,42 @@ is_rlang_error <- function(x) {
 format.rlang_error <- function(x,
                                ...,
                                backtrace = TRUE,
-                               simplify = c("branch", "collapse", "none")) {
+                               simplify = c("branch", "collapse", "none"),
+                               drop = FALSE) {
   # Allow overwriting default display via condition field
-  simplify <- x$rlang$internal$print_simplify %||% simplify
-  simplify <- arg_match(simplify)
+  simplify <- x$rlang$internal$trace_simplify %||% simplify
+  drop <- x$rlang$internal$trace_drop %||% drop
 
-  out <- cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
+  simplify <- arg_match(simplify)
+  out <- cnd_format(
+    x,
+    ...,
+    backtrace = backtrace,
+    simplify = simplify,
+    drop = drop
+  )
 
   # Recommend printing the full backtrace if called from `last_error()`
   from_last_error <- is_true(x$rlang$internal$from_last_error)
-  if (from_last_error && simplify == "branch" && !is_null(x$trace)) {
-    last_trace <- style_rlang_run("last_trace()")
-    reminder <- silver(paste0("Run `", last_trace, "` to see the full context."))
-    out <- paste_line(out, reminder)
+  if (from_last_error && !is_null(x$trace)) {
+    if (use_tree_display() && drop && !all(x$trace$visible)) {
+      n_hidden <- sum(!x$trace$visible)
+      hidden <- ngettext(
+        n_hidden,
+        "%d hidden frame",
+        "%d hidden frames"
+      )
+      hidden <- sprintf(hidden, n_hidden)
+
+      last_trace <- style_rlang_run("last_trace(drop = FALSE)")
+      reminder <- silver(sprintf("Run %s to see %s.", last_trace, hidden))
+
+      out <- paste_line(out, reminder)
+    } else if (simplify == "branch") {
+      last_trace <- style_rlang_run("last_trace()")
+      reminder <- silver(paste0("Run `", last_trace, "` to see the full context."))
+      out <- paste_line(out, reminder)
+    }
   }
 
   out
@@ -435,7 +458,8 @@ cnd_format <- function(x,
                        backtrace = TRUE,
                        simplify = c("branch", "collapse", "none"),
                        prefix = TRUE,
-                       alert = NULL) {
+                       alert = NULL,
+                       drop = FALSE) {
   simplify <- arg_match(simplify)
   alert <- alert %||% is_error(x)
 
@@ -479,7 +503,7 @@ cnd_format <- function(x,
   }
 
   if (can_paste_trace(backtrace, trace)) {
-    out <- paste_trace(out, trace, simplify, ...)
+    out <- paste_trace(out, trace, simplify, ..., drop = drop)
   }
 
   out
