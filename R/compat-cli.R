@@ -1,5 +1,5 @@
 # nocov start - compat-cli.R
-# Latest version: https://github.com/r-lib/rlang/blob/master/R/compat-cli.R
+# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-cli.R
 
 # Provides a minimal shim API to format message elements consistently
 # with cli in packages that can't depend on it. If available, cli is

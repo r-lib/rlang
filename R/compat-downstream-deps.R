@@ -1,5 +1,5 @@
 # nocov start - compat-downstream-deps.R
-# Latest version: https://github.com/r-lib/rlang/blob/master/R/compat-downstream-deps.R
+# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-downstream-deps.R
 
 # No dependencies but uses rlang and pak if available. In interactive
 # sessions the user is prompted to update outdated packages. If they
