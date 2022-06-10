@@ -423,7 +423,7 @@ trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
     return(trace_root())
   }
 
-  cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs))
+  cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs, drop = drop))
 }
 
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
@@ -775,7 +775,7 @@ trace_simplify_collapse <- function(trace) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
+trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
   if (is_null(trace$collapsed)) {
     trace$collapsed <- vec_recycle(0L, trace_length(trace))
   }
@@ -817,6 +817,12 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   tree <- vec_slice(tree, tree$visible)
   tree$children <- map(tree$children, intersect, tree$id)
 
+  if (drop) {
+    tree$node_type <- node_type(lengths(tree$children), tree$children)
+  } else {
+    tree$node_type <- rep_len("main", nrow(tree))
+  }
+
   if (has_crayon()) {
     # Detect runs of namespaces/global
     ns <- tree$namespace
@@ -838,6 +844,28 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   }
 
   tree
+}
+
+node_type <- function(ns, children) {
+  type <- rep_along(ns, "main")
+
+  for (i in seq_along(ns)) {
+    n <- ns[[i]]
+    if (is_string(type[[i]], "main")) {
+      if (n >= 2) {
+        val <- if (i == 1) "main_sibling" else "sibling"
+        idx <- as.numeric(children[[i]][-n]) + 1
+        type[idx] <- val
+      }
+    } else {
+      if (n >= 1) {
+        idx <- as.numeric(children[[i]][-1]) + 1
+        type[idx] <- "sibling"
+      }
+    }
+  }
+
+  type
 }
 
 # FIXME: Add something like call_deparse_line()
