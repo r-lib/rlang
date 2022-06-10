@@ -75,7 +75,7 @@ cli_tree <- function(data,
 
     if (marked_deemph) {
       parts <- strsplit(line, "<DEEMPH>")[[1]]
-      line <- paste0(parts[[1]], silver(parts[[2]]))
+      line <- paste0(parts[[1]], style_dim_soft(parts[[2]]))
     }
 
     res <<- c(res, line)

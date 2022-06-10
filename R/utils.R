@@ -198,6 +198,14 @@ arrow_right <- function() {
   if (has_cli) cli::symbol$arrow_right else ">"
 }
 
+style_dim_soft <- function(x) {
+  if (cli::num_ansi_colors() >= 256) {
+    crayon::make_style(grDevices::grey(0.6), colors =  256)(x)
+  } else {
+    silver(x)
+  }
+}
+
 strip_trailing_newline <- function(x) {
   n <- nchar(x)
   if (substr(x, n, n) == "\n") {
