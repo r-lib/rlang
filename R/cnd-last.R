@@ -47,6 +47,9 @@ last_trace <- function(drop = NULL) {
 }
 
 use_tree_display <- function() {
+  if (is_true(peek_option("rlang:::trace_display_tree_override"))) {
+    return(TRUE)
+  }
   is_true(peek_option("rlang:::trace_display_tree")) && !is_testing()
 }
 

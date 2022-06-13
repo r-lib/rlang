@@ -122,6 +122,36 @@
        18.           \-rlang (local) h()
        19.             \-rlang::abort("", "foobar", foobar_msg = "Low-level message")
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `c()`:
+      ! High-level message
+      Caused by error in `h()`:
+      ! Low-level message
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(a())
+        2. | <<\-rlang::catch_cnd(expr, "error")>>
+        3. |   <<+-rlang::eval_bare(...)>>
+        4. |   <<+-base::tryCatch(...)>>
+        5. |   | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        6. |   |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+        7. |   |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        8. |   <<\-base::force(expr)>>
+        9. \-rlang (local) a()
+       10.   \-rlang (local) b()
+       11.     \-rlang (local) c()
+       12.       +<<-base::tryCatch(...)>>
+       13.       | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+       14.       |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+       15.       |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+       16.       \-rlang (local) f()
+       17.         \-rlang (local) g()
+       18.           \-rlang (local) h()
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -313,6 +343,35 @@
        16.         \-rlang (local) g()
        17.           \-rlang (local) h()
        18.             \-rlang::abort("foo")
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `baz()`:
+      ! bar
+      Caused by error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-rlang::catch_cnd(foo(), "error")
+        2. | <<+-rlang::eval_bare(...)>>
+        3. | <<+-base::tryCatch(...)>>
+        4. | | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        5. | |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+        6. | |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        7. | <<\-base::force(expr)>>
+        8. \-rlang (local) foo()
+        9.   \-rlang (local) bar()
+       10.     \-rlang (local) baz()
+       11.       +<<-base::tryCatch(f(), error = function(err) abort("bar", parent = err))>>
+       12.       | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+       13.       |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+       14.       |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+       15.       \-rlang (local) f()
+       16.         \-rlang (local) g()
+       17.           \-rlang (local) h()
     Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)

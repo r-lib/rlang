@@ -43,6 +43,26 @@
        17.         | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
        18.         \-rlang::trace_back(e, bottom = 0)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+           x
+        1. \-rlang (local) f()
+        2.   \-rlang (local) g() at test-trace.R:49:20
+        3.     +<<-base::tryCatch(h(), foo = identity, bar = identity) at test-trace.R:50:20>>
+        4.     | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        5.     |   <<+-base (local) tryCatchOne(...)>>
+        6.     |   | <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        7.     |   <<\-base (local) tryCatchList(expr, names[-nh], parentenv, handlers[-nh])>>
+        8.     |     <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+        9.     |       <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+       10.     \-rlang (local) h()
+       11.       +<<-base::tryCatch(i(), baz = identity) at test-trace.R:51:20>>
+       12.       | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+       13.       |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+       14.       |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+       15.       \-rlang (local) i()
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -85,6 +105,27 @@
        13.     |       \-base (local) doTryCatch(return(expr), name, parentenv, handler)
        14.     +-base::eval(quote(h()))
        15.     | \-base::eval(quote(h()))
+       16.     \-rlang (local) h()
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+           x
+        1. \-rlang (local) f()
+        2.   +<<-base::eval(quote(eval(quote(g())))) at test-trace.R:61:7>>
+        3.   | <<\-base::eval(quote(eval(quote(g()))))>>
+        4.   +<<-base::eval(quote(g()))>>
+        5.   | <<\-base::eval(quote(g()))>>
+        6.   \-rlang (local) g()
+        7.     +<<-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) at test-trace.R:62:7>>
+        8.     | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        9.     |   <<+-base (local) tryCatchOne(...)>>
+       10.     |   | <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+       11.     |   <<\-base (local) tryCatchList(expr, names[-nh], parentenv, handlers[-nh])>>
+       12.     |     <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+       13.     |       <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+       14.     +<<-base::eval(quote(h()))>>
+       15.     | <<\-base::eval(quote(h()))>>
        16.     \-rlang (local) h()
     Code
       # Collapsed
@@ -135,6 +176,14 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-rlang::eval_tidy(quo(f()))
+       2. \-rlang (local) f()
+       3.   \-rlang (local) g()
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-rlang::eval_tidy(quo(f()))
@@ -227,6 +276,15 @@
        6.     | \-base::eval(quote(trace_back(e, bottom = 0)))
        7.     \-rlang::trace_back(e, bottom = 0)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-rlang (local) f()
+       2.   +<<-base::eval(quote(g()))>>
+       3.   | <<\-base::eval(quote(g()))>>
+       4.   \-rlang (local) g()
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -256,6 +314,15 @@
        6.     | \-base::evalq(trace_back(e, bottom = 0))
        7.     \-rlang::trace_back(e, bottom = 0)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-rlang (local) f()
+       2.   +<<-base::evalq(g())>>
+       3.   | <<\-base::evalq(g())>>
+       4.   \-rlang (local) g()
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -280,6 +347,13 @@
        1. +-NULL %>% f() %>% g(1, 2) %>% h(3, ., 4)
        2. \-rlang (local) h(3, ., 4)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-NULL %>% f() %>% g(1, 2) %>% h(3, ., 4)
+       2. \-rlang (local) h(3, ., 4)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -298,6 +372,13 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
+       2. \-rlang (local) h(3, ., list(.))
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
@@ -327,6 +408,14 @@
        2. +-g(NULL %>% f()) %>% h()
        3. \-rlang (local) h(.)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-rlang (local) f(g(NULL %>% f()) %>% h())
+       2. +-g(NULL %>% f()) %>% h()
+       3. \-rlang (local) h(.)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -346,6 +435,15 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-NA %>% F() %>% G() %>% H()
+       2. \-rlang (local) H(.)
+       3.   \-rlang (local) f()
+       4.     \-rlang (local) h()
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-NA %>% F() %>% G() %>% H()
@@ -420,6 +518,15 @@
        3. +-rlang (local) F(.)
        4. \-rlang (local) T(.)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-NA %>% F() %>% T() %>% F() %>% F()
+       2. +-rlang (local) F(.)
+       3. +-rlang (local) F(.)
+       4. \-rlang (local) T(.)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -440,6 +547,14 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-T(NA) %>% F()
+       2. +-rlang (local) F(.)
+       3. \-rlang (local) T(NA)
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-T(NA) %>% F()
@@ -472,6 +587,15 @@
        3. +-rlang (local) F(.)
        4. \-rlang (local) T(.)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-F(NA) %>% F() %>% T() %>% F() %>% F()
+       2. +-rlang (local) F(.)
+       3. +-rlang (local) F(.)
+       4. \-rlang (local) T(.)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -492,6 +616,13 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-NA %>% T()
+       2. \-rlang (local) T(.)
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-NA %>% T()
@@ -520,6 +651,13 @@
        1. +-NA %>% F() %>% T()
        2. \-rlang (local) T(.)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-NA %>% F() %>% T()
+       2. \-rlang (local) T(.)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -543,6 +681,13 @@
        1. +-F(NA) %>% T()
        2. \-rlang (local) T(.)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-F(NA) %>% T()
+       2. \-rlang (local) T(.)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -561,6 +706,13 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-F(NA) %>% F() %>% T()
+       2. \-rlang (local) T(.)
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-F(NA) %>% F() %>% T()
@@ -590,6 +742,14 @@
        2. +-NA %>% T()
        3. \-rlang (local) T(.)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-rlang (local) F(NA %>% T())
+       2. +-NA %>% T()
+       3. \-rlang (local) T(.)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -609,6 +769,14 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-NA %>% C()
+       2. \-rlang (local) C(.)
+       3.   \-rlang (local) f()
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-NA %>% C()
@@ -642,6 +810,15 @@
        3. \-rlang (local) C(.)
        4.   \-rlang (local) f()
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-rlang (local) F(NA %>% C())
+       2. +-NA %>% C()
+       3. \-rlang (local) C(.)
+       4.   \-rlang (local) f()
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -663,6 +840,13 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-rlang (local) gen()
+       2. \-rlang (local) gen.default()
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-rlang (local) gen()
@@ -690,6 +874,12 @@
           x
        1. \-(function() {...
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-(function() {...
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -706,6 +896,14 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-base::eval()
+       2. \-base::.handleSimpleError(...)
+       3.   \-rlang (local) h(simpleError(msg, call))
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. +-base::eval()
@@ -736,6 +934,12 @@
           x
        1. \-foo
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-foo
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -756,6 +960,12 @@
           x
        1. \-NULL
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-NULL
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -772,6 +982,12 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-1L
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. \-1L
@@ -797,6 +1013,13 @@
        1. +-base::print(foo)
        2. \-rlang (local) print.foo(foo)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-base::print(foo)
+       2. \-rlang (local) print.foo(foo)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -815,6 +1038,13 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-rlang (local) f(current_env())
+       2.   \-rlang (local) g(e) at fixtures/trace-srcref2.R:2:2
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. \-rlang (local) f(current_env())
@@ -854,6 +1084,13 @@
        1. \-rlang (local) g(current_env())
        2.   \-global f(e)
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-rlang (local) g(current_env())
+       2.   \-global f(e)
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -872,6 +1109,13 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-rlang (local) g(current_env())
+       2.   \-f(e)
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
           x
        1. \-rlang (local) g(current_env())
@@ -1096,6 +1340,14 @@
        4.       \-foo()
        5.         \-bar()
     Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. \-f()
+       2.   \-g()
+       3.     \-h()
+    Code
       # Collapsed
       print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     Output
@@ -1116,6 +1368,11 @@
     Code
       # Full
       print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+      x
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     Output
       x
     Code

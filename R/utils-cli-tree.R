@@ -75,7 +75,7 @@ cli_tree <- function(data,
 
     if (marked_deemph) {
       parts <- strsplit(line, "<DEEMPH>")[[1]]
-      line <- paste0(parts[[1]], style_dim_soft(parts[[2]]))
+      line <- paste0(parts[[1]], trace_deemph(parts[[2]]))
     }
 
     res <<- c(res, line)
@@ -106,6 +106,11 @@ cli_tree <- function(data,
   }
 
   res
+}
+
+trace_deemph <- function(x) {
+  deemph <- peek_option("rlang:::trace_deemph") %||% style_dim_soft
+  deemph(x)
 }
 
 cli_box_chars <- function() {

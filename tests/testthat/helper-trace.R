@@ -4,11 +4,20 @@ expect_snapshot_trace <- function(trace,
   expect_snapshot({
     "Full"
     print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    "Focused"
+    print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
     "Collapsed"
     print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     "Branch"
     print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
   })
+}
+print_focused_trace <- function(trace, ...) {
+  with_options(
+    "rlang:::trace_display_tree_override" = TRUE,
+    "rlang:::trace_deemph" = function(x) sprintf("<<%s>>", x),
+    print(trace, ..., simplify = "none", drop = TRUE)
+  )
 }
 
 expect_trace_length <- function(x, n) {
