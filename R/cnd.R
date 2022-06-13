@@ -567,7 +567,12 @@ can_paste_trace <- function(backtrace, trace) {
   backtrace && is_trace(trace) && trace_length(trace)
 }
 paste_trace <- function(cnd, x, trace, simplify, ...) {
-  trace_lines <- format(trace, ..., simplify = simplify)
+  trace_lines <- format(
+    trace,
+    ...,
+    simplify = simplify,
+    check_arg = cnd[["check_arg"]]
+  )
   paste_line(x, bold("Backtrace:"), trace_lines)
 }
 

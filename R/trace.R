@@ -412,7 +412,7 @@ format.rlang_trace <- function(x,
                                drop = FALSE) {
   switch(
     arg_match_simplify(simplify),
-    none = trace_format(x, max_frames, dir, srcrefs, drop = drop),
+    none = trace_format(x, max_frames, dir, srcrefs, drop = drop, ...),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
   )
 }
@@ -429,7 +429,13 @@ deprecate_collapse <- function() {
   warn_deprecated("`\"collapse\"` is deprecated as of rlang 1.1.0.\nPlease use `\"none\"` instead.")
 }
 
-trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
+trace_format <- function(trace,
+                         max_frames,
+                         dir,
+                         srcrefs,
+                         drop = FALSE,
+                         check_arg = NULL,
+                         ...) {
   if (is_false(drop) && length(trace$visible)) {
     trace$visible <- TRUE
   }
@@ -442,7 +448,13 @@ trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
     return(trace_root())
   }
 
-  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs, drop = drop)
+  tree <- trace_as_tree(
+    trace,
+    dir = dir,
+    srcrefs = srcrefs,
+    drop = drop,
+    check_arg = check_arg
+  )
   cli_tree(tree)
 }
 
@@ -681,7 +693,11 @@ is_winch_frame <- function(call) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
+trace_as_tree <- function(trace,
+                          dir = getwd(),
+                          srcrefs = NULL,
+                          drop = FALSE,
+                          check_arg = NULL) {
   root_id <- 0
   root_children <- list(find_children(root_id, trace$parent))
 
@@ -693,8 +709,12 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
   trace$children <- map(trace$children, intersect, trace$id)
   root_children[[1]] <- intersect(root_children[[1]], trace$id)
 
-  call_text_data <- trace[c("call", "namespace", "scope")]
-  trace$call_text <- chr(!!!pmap(call_text_data, trace_call_text))
+  call_text_data <- trace[c("call", "namespace", "scope", "error_frame")]
+  trace$call_text <- chr(!!!pmap(
+    call_text_data,
+    trace_call_text,
+    check_arg = check_arg
+  ))
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs") %||% TRUE
   stopifnot(is_scalar_logical(srcrefs))
@@ -776,7 +796,11 @@ node_type <- function(ns, children) {
 }
 
 # FIXME: Add something like call_deparse_line()
-trace_call_text <- function(call, namespace, scope) {
+trace_call_text <- function(call,
+                            namespace,
+                            scope,
+                            error_frame,
+                            check_arg = NULL) {
   if (is_call(call) && is_symbol(call[[1]])) {
     if (scope %in% c("::", ":::") && !is_na(namespace)) {
       call[[1]] <- call(scope, sym(namespace), call[[1]])
