@@ -218,7 +218,7 @@ stop_input_type <- function(x,
     what,
     obj_type_friendly(x)
   )
-  rlang::abort(message, ..., call = call)
+  rlang::abort(message, ..., call = call, check_arg = arg)
 }
 
 # nocov end

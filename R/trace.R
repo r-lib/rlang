@@ -109,7 +109,6 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map(calls, call_zap_inline)
 
   context <- empty_trace_context()
-
   if (length(calls)) {
     context_data <- map2(calls, seq_along(calls), call_trace_context)
     context$namespace <- do.call(base::c, map(context_data, `[[`, "namespace"))
@@ -118,7 +117,6 @@ trace_back <- function(top = NULL, bottom = NULL) {
   context <- new_data_frame(context)
 
   parents <- normalise_parents(parents)
-
   trace <- new_trace(
     calls,
     parents,
@@ -126,6 +124,16 @@ trace_back <- function(top = NULL, bottom = NULL) {
     scope = context$scope,
     visible = is_visible
   )
+
+  error_frame <- peek_option("rlang:::error_frame")
+  if (!is_null(error_frame)) {
+    trace[["error_frame"]] <- FALSE
+    i <- detect_index(frames, identical, error_frame, .right = TRUE)
+    if (i) {
+      trace[["error_frame"]][[i]] <- TRUE
+    }
+  }
+
   trace <- add_winch_trace(trace)
   trace <- trace_trim_env(trace, frames, top)
 

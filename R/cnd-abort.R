@@ -300,7 +300,7 @@ abort <- function(message = NULL,
   }
 
   message <- validate_signal_args(message, class, call, .subclass, "abort")
-  call <- error_call(call)
+  error_call <- error_call(call)
 
   message_info <- cnd_message_info(
     message,
@@ -320,6 +320,7 @@ abort <- function(message = NULL,
       # Prevents infloops when rlang throws during trace capture
       "rlang:::disable_trace_capture" = TRUE,
       "rlang:::visible_bottom" = info$bottom_frame,
+      "rlang:::error_frame" = if (is_environment(call)) call else NULL,
       { trace <- trace_back() }
     )
   }
@@ -330,10 +331,23 @@ abort <- function(message = NULL,
     message = message,
     !!!extra_fields,
     use_cli_format = use_cli_format,
-    call = call,
+    call = error_call,
     parent = parent,
     trace = trace
   )
+
+  check_arg <- cnd[["check_arg"]]
+  if (!is_null(check_arg) && is_environment(call)) {
+    i <- which(trace[["error_frame"]])
+    if (length(i) == 1) {
+      # Match arguments so we can fully highlight the faulty input in
+      # the backtrace. Preserve srcrefs from original frame call.
+      matched <- call_match(error_call, frame_fn(call), defaults = TRUE)
+      attributes(matched) <- attributes(trace$call[[i]])
+      cnd$trace$call[[i]] <- matched
+    }
+  }
+
   signal_abort(cnd, .file)
 }
 
