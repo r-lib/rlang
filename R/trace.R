@@ -423,7 +423,8 @@ trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
     return(trace_root())
   }
 
-  cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs, drop = drop))
+  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs, drop = drop)
+  cli_tree(tree)
 }
 
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
@@ -813,15 +814,15 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
   )
   tree <- vec_cbind(tree_data, trace)
 
-  # Subset out hidden frames
-  tree <- vec_slice(tree, tree$visible)
-  tree$children <- map(tree$children, intersect, tree$id)
-
   if (drop) {
     tree$node_type <- node_type(lengths(tree$children), tree$children)
   } else {
     tree$node_type <- rep_len("main", nrow(tree))
   }
+
+  # Subset out hidden frames
+  tree <- vec_slice(tree, tree$visible)
+  tree$children <- map(tree$children, intersect, tree$id)
 
   if (has_crayon()) {
     # Detect runs of namespaces/global
