@@ -1386,3 +1386,91 @@
     Output
       
 
+# sibling streaks in tree backtraces
+
+    Code
+      # Full
+      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-rlang::catch_cnd(f(g()), "error")
+        2. | +-rlang::eval_bare(...)
+        3. | +-base::tryCatch(...)
+        4. | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        5. | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        6. | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        7. | \-base::force(expr)
+        8. +-rlang (local) f(g())
+        9. | +-base::identity(identity(x))
+       10. | \-base::identity(x)
+       11. \-rlang (local) g()
+       12.   +-rlang (local) f(f(h()))
+       13.   | +-base::identity(identity(x))
+       14.   | \-base::identity(x)
+       15.   +-rlang (local) f(h())
+       16.   | +-base::identity(identity(x))
+       17.   | \-base::identity(x)
+       18.   \-rlang (local) h()
+       19.     \-rlang::abort("foo")
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-rlang::catch_cnd(f(g()), "error")
+        2. | <<+-rlang::eval_bare(...)>>
+        3. | <<+-base::tryCatch(...)>>
+        4. | | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        5. | |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+        6. | |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        7. | <<\-base::force(expr)>>
+        8. +-rlang (local) f(g())
+        9. | <<+-base::identity(identity(x))>>
+       10. | <<\-base::identity(x)>>
+       11. \-rlang (local) g()
+       12.   +<<-rlang (local) f(f(h()))>>
+       13.   | <<+-base::identity(identity(x))>>
+       14.   | <<\-base::identity(x)>>
+       15.   +<<-rlang (local) f(h())>>
+       16.   | <<+-base::identity(identity(x))>>
+       17.   | <<\-base::identity(x)>>
+       18.   \-rlang (local) h()
+    Code
+      # Collapsed
+      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-[ rlang::catch_cnd(...) ] with 6 more calls
+        8. +-[ rlang (local) f(...) ] with 2 more calls
+       11. \-rlang (local) g()
+       12.   +-[ rlang (local) f(...) ] with 2 more calls
+       15.   +-[ rlang (local) f(...) ] with 2 more calls
+       18.   \-rlang (local) h()
+    Code
+      # Branch
+      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+        1. rlang::catch_cnd(f(g()), "error")
+       11. rlang (local) g()
+       18. rlang (local) h()
+
