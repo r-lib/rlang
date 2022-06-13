@@ -400,16 +400,21 @@ format.rlang_trace <- function(x,
                                simplify = c("none", "collapse", "branch"),
                                max_frames = NULL,
                                dir = getwd(),
-                               srcrefs = NULL) {
+                               srcrefs = NULL,
+                               drop = FALSE) {
   switch(
     arg_match(simplify),
-    none = trace_format_full(x, max_frames, dir, srcrefs),
+    none = trace_format(x, max_frames, dir, srcrefs, drop = drop),
     collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
   )
 }
 
-trace_format <- function(trace, max_frames, dir, srcrefs) {
+trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
+  if (is_false(drop) && length(trace$visible)) {
+    trace$visible <- TRUE
+  }
+
   if (!is_null(max_frames)) {
     msg <- "`max_frames` is currently only supported with `simplify = \"branch\"`"
     stop(msg, call. = FALSE)
@@ -418,19 +423,15 @@ trace_format <- function(trace, max_frames, dir, srcrefs) {
     return(trace_root())
   }
 
-  cli_tree(trace_as_tree(trace, dir = dir, srcrefs = srcrefs))
+  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs, drop = drop)
+  cli_tree(tree)
 }
 
-trace_format_full <- function(trace, max_frames, dir, srcrefs) {
-  if (length(trace$visible)) {
-    trace$visible <- TRUE
-  }
-  trace_format(trace, max_frames, dir, srcrefs)
-}
 trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_collapse(trace)
-  trace_format(trace, max_frames, dir, srcrefs)
+  trace_format(trace, max_frames, dir, srcrefs, drop = TRUE)
 }
+
 trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   trace <- trace_simplify_branch(trace)
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs)
@@ -775,7 +776,7 @@ trace_simplify_collapse <- function(trace) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
+trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
   if (is_null(trace$collapsed)) {
     trace$collapsed <- vec_recycle(0L, trace_length(trace))
   }
@@ -813,6 +814,12 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   )
   tree <- vec_cbind(tree_data, trace)
 
+  if (drop) {
+    tree$node_type <- node_type(lengths(tree$children), tree$children)
+  } else {
+    tree$node_type <- rep_len("main", nrow(tree))
+  }
+
   # Subset out hidden frames
   tree <- vec_slice(tree, tree$visible)
   tree$children <- map(tree$children, intersect, tree$id)
@@ -838,6 +845,28 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL) {
   }
 
   tree
+}
+
+node_type <- function(ns, children) {
+  type <- rep_along(ns, "main")
+
+  for (i in seq_along(ns)) {
+    n <- ns[[i]]
+    if (is_string(type[[i]], "main")) {
+      if (n >= 2) {
+        val <- if (i == 1) "main_sibling" else "sibling"
+        idx <- as.numeric(children[[i]][-n]) + 1
+        type[idx] <- val
+      }
+    } else {
+      if (n >= 1) {
+        idx <- as.numeric(children[[i]][-1]) + 1
+        type[idx] <- "sibling"
+      }
+    }
+  }
+
+  type
 }
 
 # FIXME: Add something like call_deparse_line()

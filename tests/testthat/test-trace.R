@@ -688,3 +688,11 @@ test_that("backtrace is formatted with sources (#1396)", {
   n_links <- sum(grepl("\033]8;.*my_source.*\\.R:", lines))
   expect_true(n_links > 0)
 })
+
+test_that("sibling streaks in tree backtraces", {
+  f <- function(x) identity(identity(x))
+  g <- function() f(f(h()))
+  h <- function() abort("foo")
+  err <- catch_cnd(f(g()), "error")
+  expect_snapshot_trace(err)
+})

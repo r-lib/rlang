@@ -26,14 +26,31 @@ last_error <- function() {
   }
 
   err$rlang$internal$from_last_error <- TRUE
+
   err
 }
 #' @rdname last_error
+#' @param drop Whether to drop technical calls. These are hidden from
+#'   users by default, set `drop` to `FALSE` to see the full backtrace.
 #' @export
-last_trace <- function() {
+last_trace <- function(drop = NULL) {
   err <- last_error()
-  err$rlang$internal$print_simplify <- "none"
+
+  # Drop by default with new tree display, don't drop with legacy
+  # behaviour
+  drop <- drop %||% use_tree_display()
+
+  err$rlang$internal$trace_simplify <- "none"
+  err$rlang$internal$trace_drop <- drop
+
   err
+}
+
+use_tree_display <- function() {
+  if (is_true(peek_option("rlang:::trace_display_tree_override"))) {
+    return(TRUE)
+  }
+  is_true(peek_option("rlang:::trace_display_tree")) && !is_testing()
 }
 
 peek_last_error <- function(cnd) {

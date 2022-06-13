@@ -7,7 +7,11 @@
 \usage{
 last_error()
 
-last_trace()
+last_trace(drop = NULL)
+}
+\arguments{
+\item{drop}{Whether to drop technical calls. These are hidden from
+users by default, set \code{drop} to \code{FALSE} to see the full backtrace.}
 }
 \description{
 \itemize{

@@ -11,6 +11,7 @@ cli_tree <- function(data,
                      root = data$id[[1]],
                      style = NULL) {
   style <- style %||% cli_box_chars()
+  full_emphasis <- every(data$node_type, is_string, "main")
 
   labels <- data$call_text
   src_locs <- chr(map_if(data$src_loc, nzchar, ~ paste0(" at ", .x)))
@@ -18,30 +19,72 @@ cli_tree <- function(data,
 
   res <- character()
 
-  pt <- function(root, n = integer(), mx = integer()) {
+  # `n` is a vector of integers from the root to the current node
+  # representing the index of the active node for each level of the
+  # tree. `mx` is a vector representing the total number of nodes for
+  # each level. So `n = c(2, 1)` and `mx = c(2, 3)` means that we are
+  # two levels deep, and got here via the second child (node r-2) of
+  # the root out of two children, and the first child of node r-2 out
+  # of three children.
 
+  pt <- function(root, n = integer(), mx = integer(), deemphasise = FALSE) {
     num_root <- match(root, data$id)
+    main_sibling <- is_string(data$node_type[[num_root]], "main_sibling")
+
+    marked_deemph <- FALSE
 
     level <- length(n) - 1
     prefix <- map_chr(seq_along(n), function(i) {
+      mark_deemph <- function(x) {
+        if (!marked_deemph) {
+          marked_deemph <<- TRUE
+          paste0("<DEEMPH>", x)
+        } else {
+          x
+        }
+      }
+
       if (n[i] < mx[i]) {
         if (i == length(n)) {
-          paste0(style$j, style$h)
+          if (deemphasise) {
+            mark_deemph(paste0(style$j, style$h))
+          } else if (!main_sibling && !full_emphasis) {
+            paste0(style$j, mark_deemph(style$h))
+          } else {
+            paste0(style$j, style$h)
+          }
         } else {
-          paste0(style$v, " ")
+          if (!deemphasise || n[i] < mx[i]) {
+            paste0(style$v, " ")
+          } else {
+            mark_deemph(paste0(style$v, " "))
+          }
         }
       } else if (n[i] == mx[i] && i == length(n)) {
-        paste0(style$l, style$h)
+        if (deemphasise) {
+          mark_deemph(paste0(style$l, style$h))
+        } else {
+          paste0(style$l, style$h)
+        }
       } else {
         "  "
       }
     })
 
-    res <<- c(res, paste0(paste(prefix, collapse = ""), labels[[num_root]]))
+    line <- paste0(paste(prefix, collapse = ""), labels[[num_root]])
+
+    if (marked_deemph) {
+      parts <- strsplit(line, "<DEEMPH>")[[1]]
+      line <- paste0(parts[[1]], trace_deemph(parts[[2]]))
+    }
+
+    res <<- c(res, line)
 
     children <- data$children[[num_root]]
+    deemphasise <- deemphasise || !is_string(data$node_type[[num_root]], "main")
+
     for (d in seq_along(children)) {
-      pt(children[[d]], c(n, d), c(mx, length(children)))
+      pt(children[[d]], c(n, d), c(mx, length(children)), deemphasise = deemphasise)
     }
   }
 
@@ -63,6 +106,11 @@ cli_tree <- function(data,
   }
 
   res
+}
+
+trace_deemph <- function(x) {
+  deemph <- peek_option("rlang:::trace_deemph") %||% style_dim_soft
+  deemph(x)
 }
 
 cli_box_chars <- function() {
