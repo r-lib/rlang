@@ -7,6 +7,33 @@ struct r_dict* p_precious_dict = NULL;
 
 #include "decl/obj-decl.h"
 
+
+r_obj* r_vec_clone(r_obj* x) {
+  r_obj* out = KEEP(r_clone(x));
+
+  r_obj* names = r_names(x);
+  if (names != r_null) {
+    r_attrib_poke_names(out, r_clone(names));
+  }
+
+  FREE(1);
+  return out;
+}
+
+r_obj* r_vec_clone_shared(r_obj* x) {
+  if (r_is_shared(x)) {
+    return r_vec_clone(x);
+  }
+
+  r_obj* names = r_names(x);
+  if (names != r_null && r_is_shared(names)) {
+    r_attrib_poke_names(x, r_clone(names));
+    return x;
+  }
+
+  return x;
+}
+
 void (_r_preserve)(r_obj* x) {
   if (!_r_use_local_precious_list) {
     return;
