@@ -1,5 +1,5 @@
 # nocov start - compat-rlang.R
-# Latest version: https://github.com/r-lib/rlang/blob/master/R/compat-rlang.R
+# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-rlang.R
 
 # Changelog:
 #

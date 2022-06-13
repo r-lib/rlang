@@ -1,5 +1,5 @@
 # nocov start - compat-vctrs.R
-# Latest version: https://github.com/r-lib/rlang/blob/master/R/compat-vctrs.R
+# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-vctrs.R
 
 # This file provides a minimal shim to provide a vctrs-like API on top of
 # base R functions. They are not drop-in replacements but allow a similar style

@@ -1,5 +1,5 @@
 # nocov start - compat-purrr.R
-# Latest version: https://github.com/r-lib/rlang/blob/master/R/compat-purrr.R
+# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-purrr.R
 
 # This file provides a minimal shim to provide a purrr-like API on top of
 # base R functions. They are not drop-in replacements but allow a similar style
