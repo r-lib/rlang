@@ -128,9 +128,15 @@ the last error. This backtrace is printed in full form.</p></li>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">last_error</span><span class="op">(</span><span class="op">)</span>
 
-<span class="fu">last_trace</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="fu">last_trace</span><span class="op">(</span>drop <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <dl><dt>drop</dt>
+<dd><p>Whether to drop technical calls. These are hidden from
+users by default, set <code>drop</code> to <code>FALSE</code> to see the full backtrace.</p></dd>
+</dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index">
