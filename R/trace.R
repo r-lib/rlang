@@ -807,7 +807,11 @@ trace_call_text <- function(call,
     }
   }
 
-  text <- as_label(call)
+  if (error_frame && !is_null(check_arg)) {
+    text <- call_deparse_highlight(call, check_arg)
+  } else {
+    text <- as_label(call)
+  }
 
   if (is_string(scope, "global")) {
     text <- paste0("global ", text)

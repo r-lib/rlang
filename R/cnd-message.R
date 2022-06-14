@@ -104,8 +104,11 @@ cnd_backtrace_on_error <- function(cnd) {
   cnd[["rlang"]]$internal$backtrace_on_error
 }
 
-cnd_message_format <- function(cnd, ..., alert = FALSE) {
-  lines <- cnd_message_lines(cnd, ...)
+cnd_message_format <- function(cnd,
+                               ...,
+                               alert = FALSE,
+                               highlight_error = FALSE) {
+  lines <- cnd_message_lines(cnd, ..., highlight_error = highlight_error)
   if (is_string(lines, "")) {
     return("")
   }
@@ -151,7 +154,7 @@ cnd_header <- function(cnd, ...) {
   if (is_null(cnd[["header"]])) {
     UseMethod("cnd_header")
   } else {
-    exec_cnd_method("header", cnd)
+    exec_cnd_method("header", cnd, ...)
   }
 }
 #' @export
@@ -165,7 +168,7 @@ cnd_body <- function(cnd, ...) {
   if (is_null(cnd[["body"]])) {
     UseMethod("cnd_body")
   } else {
-    exec_cnd_method("body", cnd)
+    exec_cnd_method("body", cnd, ...)
   }
 }
 #' @export
@@ -179,7 +182,7 @@ cnd_footer <- function(cnd, ...) {
   if (is_null(cnd[["footer"]])) {
     UseMethod("cnd_footer")
   } else {
-    exec_cnd_method("footer", cnd)
+    exec_cnd_method("footer", cnd, ...)
   }
 }
 #' @export
@@ -187,14 +190,14 @@ cnd_footer.default <- function(cnd, ...) {
   chr()
 }
 
-exec_cnd_method <- function(name, cnd) {
+exec_cnd_method <- function(name, cnd, ...) {
   method <- cnd[[name]]
 
   if (is_function(method)) {
-    method(cnd)
+    method(cnd, ...)
   } else if (is_bare_formula(method)) {
     method <- as_function(method)
-    method(cnd)
+    method(cnd, ...)
   } else if (is_character(method)) {
     method
   } else {
@@ -211,7 +214,8 @@ cnd_message_format_prefixed <- function(cnd,
                                         ...,
                                         parent = FALSE,
                                         alert = NULL,
-                                        warning = FALSE) {
+                                        warning = FALSE,
+                                        highlight_error = FALSE) {
   type <- cnd_type(cnd)
 
   if (is_null(alert)) {
@@ -224,9 +228,14 @@ cnd_message_format_prefixed <- function(cnd,
     prefix <- col_yellow(capitalise(type))
   }
 
-  call <- format_error_call(cnd$call)
+  call <- format_error_call(cnd$call, highlight = highlight_error)
 
-  message <- cnd_message_format(cnd, ..., alert = alert)
+  message <- cnd_message_format(
+    cnd,
+    ...,
+    alert = alert,
+    highlight_error = highlight_error
+  )
   message <- strip_trailing_newline(message)
 
   if (!nzchar(message)) {

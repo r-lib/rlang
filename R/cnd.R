@@ -400,7 +400,8 @@ format.rlang_error <- function(x,
     ...,
     backtrace = backtrace,
     simplify = simplify,
-    drop = drop
+    drop = drop,
+    highlight_error = TRUE
   )
 
   # Recommend printing the full backtrace if called from `last_error()`
@@ -469,7 +470,8 @@ cnd_format <- function(x,
                        simplify = c("branch", "none"),
                        prefix = TRUE,
                        alert = NULL,
-                       drop = FALSE) {
+                       drop = FALSE,
+                       highlight_error = FALSE) {
   simplify <- arg_match_simplify(simplify)
   alert <- alert %||% is_error(x)
 
@@ -479,9 +481,17 @@ cnd_format <- function(x,
 
   header <- cnd_type_header(x)
   if (prefix) {
-    message <- cnd_message_format_prefixed(x, alert = alert)
+    message <- cnd_message_format_prefixed(
+      x,
+      alert = alert,
+      highlight_error = highlight_error
+    )
   } else {
-    message <- cnd_message_format(x, alert = alert)
+    message <- cnd_message_format(
+      x,
+      alert = alert,
+      highlight_error = highlight_error
+    )
   }
 
   out <- paste_line(
@@ -553,7 +563,11 @@ cnd_format <- function(x,
       flush_trace()
     }
 
-    message <- cnd_message_format_prefixed(x, parent = TRUE)
+    message <- cnd_message_format_prefixed(
+      x,
+      parent = TRUE,
+      highlight_error = highlight_error
+    )
     out <- paste_line(out, message)
 
     push_trace(x, trace)

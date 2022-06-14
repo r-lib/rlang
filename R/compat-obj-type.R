@@ -202,23 +202,29 @@ stop_input_type <- function(x,
                             ...,
                             arg = rlang::caller_arg(x),
                             call = rlang::caller_env()) {
-  # From compat-cli.R
-  format_arg <- rlang::env_get(
-    nm = "format_arg",
-    last = topenv(),
-    default = NULL
-  )
-  if (!is.function(format_arg)) {
-    format_arg <- function(x) sprintf("`%s`", x)
+  cnd_message <- function(cnd, ..., highlight_error = FALSE) {
+    formatter <- if (highlight_error) "format_error_arg_highlight" else "format_arg"
+
+    # From compat-cli.R
+    format_arg <- rlang::env_get(
+      nm = formatter,
+      last = topenv(),
+      default = NULL,
+      inherit = TRUE
+    )
+    if (!is.function(format_arg)) {
+      format_arg <- function(x) sprintf("`%s`", x)
+    }
+
+    sprintf(
+      "%s must be %s, not %s.",
+      format_arg(arg),
+      what,
+      obj_type_friendly(x)
+    )
   }
 
-  message <- sprintf(
-    "%s must be %s, not %s.",
-    format_arg(arg),
-    what,
-    obj_type_friendly(x)
-  )
-  rlang::abort(message, ..., call = call, check_arg = arg)
+  rlang::abort(header = cnd_message, ..., call = call, check_arg = arg)
 }
 
 # nocov end

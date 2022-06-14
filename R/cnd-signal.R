@@ -261,6 +261,7 @@ validate_signal_args <- function(message,
                                  call,
                                  subclass,
                                  fn,
+                                 header = NULL,
                                  env = caller_env()) {
   local_error_call("caller")
 
@@ -269,6 +270,10 @@ validate_signal_args <- function(message,
   }
   check_required(class, call = env)
 
+  if (!is_null(header) && !is_null(message)) {
+    check_exclusive(header, message, .error_call = env)
+  }
+
   if (!is_missing(call)) {
     if (!is_null(call) && !is_environment(call) && !is_call(call)) {
       stop_input_type(call, "a call or environment", arg = "call", call = env)
@@ -276,13 +281,14 @@ validate_signal_args <- function(message,
   }
 
   if (is_null(message)) {
-    if (is_null(class)) {
+    if (is_null(class) && is_null(header)) {
       abort("Either `message` or `class` must be supplied.", call = env)
     }
-    message <- ""
   }
 
+  message <- message %||% ""
   check_character(message, call = env)
+
   if (!is_null(class)) {
     check_character(class, call = env)
   }

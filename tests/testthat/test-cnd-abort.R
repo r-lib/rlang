@@ -597,7 +597,7 @@ test_that("setting `.internal` adds footer bullet (fallback)", {
 test_that("must pass character `body` when `message` is > 1", {
   expect_snapshot({
     # This is ok because `message` is length 1
-    err(abort("foo", body = function(cnd) c("i" = "bar")))
+    err(abort("foo", body = function(cnd, ...) c("i" = "bar")))
 
     # This is an internal error
     err(abort(c("foo", "bar"), body = function() "baz"))
@@ -608,7 +608,7 @@ test_that("must pass character `body` when `message` is > 1 (non-cli case)", {
   local_use_cli(format = FALSE)
   expect_snapshot({
     # This is ok because `message` is length 1
-    err(abort("foo", body = function(cnd) c("i" = "bar")))
+    err(abort("foo", body = function(cnd, ...) c("i" = "bar")))
 
     # This is an internal error
     err(abort(c("foo", "bar"), body = function() "baz"))
@@ -619,7 +619,7 @@ test_that("can supply `footer`", {
   local_error_call(call("f"))
   expect_snapshot({
     err(abort("foo", body = c("i" = "bar"), footer = c("i" = "baz")))
-    err(abort("foo", body = function(cnd) c("i" = "bar"), footer = function(cnd) c("i" = "baz")))
+    err(abort("foo", body = function(cnd, ...) c("i" = "bar"), footer = function(cnd, ...) c("i" = "baz")))
   })
 })
 
@@ -628,7 +628,7 @@ test_that("can supply `footer` (non-cli case)", {
   local_error_call(call("f"))
   expect_snapshot({
     err(abort("foo", body = c("i" = "bar"), footer = c("i" = "baz")))
-    err(abort("foo", body = function(cnd) c("i" = "bar"), footer = function(cnd) c("i" = "baz")))
+    err(abort("foo", body = function(cnd, ...) c("i" = "bar"), footer = function(cnd, ...) c("i" = "baz")))
   })
 })
 

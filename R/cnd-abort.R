@@ -243,6 +243,7 @@ abort <- function(message = NULL,
                   class = NULL,
                   ...,
                   call,
+                  header = NULL,
                   body = NULL,
                   footer = NULL,
                   trace = NULL,
@@ -299,9 +300,10 @@ abort <- function(message = NULL,
     call <- info$setup_caller
   }
 
-  message <- validate_signal_args(message, class, call, .subclass, "abort")
+  message <- validate_signal_args(message, class, call, .subclass, "abort", header = header)
   error_call <- error_call(call)
 
+  # FIXME! Pass `header` through here
   message_info <- cnd_message_info(
     message,
     body,
@@ -329,6 +331,7 @@ abort <- function(message = NULL,
     class,
     ...,
     message = message,
+    !!!compact(list(header = header)),
     !!!extra_fields,
     use_cli_format = use_cli_format,
     call = error_call,
@@ -1092,7 +1095,7 @@ caller_arg <- function(arg) {
 #' # function call form
 #' writeLines(format_error_call(quote(1 + 2)))
 #' @export
-format_error_call <- function(call) {
+format_error_call <- function(call, highlight = FALSE) {
   call <- error_call(call)
   if (is_null(call)) {
     return(NULL)
@@ -1104,7 +1107,11 @@ format_error_call <- function(call) {
   }
 
   if (grepl("\n", label)) {
-    cli_with_whiteline_escapes(label, format_code)
+    return(cli_with_whiteline_escapes(label, format_code))
+  }
+
+  if (highlight) {
+    format_error_call_highlight(label, quote = TRUE)
   } else {
     format_code(label)
   }

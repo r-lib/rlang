@@ -1012,3 +1012,31 @@ as_name <- function(x) {
   }
   as_string(x)
 }
+
+call_deparse_highlight <- function(call,
+                                   arg,
+                                   default = as_label(call)) {
+  stopifnot(is_call(call), is_string(arg))
+
+  names <- names(call)
+  if (!arg %in% names) {
+    return(default)
+  }
+
+  if (!is_symbol(call[[1]]) || call_print_fine_type(call) != "call") {
+    return(default)
+  }
+
+  # Simply remove other arguments for now
+  call <- call[c(1, match(arg, names))]
+
+  fn <- sym_text(call[[1]])
+  open <- format_error_call_highlight(sprintf("%s(", fn), quote = FALSE)
+  close <- format_error_call_highlight(")", quote = FALSE)
+
+  arg_value <- as_label(call[[arg]])
+  arg_passing <- sprintf("%s = %s", arg, arg_value)
+  arg_passing <- format_error_arg_highlight(arg_passing, quote = FALSE)
+
+  paste0(open, arg_passing, close)
+}
