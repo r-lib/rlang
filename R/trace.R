@@ -131,6 +131,19 @@ trace_back <- function(top = NULL, bottom = NULL) {
     i <- detect_index(frames, identical, error_frame, .right = TRUE)
     if (i) {
       trace[["error_frame"]][[i]] <- TRUE
+      check_arg <- peek_option("rlang:::check_arg")
+      if (!is_null(check_arg)) {
+        if (is_null(trace[["check_arg"]])) {
+          trace[["check_arg"]] <- list(NULL)
+        }
+        trace[["check_arg"]][[i]] <- check_arg
+
+        # Match arguments so we can fully highlight the faulty input in
+        # the backtrace. Preserve srcrefs from original frame call.
+        matched <- call_match(trace$call[[i]], frame_fn(error_frame), defaults = TRUE)
+        attributes(matched) <- attributes(trace$call[[i]])
+        trace$call[[i]] <- matched
+      }
     }
   }
 
@@ -434,7 +447,6 @@ trace_format <- function(trace,
                          dir,
                          srcrefs,
                          drop = FALSE,
-                         check_arg = NULL,
                          ...) {
   if (is_false(drop) && length(trace$visible)) {
     trace$visible <- TRUE
@@ -452,8 +464,7 @@ trace_format <- function(trace,
     trace,
     dir = dir,
     srcrefs = srcrefs,
-    drop = drop,
-    check_arg = check_arg
+    drop = drop
   )
   cli_tree(tree)
 }
@@ -696,8 +707,7 @@ is_winch_frame <- function(call) {
 trace_as_tree <- function(trace,
                           dir = getwd(),
                           srcrefs = NULL,
-                          drop = FALSE,
-                          check_arg = NULL) {
+                          drop = FALSE) {
   root_id <- 0
   root_children <- list(find_children(root_id, trace$parent))
 
@@ -709,12 +719,11 @@ trace_as_tree <- function(trace,
   trace$children <- map(trace$children, intersect, trace$id)
   root_children[[1]] <- intersect(root_children[[1]], trace$id)
 
-  call_text_data <- trace[c("call", "namespace", "scope", "error_frame")]
-  trace$call_text <- chr(!!!pmap(
-    call_text_data,
-    trace_call_text,
-    check_arg = check_arg
-  ))
+  params <- intersect(
+    c("call", "namespace", "scope", "error_frame", "check_arg"),
+    names(trace)
+  )
+  trace$call_text <- chr(!!!pmap(trace[params], trace_call_text))
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs") %||% TRUE
   stopifnot(is_scalar_logical(srcrefs))
@@ -799,7 +808,7 @@ node_type <- function(ns, children) {
 trace_call_text <- function(call,
                             namespace,
                             scope,
-                            error_frame,
+                            error_frame = FALSE,
                             check_arg = NULL) {
   if (is_call(call) && is_symbol(call[[1]])) {
     if (scope %in% c("::", ":::") && !is_na(namespace)) {
@@ -807,7 +816,7 @@ trace_call_text <- function(call,
     }
   }
 
-  if (error_frame && !is_null(check_arg)) {
+  if (error_frame) {
     text <- call_deparse_highlight(call, check_arg)
   } else {
     text <- as_label(call)

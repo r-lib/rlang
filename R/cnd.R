@@ -526,7 +526,6 @@ cnd_format <- function(x,
     out <<- paste_line(out, "---")
 
     out <<- paste_trace(
-      pending_trace$cnd,
       out,
       pending_trace$trace,
       simplify = simplify,
@@ -580,12 +579,11 @@ cnd_format <- function(x,
 can_paste_trace <- function(backtrace, trace) {
   backtrace && is_trace(trace) && trace_length(trace)
 }
-paste_trace <- function(cnd, x, trace, simplify, ...) {
+paste_trace <- function(x, trace, simplify, ...) {
   trace_lines <- format(
     trace,
     ...,
-    simplify = simplify,
-    check_arg = cnd[["check_arg"]]
+    simplify = simplify
   )
   paste_line(x, bold("Backtrace:"), trace_lines)
 }

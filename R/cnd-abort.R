@@ -337,16 +337,6 @@ abort <- function(message = NULL,
     }
   }
 
-  if (is_null(trace) && is_null(parent_trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
-    with_options(
-      # Prevents infloops when rlang throws during trace capture
-      "rlang:::disable_trace_capture" = TRUE,
-      "rlang:::visible_bottom" = info$bottom_frame,
-      "rlang:::error_frame" = if (is_environment(call)) call else NULL,
-      { trace <- trace_back() }
-    )
-  }
-
   cnd <- error_cnd(
     class,
     ...,
@@ -355,21 +345,20 @@ abort <- function(message = NULL,
     !!!extra_fields,
     use_cli_format = use_cli_format,
     call = error_call,
-    parent = parent,
-    trace = trace
+    parent = parent
   )
 
-  check_arg <- cnd[["check_arg"]]
-  if (!is_null(check_arg) && is_environment(call)) {
-    i <- which(trace[["error_frame"]])
-    if (length(i) == 1) {
-      # Match arguments so we can fully highlight the faulty input in
-      # the backtrace. Preserve srcrefs from original frame call.
-      matched <- call_match(error_call, frame_fn(call), defaults = TRUE)
-      attributes(matched) <- attributes(trace$call[[i]])
-      cnd$trace$call[[i]] <- matched
-    }
+  if (is_null(trace) && is_null(parent_trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
+    with_options(
+      # Prevents infloops when rlang throws during trace capture
+      "rlang:::disable_trace_capture" = TRUE,
+      "rlang:::visible_bottom" = info$bottom_frame,
+      "rlang:::error_frame" = if (is_environment(call)) call else NULL,
+      "rlang:::check_arg" = cnd[["check_arg"]],
+      { trace <- trace_back() }
+    )
   }
+  cnd$trace <- trace
 
   signal_abort(cnd, .file)
 }

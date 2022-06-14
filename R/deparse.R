@@ -1016,6 +1016,10 @@ as_name <- function(x) {
 call_deparse_highlight <- function(call,
                                    arg,
                                    default = as_label(call)) {
+  if (is_null(arg)) {
+    return(format_error_call_highlight(default, quote = FALSE))
+  }
+
   stopifnot(is_call(call), is_string(arg))
 
   names <- names(call)
