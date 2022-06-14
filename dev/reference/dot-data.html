@@ -143,11 +143,14 @@ subsetting operators behave differently."><meta property="og:image" content="htt
     <p>The <code>.data</code> and <code>.env</code> pronouns make it explicit where to find
 objects when programming with <a href="topic-data-mask.html">data-masked</a>
 functions.</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div><ul><li><p><code>.data</code> retrieves data-variables from the data frame.</p></li>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">disp =</span> .data<span class="sc">$</span>disp <span class="sc">*</span> .env<span class="sc">$</span>m)</span></code></pre><p></p></div><ul><li><p><code>.data</code> retrieves data-variables from the data frame.</p></li>
 <li><p><code>.env</code> retrieves env-variables from the environment.</p></li>
 </ul><p>Because the lookup is explicit, there is no ambiguity between both
 kinds of variables. Compare:</p>
-<p></p><div class="sourceCode"><pre><code></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>disp <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">disp =</span> .data<span class="sc">$</span>disp <span class="sc">*</span> .env<span class="sc">$</span>disp)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">disp =</span> disp <span class="sc">*</span> disp)</span></code></pre><p></p></div>
 <p>Note that <code>.data</code> is only a pronoun, it is not a real data
 frame. This means that you can't take its names or map a function
 over the contents of <code>.data</code>. Similarly, <code>.env</code> is not an actual R
@@ -199,7 +202,7 @@ in scope by data-masking functions.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
   </div></footer></body></html>

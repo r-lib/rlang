@@ -140,12 +140,16 @@ for end users.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>A data frame or named vector of masking data.</p></dd>
+
+
 <dt>bottom</dt>
 <dd><p>The environment containing masking objects if the
 data mask is one environment deep. The bottom environment if the
 data mask comprises multiple environment.</p>
 <p>If you haven't supplied <code>top</code>, this <strong>must</strong> be an environment
 that you own, i.e. that you have created yourself.</p></dd>
+
+
 <dt>top</dt>
 <dd><p>The last environment of the data mask. If the data mask
 is only one environment deep, <code>top</code> should be the same as
@@ -154,10 +158,13 @@ is only one environment deep, <code>top</code> should be the same as
 created yourself. The parent of <code>top</code> will be changed by the tidy
 eval engine and should be considered undetermined. Never make
 assumption about the parent of <code>top</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data mask that you can supply to <code><a href="eval_tidy.html">eval_tidy()</a></code>.</p>
+    
+
+<p>A data mask that you can supply to <code><a href="eval_tidy.html">eval_tidy()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="why-build-a-data-mask-">Why build a data mask?<a class="anchor" aria-label="anchor" href="#why-build-a-data-mask-"></a></h2>
@@ -316,7 +323,7 @@ bottom and top environment of the data mask.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
   </div></footer></body></html>

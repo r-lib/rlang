@@ -152,13 +152,20 @@ object are replaced by <code>NULL</code>, and the finalizer is scheduled to exec
     <dl><dt>key</dt>
 <dd><p>The key for the weak reference. Must be a reference object -- that
 is, an environment or external pointer.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>The value for the weak reference. This can be <code>NULL</code>, if you
 want to use the weak reference like a weak pointer.</p></dd>
+
+
 <dt>finalizer</dt>
 <dd><p>A function that is run after the key becomes unreachable.</p></dd>
+
+
 <dt>on_quit</dt>
 <dd><p>Should the finalizer be run when R exits?</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -181,8 +188,8 @@ want to use the weak reference like a weak pointer.</p></dd>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           used (Mb) gc trigger  (Mb) max used  (Mb)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ncells 1065705 57.0    2101421 112.3  2101421 112.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Vcells 1979609 15.2    8388608  64.0  4045473  30.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ncells 1066878 57.0    2103827 112.4  2103827 112.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Vcells 1982084 15.2    8388608  64.0  4168808  31.9</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="wref_key.html">wref_key</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span>, <span class="cn">NULL</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"></span>
@@ -202,8 +209,8 @@ want to use the weak reference like a weak pointer.</p></dd>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           used (Mb) gc trigger  (Mb) max used  (Mb)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ncells 1065694 57.0    2101421 112.3  2101421 112.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Vcells 1979388 15.2    8388608  64.0  4045473  30.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ncells 1066828 57.0    2103827 112.4  2103827 112.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Vcells 1981798 15.2    8388608  64.0  4168808  31.9</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="wref_key.html">wref_value</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"></span>
@@ -211,8 +218,8 @@ want to use the weak reference like a weak pointer.</p></dd>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">k</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           used (Mb) gc trigger  (Mb) max used  (Mb)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Ncells 1065711 57.0    2101421 112.3  2101421 112.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Vcells 1979407 15.2    8388608  64.0  4045473  30.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ncells 1066845 57.0    2103827 112.4  2103827 112.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Vcells 1981817 15.2    8388608  64.0  4168808  31.9</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="wref_key.html">wref_key</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span>, <span class="cn">NULL</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="wref_key.html">wref_value</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span>, <span class="cn">NULL</span><span class="op">)</span></span>
@@ -230,7 +237,7 @@ want to use the weak reference like a weak pointer.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
   </div></footer></body></html>
