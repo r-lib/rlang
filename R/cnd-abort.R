@@ -317,6 +317,26 @@ abort <- function(message = NULL,
   use_cli_format <- message_info$use_cli_format
 
   parent_trace <- if (rethrowing) parent[["trace"]]
+
+  if (!is_null(parent_trace) && is_environment(call)) {
+    calls <- sys.calls()
+    frames <- sys.frames()
+
+    loc_frame <- detect_index(frames, identical, call, .right = TRUE)
+    if (loc_frame && loc_frame <= nrow(parent_trace)) {
+      parent_call <- parent_trace[["call"]][[loc_frame]]
+      this_call <- frame_call(call)
+
+      if (identical(parent_call, this_call)) {
+        if (is_null(parent_trace[["error_frame"]])) {
+          parent_trace[["error_frame"]] <- FALSE
+        }
+        parent_trace[["error_frame"]][[loc_frame]] <- TRUE
+        parent$trace <- parent_trace
+      }
+    }
+  }
+
   if (is_null(trace) && is_null(parent_trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
     with_options(
       # Prevents infloops when rlang throws during trace capture
