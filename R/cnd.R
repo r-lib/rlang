@@ -379,7 +379,13 @@ format.rlang_error <- function(x,
                                ...,
                                backtrace = TRUE,
                                simplify = c("branch", "collapse", "none"),
-                               drop = FALSE) {
+                               drop = NULL) {
+  if (use_tree_display() && length(simplify) == 3) {
+    simplify <- "none"
+    drop <- drop %||% TRUE
+  }
+  drop <- drop %||% FALSE
+
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$trace_simplify %||% simplify
   drop <- x$rlang$internal$trace_drop %||% drop
