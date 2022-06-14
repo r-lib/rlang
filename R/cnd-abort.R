@@ -314,10 +314,8 @@ abort <- function(message = NULL,
   extra_fields <- message_info$extra_fields
   use_cli_format <- message_info$use_cli_format
 
-  if (rethrowing) {
-    trace <- trace %||% parent[["trace"]]
-  }
-  if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
+  parent_trace <- if (rethrowing) parent[["trace"]]
+  if (is_null(trace) && is_null(parent_trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
     with_options(
       # Prevents infloops when rlang throws during trace capture
       "rlang:::disable_trace_capture" = TRUE,

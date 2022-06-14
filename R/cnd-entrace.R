@@ -196,7 +196,7 @@ has_recover <- function() {
 cnd_entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
   check_dots_empty0(...)
 
-  if (!is_null(cnd$trace)) {
+  if (cnd_some(cnd, function(x) !is_null(x[["trace"]]))) {
     return(cnd)
   }
 
