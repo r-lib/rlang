@@ -52,7 +52,7 @@
         3.     +<<-base::tryCatch(h(), foo = identity, bar = identity) at test-trace.R:50:20>>
         4.     | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
         5.     |   <<+-base (local) tryCatchOne(...)>>
-        6.     |   | <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        6.     |   <<| \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
         7.     |   <<\-base (local) tryCatchList(expr, names[-nh], parentenv, handlers[-nh])>>
         8.     |     <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
         9.     |       <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
@@ -120,7 +120,7 @@
         7.     +<<-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) at test-trace.R:62:7>>
         8.     | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
         9.     |   <<+-base (local) tryCatchOne(...)>>
-       10.     |   | <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+       10.     |   <<| \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
        11.     |   <<\-base (local) tryCatchList(expr, names[-nh], parentenv, handlers[-nh])>>
        12.     |     <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
        13.     |       <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
@@ -1430,9 +1430,9 @@
         1. +-rlang::catch_cnd(f(g()), "error")
         2. | <<+-rlang::eval_bare(...)>>
         3. | <<+-base::tryCatch(...)>>
-        4. | | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
-        5. | |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
-        6. | |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        4. | <<| \-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        5. | <<|   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+        6. | <<|     \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
         7. | <<\-base::force(expr)>>
         8. +-rlang (local) f(g())
         9. | <<+-base::identity(identity(x))>>
@@ -1473,4 +1473,191 @@
         1. rlang::catch_cnd(f(g()), "error")
        11. rlang (local) g()
        18. rlang (local) h()
+
+# parallel '|' branches are correctly emphasised
+
+    Code
+      # Full
+      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-testthat::expect_error(parallel(f(0)))
+        2. | \-testthat:::expect_condition_matching(...)
+        3. |   \-testthat:::quasi_capture(...)
+        4. |     +-testthat (local) .capture(...)
+        5. |     | \-base::withCallingHandlers(...)
+        6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        7. +-rlang (local) parallel(f(0))
+        8. | +-rlang (local) p1(identity(x))
+        9. | | \-rlang (local) p2(x)
+       10. | |   \-rlang (local) p3(x)
+       11. | \-base::identity(x)
+       12. \-rlang (local) f(0)
+       13.   \-rlang (local) g(n)
+       14.     \-rlang (local) h(n)
+       15.       \-rlang::abort("foo")
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-testthat::expect_error(parallel(f(0)))
+        2. | <<\-testthat:::expect_condition_matching(...)>>
+        3. |   <<\-testthat:::quasi_capture(...)>>
+        4. |     <<+-testthat (local) .capture(...)>>
+        5. |     <<| \-base::withCallingHandlers(...)>>
+        6. |     <<\-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))>>
+        7. +-rlang (local) parallel(f(0))
+        8. | <<+-rlang (local) p1(identity(x))>>
+        9. | <<| \-rlang (local) p2(x)>>
+       10. | <<|   \-rlang (local) p3(x)>>
+       11. | <<\-base::identity(x)>>
+       12. \-rlang (local) f(0)
+       13.   \-rlang (local) g(n)
+       14.     \-rlang (local) h(n)
+    Code
+      # Collapsed
+      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-[ testthat::expect_error(...) ] with 5 more calls
+        7. +-[ rlang (local) parallel(...) ] with 4 more calls
+       12. \-rlang (local) f(0)
+       13.   \-rlang (local) g(n)
+       14.     \-rlang (local) h(n)
+    Code
+      # Branch
+      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+        1. testthat::expect_error(parallel(f(0)))
+       12. rlang (local) f(0)
+       13. rlang (local) g(n)
+       14. rlang (local) h(n)
+
+---
+
+    Code
+      # Full
+      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-testthat::expect_error(deep(1))
+        2. | \-testthat:::expect_condition_matching(...)
+        3. |   \-testthat:::quasi_capture(...)
+        4. |     +-testthat (local) .capture(...)
+        5. |     | \-base::withCallingHandlers(...)
+        6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        7. \-rlang (local) deep(1)
+        8.   +-rlang (local) parallel(f(n))
+        9.   | +-rlang (local) p1(identity(x))
+       10.   | | \-rlang (local) p2(x)
+       11.   | |   \-rlang (local) p3(x)
+       12.   | \-base::identity(x)
+       13.   \-rlang (local) f(n)
+       14.     \-rlang (local) g(n)
+       15.       \-rlang (local) h(n)
+       16.         +-rlang (local) parallel(f(n - 1))
+       17.         | +-rlang (local) p1(identity(x))
+       18.         | | \-rlang (local) p2(x)
+       19.         | |   \-rlang (local) p3(x)
+       20.         | \-base::identity(x)
+       21.         \-rlang (local) f(n - 1)
+       22.           \-rlang (local) g(n)
+       23.             \-rlang (local) h(n)
+       24.               \-rlang::abort("foo")
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-testthat::expect_error(deep(1))
+        2. | <<\-testthat:::expect_condition_matching(...)>>
+        3. |   <<\-testthat:::quasi_capture(...)>>
+        4. |     <<+-testthat (local) .capture(...)>>
+        5. |     <<| \-base::withCallingHandlers(...)>>
+        6. |     <<\-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))>>
+        7. \-rlang (local) deep(1)
+        8.   +<<-rlang (local) parallel(f(n))>>
+        9.   | <<+-rlang (local) p1(identity(x))>>
+       10.   | <<| \-rlang (local) p2(x)>>
+       11.   | <<|   \-rlang (local) p3(x)>>
+       12.   | <<\-base::identity(x)>>
+       13.   \-rlang (local) f(n)
+       14.     \-rlang (local) g(n)
+       15.       \-rlang (local) h(n)
+       16.         +<<-rlang (local) parallel(f(n - 1))>>
+       17.         | <<+-rlang (local) p1(identity(x))>>
+       18.         | <<| \-rlang (local) p2(x)>>
+       19.         | <<|   \-rlang (local) p3(x)>>
+       20.         | <<\-base::identity(x)>>
+       21.         \-rlang (local) f(n - 1)
+       22.           \-rlang (local) g(n)
+       23.             \-rlang (local) h(n)
+    Code
+      # Collapsed
+      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-[ testthat::expect_error(...) ] with 5 more calls
+        7. \-rlang (local) deep(1)
+        8.   +-[ rlang (local) parallel(...) ] with 4 more calls
+       13.   \-rlang (local) f(n)
+       14.     \-rlang (local) g(n)
+       15.       \-rlang (local) h(n)
+       16.         +-[ rlang (local) parallel(...) ] with 4 more calls
+       21.         \-rlang (local) f(n - 1)
+       22.           \-rlang (local) g(n)
+       23.             \-rlang (local) h(n)
+    Code
+      # Branch
+      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
+    Output
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+        1. testthat::expect_error(deep(1))
+        7. rlang (local) deep(1)
+       13. rlang (local) f(n)
+       14. rlang (local) g(n)
+       15. rlang (local) h(n)
+       21. rlang (local) f(n - 1)
+       22. rlang (local) g(n)
+       23. rlang (local) h(n)
 

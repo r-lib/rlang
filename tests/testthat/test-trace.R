@@ -696,3 +696,20 @@ test_that("sibling streaks in tree backtraces", {
   err <- catch_cnd(f(g()), "error")
   expect_snapshot_trace(err)
 })
+
+test_that("parallel '|' branches are correctly emphasised", {
+  f <- function(n) g(n)
+  g <- function(n) h(n)
+  h <- function(n) if (n) parallel(f(n - 1)) else abort("foo")
+  parallel <- function(x) p1(identity(x))
+  p1 <- function(x) p2(x)
+  p2 <- function(x) p3(x)
+  p3 <- function(x) x
+
+  err <- expect_error(parallel(f(0)))
+  expect_snapshot_trace(err)
+
+  deep <- function(n) parallel(f(n))
+  err <- expect_error(deep(1))
+  expect_snapshot_trace(err)
+})

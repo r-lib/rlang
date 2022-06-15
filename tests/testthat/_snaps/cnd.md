@@ -137,9 +137,9 @@
         2. | <<\-rlang::catch_cnd(expr, "error")>>
         3. |   <<+-rlang::eval_bare(...)>>
         4. |   <<+-base::tryCatch(...)>>
-        5. |   | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
-        6. |   |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
-        7. |   |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        5. |   <<| \-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        6. |   <<|   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+        7. |   <<|     \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
         8. |   <<\-base::force(expr)>>
         9. \-rlang (local) a()
        10.   \-rlang (local) b()
@@ -358,9 +358,9 @@
         1. +-rlang::catch_cnd(foo(), "error")
         2. | <<+-rlang::eval_bare(...)>>
         3. | <<+-base::tryCatch(...)>>
-        4. | | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
-        5. | |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
-        6. | |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
+        4. | <<| \-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
+        5. | <<|   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
+        6. | <<|     \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
         7. | <<\-base::force(expr)>>
         8. \-rlang (local) foo()
         9.   \-rlang (local) bar()

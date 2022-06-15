@@ -19,21 +19,11 @@ cli_tree <- function(data,
 
   res <- character()
 
-  # `n` is a vector of integers from the root to the current node
-  # representing the index of the active node for each level of the
-  # tree. `mx` is a vector representing the total number of nodes for
-  # each level. So `n = c(2, 1)` and `mx = c(2, 3)` means that we are
-  # two levels deep, and got here via the second child (node r-2) of
-  # the root out of two children, and the first child of node r-2 out
-  # of three children.
-
   pt <- function(root, n = integer(), mx = integer(), deemphasise = FALSE) {
     num_root <- match(root, data$id)
     main_sibling <- is_string(data$node_type[[num_root]], "main_sibling")
-
     marked_deemph <- FALSE
 
-    level <- length(n) - 1
     prefix <- map_chr(seq_along(n), function(i) {
       mark_deemph <- function(x) {
         if (!marked_deemph) {
@@ -54,7 +44,12 @@ cli_tree <- function(data,
             paste0(style$j, style$h)
           }
         } else {
-          if (!deemphasise || n[i] < mx[i]) {
+          # Detect first "|" branch displayed by taking into account
+          # the empty " " spaces
+          past <- seq_len(i)
+          n_spaces <- sum(n[past] >= mx[past] & past != length(n))
+
+          if (!deemphasise || i == 1 + n_spaces) {
             paste0(style$v, " ")
           } else {
             mark_deemph(paste0(style$v, " "))
