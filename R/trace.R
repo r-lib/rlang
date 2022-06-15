@@ -128,7 +128,7 @@ trace_back <- function(top = NULL, bottom = NULL) {
   error_frame <- peek_option("rlang:::error_frame")
   if (!is_null(error_frame)) {
     trace[["error_frame"]] <- FALSE
-    i <- detect_index(frames, identical, error_frame, .right = TRUE)
+    i <- detect_index(frames, identical, error_frame)
     if (i) {
       trace[["error_frame"]][[i]] <- TRUE
       check_arg <- peek_option("rlang:::check_arg")

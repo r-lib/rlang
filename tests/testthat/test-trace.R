@@ -698,3 +698,15 @@ test_that("error calls and args are highlighted (no highlighted arg)", {
     print_highlighted_trace(argless)
   })
 })
+
+test_that("frame is detected from the left", {
+  f <- function() g()
+  g <- function() h()
+  h <- function() identity(evalq(identity(abort("foo"))))
+  err <- catch_error(f())
+
+  expect_snapshot({
+    "If detected from the right, `evalq()`is highlighted instead of `h()`"
+    print_highlighted_trace(err)
+  })
+})
