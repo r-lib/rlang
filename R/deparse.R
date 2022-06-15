@@ -1013,34 +1013,31 @@ as_name <- function(x) {
   as_string(x)
 }
 
-call_deparse_highlight <- function(call,
-                                   arg,
-                                   default = as_label(call)) {
-  if (is_null(arg)) {
-    return(format_error_call_highlight(default, quote = FALSE))
-  }
-
-  stopifnot(is_call(call), is_string(arg))
-
-  names <- names(call)
-  if (!arg %in% names) {
-    return(default)
-  }
+call_deparse_highlight <- function(call, arg) {
+  stopifnot(
+    is_call(call),
+    is_string(arg) || is_null(arg)
+  )
 
   if (!is_symbol(call[[1]]) || call_print_fine_type(call) != "call") {
-    return(default)
+    return(format_error_call_highlight(as_label(call), quote = FALSE))
   }
 
-  # Simply remove other arguments for now
-  call <- call[c(1, match(arg, names))]
+  names <- names(call)
+  if (!is_null(arg) && arg %in% names) {
+    # Simply remove other arguments for now
+    call <- call[c(1, match(arg, names))]
+
+    args_list <- sprintf("%s = %s", arg, as_label(call[[arg]]))
+    args_list <- format_error_arg_highlight(args_list, quote = FALSE)
+  } else {
+    args_list <- args_deparse(node_cdr(call))
+    args_list <- substring(args_list, 2, nchar(args_list) - 1)
+  }
 
   fn <- sym_text(call[[1]])
   open <- format_error_call_highlight(sprintf("%s(", fn), quote = FALSE)
   close <- format_error_call_highlight(")", quote = FALSE)
 
-  arg_value <- as_label(call[[arg]])
-  arg_passing <- sprintf("%s = %s", arg, arg_value)
-  arg_passing <- format_error_arg_highlight(arg_passing, quote = FALSE)
-
-  paste0(open, arg_passing, close)
+  paste0(open, args_list, close)
 }

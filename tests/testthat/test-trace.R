@@ -686,3 +686,15 @@ test_that("error calls and args are highlighted", {
     print_highlighted_trace(child)
   })
 })
+
+test_that("error calls and args are highlighted (no highlighted arg)", {
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+
+  argless <- catch_error(f())
+
+  expect_snapshot({
+    print_highlighted_trace(argless)
+  })
+})
