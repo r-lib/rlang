@@ -53,10 +53,10 @@ arg_match <- function(arg,
   }
 
   if (length(arg) > 1 && !setequal(arg, values)) {
-    abort(
-      arg_match_invalid_msg(arg, values, error_arg),
-      call = error_call
-    )
+    header <- function(cnd, ..., highlight_error = FALSE) {
+      arg_match_invalid_msg(arg, values, error_arg, highlight_error)
+    }
+    abort(header = header, call = error_call, check_arg = error_arg)
   }
 
   arg <- arg[[1]]
@@ -111,43 +111,51 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
         format_arg("arg"),
         format_arg("values")
       )
-      abort(msg, call = quote(arg_match()))
+      abort(msg, call = quote(arg_match()), check_arg = "arg")
     }
   }
 
-  msg <- arg_match_invalid_msg(arg, values, error_arg)
+  header <- function(cnd, ..., highlight_error = FALSE) {
+    msg <- arg_match_invalid_msg(arg, values, error_arg, highlight_error)
 
-  # Try suggest the most probable and helpful candidate value
-  candidate <- NULL
-  i_partial <- pmatch(arg, values)
-  if (!is_na(i_partial)) {
-    candidate <- values[[i_partial]]
-  }
-
-  i_close <- adist(arg, values) / nchar(values)
-  if (any(i_close <= 0.5)) {
-    candidate <- values[[which.min(i_close)]]
-  }
-
-  if (is_null(candidate)) {
-    # Make case-insensitive match only after failed case-sensitive one to be
-    # more helpful in certain edge cases. For example,
-    # `arg_match0("aa", c("AA", "aA"))`: here "aA" is the closest candidate.
-    i_close_nocase <- adist(arg, values, ignore.case = TRUE) / nchar(values)
-    if (any(i_close_nocase <= 0.5)) {
-      candidate <- values[[which.min(i_close_nocase)]]
+    # Try suggest the most probable and helpful candidate value
+    candidate <- NULL
+    i_partial <- pmatch(arg, values)
+    if (!is_na(i_partial)) {
+      candidate <- values[[i_partial]]
     }
+
+    i_close <- adist(arg, values) / nchar(values)
+    if (any(i_close <= 0.5)) {
+      candidate <- values[[which.min(i_close)]]
+    }
+
+    if (is_null(candidate)) {
+      # Make case-insensitive match only after failed case-sensitive one to be
+      # more helpful in certain edge cases. For example,
+      # `arg_match0("aa", c("AA", "aA"))`: here "aA" is the closest candidate.
+      i_close_nocase <- adist(arg, values, ignore.case = TRUE) / nchar(values)
+      if (any(i_close_nocase <= 0.5)) {
+        candidate <- values[[which.min(i_close_nocase)]]
+      }
+    }
+
+    if (!is_null(candidate)) {
+      candidate <- chr_quoted(candidate, "\"")
+      msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
+    }
+
+    msg
   }
 
-  if (!is_null(candidate)) {
-    candidate <- chr_quoted(candidate, "\"")
-    msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
-  }
-
-  abort(msg, call = error_call)
+  abort(header = header, call = error_call, check_arg = error_arg)
 }
 
-arg_match_invalid_msg <- function(val, values, error_arg) {
+arg_match_invalid_msg <- function(val,
+                                  values,
+                                  error_arg,
+                                  highlight_error = FALSE) {
+  format_arg <- if (highlight_error) format_error_arg_highlight else format_arg
   msg <- paste0(format_arg(error_arg), " must be one of ")
   msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 
