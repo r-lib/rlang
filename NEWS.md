@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `call_match()` now better handles `...` when `dots_expand = FALSE`.
+
 * `list2(!!!x)` is now faster when `x` is a list. It is now returned
   as is instead of being duplicated into a new list.
 

@@ -728,7 +728,7 @@ call_match <- function(call = NULL,
     fn <- fn %||% sys.function(sys.parent())
     dots_env <- dots_env %||% caller_env(2)
   } else {
-    dots_env <- dots_env %||% empty_env()
+    dots_env <- dots_env %||% env(empty_env(), ... = NULL)
   }
 
   if (is_null(fn)) {
