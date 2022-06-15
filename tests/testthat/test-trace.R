@@ -670,29 +670,19 @@ test_that("parallel '|' branches are correctly emphasised", {
   expect_snapshot_trace(err)
 })
 
-test_that("collapse is deprecated", {
-  # Classed deprecation warning
-  skip_if_not_installed("base", "3.6.0")
+test_that("error calls and args are highlighted", {
+  f <- function(x) g(x)
+  g <- function(x) h(x)
+  h <- function(x) check_string(x)
+  wrapper <- function() {
+    try_fetch(f(1), error = function(cnd) abort("Tilt.", parent = cnd))
+  }
 
-  local_lifecycle_warnings()
-
-  f <- function() g()
-  g <- function() h()
-  h <- function() abort("foo")
-  err <- catch_error(f())
+  parent <- catch_error(f(1))
+  child <- catch_error(wrapper())
 
   expect_snapshot({
-    print(err, simplify = "collapse", srcrefs = FALSE)
+    print_highlighted_trace(parent)
+    print_highlighted_trace(child)
   })
-})
-
-test_that("focal trace highlighting is not affected by hidden frames", {
-  f <- function() g()
-  g <- function() h()
-  h <- function() {
-    inject(rlang::abort("foo", call = !!environment()), global_env())
-  }
-  err <- catch_cnd(f())
-
-  expect_snapshot_trace(err$trace)
 })

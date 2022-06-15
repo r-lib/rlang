@@ -1290,6 +1290,19 @@
       Backtrace:
            x
         1. +-rlang:::catch_error(f())
+
+# error calls and args are highlighted
+
+    Code
+      print_highlighted_trace(parent)
+    Output
+      <error/rlang_error>
+      Error in <<CALL h()>>:
+      ! <<ARG x>> must be a single string, not a number.
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(f(1))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1344,4 +1357,36 @@
         8. rlang (local) f()
         9. rlang (local) g()
        10. rlang (local) h()
+        9. \-rlang (local) f(1)
+       10.   \-rlang (local) g(x)
+       11.     \-rlang (local) <<CALL h(>><<ARG x = x>><<CALL )>>
+    Code
+      print_highlighted_trace(child)
+    Output
+      <error/rlang_error>
+      Error in <<CALL wrapper()>>:
+      ! Tilt.
+      Caused by error in <<CALL h()>>:
+      ! <<ARG x>> must be a single string, not a number.
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(wrapper())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) wrapper()
+       10.   +-rlang::try_fetch(f(1), error = function(cnd) abort("Tilt.", parent = cnd))
+       11.   | +-base::tryCatch(...)
+       12.   | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       13.   | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       14.   | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+       15.   | \-base::withCallingHandlers(...)
+       16.   \-rlang (local) f(1)
+       17.     \-rlang (local) g(x)
+       18.       \-rlang (local) <<CALL h(>><<ARG x = x>><<CALL )>>
 
