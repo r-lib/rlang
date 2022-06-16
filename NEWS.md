@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `options(backtrace_on_error = "collapse")` and `print(trace,
+  simplify = "collapse")` are deprecated. They fall back to `"none"`
+  with a warning.
+
 * `call_match()` now better handles `...` when `dots_expand = FALSE`.
 
 * `list2(!!!x)` is now faster when `x` is a list. It is now returned

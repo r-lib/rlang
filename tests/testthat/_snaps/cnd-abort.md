@@ -52,12 +52,10 @@
     Output
       Error in `h()`:
       ! Error message
-      Backtrace:
-          x
-       1. \-global f()
-       2.   +-[ base::tryCatch(...) ] with 1 more call
-       4.   \-global g()
-       5.     \-global h()
+      Warning message:
+      `"collapse"` is deprecated as of rlang 1.1.0.
+      Please use `"none"` instead.
+      This warning is displayed once per session. 
       Execution halted
     Code
       cat_line(full)

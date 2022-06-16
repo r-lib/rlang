@@ -14,7 +14,6 @@ of the following values:
 \item \code{"reminder"}, the default in interactive sessions, displays a reminder that
 you can see the backtrace with \code{\link[=last_error]{last_error()}}.
 \item \code{"branch"} displays a simplified backtrace.
-\item \code{"collapse"} displays a collapsed backtrace tree.
 \item \code{"full"}, the default in non-interactive sessions, displays the full tree.
 }
 
