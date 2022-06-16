@@ -685,3 +685,14 @@ test_that("collapse is deprecated", {
     print(err, simplify = "collapse", srcrefs = FALSE)
   })
 })
+
+test_that("focal trace highlighting is not affected by hidden frames", {
+  f <- function() g()
+  g <- function() h()
+  h <- function() {
+    inject(rlang::abort("foo", call = !!environment()), global_env())
+  }
+  err <- catch_cnd(f())
+
+  expect_snapshot_trace(err$trace)
+})
