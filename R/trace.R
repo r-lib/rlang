@@ -448,18 +448,6 @@ trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   cli_branch(tree, max = max_frames)
 }
 
-format_collapsed <- function(what, n) {
-  if (n > 0L) {
-    call_text <- pluralise_n(n, "call", "calls")
-    n_text <- sprintf(" with %d more %s", n, call_text)
-    n_text <- silver(n_text)
-  } else {
-    n_text <- ""
-  }
-
-  paste0(what, n_text)
-}
-
 cli_branch <- function(tree,
                        max = NULL,
                        style = NULL) {
@@ -593,35 +581,6 @@ trace_trim_env_idx <- function(n, frames, to) {
   seq2(start, n)
 }
 
-set_trace_collapsed <- function(trace, id, n) {
-  trace$collapsed[[id - n]] <- n
-  trace
-}
-n_collapsed <- function(trace, id) {
-  call <- trace$call[[id]]
-
-  if (is_eval_call(call)) {
-    # When error occurs inside eval()'s frame at top level, there
-    # might be only one frame and nothing to collapse
-    if (id > 1L && is_eval_call(trace$call[[id - 1L]])) {
-      n <- 1L
-    } else {
-      n <- 0L
-    }
-    return(n)
-  }
-
-  if (identical(call, quote(function_list[[i]](value)))) {
-    return(6L)
-  }
-
-  if (identical(call, quote(function_list[[k]](value)))) {
-    return(7L)
-  }
-
-  0L
-}
-
 is_eval_call <- function(call) {
   is_call2(call, c("eval", "evalq"), ns = c("", "base"))
 }
@@ -643,17 +602,7 @@ trace_simplify_branch <- function(trace) {
     id <- 0L
   }
 
-  trace$collapsed <- 0L
-
   while (id != 0L) {
-    n_collapsed <- n_collapsed(trace, id)
-
-    if (n_collapsed) {
-      trace <- set_trace_collapsed(trace, id, n_collapsed)
-      next_id <- id - n_collapsed
-      id <- next_id
-    }
-
     # Set `old_visible` to avoid uninformative calls in position 1 to
     # be included (see below)
     if (is_uninformative_call(trace$call[[id]])) {
@@ -725,10 +674,7 @@ is_winch_frame <- function(call) {
 # Printing ----------------------------------------------------------------
 
 trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
-  if (is_null(trace$collapsed)) {
-    trace$collapsed <- vec_recycle(0L, trace_length(trace))
-  }
-  call_text_data <- trace[c("call", "collapsed", "namespace", "scope")]
+  call_text_data <- trace[c("call", "namespace", "scope")]
   call_text <- chr(!!!pmap(call_text_data, trace_call_text))
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs") %||% TRUE
@@ -818,11 +764,7 @@ node_type <- function(ns, children) {
 }
 
 # FIXME: Add something like call_deparse_line()
-trace_call_text <- function(call, collapsed, namespace, scope) {
-  if (collapsed && length(call) > 1L) {
-    call <- call2(call[[1]], quote(...))
-  }
-
+trace_call_text <- function(call, namespace, scope) {
   if (is_call(call) && is_symbol(call[[1]])) {
     if (scope %in% c("::", ":::") && !is_na(namespace)) {
       call[[1]] <- call(scope, sym(namespace), call[[1]])
@@ -835,11 +777,6 @@ trace_call_text <- function(call, collapsed, namespace, scope) {
     text <- paste0("global ", text)
   } else if (is_string(scope, "local") && !is_na(namespace)) {
     text <- paste0(namespace, " (local) ", text)
-  }
-
-  if (collapsed) {
-    n_collapsed_text <- sprintf(" ... +%d", collapsed)
-    text <- format_collapsed(paste0("[ ", text, " ]"), collapsed)
   }
 
   text

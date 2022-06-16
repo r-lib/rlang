@@ -325,7 +325,8 @@
       print(trace, simplify = "branch", srcrefs = FALSE)
     Output
        1. rlang (local) f()
-       2. [ base::eval(...) ] with 1 more call
+       2. base::eval(quote(g()), env())
+       3. base::eval(quote(g()), env())
        4. rlang (local) g()
 
 # combinations of incomplete and leading pipes collapse properly
@@ -1001,7 +1002,8 @@
      1. f()
      2. g()
      3. h()
-     4. [ evalq() ] with 1 more call
+     4. evalq()
+     5. evalq()
 
 # trailing `FALSE` visibility is handled
 
