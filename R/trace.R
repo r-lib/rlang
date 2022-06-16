@@ -674,8 +674,19 @@ is_winch_frame <- function(call) {
 # Printing ----------------------------------------------------------------
 
 trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
+  root_id <- 0
+  root_children <- list(find_children(root_id, trace$parent))
+
+  trace$id <- seq_len(nrow(trace))
+  trace$children <- map(trace$id, find_children, trace$parent)
+
+  # Subset out hidden frames
+  trace <- trace_slice(trace, trace$visible)
+  trace$children <- map(trace$children, intersect, trace$id)
+  root_children[[1]] <- intersect(root_children[[1]], trace$id)
+
   call_text_data <- trace[c("call", "namespace", "scope")]
-  call_text <- chr(!!!pmap(call_text_data, trace_call_text))
+  trace$call_text <- chr(!!!pmap(call_text_data, trace_call_text))
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs") %||% TRUE
   stopifnot(is_scalar_logical(srcrefs))
@@ -688,45 +699,34 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
     trace$src_loc <- vec_recycle("", trace_length(trace))
   }
 
-  id <- c(0, seq_along(trace$call))
-  children <- map(id, function(id) seq_along(trace$parent)[trace$parent == id])
-
   root <- data_frame(
     call = list(NULL),
     parent = 0L,
     visible = TRUE,
     namespace = NA,
     scope = NA,
-    src_loc = ""
+    src_loc = "",
+    id = root_id,
+    children = root_children,
+    call_text = trace_root()
   )
   trace <- vec_rbind(root, trace)
 
-  tree_data <- data_frame(
-    id = as.character(id),
-    children = children,
-    call_text = c(trace_root(), call_text)
-  )
-  tree <- vec_cbind(tree_data, trace)
-
   if (drop) {
-    tree$node_type <- node_type(lengths(tree$children), tree$children)
+    trace$node_type <- node_type(lengths(trace$children), trace$children)
   } else {
-    tree$node_type <- rep_len("main", nrow(tree))
+    trace$node_type <- rep_len("main", nrow(trace))
   }
-
-  # Subset out hidden frames
-  tree <- vec_slice(tree, tree$visible)
-  tree$children <- map(tree$children, intersect, tree$id)
 
   if (has_crayon()) {
     # Detect runs of namespaces/global
-    ns <- tree$namespace
-    ns <- ifelse(is.na(ns) & tree$scope == "global", "global", ns)
+    ns <- trace$namespace
+    ns <- ifelse(is.na(ns) & trace$scope == "global", "global", ns)
     ns[[1]] <- "_root"
     starts <- detect_run_starts(ns)
 
     # Embolden first occurrences in runs of namespaces/global
-    tree$call_text <- map2_chr(tree$call_text, starts, function(text, start) {
+    trace$call_text <- map2_chr(trace$call_text, starts, function(text, start) {
       if (is_true(start)) {
         text <- sub(
           "^([a-zA-Z]+)(::|:::| )",
@@ -738,7 +738,11 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
     })
   }
 
-  tree
+  trace
+}
+
+find_children <- function(id, parent) {
+  seq_along(parent)[parent == id]
 }
 
 node_type <- function(ns, children) {
