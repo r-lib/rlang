@@ -100,7 +100,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/call_match.html">call_match()</a></code> now better handles <code>...</code> when <code>dots_expand = FALSE</code>.</p></li>
+<ul><li><p><code>options(backtrace_on_error = "collapse")</code> and <code>print(trace,   simplify = "collapse")</code> are deprecated. They fall back to <code>"none"</code> with a warning.</p></li>
+<li><p><code><a href="../reference/call_match.html">call_match()</a></code> now better handles <code>...</code> when <code>dots_expand = FALSE</code>.</p></li>
 <li><p><code>list2(!!!x)</code> is now faster when <code>x</code> is a list. It is now returned as is instead of being duplicated into a new list.</p></li>
 <li><p><code><a href="../reference/abort.html">abort()</a></code> gains a <code>.trace_bottom</code> argument to disambiguate from other <code>.frame</code>. This allows <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> to wrap <code><a href="../reference/abort.html">abort()</a></code> in such a way that <code>.internal</code> mentions the correct package to report the error in (<a href="https://github.com/r-lib/rlang/issues/1386" class="external-link">#1386</a>).</p></li>
 <li><p>The <code>transpose()</code> compat is now more consistent with purrr when inner names are not congruent (<a href="https://github.com/r-lib/rlang/issues/1346" class="external-link">#1346</a>).</p></li>
