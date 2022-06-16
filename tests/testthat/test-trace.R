@@ -127,6 +127,7 @@ test_that("trace picks up option `rlang_trace_top_env` for trimming trace", {
   )
 })
 
+# This test used to be about `simplify = "collapse"`
 test_that("collapsed formatting doesn't collapse single frame siblings", {
   e <- current_env()
   f <- function() eval_bare(quote(g()))
@@ -134,8 +135,8 @@ test_that("collapsed formatting doesn't collapse single frame siblings", {
   trace <- f()
 
   expect_snapshot({
-    print(trace, simplify = "none", srcrefs = FALSE)
-    print(trace, simplify = "collapse", srcrefs = FALSE)
+    print(trace, simplify = "none", drop = TRUE, srcrefs = FALSE)
+    print(trace, simplify = "none", drop = FALSE, srcrefs = FALSE)
   })
 })
 
@@ -172,7 +173,6 @@ test_that("long backtrace branches are truncated", {
   })
 
   expect_error(print(trace, simplify = "none", max_frames = 5), "currently only supported with")
-  expect_error(print(trace, simplify = "collapse", max_frames = 5), "currently only supported with")
 })
 
 test_that("eval() frames are collapsed", {
@@ -193,50 +193,6 @@ test_that("eval() frames are collapsed", {
   expect_snapshot_trace(trace)
 })
 
-test_that("%>% frames are collapsed", {
-  skip_if_not_installed("magrittr", "1.5.0.9000")
-  skip_on_cran()
-
-  # Fake eval() call does not have same signature on old R
-  skip_if(getRversion() < "3.4")
-
-  `%>%` <- magrittr::`%>%`
-
-  e <- current_env()
-  f <- function(x, ...) x
-  g <- function(x, ...) x
-  h <- function(x, ...) trace_back(e)
-
-  trace <- NULL %>% f() %>% g(1, 2) %>% h(3, ., 4)
-  expect_snapshot_trace(trace)
-
-  trace <- f(NULL) %>% g(list(.)) %>% h(3, ., list(.))
-  expect_snapshot_trace(trace)
-
-  trace <- f(g(NULL %>% f()) %>% h())
-  expect_snapshot_trace(trace)
-})
-
-test_that("children of collapsed %>% frames have correct parent", {
-  skip_if_not_installed("magrittr", "1.5.0.9000")
-  skip_on_cran()
-
-  # Fake eval() call does not have same signature on old R
-  skip_if(getRversion() < "3.4")
-
-  `%>%` <- magrittr::`%>%`
-
-  e <- current_env()
-  F <- function(x, ...) x
-  G <- function(x, ...) x
-  H <- function(x) f()
-  f <- function() h()
-  h <- function() trace_back(e)
-
-  trace <- NA %>% F() %>% G() %>% H()
-  expect_snapshot_trace(trace)
-})
-
 test_that("children of collapsed frames are rechained to correct parent", {
   # Fake eval() call does not have same signature on old R
   skip_if(getRversion() < "3.4")
@@ -247,10 +203,10 @@ test_that("children of collapsed frames are rechained to correct parent", {
   trace <- f()
 
   expect_snapshot({
-    cat("Full:\n")
-    print(trace, simplify = "none", srcrefs = FALSE)
-    cat("\nCollapsed:\n")
-    print(trace, simplify = "collapse", srcrefs = FALSE)
+    cat("Full + drop:\n")
+    print(trace, simplify = "none", drop = TRUE, srcrefs = FALSE)
+    cat("Full - drop:\n")
+    print(trace, simplify = "none", drop = FALSE, srcrefs = FALSE)
     cat("\nBranch:\n")
     print(trace, simplify = "branch", srcrefs = FALSE)
   })
@@ -712,4 +668,20 @@ test_that("parallel '|' branches are correctly emphasised", {
   deep <- function(n) parallel(f(n))
   err <- expect_error(deep(1))
   expect_snapshot_trace(err)
+})
+
+test_that("collapse is deprecated", {
+  # Classed deprecation warning
+  skip_if_not_installed("base", "3.6.0")
+
+  local_lifecycle_warnings()
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+  err <- catch_error(f())
+
+  expect_snapshot({
+    print(err, simplify = "collapse", srcrefs = FALSE)
+  })
 })

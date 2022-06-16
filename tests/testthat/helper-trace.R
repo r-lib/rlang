@@ -6,8 +6,6 @@ expect_snapshot_trace <- function(trace,
     print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     "Focused"
     print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
-    "Collapsed"
-    print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
     "Branch"
     print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
   })

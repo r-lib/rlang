@@ -397,17 +397,28 @@ c.rlang_trace <- function(...) {
 #' @export
 format.rlang_trace <- function(x,
                                ...,
-                               simplify = c("none", "collapse", "branch"),
+                               simplify = c("none", "branch"),
                                max_frames = NULL,
                                dir = getwd(),
                                srcrefs = NULL,
                                drop = FALSE) {
   switch(
-    arg_match(simplify),
+    arg_match_simplify(simplify),
     none = trace_format(x, max_frames, dir, srcrefs, drop = drop),
-    collapse = trace_format_collapse(x, max_frames, dir, srcrefs),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
   )
+}
+
+arg_match_simplify <- function(simplify, call = caller_env()) {
+  if (is_string(simplify, "collapse")) {
+    deprecate_collapse()
+    simplify <- "none"
+  }
+  arg_match0(simplify, c("none", "branch"), error_call = call)
+}
+
+deprecate_collapse <- function() {
+  warn_deprecated("`\"collapse\"` is deprecated as of rlang 1.1.0.\nPlease use `\"none\"` instead.")
 }
 
 trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
@@ -425,11 +436,6 @@ trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
 
   tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs, drop = drop)
   cli_tree(tree)
-}
-
-trace_format_collapse <- function(trace, max_frames, dir, srcrefs) {
-  trace <- trace_simplify_collapse(trace)
-  trace_format(trace, max_frames, dir, srcrefs, drop = TRUE)
 }
 
 trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
@@ -531,11 +537,11 @@ zip_chr <- function(xs, ys) {
 #' @export
 print.rlang_trace <- function(x,
                               ...,
-                              simplify = c("none", "branch", "collapse"),
+                              simplify = c("none", "branch"),
                               max_frames = NULL,
                               dir = getwd(),
                               srcrefs = NULL) {
-  simplify <- arg_match(simplify)
+  simplify <- arg_match_simplify(simplify)
   cat_line(format(x, ...,
     simplify = simplify,
     max_frames = max_frames,
@@ -587,10 +593,6 @@ trace_trim_env_idx <- function(n, frames, to) {
   seq2(start, n)
 }
 
-set_trace_skipped <- function(trace, id, n) {
-  trace$collapsed[[id]] <- n
-  trace
-}
 set_trace_collapsed <- function(trace, id, n) {
   trace$collapsed[[id - n]] <- n
   trace
@@ -717,60 +719,6 @@ is_winch_frame <- function(call) {
 
   name <- as_string(lhs)
   grepl("^[/\\\\].+[.]", name)
-}
-
-trace_simplify_collapse <- function(trace) {
-  if (!trace_length(trace)) {
-    return(trace)
-  }
-
-  parents <- trace$parent
-
-  old_visible <- trace$visible
-  visible <- rep_along(old_visible, FALSE)
-
-  id <- trace_length(trace)
-
-  trace$collapsed <- 0L
-
-  while (id > 0L) {
-    n_collapsed <- n_collapsed(trace, id)
-
-    if (n_collapsed) {
-      trace <- set_trace_collapsed(trace, id, n_collapsed)
-      next_id <- id - n_collapsed
-
-      # Rechain child of collapsed parent to correct parent
-      parents[[id + 1L]] <- next_id
-
-      id <- next_id
-    }
-
-    visible[[id]] <- TRUE
-    parent_id <- parents[[id]]
-    id <- dec(id)
-
-    # Collapse intervening call branches
-    n_skipped <- 0L
-    while (id != parent_id) {
-      sibling_parent_id <- parents[[id]]
-
-      if (sibling_parent_id == parent_id) {
-        trace <- set_trace_skipped(trace, id, n_skipped)
-        visible[[id]] <- TRUE
-        n_skipped <- 0L
-      } else {
-        n_skipped <- inc(n_skipped)
-      }
-
-      id <- dec(id)
-    }
-  }
-
-  trace$visible <- visible & old_visible
-  trace$parent <- parents
-
-  trace
 }
 
 

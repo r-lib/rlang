@@ -852,3 +852,9 @@ test_that("can chain errors at top-level (#1405)", {
   expect_true(any(grepl("foo", out$output)))
   expect_true(any(grepl("bar", out$output)))
 })
+
+test_that("backtrace_on_error = 'collapse' is deprecated.", {
+  local_options("rlang_backtrace_on_error" = "collapse")
+  expect_warning(peek_backtrace_on_error(), "deprecated")
+  expect_equal(peek_option("rlang_backtrace_on_error"), "none")
+})

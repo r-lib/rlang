@@ -378,7 +378,7 @@ is_rlang_error <- function(x) {
 format.rlang_error <- function(x,
                                ...,
                                backtrace = TRUE,
-                               simplify = c("branch", "collapse", "none"),
+                               simplify = c("branch", "none"),
                                drop = NULL) {
   if (use_tree_display() && length(simplify) == 3) {
     simplify <- "none"
@@ -390,7 +390,7 @@ format.rlang_error <- function(x,
   simplify <- x$rlang$internal$trace_simplify %||% simplify
   drop <- x$rlang$internal$trace_drop %||% drop
 
-  simplify <- arg_match(simplify)
+  simplify <- arg_match_simplify(simplify)
   out <- cnd_format(
     x,
     ...,
@@ -444,7 +444,7 @@ summary.rlang_warning <- function(object, ...) {
 format.rlang_warning <- function(x,
                                  ...,
                                  backtrace = TRUE,
-                                 simplify = c("branch", "collapse", "none")) {
+                                 simplify = c("branch", "none")) {
   cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
 }
 
@@ -462,11 +462,11 @@ cnd_print <- function(x, ...) {
 cnd_format <- function(x,
                        ...,
                        backtrace = TRUE,
-                       simplify = c("branch", "collapse", "none"),
+                       simplify = c("branch", "none"),
                        prefix = TRUE,
                        alert = NULL,
                        drop = FALSE) {
-  simplify <- arg_match(simplify)
+  simplify <- arg_match_simplify(simplify)
   alert <- alert %||% is_error(x)
 
   orig <- x

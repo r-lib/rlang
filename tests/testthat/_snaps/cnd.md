@@ -152,26 +152,6 @@
        17.         \-rlang (local) g()
        18.           \-rlang (local) h()
     Code
-      # Collapsed
-      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
-    Output
-      <error/rlang_error>
-      Error in `c()`:
-      ! High-level message
-      Caused by error in `h()`:
-      ! Low-level message
-      ---
-      Backtrace:
-           x
-        1. +-[ rlang:::catch_error(...) ] with 7 more calls
-        9. \-rlang (local) a()
-       10.   \-rlang (local) b()
-       11.     \-rlang (local) c()
-       12.       +-[ base::tryCatch(...) ] with 3 more calls
-       16.       \-rlang (local) f()
-       17.         \-rlang (local) g()
-       18.           \-rlang (local) h()
-    Code
       # Branch
       print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
     Output
@@ -369,26 +349,6 @@
        12.       | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
        13.       |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
        14.       |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
-       15.       \-rlang (local) f()
-       16.         \-rlang (local) g()
-       17.           \-rlang (local) h()
-    Code
-      # Collapsed
-      print(trace, simplify = "collapse", dir = dir, srcrefs = srcrefs)
-    Output
-      <error/rlang_error>
-      Error in `baz()`:
-      ! bar
-      Caused by error in `h()`:
-      ! foo
-      ---
-      Backtrace:
-           x
-        1. +-[ rlang::catch_cnd(...) ] with 6 more calls
-        8. \-rlang (local) foo()
-        9.   \-rlang (local) bar()
-       10.     \-rlang (local) baz()
-       11.       +-[ base::tryCatch(...) ] with 3 more calls
        15.       \-rlang (local) f()
        16.         \-rlang (local) g()
        17.           \-rlang (local) h()

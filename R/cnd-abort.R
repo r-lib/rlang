@@ -1244,7 +1244,6 @@ call_restore <- function(x, to) {
 #' * `"reminder"`, the default in interactive sessions, displays a reminder that
 #'   you can see the backtrace with [rlang::last_error()].
 #' * `"branch"` displays a simplified backtrace.
-#' * `"collapse"` displays a collapsed backtrace tree.
 #' * `"full"`, the default in non-interactive sessions, displays the full tree.
 #'
 #' rlang errors are normally thrown with [abort()]. If you promote
@@ -1304,7 +1303,7 @@ call_restore <- function(x, to) {
 #' # stop("foo")
 NULL
 
-backtrace_on_error_opts <- c("none", "reminder", "branch", "collapse", "full")
+backtrace_on_error_opts <- c("none", "reminder", "branch", "full")
 
 # Whenever the backtrace-on-error format is changed, the version in
 # `inst/backtrace-ver` and in `tests/testthat/helper-rlang.R` must be
@@ -1390,13 +1389,21 @@ peek_backtrace_on_error_report <- function() {
 peek_backtrace_on_error_opt <- function(name) {
   opt <- peek_option(name)
 
-  if (!is_null(opt) && !is_string(opt, backtrace_on_error_opts)) {
-    options(list2("{name}" := NULL))
-    warn(c(
-      sprintf("Invalid %s option.", format_arg(name)),
-      i = "The option was just reset to `NULL`."
-    ))
-    return(NULL)
+  if (!is_null(opt)) {
+    if (is_string(opt, "collapse")) {
+      options(list2("{name}" := "none"))
+      deprecate_collapse()
+      return("none")
+    }
+
+    if (!is_string(opt, backtrace_on_error_opts)) {
+      options(list2("{name}" := NULL))
+      warn(c(
+        sprintf("Invalid %s option.", format_arg(name)),
+        i = "The option was just reset to `NULL`."
+      ))
+      return(NULL)
+    }
   }
 
   opt
