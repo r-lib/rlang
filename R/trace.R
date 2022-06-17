@@ -1058,18 +1058,38 @@ is_trace <- function(x) {
 #' @keywords internal
 NULL
 
-local_error_highlight <- function(frame = caller_env()) {
+local_error_highlight <- function(frame = caller_env(), code = TRUE) {
   if (!has_cli_start_app) {
     return()
   }
 
   if (is_true(peek_option("rlang:::trace_test_highlight"))) {
-    theme <- theme_error_highlight_test
+    if (code) {
+      theme <- theme_error_highlight_test
+    } else {
+      theme <- theme_error_arg_highlight_test
+    }
   } else {
-    theme <- theme_error_highlight
+    if (code) {
+      theme <- theme_error_highlight
+    } else {
+      theme <- theme_error_arg_highlight
+    }
   }
 
   cli::start_app(theme, .envir = frame)
+}
+
+with_error_highlight <- function(expr) {
+  local_error_highlight()
+  expr
+}
+
+# Used for highlighting `.arg` spans in error messages without
+# affecting `.code` spans
+with_error_arg_highlight <- function(expr) {
+  local_error_highlight(code = FALSE)
+  expr
 }
 
 on_load({
@@ -1102,6 +1122,9 @@ on_load({
       "span.code-unquoted" = code_theme
     )
   })
+
+  theme_error_arg_highlight <- theme_error_highlight
+  theme_error_arg_highlight[c("span.code", "span.code-unquoted")] <- NULL
 })
 
 theme_error_highlight_test <- list(
@@ -1110,6 +1133,9 @@ theme_error_highlight_test <- list(
   "span.arg-unquoted" = list(before = "<<ARG ", after = ">>"),
   "span.code-unquoted" = list(before = "<<CALL ", after = ">>")
 )
+
+theme_error_arg_highlight_test <- theme_error_highlight_test
+theme_error_arg_highlight_test[c("span.code", "span.code-unquoted")] <- NULL
 
 format_arg_unquoted <- function(x) {
   .rlang_cli_format_inline(x, "arg-unquoted", "%s")

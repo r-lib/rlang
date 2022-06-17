@@ -1104,7 +1104,7 @@ caller_arg <- function(arg) {
 #' # function call form
 #' writeLines(format_error_call(quote(1 + 2)))
 #' @export
-format_error_call <- function(call, highlight = FALSE) {
+format_error_call <- function(call) {
   call <- error_call(call)
   if (is_null(call)) {
     return(NULL)
@@ -1119,11 +1119,7 @@ format_error_call <- function(call, highlight = FALSE) {
     return(cli_with_whiteline_escapes(label, format_code))
   }
 
-  if (highlight) {
-    format_error_call_highlight(label, quote = TRUE)
-  } else {
-    format_code(label)
-  }
+  format_code(label)
 }
 
 error_call_as_string <- function(call) {

@@ -104,11 +104,8 @@ cnd_backtrace_on_error <- function(cnd) {
   cnd[["rlang"]]$internal$backtrace_on_error
 }
 
-cnd_message_format <- function(cnd,
-                               ...,
-                               alert = FALSE,
-                               error_highlight = FALSE) {
-  lines <- cnd_message_lines(cnd, ..., error_highlight = error_highlight)
+cnd_message_format <- function(cnd, ..., alert = FALSE) {
+  lines <- cnd_message_lines(cnd, ...)
   if (is_string(lines, "")) {
     return("")
   }
@@ -214,8 +211,7 @@ cnd_message_format_prefixed <- function(cnd,
                                         ...,
                                         parent = FALSE,
                                         alert = NULL,
-                                        warning = FALSE,
-                                        error_highlight = FALSE) {
+                                        warning = FALSE) {
   type <- cnd_type(cnd)
 
   if (is_null(alert)) {
@@ -228,14 +224,10 @@ cnd_message_format_prefixed <- function(cnd,
     prefix <- col_yellow(capitalise(type))
   }
 
-  call <- format_error_call(cnd$call, highlight = error_highlight)
+  # FIXME
+  call <- format_error_call(cnd$call)
 
-  message <- cnd_message_format(
-    cnd,
-    ...,
-    alert = alert,
-    error_highlight = error_highlight
-  )
+  message <- cnd_message_format(cnd, ..., alert = alert)
   message <- strip_trailing_newline(message)
 
   if (!nzchar(message)) {
