@@ -1088,6 +1088,7 @@ with_error_highlight <- function(expr) {
 # Used for highlighting `.arg` spans in error messages without
 # affecting `.code` spans
 with_error_arg_highlight <- function(expr) {
+  local_options("rlang:::error_highlight" = TRUE)
   local_error_highlight(code = FALSE)
   expr
 }
@@ -1128,10 +1129,10 @@ on_load({
 })
 
 theme_error_highlight_test <- list(
-  "span.arg" = list(before = "<<ARG `", after = "`>>"),
-  "span.code" = list(before = "<<CALL `", after = "`>>"),
-  "span.arg-unquoted" = list(before = "<<ARG ", after = ">>"),
-  "span.code-unquoted" = list(before = "<<CALL ", after = ">>")
+  "span.arg" = list(before = "<<ARG ", after = ">>"),
+  "span.code" = list(before = "<<CALL ", after = ">>"),
+  "span.arg-unquoted" = list(before = "<<ARG ", after = ">>", transform = NULL),
+  "span.code-unquoted" = list(before = "<<CALL ", after = ">>", transform = NULL)
 )
 
 theme_error_arg_highlight_test <- theme_error_highlight_test

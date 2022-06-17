@@ -224,8 +224,12 @@ cnd_message_format_prefixed <- function(cnd,
     prefix <- col_yellow(capitalise(type))
   }
 
-  # FIXME
-  call <- format_error_call(cnd$call)
+  evalq({
+    if (is_true(peek_option("rlang:::error_highlight"))) {
+      local_error_highlight()
+    }
+    call <- format_error_call(cnd$call)
+  })
 
   message <- cnd_message_format(cnd, ..., alert = alert)
   message <- strip_trailing_newline(message)

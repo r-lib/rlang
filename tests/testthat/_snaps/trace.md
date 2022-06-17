@@ -957,7 +957,7 @@
       print(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[94m[1m[1m`1 + ""`[39m[1m:[22m
+      [1m[33mError[39m in [1m[1m[1m[94m`1 + ""`[39m[1m:[22m
       [33m![39m non-numeric argument to binary operator
       ---
       [1mBacktrace:[22m
@@ -970,7 +970,7 @@
       summary(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[94m[1m[1m`1 + ""`[39m[1m:[22m
+      [1m[33mError[39m in [1m[1m[1m[94m`1 + ""`[39m[1m:[22m
       [33m![39m non-numeric argument to binary operator
       ---
       [1mBacktrace:[22m
@@ -1281,8 +1281,8 @@
       print_highlighted_trace(parent)
     Output
       <error/rlang_error>
-      Error in <<CALL h()>>:
-      ! <<ARG x>> must be a single string, not a number.
+      Error in <<CALL `h()`>>:
+      ! <<ARG `x`>> must be a single string, not a number.
       ---
       Backtrace:
            x
@@ -1301,10 +1301,10 @@
       print_highlighted_trace(child)
     Output
       <error/rlang_error>
-      Error in <<CALL wrapper()>>:
+      Error in <<CALL `wrapper()`>>:
       ! Tilt.
-      Caused by error in <<CALL h()>>:
-      ! <<ARG x>> must be a single string, not a number.
+      Caused by error in <<CALL `h()`>>:
+      ! <<ARG `x`>> must be a single string, not a number.
       ---
       Backtrace:
            x
@@ -1333,7 +1333,7 @@
       print_highlighted_trace(argless)
     Output
       <error/rlang_error>
-      Error in <<CALL h()>>:
+      Error in <<CALL `h()`>>:
       ! foo
       ---
       Backtrace:
@@ -1357,7 +1357,7 @@
       print_highlighted_trace(err)
     Output
       <error/rlang_error>
-      Error in <<CALL h()>>:
+      Error in <<CALL `h()`>>:
       ! foo
       ---
       Backtrace:

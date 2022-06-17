@@ -228,8 +228,8 @@
       print_highlighted_trace(err)
     Output
       <error/rlang_error>
-      Error in <<CALL h()>>:
-      ! <<ARG my_arg>> must be one of "foo" or "bar", not "f".
+      Error in <<CALL `h()`>>:
+      ! <<ARG `my_arg`>> must be one of "foo" or "bar", not "f".
       i Did you mean "foo"?
       ---
       Backtrace:

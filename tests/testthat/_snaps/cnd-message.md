@@ -486,3 +486,12 @@
       foo
       bar
 
+# arguments are highlighted but code spans are not
+
+    Code
+      with_error_arg_highlight(print(err))
+    Output
+      <error/rlang_error>
+      Error:
+      ! <<ARG `arg1`>> - `code` - <<ARG `arg2`>>
+
