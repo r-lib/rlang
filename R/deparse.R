@@ -1014,10 +1014,11 @@ as_name <- function(x) {
 }
 
 call_deparse_highlight <- function(call, arg) {
-  stopifnot(
-    is_call(call),
-    is_string(arg) || is_null(arg)
-  )
+  stopifnot(is_call(call))
+
+  if (!is_string(arg)) {
+    arg <- NULL
+  }
 
   local_error_highlight()
 

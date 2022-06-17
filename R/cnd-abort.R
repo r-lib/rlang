@@ -359,7 +359,7 @@ abort <- function(message = NULL,
       "rlang:::disable_trace_capture" = TRUE,
       "rlang:::visible_bottom" = info$bottom_frame,
       "rlang:::error_frame" = if (is_environment(call)) call else NULL,
-      "rlang:::check_arg" = cnd[["check_arg"]],
+      "rlang:::error_arg" = cnd[["arg"]],
       { trace <- trace_back() }
     )
   }

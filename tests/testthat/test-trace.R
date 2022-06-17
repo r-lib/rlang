@@ -710,3 +710,14 @@ test_that("frame is detected from the left", {
     print_highlighted_trace(err)
   })
 })
+
+test_that("arg is defensively checked", {
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo", arg = env())
+  err <- catch_error(f())
+
+  expect_snapshot({
+    print_highlighted_trace(err)
+  })
+})

@@ -56,7 +56,7 @@ arg_match <- function(arg,
     abort(
       ~ arg_match_invalid_msg(arg, values, error_arg),
       call = error_call,
-      check_arg = error_arg
+      arg = error_arg
     )
   }
 
@@ -112,7 +112,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
         format_arg("arg"),
         format_arg("values")
       )
-      abort(msg, call = quote(arg_match()), check_arg = "arg")
+      abort(msg, call = quote(arg_match()), arg = "arg")
     }
   }
 
@@ -149,7 +149,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     msg
   }
 
-  abort(message, call = error_call, check_arg = error_arg)
+  abort(message, call = error_call, arg = error_arg)
 }
 
 arg_match_invalid_msg <- function(val, values, error_arg) {

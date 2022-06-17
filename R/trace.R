@@ -131,12 +131,12 @@ trace_back <- function(top = NULL, bottom = NULL) {
     i <- detect_index(frames, identical, error_frame)
     if (i) {
       trace[["error_frame"]][[i]] <- TRUE
-      check_arg <- peek_option("rlang:::check_arg")
-      if (!is_null(check_arg)) {
-        if (is_null(trace[["check_arg"]])) {
-          trace[["check_arg"]] <- list(NULL)
+      error_arg <- peek_option("rlang:::error_arg")
+      if (!is_null(error_arg)) {
+        if (is_null(trace[["error_arg"]])) {
+          trace[["error_arg"]] <- list(NULL)
         }
-        trace[["check_arg"]][[i]] <- check_arg
+        trace[["error_arg"]][[i]] <- error_arg
 
         # Match arguments so we can fully highlight the faulty input in
         # the backtrace. Preserve srcrefs from original frame call.
@@ -720,7 +720,7 @@ trace_as_tree <- function(trace,
   root_children[[1]] <- intersect(root_children[[1]], trace$id)
 
   params <- intersect(
-    c("call", "namespace", "scope", "error_frame", "check_arg"),
+    c("call", "namespace", "scope", "error_frame", "error_arg"),
     names(trace)
   )
   trace$call_text <- chr(!!!pmap(trace[params], trace_call_text))
@@ -809,7 +809,7 @@ trace_call_text <- function(call,
                             namespace,
                             scope,
                             error_frame = FALSE,
-                            check_arg = NULL) {
+                            error_arg = NULL) {
   if (is_call(call) && is_symbol(call[[1]])) {
     if (scope %in% c("::", ":::") && !is_na(namespace)) {
       call[[1]] <- call(scope, sym(namespace), call[[1]])
@@ -817,7 +817,7 @@ trace_call_text <- function(call,
   }
 
   if (error_frame) {
-    text <- call_deparse_highlight(call, check_arg)
+    text <- call_deparse_highlight(call, error_arg)
   } else {
     text <- as_label(call)
   }
