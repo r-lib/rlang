@@ -202,8 +202,8 @@ stop_input_type <- function(x,
                             ...,
                             arg = rlang::caller_arg(x),
                             call = rlang::caller_env()) {
-  cnd_message <- function(cnd, ..., highlight_error = FALSE) {
-    formatter <- if (highlight_error) "format_error_arg_highlight" else "format_arg"
+  cnd_message <- function(cnd, ..., error_highlight = FALSE) {
+    formatter <- if (error_highlight) "format_error_arg_highlight" else "format_arg"
 
     # From compat-cli.R
     format_arg <- rlang::env_get(

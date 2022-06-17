@@ -53,8 +53,8 @@ arg_match <- function(arg,
   }
 
   if (length(arg) > 1 && !setequal(arg, values)) {
-    header <- function(cnd, ..., highlight_error = FALSE) {
-      arg_match_invalid_msg(arg, values, error_arg, highlight_error)
+    header <- function(cnd, ..., error_highlight = FALSE) {
+      arg_match_invalid_msg(arg, values, error_arg, error_highlight)
     }
     abort(header = header, call = error_call, check_arg = error_arg)
   }
@@ -115,8 +115,8 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     }
   }
 
-  header <- function(cnd, ..., highlight_error = FALSE) {
-    msg <- arg_match_invalid_msg(arg, values, error_arg, highlight_error)
+  header <- function(cnd, ..., error_highlight = FALSE) {
+    msg <- arg_match_invalid_msg(arg, values, error_arg, error_highlight)
 
     # Try suggest the most probable and helpful candidate value
     candidate <- NULL
@@ -154,8 +154,8 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
 arg_match_invalid_msg <- function(val,
                                   values,
                                   error_arg,
-                                  highlight_error = FALSE) {
-  format_arg <- if (highlight_error) format_error_arg_highlight else format_arg
+                                  error_highlight = FALSE) {
+  format_arg <- if (error_highlight) format_error_arg_highlight else format_arg
   msg <- paste0(format_arg(error_arg), " must be one of ")
   msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
 

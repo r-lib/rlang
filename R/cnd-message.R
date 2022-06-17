@@ -107,8 +107,8 @@ cnd_backtrace_on_error <- function(cnd) {
 cnd_message_format <- function(cnd,
                                ...,
                                alert = FALSE,
-                               highlight_error = FALSE) {
-  lines <- cnd_message_lines(cnd, ..., highlight_error = highlight_error)
+                               error_highlight = FALSE) {
+  lines <- cnd_message_lines(cnd, ..., error_highlight = error_highlight)
   if (is_string(lines, "")) {
     return("")
   }
@@ -215,7 +215,7 @@ cnd_message_format_prefixed <- function(cnd,
                                         parent = FALSE,
                                         alert = NULL,
                                         warning = FALSE,
-                                        highlight_error = FALSE) {
+                                        error_highlight = FALSE) {
   type <- cnd_type(cnd)
 
   if (is_null(alert)) {
@@ -228,13 +228,13 @@ cnd_message_format_prefixed <- function(cnd,
     prefix <- col_yellow(capitalise(type))
   }
 
-  call <- format_error_call(cnd$call, highlight = highlight_error)
+  call <- format_error_call(cnd$call, highlight = error_highlight)
 
   message <- cnd_message_format(
     cnd,
     ...,
     alert = alert,
-    highlight_error = highlight_error
+    error_highlight = error_highlight
   )
   message <- strip_trailing_newline(message)
 
