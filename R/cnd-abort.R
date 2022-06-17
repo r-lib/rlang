@@ -36,6 +36,10 @@
 #'   methods. In that case, `class` must be supplied. Only `inform()`
 #'   allows empty messages as it is occasionally useful to build user
 #'   output incrementally.
+#'
+#'   If a function, it is stored in the `header` field of the error
+#'   condition. This acts as a [cnd_header()] method that is invoked
+#'   lazily when the error message is displayed.
 #' @param class Subclass of the condition.
 #' @param ... Additional data to be stored in the condition object.
 #'   If you supply condition fields, you should usually provide a
@@ -243,7 +247,6 @@ abort <- function(message = NULL,
                   class = NULL,
                   ...,
                   call,
-                  header = NULL,
                   body = NULL,
                   footer = NULL,
                   trace = NULL,
@@ -300,10 +303,13 @@ abort <- function(message = NULL,
     call <- info$setup_caller
   }
 
-  message <- validate_signal_args(message, class, call, .subclass, "abort", header = header)
+  if (is_formula(message, scoped = TRUE, lhs = FALSE)) {
+    message <- as_function(message)
+  }
+
+  message <- validate_signal_args(message, class, call, .subclass, "abort")
   error_call <- error_call(call)
 
-  # FIXME! Pass `header` through here
   message_info <- cnd_message_info(
     message,
     body,
@@ -341,7 +347,6 @@ abort <- function(message = NULL,
     class,
     ...,
     message = message,
-    !!!compact(list(header = header)),
     !!!extra_fields,
     use_cli_format = use_cli_format,
     call = error_call,
@@ -582,6 +587,13 @@ cnd_message_info <- function(message,
     check_exclusive(footer, .internal, .require = FALSE, .frame = error_call)
   }
 
+  if (is_function(message)) {
+    header <- message
+    message <- ""
+  } else {
+    header <- NULL
+  }
+
   if (length(message) > 1 && !is_character(body) && !is_null(body)) {
     stop_multiple_body(body, call = error_call)
   }
@@ -609,6 +621,9 @@ cnd_message_info <- function(message,
     } else {
       fields$body <- body
     }
+    if (!is_null(header)) {
+      fields$header <- header
+    }
     if (!is_null(footer)) {
       fields$footer <- footer
     }
@@ -634,6 +649,10 @@ cnd_message_info <- function(message,
       message <- c(message, footer_internal(env))
     }
     message <- .rlang_cli_format_fallback(message)
+
+    if (is_function(header)) {
+      fields$header <- header
+    }
   }
 
   list(

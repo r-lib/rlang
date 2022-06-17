@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `abort(message = )` can now be a function. In this case, it is
+  stored in the `header` field and acts as a `cnd_header()` method
+  invoked when the message is displayed.
+
 * New `obj_type_oo()` function in `compat-obj-type.R` (#1426).
 
 * `friendly_type_of()` from `compat-obj-type.R` (formerly

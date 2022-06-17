@@ -202,7 +202,7 @@ stop_input_type <- function(x,
                             ...,
                             arg = rlang::caller_arg(x),
                             call = rlang::caller_env()) {
-  cnd_message <- function(cnd, ...) {
+  message <- function(cnd, ...) {
     # From compat-cli.R
     format_arg <- rlang::env_get(
       nm = "format_arg",
@@ -222,7 +222,7 @@ stop_input_type <- function(x,
     )
   }
 
-  rlang::abort(header = cnd_message, ..., call = call, check_arg = arg)
+  rlang::abort(message, ..., call = call, check_arg = arg)
 }
 
 # nocov end

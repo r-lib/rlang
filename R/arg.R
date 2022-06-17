@@ -53,10 +53,11 @@ arg_match <- function(arg,
   }
 
   if (length(arg) > 1 && !setequal(arg, values)) {
-    header <- function(cnd, ...) {
-      arg_match_invalid_msg(arg, values, error_arg)
-    }
-    abort(header = header, call = error_call, check_arg = error_arg)
+    abort(
+      ~ arg_match_invalid_msg(arg, values, error_arg),
+      call = error_call,
+      check_arg = error_arg
+    )
   }
 
   arg <- arg[[1]]
@@ -115,7 +116,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     }
   }
 
-  header <- function(cnd, ...) {
+  message <- function(cnd, ...) {
     msg <- arg_match_invalid_msg(arg, values, error_arg)
 
     # Try suggest the most probable and helpful candidate value
@@ -148,7 +149,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     msg
   }
 
-  abort(header = header, call = error_call, check_arg = error_arg)
+  abort(message, call = error_call, check_arg = error_arg)
 }
 
 arg_match_invalid_msg <- function(val, values, error_arg) {

@@ -69,7 +69,11 @@ If a message is not supplied, it is expected that the message is
 generated \strong{lazily} through \code{\link[=cnd_header]{cnd_header()}} and \code{\link[=cnd_body]{cnd_body()}}
 methods. In that case, \code{class} must be supplied. Only \code{inform()}
 allows empty messages as it is occasionally useful to build user
-output incrementally.}
+output incrementally.
+
+If a function, it is stored in the \code{header} field of the error
+condition. This acts as a \code{\link[=cnd_header]{cnd_header()}} method that is invoked
+lazily when the error message is displayed.}
 
 \item{class}{Subclass of the condition.}
 

@@ -858,3 +858,19 @@ test_that("backtrace_on_error = 'collapse' is deprecated.", {
   expect_warning(peek_backtrace_on_error(), "deprecated")
   expect_equal(peek_option("rlang_backtrace_on_error"), "none")
 })
+
+test_that("can supply header method via `message`", {
+  expect_snapshot(error = TRUE, {
+    abort(~ "foo")
+    abort(function(cnd, ...) "foo")
+  })
+
+  msg <- function(cnd, ...) "foo"
+  cnd <- catch_error(abort(msg))
+  expect_identical(cnd$header, msg)
+
+  expect_error(
+    abort(function(cnd) "foo"),
+    "must take"
+  )
+})

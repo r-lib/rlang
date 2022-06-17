@@ -1321,3 +1321,14 @@
         1. base::print(expect_error(my_verb(add(1, ""))))
        16. rlang (local) add(1, "")
 
+# can supply header method via `message`
+
+    Code
+      abort(~"foo")
+    Error <rlang_error>
+      foo
+    Code
+      abort(function(cnd, ...) "foo")
+    Error <rlang_error>
+      foo
+
