@@ -1057,3 +1057,63 @@ is_trace <- function(x) {
 #' @name rlib_trace_spec
 #' @keywords internal
 NULL
+
+local_error_highlight <- function(frame = caller_env()) {
+  if (!has_cli_start_app) {
+    return()
+  }
+
+  if (is_true(peek_option("rlang:::trace_test_highlight"))) {
+    theme <- theme_error_highlight_test
+  } else {
+    theme <- theme_error_highlight
+  }
+
+  cli::start_app(theme, .envir = frame)
+}
+
+on_load({
+  theme_error_highlight <- local({
+    if (ns_exports_has("cli", "builtin_theme")) {
+      cli_theme <- cli::builtin_theme()
+    } else {
+      cli_theme <- list()
+    }
+
+    arg_theme <- list(
+      "color" = "br_magenta",
+      "font-weight" = "bold"
+    )
+    code_theme <- list(
+      "color" = "br_blue",
+      "font-weight" = "bold"
+    )
+
+    list(
+      "span.arg" = utils::modifyList(
+        cli_theme[["span.arg"]] %||% list(),
+        arg_theme
+      ),
+      "span.code" = utils::modifyList(
+        cli_theme[["span.code"]] %||% list(),
+        code_theme
+      ),
+      "span.arg-unquoted" = arg_theme,
+      "span.code-unquoted" = code_theme
+    )
+  })
+})
+
+theme_error_highlight_test <- list(
+  "span.arg" = list(before = "<<ARG `", after = "`>>"),
+  "span.code" = list(before = "<<CALL `", after = "`>>"),
+  "span.arg-unquoted" = list(before = "<<ARG ", after = ">>"),
+  "span.code-unquoted" = list(before = "<<CALL ", after = ">>")
+)
+
+format_arg_unquoted <- function(x) {
+  .rlang_cli_format_inline(x, "arg-unquoted", "%s")
+}
+format_code_unquoted <- function(x) {
+  .rlang_cli_format_inline(x, "code-unquoted", "%s")
+}

@@ -169,6 +169,7 @@ pad_spaces <- function(x, left = TRUE) {
 on_load({
   has_cli <- is_installed("cli")
   has_cli_format <- is_installed("cli", version = "3.0.0")
+  has_cli_start_app <- is_installed("cli", version = "2.0.0")
 })
 
 info <- function() {
