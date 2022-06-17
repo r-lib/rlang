@@ -265,7 +265,7 @@ chr_enumerate <- function(chr, sep = ", ", final = "or") {
 check_exclusive <- function(...,
                             .require = TRUE,
                             .frame = caller_env(),
-                            .error_call = .frame) {
+                            .call = .frame) {
   args <- enexprs(..., .named = TRUE)
   if (length(args) < 2) {
     abort("Must supply at least two arguments.")
@@ -282,7 +282,7 @@ check_exclusive <- function(...,
       args <- map(names(args), format_arg)
       enum <- chr_enumerate(args)
       msg <- sprintf("One of %s must be supplied.", enum)
-      abort(msg, call = .error_call)
+      abort(msg, call = .call)
     } else {
       return("")
     }
@@ -301,7 +301,7 @@ check_exclusive <- function(...,
     msg <- c(msg, x = sprintf("%s were supplied together.", enum))
   }
 
-  abort(msg, call = .error_call)
+  abort(msg, call = .call)
 }
 
 #' Generate or handle a missing argument

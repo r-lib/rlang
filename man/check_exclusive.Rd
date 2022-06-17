@@ -4,12 +4,7 @@
 \alias{check_exclusive}
 \title{Check that arguments are mutually exclusive}
 \usage{
-check_exclusive(
-  ...,
-  .require = TRUE,
-  .frame = caller_env(),
-  .error_call = .frame
-)
+check_exclusive(..., .require = TRUE, .frame = caller_env(), .call = .frame)
 }
 \arguments{
 \item{...}{Function arguments.}
@@ -18,7 +13,7 @@ check_exclusive(
 
 \item{.frame}{Environment where the arguments in \code{...} are defined.}
 
-\item{.error_call}{The execution environment of a currently
+\item{.call}{The execution environment of a currently
 running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
