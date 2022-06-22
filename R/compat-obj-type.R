@@ -1,4 +1,4 @@
-# nocov start --- r-lib/rlang compat-friendly-type
+# nocov start --- r-lib/rlang compat-obj-type
 #
 # Changelog
 # =========

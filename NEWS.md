@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `friendly_type_of()` from `compat-obj-type.R` (formerly
+  `compat-friendly-type.R`) is now `obj_type_friendly()`.
+
 * `options(backtrace_on_error = "collapse")` and `print(trace,
   simplify = "collapse")` are deprecated. They fall back to `"none"`
   with a warning.
