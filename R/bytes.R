@@ -59,7 +59,7 @@ bytes_cast <- function(x) {
   }
   abort(sprintf(
     "Can't coerce %s to <rlib_bytes>.",
-    friendly_type_of(x)
+    obj_type_friendly(x)
   ))
 }
 

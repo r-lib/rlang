@@ -650,7 +650,7 @@ stop_multiple_body <- function(body, call) {
     "i" = sprintf(
       "%s is currently %s.",
       format_arg("body"),
-      friendly_type_of(body)
+      obj_type_friendly(body)
     )
   )
   abort(msg, call = call)

@@ -416,7 +416,7 @@ new_data_mask <- function(bottom, top = bottom) {
 data_pronoun_get <- function(x, nm, call) {
   if (!is_string(nm)) {
     abort(
-      sprintf("Must subset the data pronoun with a string, not %s.", friendly_type_of(nm)),
+      sprintf("Must subset the data pronoun with a string, not %s.", obj_type_friendly(nm)),
       call = call
     )
   }
@@ -439,7 +439,7 @@ abort_data_pronoun <- function(nm, call) {
 ctxt_pronoun_get <- function(x, nm, call) {
   if (!is_string(nm)) {
     abort(
-      sprintf("Must subset the context pronoun with a string, not %s.", friendly_type_of(nm)),
+      sprintf("Must subset the context pronoun with a string, not %s.", obj_type_friendly(nm)),
       call = call
     )
   }
