@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* New `obj_type_oo()` function in `compat-obj-type.R` (#1426).
+
 * `friendly_type_of()` from `compat-obj-type.R` (formerly
   `compat-friendly-type.R`) is now `obj_type_friendly()`.
 

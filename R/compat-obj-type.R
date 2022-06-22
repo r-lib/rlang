@@ -5,6 +5,7 @@
 #
 # 2022-06-22:
 # - `friendly_type_of()` is now `obj_type_friendly()`.
+# - Added `obj_type_oo()`.
 #
 # 2021-12-20:
 # - Added support for scalar values and empty vectors.
@@ -165,6 +166,29 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
     sprintf("Unexpected type <%s>.", typeof(x)),
     call = call
   )
+}
+
+#' Return OO type
+#' @param x Any R object.
+#' @return One of `"bare"` (for non-OO objects), `"S3"`, `"S4"`,
+#'   `"R6"`, or `"R7"`.
+#' @noRd
+obj_type_oo <- function(x) {
+  if (!is.object(x)) {
+    return("bare")
+  }
+
+  class <- inherits(x, c("R6", "R7_object"), which = TRUE)
+
+  if (class[[1]]) {
+    "R6"
+  } else if (class[[2]]) {
+    "R7"
+  } else if (isS4(x)) {
+    "S4"
+  } else {
+    "S3"
+  }
 }
 
 #' @param x The object type which does not conform to `what`. Its
