@@ -211,6 +211,11 @@ ns_exports_has <- function(ns, name) {
   !is_null(exports) && exists(name, envir = exports, inherits = FALSE)
 }
 
+ns_import_from <- function(ns, names, env = caller_env()) {
+  objs <- env_get_list(ns_env(ns), names)
+  env_bind(env, !!!objs)
+}
+
 #' Is an object a namespace environment?
 #'
 #' @param x An object to test.

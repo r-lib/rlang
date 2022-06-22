@@ -124,3 +124,8 @@ err <- function(...) {
 checker <- function(foo, check) {
   check(foo)
 }
+
+import_or_skip <- function(ns, names, env = caller_env()) {
+  skip_if_not_installed(ns)
+  ns_import_from(ns, names, env = env)
+}

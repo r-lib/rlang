@@ -427,7 +427,7 @@ get_env <- function(env, default = NULL) {
   out <- out %||% default
 
   if (is_null(out)) {
-    type <- friendly_type_of(env)
+    type <- obj_type_friendly(env)
     abort(paste0("Can't extract an environment from ", type, "."))
   } else {
     out

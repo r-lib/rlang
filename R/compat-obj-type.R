@@ -1,7 +1,11 @@
-# nocov start --- r-lib/rlang compat-friendly-type
+# nocov start --- r-lib/rlang compat-obj-type
 #
 # Changelog
 # =========
+#
+# 2022-06-22:
+# - `friendly_type_of()` is now `obj_type_friendly()`.
+# - Added `obj_type_oo()`.
 #
 # 2021-12-20:
 # - Added support for scalar values and empty vectors.
@@ -23,7 +27,7 @@
 #' @return A string describing the type. Starts with an indefinite
 #'   article, e.g. "an integer vector".
 #' @noRd
-friendly_type_of <- function(x, value = TRUE, length = FALSE) {
+obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
   if (is_missing(x)) {
     return("absent")
   }
@@ -164,8 +168,31 @@ friendly_type_of <- function(x, value = TRUE, length = FALSE) {
   )
 }
 
+#' Return OO type
+#' @param x Any R object.
+#' @return One of `"bare"` (for non-OO objects), `"S3"`, `"S4"`,
+#'   `"R6"`, or `"R7"`.
+#' @noRd
+obj_type_oo <- function(x) {
+  if (!is.object(x)) {
+    return("bare")
+  }
+
+  class <- inherits(x, c("R6", "R7_object"), which = TRUE)
+
+  if (class[[1]]) {
+    "R6"
+  } else if (class[[2]]) {
+    "R7"
+  } else if (isS4(x)) {
+    "S4"
+  } else {
+    "S3"
+  }
+}
+
 #' @param x The object type which does not conform to `what`. Its
-#'   `friendly_type_of()` is taken and mentioned in the error message.
+#'   `obj_type_friendly()` is taken and mentioned in the error message.
 #' @param what The friendly expected type.
 #' @param ... Arguments passed to [abort()].
 #' @inheritParams args_error_context
@@ -189,7 +216,7 @@ stop_input_type <- function(x,
     "%s must be %s, not %s.",
     format_arg(arg),
     what,
-    friendly_type_of(x)
+    obj_type_friendly(x)
   )
   rlang::abort(message, ..., call = call)
 }

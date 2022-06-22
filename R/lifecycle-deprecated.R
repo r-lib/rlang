@@ -458,7 +458,7 @@ env_as_list <- function(x) {
   set_names(x, .Call(ffi_unescape_character, names_x))
 }
 vec_as_list <- function(x) {
-  coerce_type_vec(x, friendly_type_of(list(), value = FALSE),
+  coerce_type_vec(x, obj_type_friendly(list(), value = FALSE),
     logical = ,
     integer = ,
     double = ,
@@ -471,28 +471,28 @@ vec_as_list <- function(x) {
 }
 
 legacy_as_logical <- function(x) {
-  coerce_type_vec(x, friendly_type_of(lgl(), value = FALSE),
+  coerce_type_vec(x, obj_type_friendly(lgl(), value = FALSE),
     logical = { attributes(x) <- NULL; x },
     integer = as_base_type(x, as.logical),
     double = as_integerish_type(x, as.logical, lgl())
   )
 }
 legacy_as_integer <- function(x) {
-  coerce_type_vec(x, friendly_type_of(int(), value = FALSE),
+  coerce_type_vec(x, obj_type_friendly(int(), value = FALSE),
     logical = as_base_type(x, as.integer),
     integer = { attributes(x) <- NULL; x },
     double = as_integerish_type(x, as.integer, int(), value = FALSE)
   )
 }
 legacy_as_double <- function(x) {
-  coerce_type_vec(x, friendly_type_of(dbl(), value = FALSE),
+  coerce_type_vec(x, obj_type_friendly(dbl(), value = FALSE),
     logical = ,
     integer = as_base_type(x, as.double),
     double = { attributes(x) <- NULL; x }
   )
 }
 legacy_as_complex <- function(x) {
-  coerce_type_vec(x, friendly_type_of(cpl(), value = FALSE),
+  coerce_type_vec(x, obj_type_friendly(cpl(), value = FALSE),
     logical = ,
     integer = ,
     double = as_base_type(x, as.complex),
@@ -505,7 +505,7 @@ legacy_as_character <- function(x, encoding = NULL) {
   }
   coerce_type_vec(
     x,
-    friendly_type_of(chr(), value = FALSE),
+    obj_type_friendly(chr(), value = FALSE),
     string = ,
     character = {
       attributes(x) <- NULL
@@ -542,7 +542,7 @@ as_integerish_type <- function(x, as_type, to, value = FALSE) {
   } else {
     abort(paste0(
       "Can't convert a fractional double vector to ",
-      friendly_type_of(to, value = value),
+      obj_type_friendly(to, value = value),
       ""
     ))
   }
