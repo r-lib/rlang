@@ -349,3 +349,16 @@ test_that("`list2(!!!x)` returns `x` without duplication", {
     expect_equal(out, as.list(x))
   })
 })
+
+test_that("names are not mutated after splice box early exit", {
+  xs <- list(1)
+
+  dots_list(!!!xs, .named = FALSE)
+  expect_equal(names(xs), NULL)
+
+  dots_list(!!!xs, .named = TRUE)
+  expect_equal(names(xs), NULL)
+
+  dots_list(!!!xs, .named = NULL)
+  expect_equal(names(xs), NULL)
+})

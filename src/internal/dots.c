@@ -610,7 +610,7 @@ void check_named_splice(r_obj* node) {
 r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
   int n_kept = 0;
 
-  if (r_node_cdr(dots) == r_null && is_splice_box(r_node_car(dots))) {
+  if (r_names(dots) == r_null && r_node_cdr(dots) == r_null && is_splice_box(r_node_car(dots))) {
     r_obj* out = rlang_unbox(r_node_car(dots));
     r_mark_shared(out);
     return out;
@@ -775,6 +775,7 @@ r_obj* ffi_unescape_character(r_obj*);
 
 static
 r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
+  int n_prot = 0;
   r_obj* nms = r_names(dots);
 
   // Here handle minimal vs none
@@ -782,13 +783,13 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   case ARG_NAMED_auto:
   case ARG_NAMED_minimal:
     if (nms == r_null) {
-      nms = r_alloc_character(r_length(dots));
+      nms = KEEP_N(r_alloc_character(r_length(dots)), &n_prot);
+      dots = KEEP_N(r_vec_clone(dots), &n_prot);
     }
     break;
   case ARG_NAMED_none:
     break;
   }
-  KEEP(nms);
 
   if (nms != r_null) {
     // Serialised unicode points might arise when unquoting lists
@@ -809,7 +810,7 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
     FREE(2);
   }
 
-  FREE(1);
+  FREE(n_prot);
   return dots;
 }
 
