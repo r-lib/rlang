@@ -1,6 +1,6 @@
 # Revdeps
 
-## Failed to check (12)
+## Failed to check (11)
 
 |package       |version |error |warning |note |
 |:-------------|:-------|:-----|:-------|:----|
@@ -12,7 +12,6 @@
 |NA            |?       |      |        |     |
 |loon.ggplot   |?       |      |        |     |
 |NA            |?       |      |        |     |
-|SSVS          |?       |      |        |     |
 |NA            |?       |      |        |     |
 |xpose.nlmixr  |?       |      |        |     |
 |xpose.nlmixr2 |?       |      |        |     |

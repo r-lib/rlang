@@ -1,117 +1,12 @@
-# NA
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# NA
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# NA
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # ggPMX
 
 <details>
 
-* Version: 1.2.6
+* Version: 1.2.8
 * GitHub: https://github.com/ggPMXdevelopment/ggPMX
 * Source code: https://github.com/cran/ggPMX
-* Date/Publication: 2022-02-01 18:50:06 UTC
-* Number of recursive dependencies: 117
+* Date/Publication: 2022-06-17 23:10:02 UTC
+* Number of recursive dependencies: 173
 
 Run `cloud_details(, "ggPMX")` for more info
 
@@ -128,21 +23,21 @@ Run `cloud_details(, "ggPMX")` for more info
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ggPMX/DESCRIPTION’ ... OK
-* this is package ‘ggPMX’ version ‘1.2.6’
+* this is package ‘ggPMX’ version ‘1.2.8’
+* package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘nlmixr’
 ...
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+  [ FAIL 1 | WARN 10 | SKIP 8 | PASS 327 ]
+  Error: Test failures
+  Execution halted
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in ‘inst/doc’ ... OK
 * checking running R code from vignettes ... NONE
   ‘ggPMX-guide.Rmd’ using ‘UTF-8’... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 2 NOTEs
+Status: 1 ERROR, 2 NOTEs
 
 
 
@@ -158,91 +53,21 @@ Status: 2 NOTEs
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ggPMX/DESCRIPTION’ ... OK
-* this is package ‘ggPMX’ version ‘1.2.6’
+* this is package ‘ggPMX’ version ‘1.2.8’
+* package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... NOTE
-Package suggested but not available for checking: ‘nlmixr’
 ...
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+  [ FAIL 1 | WARN 10 | SKIP 8 | PASS 327 ]
+  Error: Test failures
+  Execution halted
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes in ‘inst/doc’ ... OK
 * checking running R code from vignettes ... NONE
   ‘ggPMX-guide.Rmd’ using ‘UTF-8’... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 2 NOTEs
-
-
-
-
-
-```
-# NA
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# NA
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
+Status: 1 ERROR, 2 NOTEs
 
 
 
@@ -315,142 +140,6 @@ See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
 manual.
 * DONE
 Status: 1 ERROR
-
-
-
-
-
-```
-# NA
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# SSVS
-
-<details>
-
-* Version: 2.0.0
-* GitHub: https://github.com/sabainter/SSVS
-* Source code: https://github.com/cran/SSVS
-* Date/Publication: 2022-05-29 05:40:09 UTC
-* Number of recursive dependencies: 123
-
-Run `cloud_details(, "SSVS")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-* using log directory ‘/tmp/workdir/SSVS/new/SSVS.Rcheck’
-* using R version 4.1.1 (2021-08-10)
-* using platform: x86_64-pc-linux-gnu (64-bit)
-* using session charset: UTF-8
-* using option ‘--no-manual’
-* checking for file ‘SSVS/DESCRIPTION’ ... OK
-* this is package ‘SSVS’ version ‘2.0.0’
-* package encoding: UTF-8
-* checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Package required but not available: ‘BoomSpikeSlab’
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-* DONE
-Status: 1 ERROR
-
-
-
-
-
-```
-### CRAN
-
-```
-* using log directory ‘/tmp/workdir/SSVS/old/SSVS.Rcheck’
-* using R version 4.1.1 (2021-08-10)
-* using platform: x86_64-pc-linux-gnu (64-bit)
-* using session charset: UTF-8
-* using option ‘--no-manual’
-* checking for file ‘SSVS/DESCRIPTION’ ... OK
-* this is package ‘SSVS’ version ‘2.0.0’
-* package encoding: UTF-8
-* checking package namespace information ... OK
-* checking package dependencies ... ERROR
-Package required but not available: ‘BoomSpikeSlab’
-
-See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-manual.
-* DONE
-Status: 1 ERROR
-
-
-
-
-
-```
-# NA
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/NA
-* Number of recursive dependencies: 0
-
-Run `cloud_details(, "NA")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
 
 
 
@@ -533,7 +222,7 @@ Status: 1 ERROR
 * GitHub: NA
 * Source code: https://github.com/cran/xpose.nlmixr2
 * Date/Publication: 2022-06-08 09:10:02 UTC
-* Number of recursive dependencies: 143
+* Number of recursive dependencies: 146
 
 Run `cloud_details(, "xpose.nlmixr2")` for more info
 
