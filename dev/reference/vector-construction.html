@@ -177,7 +177,7 @@ in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a.A b.B b.C </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  10  20  30 </span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># On the other hand, rlang's ctors use the inner names and issue a</span></span>
+<span class="r-in"><span class="co"># On the other hand, rlang's constructors use the inner names and issue a</span></span>
 <span class="r-in"><span class="co"># warning to inform the user that the outer names are ignored:</span></span>
 <span class="r-in"><span class="fu">dbl</span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>B <span class="op">=</span> <span class="fl">20</span>, C <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outer names are only allowed for unnamed scalar atomic inputs</span>
