@@ -14,7 +14,7 @@
 #' Note: A `bytes()` constructor will be exported soon.
 #'
 #' @details
-#' These memory sizes are always assumed to be base 1024, rather than 1000.
+#' These memory sizes are always assumed to be base 1000, rather than 1024.
 #'
 #' @param x A numeric or character vector. Character representations can use
 #'   shorthand sizes (see examples).
@@ -106,7 +106,7 @@ parse_bytes <- function(x) {
   stopifnot(is_character(x))
 
   pos <- regexpr(
-    "^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$",
+    "^(?<size>[[:digit:].]+)\\s*(?<unit>[kKMGTPEZY]?)i?[Bb]?$",
     x,
     perl = TRUE
   )
@@ -116,16 +116,18 @@ parse_bytes <- function(x) {
   new_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
 }
 
+# TODO: Add support for decimal prefixes
 byte_units <- c(
   'B' = 1,
-  'K' = 1024,
-  'M' = 1024 ^ 2,
-  'G' = 1024 ^ 3,
-  'T' = 1024 ^ 4,
-  'P' = 1024 ^ 5,
-  'E' = 1024 ^ 6,
-  'Z' = 1024 ^ 7,
-  'Y' = 1024 ^ 8
+  'k' = 1000,
+  'K' = 1000,
+  'M' = 1000 ^ 2,
+  'G' = 1000 ^ 3,
+  'T' = 1000 ^ 4,
+  'P' = 1000 ^ 5,
+  'E' = 1000 ^ 6,
+  'Z' = 1000 ^ 7,
+  'Y' = 1000 ^ 8
 )
 
 captures <- function(x, m) {
@@ -181,54 +183,9 @@ auto_name_seq <- function(names) {
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
-format.rlib_bytes <- function(x,
-                              ...,
-                              digits = 3,
-                              scientific = FALSE,
-                              drop0trailing = TRUE) {
+format.rlib_bytes <- function(x, ...) {
   check_dots_used()
-
-  nms <- names(x)
-  bytes <- unclass(x)
-
-  unit <- map_chr(x, find_unit, byte_units)
-  res <- round(bytes / byte_units[unit], digits = digits)
-
-  ## Zero bytes
-  res[bytes == 0] <- 0
-  unit[bytes == 0] <- "B"
-
-  ## NA and NaN bytes
-  res[is.na(bytes)] <- NA_real_
-  res[is.nan(bytes)] <- NaN
-  unit[is.na(bytes)] <- ""            # Includes NaN as well
-
-  # Append an extra B to each unit
-  large_units <- unit %in% names(byte_units)[-1]
-  unit[large_units] <- paste0(unit[large_units], "B")
-
-  res <- format(
-    res,
-    scientific = scientific,
-    digits = digits,
-    drop0trailing = drop0trailing,
-    ...
-  )
-
-  stats::setNames(paste0(res, unit), nms)
-}
-
-tolerance <- sqrt(.Machine$double.eps)
-
-find_unit <- function(x, units) {
-  if (is.na(x) || is.nan(x) || x <= 0 || is.infinite(x)) {
-    return(NA_character_)
-  }
-  epsilon <- 1 - (x * (1 / units))
-
-  out <- which(epsilon < tolerance)
-  out <- out[length(out)]
-  names(out)
+  format_bytes$pretty_bytes(unclass(x))
 }
 
 #' @export
