@@ -1012,3 +1012,35 @@ as_name <- function(x) {
   }
   as_string(x)
 }
+
+call_deparse_highlight <- function(call, arg) {
+  stopifnot(is_call(call))
+
+  if (!is_string(arg)) {
+    arg <- NULL
+  }
+
+  local_error_highlight()
+
+  if (!is_symbol(call[[1]]) || call_print_fine_type(call) != "call") {
+    return(format_code_unquoted(as_label(call)))
+  }
+
+  names <- names(call)
+  if (!is_null(arg) && arg %in% names) {
+    # Simply remove other arguments for now
+    call <- call[c(1, match(arg, names))]
+
+    args_list <- sprintf("%s = %s", arg, as_label(call[[arg]]))
+    args_list <- format_arg_unquoted(args_list)
+  } else {
+    args_list <- args_deparse(node_cdr(call))
+    args_list <- substring(args_list, 2, nchar(args_list) - 1)
+  }
+
+  fn <- sym_text(call[[1]])
+  open <- format_code_unquoted(sprintf("%s(", fn))
+  close <- format_code_unquoted(")")
+
+  paste0(open, args_list, close)
+}

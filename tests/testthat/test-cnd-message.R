@@ -532,3 +532,20 @@ test_that("`cnd_message(prefix = TRUE)` propagates warning style across parent e
   expect_false(grepl("\033\\[1mCaused by error", msg_warning))
   expect_true(grepl("\033\\[1mCaused by error", msg_error))
 })
+
+test_that("arguments are highlighted but code spans are not", {
+  local_options("rlang:::trace_test_highlight" = TRUE)
+
+  err <- error_cnd(header = function(cnd) sprintf(
+    "%s - %s - %s",
+    format_arg("arg1"),
+    format_code("code"),
+    format_arg("arg2")
+  ))
+
+  expect_snapshot({
+    with_error_arg_highlight(
+      print(err)
+    )
+  })
+})

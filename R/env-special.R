@@ -203,7 +203,13 @@ ns_exports <- function(ns) getNamespaceExports(ns)
 ns_imports <- function(ns) getNamespaceImports(ns)
 
 ns_exports_has <- function(ns, name) {
-  if (is_reference(ns, base_ns_env)) {
+  if (is_string(ns)) {
+    if (!is_installed(ns)) {
+      return(FALSE)
+    }
+    ns <- ns_env(ns)
+  }
+  if (is_reference(ns, ns_env("base"))) {
     exports <- base_pkg_env
   } else {
     exports <- ns$.__NAMESPACE__.$exports

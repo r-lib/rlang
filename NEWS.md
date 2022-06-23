@@ -1,5 +1,33 @@
 # rlang (development version)
 
+* Supplying a frame environment to the `call` argument of `abort()`
+  now causes the corresponding function call in the backtrace to be
+  highlighted.
+
+  In addition, if you store the argument name of a failing input in
+  the `arg` error field, the argument is also highlighted in the
+  backtrace.
+
+  The function name and function argument are also highlighted and
+  colour-code in the error message preceding the backtrace to make it
+  it easy to find the call and argument in the backtrace. This relies
+  on lazy formatting of the error message via a lambda function.
+  Instead of:
+
+  ```
+  cli::cli_abort("{.arg {arg}} must be a foobar.")
+  ```
+
+  Write:
+
+  ```
+  cli::cli_abort(\(...) cli::format_inline("{.arg {arg}} must be a foobar."), arg = arg)
+  ```
+
+* `abort(message = )` can now be a function. In this case, it is
+  stored in the `header` field and acts as a `cnd_header()` method
+  invoked when the message is displayed.
+
 * New `obj_type_oo()` function in `compat-obj-type.R` (#1426).
 
 * `friendly_type_of()` from `compat-obj-type.R` (formerly

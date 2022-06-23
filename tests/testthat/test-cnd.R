@@ -47,7 +47,7 @@ test_that("rlang_error.print() calls cnd_message() methods", {
 test_that("Overlapping backtraces are printed separately", {
   # Test low-level error can use conditionMessage()
   local_bindings(.env = global_env(),
-    cnd_header.foobar = function(c) c$foobar_msg
+    cnd_header.foobar = function(c, ...) c$foobar_msg
   )
 
   f <- function() g()

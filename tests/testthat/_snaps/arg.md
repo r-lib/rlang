@@ -222,3 +222,27 @@
       Error in `g()`:
       ! `my_arg` must be a character vector, not a number.
 
+# arg_match() backtrace highlights call and arg
+
+    Code
+      print_highlighted_trace(err)
+    Output
+      <error/rlang_error>
+      Error in <<CALL `h()`>>:
+      ! `my_arg` must be one of "foo" or "bar", not "f".
+      i Did you mean "foo"?
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(f("f"))
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) f("f")
+       10.   \-rlang (local) g(x)
+       11.     \-rlang (local) <<CALL h(>><<ARG my_arg = x>><<CALL )>>
+

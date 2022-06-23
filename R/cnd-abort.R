@@ -36,6 +36,10 @@
 #'   methods. In that case, `class` must be supplied. Only `inform()`
 #'   allows empty messages as it is occasionally useful to build user
 #'   output incrementally.
+#'
+#'   If a function, it is stored in the `header` field of the error
+#'   condition. This acts as a [cnd_header()] method that is invoked
+#'   lazily when the error message is displayed.
 #' @param class Subclass of the condition.
 #' @param ... Additional data to be stored in the condition object.
 #'   If you supply condition fields, you should usually provide a
@@ -299,8 +303,12 @@ abort <- function(message = NULL,
     call <- info$setup_caller
   }
 
+  if (is_formula(message, scoped = TRUE, lhs = FALSE)) {
+    message <- as_function(message)
+  }
+
   message <- validate_signal_args(message, class, call, .subclass, "abort")
-  call <- error_call(call)
+  error_call <- error_call(call)
 
   message_info <- cnd_message_info(
     message,
@@ -314,16 +322,25 @@ abort <- function(message = NULL,
   extra_fields <- message_info$extra_fields
   use_cli_format <- message_info$use_cli_format
 
-  if (rethrowing) {
-    trace <- trace %||% parent[["trace"]]
-  }
-  if (is_null(trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
-    with_options(
-      # Prevents infloops when rlang throws during trace capture
-      "rlang:::disable_trace_capture" = TRUE,
-      "rlang:::visible_bottom" = info$bottom_frame,
-      { trace <- trace_back() }
-    )
+  parent_trace <- if (rethrowing) parent[["trace"]]
+
+  if (!is_null(parent_trace) && is_environment(call)) {
+    calls <- sys.calls()
+    frames <- sys.frames()
+
+    loc_frame <- detect_index(frames, identical, call, .right = TRUE)
+    if (loc_frame && loc_frame <= nrow(parent_trace)) {
+      parent_call <- parent_trace[["call"]][[loc_frame]]
+      this_call <- frame_call(call)
+
+      if (identical(parent_call, this_call)) {
+        if (is_null(parent_trace[["error_frame"]])) {
+          parent_trace[["error_frame"]] <- FALSE
+        }
+        parent_trace[["error_frame"]][[loc_frame]] <- TRUE
+        parent$trace <- parent_trace
+      }
+    }
   }
 
   cnd <- error_cnd(
@@ -332,10 +349,22 @@ abort <- function(message = NULL,
     message = message,
     !!!extra_fields,
     use_cli_format = use_cli_format,
-    call = call,
-    parent = parent,
-    trace = trace
+    call = error_call,
+    parent = parent
   )
+
+  if (is_null(trace) && is_null(parent_trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
+    with_options(
+      # Prevents infloops when rlang throws during trace capture
+      "rlang:::disable_trace_capture" = TRUE,
+      "rlang:::visible_bottom" = info$bottom_frame,
+      "rlang:::error_frame" = if (is_environment(call)) call else NULL,
+      "rlang:::error_arg" = cnd[["arg"]],
+      { trace <- trace_back() }
+    )
+  }
+  cnd$trace <- trace
+
   signal_abort(cnd, .file)
 }
 
@@ -558,6 +587,13 @@ cnd_message_info <- function(message,
     check_exclusive(footer, .internal, .require = FALSE, .frame = error_call)
   }
 
+  if (is_function(message)) {
+    header <- message
+    message <- ""
+  } else {
+    header <- NULL
+  }
+
   if (length(message) > 1 && !is_character(body) && !is_null(body)) {
     stop_multiple_body(body, call = error_call)
   }
@@ -585,6 +621,9 @@ cnd_message_info <- function(message,
     } else {
       fields$body <- body
     }
+    if (!is_null(header)) {
+      fields$header <- header
+    }
     if (!is_null(footer)) {
       fields$footer <- footer
     }
@@ -610,6 +649,10 @@ cnd_message_info <- function(message,
       message <- c(message, footer_internal(env))
     }
     message <- .rlang_cli_format_fallback(message)
+
+    if (is_function(header)) {
+      fields$header <- header
+    }
   }
 
   list(
@@ -1092,10 +1135,10 @@ format_error_call <- function(call) {
   }
 
   if (grepl("\n", label)) {
-    cli_with_whiteline_escapes(label, format_code)
-  } else {
-    format_code(label)
+    return(cli_with_whiteline_escapes(label, format_code))
   }
+
+  format_code(label)
 }
 
 error_call_as_string <- function(call) {

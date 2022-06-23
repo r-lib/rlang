@@ -957,7 +957,7 @@
       print(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[1m`1 + ""`:[22m
+      [1m[33mError[39m in [1m[1m[1m[94m`1 + ""`[39m[1m:[22m
       [33m![39m non-numeric argument to binary operator
       ---
       [1mBacktrace:[22m
@@ -970,7 +970,7 @@
       summary(err)
     Output
       [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[1m`1 + ""`:[22m
+      [1m[33mError[39m in [1m[1m[1m[94m`1 + ""`[39m[1m:[22m
       [33m![39m non-numeric argument to binary operator
       ---
       [1mBacktrace:[22m
@@ -1275,16 +1275,65 @@
        22. rlang (local) g(n)
        23. rlang (local) h(n)
 
-# collapse is deprecated
+# error calls and args are highlighted
 
     Code
-      print(err, simplify = "collapse", srcrefs = FALSE)
-    Warning <deprecatedWarning>
-      `"collapse"` is deprecated as of rlang 1.1.0.
-      Please use `"none"` instead.
+      print_highlighted_trace(parent)
     Output
       <error/rlang_error>
-      Error in `h()`:
+      Error in <<CALL `h()`>>:
+      ! `x` must be a single string, not a number.
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(f(1))
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) f(1)
+       10.   \-rlang (local) g(x)
+       11.     \-rlang (local) <<CALL h(>><<ARG x = x>><<CALL )>>
+    Code
+      print_highlighted_trace(child)
+    Output
+      <error/rlang_error>
+      Error in <<CALL `wrapper()`>>:
+      ! Tilt.
+      Caused by error in <<CALL `h()`>>:
+      ! `x` must be a single string, not a number.
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(wrapper())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) wrapper()
+       10.   +-rlang::try_fetch(f(1), error = function(cnd) abort("Tilt.", parent = cnd))
+       11.   | +-base::tryCatch(...)
+       12.   | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       13.   | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       14.   | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+       15.   | \-base::withCallingHandlers(...)
+       16.   \-rlang (local) f(1)
+       17.     \-rlang (local) g(x)
+       18.       \-rlang (local) <<CALL h(>><<ARG x = x>><<CALL )>>
+
+# error calls and args are highlighted (no highlighted arg)
+
+    Code
+      print_highlighted_trace(argless)
+    Output
+      <error/rlang_error>
+      Error in <<CALL `h()`>>:
       ! foo
       ---
       Backtrace:
@@ -1299,49 +1348,52 @@
         8. |   \-base::force(expr)
         9. \-rlang (local) f()
        10.   \-rlang (local) g()
-       11.     \-rlang (local) h()
-       12.       \-rlang::abort("foo")
+       11.     \-rlang (local) <<CALL h(>><<CALL )>>
 
-# focal trace highlighting is not affected by hidden frames
+# frame is detected from the left
 
     Code
-      # Full
-      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+      # If detected from the right, `evalq()`is highlighted instead of `h()`
+      print_highlighted_trace(err)
     Output
+      <error/rlang_error>
+      Error in <<CALL `h()`>>:
+      ! foo
+      ---
+      Backtrace:
            x
-        1. +-rlang::catch_cnd(f())
-        2. | +-rlang::eval_bare(...)
-        3. | +-base::tryCatch(...)
-        4. | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
-        5. | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        6. | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
-        7. | \-base::force(expr)
-        8. +-rlang (local) f()
-        9. | \-rlang (local) g()
-       10. |   \-rlang (local) h()
-       11. |     \-rlang::inject(rlang::abort("foo", call = !!environment()), global_env())
-       12. \-rlang::abort("foo", call = `<env>`)
+        1. +-rlang:::catch_error(f())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) f()
+       10.   \-rlang (local) g()
+       11.     \-rlang (local) <<CALL h(>><<CALL )>>
+
+# arg is defensively checked
+
     Code
-      # Focused
-      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+      print_highlighted_trace(err)
     Output
+      <error/rlang_error>
+      Error in <<CALL `h()`>>:
+      ! foo
+      ---
+      Backtrace:
            x
-        1. +-rlang::catch_cnd(f())
-        2. | <<+-rlang::eval_bare(...)>>
-        3. | <<+-base::tryCatch(...)>>
-        4. | <<| \-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
-        5. | <<|   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
-        6. | <<|     \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
-        7. | <<\-base::force(expr)>>
-        8. \-rlang (local) f()
-        9.   \-rlang (local) g()
-       10.     \-rlang (local) h()
-    Code
-      # Branch
-      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
-    Output
-        1. rlang::catch_cnd(f())
-        8. rlang (local) f()
-        9. rlang (local) g()
-       10. rlang (local) h()
+        1. +-rlang:::catch_error(f())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) f()
+       10.   \-rlang (local) g()
+       11.     \-rlang (local) <<CALL h(>><<CALL )>>
 

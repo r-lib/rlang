@@ -275,14 +275,19 @@ validate_signal_args <- function(message,
     }
   }
 
-  if (is_null(message)) {
-    if (is_null(class)) {
-      abort("Either `message` or `class` must be supplied.", call = env)
-    }
-    message <- ""
+  if (is_null(message) && is_null(class)) {
+    abort("Either `message` or `class` must be supplied.", call = env)
   }
 
-  check_character(message, call = env)
+  message <- message %||% ""
+  if (is_function(message)) {
+    if (!"..." %in% names(formals(message))) {
+      abort("`cnd_header()` methods must take `...`.", call = env)
+    }
+  } else {
+    check_character(message, call = env)
+  }
+
   if (!is_null(class)) {
     check_character(class, call = env)
   }

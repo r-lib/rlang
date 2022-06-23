@@ -109,7 +109,6 @@ trace_back <- function(top = NULL, bottom = NULL) {
   calls <- map(calls, call_zap_inline)
 
   context <- empty_trace_context()
-
   if (length(calls)) {
     context_data <- map2(calls, seq_along(calls), call_trace_context)
     context$namespace <- do.call(base::c, map(context_data, `[[`, "namespace"))
@@ -118,7 +117,6 @@ trace_back <- function(top = NULL, bottom = NULL) {
   context <- new_data_frame(context)
 
   parents <- normalise_parents(parents)
-
   trace <- new_trace(
     calls,
     parents,
@@ -126,6 +124,29 @@ trace_back <- function(top = NULL, bottom = NULL) {
     scope = context$scope,
     visible = is_visible
   )
+
+  error_frame <- peek_option("rlang:::error_frame")
+  if (!is_null(error_frame)) {
+    trace[["error_frame"]] <- FALSE
+    i <- detect_index(frames, identical, error_frame)
+    if (i) {
+      trace[["error_frame"]][[i]] <- TRUE
+      error_arg <- peek_option("rlang:::error_arg")
+      if (!is_null(error_arg)) {
+        if (is_null(trace[["error_arg"]])) {
+          trace[["error_arg"]] <- list(NULL)
+        }
+        trace[["error_arg"]][[i]] <- error_arg
+
+        # Match arguments so we can fully highlight the faulty input in
+        # the backtrace. Preserve srcrefs from original frame call.
+        matched <- call_match(trace$call[[i]], frame_fn(error_frame), defaults = TRUE)
+        attributes(matched) <- attributes(trace$call[[i]])
+        trace$call[[i]] <- matched
+      }
+    }
+  }
+
   trace <- add_winch_trace(trace)
   trace <- trace_trim_env(trace, frames, top)
 
@@ -404,7 +425,7 @@ format.rlang_trace <- function(x,
                                drop = FALSE) {
   switch(
     arg_match_simplify(simplify),
-    none = trace_format(x, max_frames, dir, srcrefs, drop = drop),
+    none = trace_format(x, max_frames, dir, srcrefs, drop = drop, ...),
     branch = trace_format_branch(x, max_frames, dir, srcrefs)
   )
 }
@@ -421,7 +442,12 @@ deprecate_collapse <- function() {
   warn_deprecated("`\"collapse\"` is deprecated as of rlang 1.1.0.\nPlease use `\"none\"` instead.")
 }
 
-trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
+trace_format <- function(trace,
+                         max_frames,
+                         dir,
+                         srcrefs,
+                         drop = FALSE,
+                         ...) {
   if (is_false(drop) && length(trace$visible)) {
     trace$visible <- TRUE
   }
@@ -434,7 +460,12 @@ trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE) {
     return(trace_root())
   }
 
-  tree <- trace_as_tree(trace, dir = dir, srcrefs = srcrefs, drop = drop)
+  tree <- trace_as_tree(
+    trace,
+    dir = dir,
+    srcrefs = srcrefs,
+    drop = drop
+  )
   cli_tree(tree)
 }
 
@@ -673,7 +704,10 @@ is_winch_frame <- function(call) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
+trace_as_tree <- function(trace,
+                          dir = getwd(),
+                          srcrefs = NULL,
+                          drop = FALSE) {
   root_id <- 0
   root_children <- list(find_children(root_id, trace$parent))
 
@@ -685,8 +719,11 @@ trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
   trace$children <- map(trace$children, intersect, trace$id)
   root_children[[1]] <- intersect(root_children[[1]], trace$id)
 
-  call_text_data <- trace[c("call", "namespace", "scope")]
-  trace$call_text <- chr(!!!pmap(call_text_data, trace_call_text))
+  params <- intersect(
+    c("call", "namespace", "scope", "error_frame", "error_arg"),
+    names(trace)
+  )
+  trace$call_text <- chr(!!!pmap(trace[params], trace_call_text))
 
   srcrefs <- srcrefs %||% peek_option("rlang_trace_format_srcrefs") %||% TRUE
   stopifnot(is_scalar_logical(srcrefs))
@@ -768,14 +805,22 @@ node_type <- function(ns, children) {
 }
 
 # FIXME: Add something like call_deparse_line()
-trace_call_text <- function(call, namespace, scope) {
+trace_call_text <- function(call,
+                            namespace,
+                            scope,
+                            error_frame = FALSE,
+                            error_arg = NULL) {
   if (is_call(call) && is_symbol(call[[1]])) {
     if (scope %in% c("::", ":::") && !is_na(namespace)) {
       call[[1]] <- call(scope, sym(namespace), call[[1]])
     }
   }
 
-  text <- as_label(call)
+  if (error_frame) {
+    text <- call_deparse_highlight(call, error_arg)
+  } else {
+    text <- as_label(call)
+  }
 
   if (is_string(scope, "global")) {
     text <- paste0("global ", text)
@@ -1012,3 +1057,90 @@ is_trace <- function(x) {
 #' @name rlib_trace_spec
 #' @keywords internal
 NULL
+
+local_error_highlight <- function(frame = caller_env(), code = TRUE) {
+  if (!has_cli_start_app) {
+    return()
+  }
+
+  if (is_true(peek_option("rlang:::trace_test_highlight"))) {
+    if (code) {
+      theme <- theme_error_highlight_test
+    } else {
+      theme <- theme_error_arg_highlight_test
+    }
+  } else {
+    if (code) {
+      theme <- theme_error_highlight
+    } else {
+      theme <- theme_error_arg_highlight
+    }
+  }
+
+  cli::start_app(theme, .envir = frame)
+}
+
+with_error_highlight <- function(expr) {
+  local_error_highlight()
+  expr
+}
+
+# Used for highlighting `.arg` spans in error messages without
+# affecting `.code` spans
+with_error_arg_highlight <- function(expr) {
+  local_options("rlang:::error_highlight" = TRUE)
+  local_error_highlight(code = FALSE)
+  expr
+}
+
+on_load({
+  theme_error_highlight <- local({
+    if (ns_exports_has("cli", "builtin_theme")) {
+      cli_theme <- cli::builtin_theme()
+    } else {
+      cli_theme <- list()
+    }
+
+    arg_theme <- list(
+      "color" = "br_magenta",
+      "font-weight" = "bold"
+    )
+    code_theme <- list(
+      "color" = "br_blue",
+      "font-weight" = "bold"
+    )
+
+    list(
+      "span.arg" = utils::modifyList(
+        cli_theme[["span.arg"]] %||% list(),
+        arg_theme
+      ),
+      "span.code" = utils::modifyList(
+        cli_theme[["span.code"]] %||% list(),
+        code_theme
+      ),
+      "span.arg-unquoted" = arg_theme,
+      "span.code-unquoted" = code_theme
+    )
+  })
+
+  theme_error_arg_highlight <- theme_error_highlight
+  theme_error_arg_highlight[c("span.code", "span.code-unquoted")] <- NULL
+})
+
+theme_error_highlight_test <- list(
+  "span.arg" = list(before = "<<ARG ", after = ">>"),
+  "span.code" = list(before = "<<CALL ", after = ">>"),
+  "span.arg-unquoted" = list(before = "<<ARG ", after = ">>", transform = NULL),
+  "span.code-unquoted" = list(before = "<<CALL ", after = ">>", transform = NULL)
+)
+
+theme_error_arg_highlight_test <- theme_error_highlight_test
+theme_error_arg_highlight_test[c("span.code", "span.code-unquoted")] <- NULL
+
+format_arg_unquoted <- function(x) {
+  .rlang_cli_format_inline(x, "arg-unquoted", "%s")
+}
+format_code_unquoted <- function(x) {
+  .rlang_cli_format_inline(x, "code-unquoted", "%s")
+}

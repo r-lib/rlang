@@ -214,6 +214,21 @@ format_var    <- function(x) .rlang_cli_format_inline(x, "var", "`%s`")
 format_envvar <- function(x) .rlang_cli_format_inline(x, "envvar", "`%s`")
 format_field  <- function(x) .rlang_cli_format_inline(x, "field", NULL)
 
+format_error_arg_highlight <- function(x, quote = TRUE) {
+  if (is_true(peek_option("rlang:::trace_test_highlight"))) {
+    return(paste0("<<ARG ", x, ">>"))
+  }
+  out <- if (quote) format_arg(x) else x
+  style_bold(cli::col_br_magenta(out))
+}
+format_error_call_highlight <- function(x, quote = TRUE) {
+  if (is_true(peek_option("rlang:::trace_test_highlight"))) {
+    return(paste0("<<CALL ", x, ">>"))
+  }
+  out <- if (quote) format_code(x) else x
+  style_bold(cli::col_br_blue(out))
+}
+
 format_cls <- function(x) {
   fallback <- function(x) sprintf("<%s>", paste0(x, collapse = "/"))
   .rlang_cli_format_inline(x, "cls", fallback)

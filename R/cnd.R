@@ -350,8 +350,12 @@ cnd_type <- function(cnd) {
 #'
 #' @export
 cnd_inherits <- function(cnd, class) {
+  cnd_some(cnd, inherits, class)
+}
+
+cnd_some <- function(cnd, fn, ...) {
   while (is_condition(cnd)) {
-    if (inherits(cnd, class)) {
+    if (fn(cnd, ...)) {
       return(TRUE)
     }
 
@@ -391,12 +395,15 @@ format.rlang_error <- function(x,
   drop <- x$rlang$internal$trace_drop %||% drop
 
   simplify <- arg_match_simplify(simplify)
-  out <- cnd_format(
-    x,
-    ...,
-    backtrace = backtrace,
-    simplify = simplify,
-    drop = drop
+
+  with_error_arg_highlight(
+    out <- cnd_format(
+      x,
+      ...,
+      backtrace = backtrace,
+      simplify = simplify,
+      drop = drop
+    )
   )
 
   # Recommend printing the full backtrace if called from `last_error()`
@@ -486,32 +493,75 @@ cnd_format <- function(x,
   )
 
   trace <- x$trace
+  last_trace <- NULL
+  pending_trace <- NULL
+
+  # This flushes backtraces lazily so that chained error messages
+  # accumulate before displaying a backtrace
+  push_trace <- function(cnd, trace) {
+    if (!can_paste_trace(backtrace, trace)) {
+      return()
+    }
+
+    if (is_same_trace()) {
+      return()
+    }
+
+    flush_trace()
+    pending_trace <<- list(cnd = cnd, trace = trace)
+  }
+
+  flush_trace <- function() {
+    if (is_null(pending_trace)) {
+      return()
+    }
+
+    out <<- paste_line(out, "---")
+
+    out <<- paste_trace(
+      out,
+      pending_trace$trace,
+      simplify = simplify,
+      ...,
+      drop = drop
+    )
+
+    if (!is_null(parent)) {
+      out <<- paste_line(out, "---")
+    }
+
+    last_trace <<- pending_trace$trace
+    pending_trace <<- NULL
+  }
+
+  is_same_trace <- function() {
+    compare <- if (is_null(pending_trace)) last_trace else pending_trace$trace
+
+    # NOTE: Should we detect trace subsets as well?
+    identical(
+      format(trace, simplify = simplify, drop = drop),
+      format(compare, simplify = simplify, drop = drop)
+    )
+  }
+
+  push_trace(x, trace)
 
   while (!is_null(parent)) {
     x <- parent
     parent <- parent$parent
+    trace <- x$trace
 
-    chained_trace <- x$trace
-
-    # NOTE: Should we detect trace subsets as well?
-    if (can_paste_trace(backtrace, chained_trace) &&
-        !identical(
-          format(trace, simplify = simplify),
-          format(chained_trace, simplify = simplify)
-        )) {
-      out <- paste_trace(out, trace, simplify, ...)
-      out <- paste_line(out, "---")
-      trace <- chained_trace
+    if (!is_null(trace) && !is_same_trace()) {
+      flush_trace()
     }
 
     message <- cnd_message_format_prefixed(x, parent = TRUE)
     out <- paste_line(out, message)
+
+    push_trace(x, trace)
   }
 
-  if (can_paste_trace(backtrace, trace)) {
-    out <- paste_trace(out, trace, simplify, ..., drop = drop)
-  }
-
+  flush_trace()
   out
 }
 
@@ -519,8 +569,12 @@ can_paste_trace <- function(backtrace, trace) {
   backtrace && is_trace(trace) && trace_length(trace)
 }
 paste_trace <- function(x, trace, simplify, ...) {
-  trace_lines <- format(trace, ..., simplify = simplify)
-  paste_line(x, "---", bold("Backtrace:"), trace_lines)
+  trace_lines <- format(
+    trace,
+    ...,
+    simplify = simplify
+  )
+  paste_line(x, bold("Backtrace:"), trace_lines)
 }
 
 cnd_type_header <- function(cnd) {

@@ -18,6 +18,14 @@ print_focused_trace <- function(trace, ...) {
   )
 }
 
+print_highlighted_trace <- function(x, ...) {
+  local_options(
+    "rlang_trace_format_srcrefs" = FALSE,
+    "rlang:::trace_test_highlight" = TRUE
+  )
+  print(x, ..., simplify = "none", drop = TRUE)
+}
+
 expect_trace_length <- function(x, n) {
   expect_equal(trace_length(x), n)
 }

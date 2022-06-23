@@ -53,10 +53,8 @@ arg_match <- function(arg,
   }
 
   if (length(arg) > 1 && !setequal(arg, values)) {
-    abort(
-      arg_match_invalid_msg(arg, values, error_arg),
-      call = error_call
-    )
+    msg <- arg_match_invalid_msg(arg, values, error_arg)
+    abort(msg, call = error_call, arg = error_arg)
   }
 
   arg <- arg[[1]]
@@ -111,7 +109,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
         format_arg("arg"),
         format_arg("values")
       )
-      abort(msg, call = quote(arg_match()))
+      abort(msg, call = quote(arg_match()), arg = "arg")
     }
   }
 
@@ -144,7 +142,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
   }
 
-  abort(msg, call = error_call)
+  abort(msg, call = error_call, arg = error_arg)
 }
 
 arg_match_invalid_msg <- function(val, values, error_arg) {

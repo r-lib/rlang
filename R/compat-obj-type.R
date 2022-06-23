@@ -206,7 +206,8 @@ stop_input_type <- function(x,
   format_arg <- rlang::env_get(
     nm = "format_arg",
     last = topenv(),
-    default = NULL
+    default = NULL,
+    inherit = TRUE
   )
   if (!is.function(format_arg)) {
     format_arg <- function(x) sprintf("`%s`", x)
@@ -218,7 +219,8 @@ stop_input_type <- function(x,
     what,
     obj_type_friendly(x)
   )
-  rlang::abort(message, ..., call = call)
+
+  rlang::abort(message, ..., call = call, arg = arg)
 }
 
 # nocov end

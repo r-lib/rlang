@@ -1162,7 +1162,7 @@
 # must pass character `body` when `message` is > 1
 
     Code
-      err(abort("foo", body = function(cnd) c(i = "bar")))
+      err(abort("foo", body = function(cnd, ...) c(i = "bar")))
     Output
       <error/rlang_error>
       Error:
@@ -1180,7 +1180,7 @@
 # must pass character `body` when `message` is > 1 (non-cli case)
 
     Code
-      err(abort("foo", body = function(cnd) c(i = "bar")))
+      err(abort("foo", body = function(cnd, ...) c(i = "bar")))
     Output
       <error/rlang_error>
       Error:
@@ -1206,7 +1206,8 @@
       i bar
       i baz
     Code
-      err(abort("foo", body = function(cnd) c(i = "bar"), footer = function(cnd) c(i = "baz")))
+      err(abort("foo", body = function(cnd, ...) c(i = "bar"), footer = function(cnd,
+        ...) c(i = "baz")))
     Output
       <error/rlang_error>
       Error in `f()`:
@@ -1225,7 +1226,8 @@
       i bar
       i baz
     Code
-      err(abort("foo", body = function(cnd) c(i = "bar"), footer = function(cnd) c(i = "baz")))
+      err(abort("foo", body = function(cnd, ...) c(i = "bar"), footer = function(cnd,
+        ...) c(i = "baz")))
     Output
       <error/rlang_error>
       Error in `f()`:
@@ -1318,4 +1320,15 @@
       Backtrace:
         1. base::print(expect_error(my_verb(add(1, ""))))
        16. rlang (local) add(1, "")
+
+# can supply header method via `message`
+
+    Code
+      abort(~"foo")
+    Error <rlang_error>
+      foo
+    Code
+      abort(function(cnd, ...) "foo")
+    Error <rlang_error>
+      foo
 
