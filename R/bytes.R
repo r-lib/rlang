@@ -106,7 +106,7 @@ parse_bytes <- function(x) {
   stopifnot(is_character(x))
 
   pos <- regexpr(
-    "^(?<size>[[:digit:].]+)\\s*(?<unit>[KMGTPEZY]?)i?[Bb]?$",
+    "^(?<size>[[:digit:].]+)\\s*(?<unit>[kKMGTPEZY]?)i?[Bb]?$",
     x,
     perl = TRUE
   )
@@ -116,16 +116,18 @@ parse_bytes <- function(x) {
   new_bytes(unname(as.numeric(m$size) * byte_units[m$unit]))
 }
 
+# TODO: Add support for decimal prefixes
 byte_units <- c(
   'B' = 1,
-  'K' = 1024,
-  'M' = 1024 ^ 2,
-  'G' = 1024 ^ 3,
-  'T' = 1024 ^ 4,
-  'P' = 1024 ^ 5,
-  'E' = 1024 ^ 6,
-  'Z' = 1024 ^ 7,
-  'Y' = 1024 ^ 8
+  'k' = 1000,
+  'K' = 1000,
+  'M' = 1000 ^ 2,
+  'G' = 1000 ^ 3,
+  'T' = 1000 ^ 4,
+  'P' = 1000 ^ 5,
+  'E' = 1000 ^ 6,
+  'Z' = 1000 ^ 7,
+  'Y' = 1000 ^ 8
 )
 
 captures <- function(x, m) {
@@ -184,19 +186,6 @@ auto_name_seq <- function(names) {
 format.rlib_bytes <- function(x, ...) {
   check_dots_used()
   format_bytes$pretty_bytes(unclass(x))
-}
-
-tolerance <- sqrt(.Machine$double.eps)
-
-find_unit <- function(x, units) {
-  if (is.na(x) || is.nan(x) || x <= 0 || is.infinite(x)) {
-    return(NA_character_)
-  }
-  epsilon <- 1 - (x * (1 / units))
-
-  out <- which(epsilon < tolerance)
-  out <- out[length(out)]
-  names(out)
 }
 
 #' @export

@@ -25,10 +25,10 @@ test_that("as_bytes() accepts bench_byte input unchanged", {
 
 test_that("parse_bytes() parses character input", {
   expect_equal(unclass(parse_bytes("1")), 1)
-  expect_equal(unclass(parse_bytes("1K")), 1024)
-  expect_equal(unclass(parse_bytes("1M")), 1024 * 1024)
-  expect_equal(unclass(parse_bytes("10M")), 10 * 1024 * 1024)
-  expect_equal(unclass(parse_bytes("1G")), 1024 * 1024 * 1024)
+  expect_equal(unclass(parse_bytes("1K")), 1000)
+  expect_equal(unclass(parse_bytes("1M")), 1000 * 1000)
+  expect_equal(unclass(parse_bytes("10M")), 10 * 1000 * 1000)
+  expect_equal(unclass(parse_bytes("1G")), 1000 * 1000 * 1000)
 })
 
 test_that("format.rlib_bytes() formats bytes under 1024 as whole numbers", {
@@ -113,7 +113,7 @@ test_that("Ops.rlib_bytes() works with arithmetic operators", {
   expect_equal(x * 100, bytes2(c(10000, 20000, 30000)))
   expect_equal(x / 2, bytes2(c(50, 100, 150)))
   expect_equal(x ^ 2, bytes2(c(10000, 40000, 90000)))
-  expect_equal(bytes2("1Mb") + "1024Kb", bytes2("2Mb"))
+  expect_equal(bytes2("1Mb") + "1000Kb", bytes2("2Mb"))
 })
 
 test_that("Ops.rlib_bytes() errors for other binary operators", {
