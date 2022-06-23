@@ -100,7 +100,16 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>New <code>obj_type_oo()</code> function in <code>compat-obj-type.R</code> (<a href="https://github.com/r-lib/rlang/issues/1426" class="external-link">#1426</a>).</p></li>
+<ul><li>
+<p>Supplying a frame environment to the <code>call</code> argument of <code><a href="../reference/abort.html">abort()</a></code> now causes the corresponding function call in the backtrace to be highlighted.</p>
+<p>In addition, if you store the argument name of a failing input in the <code>arg</code> error field, the argument is also highlighted in the backtrace.</p>
+<p>The function name and function argument are also highlighted and colour-code in the error message preceding the backtrace to make it it easy to find the call and argument in the backtrace. This relies on lazy formatting of the error message via a lambda function. Instead of:</p>
+<pre><code><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a foobar."</span><span class="op">)</span></code></pre>
+<p>Write:</p>
+<pre><code><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span>\<span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/format_inline.html" class="external-link">format_inline</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a foobar."</span><span class="op">)</span>, arg <span class="op">=</span> <span class="va">arg</span><span class="op">)</span></code></pre>
+</li>
+<li><p><code>abort(message = )</code> can now be a function. In this case, it is stored in the <code>header</code> field and acts as a <code><a href="../reference/cnd_message.html">cnd_header()</a></code> method invoked when the message is displayed.</p></li>
+<li><p>New <code>obj_type_oo()</code> function in <code>compat-obj-type.R</code> (<a href="https://github.com/r-lib/rlang/issues/1426" class="external-link">#1426</a>).</p></li>
 <li><p><code>friendly_type_of()</code> from <code>compat-obj-type.R</code> (formerly <code>compat-friendly-type.R</code>) is now <code>obj_type_friendly()</code>.</p></li>
 <li><p><code>options(backtrace_on_error = "collapse")</code> and <code>print(trace,   simplify = "collapse")</code> are deprecated. They fall back to <code>"none"</code> with a warning.</p></li>
 <li><p><code><a href="../reference/call_match.html">call_match()</a></code> now better handles <code>...</code> when <code>dots_expand = FALSE</code>.</p></li>
@@ -449,7 +458,7 @@
 <ul><li>
 <p>You can now use glue syntax to unquote on the LHS of <code>:=</code>. This syntax is automatically available in all functions taking dots with <code><a href="../reference/list2.html">list2()</a></code> and <code><a href="../reference/enquo.html">enquos()</a></code>, and thus most of the tidyverse. Note that if you use the glue syntax in an R package, you need to import glue.</p>
 <p>A single pair of braces triggers normal glue interpolation:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 
@@ -460,7 +469,7 @@
 <span class="co">#&gt; 2 2       4</span>
 <span class="co">#&gt; 3 3       6</span></code></pre></div>
 <p>Using a pair of double braces is for labelling a function argument. Technically, this is shortcut for <code>"{as_label(enquo(arg))}"</code>. The syntax is similar to the curly-curly syntax for interpolating function arguments:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">suffix</span> <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"{{ var }}_{suffix}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>
@@ -617,20 +626,20 @@
 <h3 id="backtrace-fixes-0-3-1">Backtrace fixes<a class="anchor" aria-label="anchor" href="#backtrace-fixes-0-3-1"></a></h3>
 <ul><li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"rlang"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>error <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="../reference/entrace.html">entrace</a></span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <p>This handler also works as a calling handler:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/with_handlers.html">with_handlers</a></span><span class="op">(</span>
   error <span class="op">=</span> <span class="fu"><a href="../reference/with_handlers.html">calling</a></span><span class="op">(</span><span class="va">entrace</span><span class="op">)</span>,
   <span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p>However it’s often more practical to use <code>with_abort()</code> in that case:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu">with_abort</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </li>
@@ -690,7 +699,7 @@
 <li><p><code><a href="../reference/defusing-advanced.html">exprs()</a></code> no longer flattens quosures. <code>exprs(!!!quos(x, y))</code> is now equivalent to <code>quos(x, y)</code>.</p></li>
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>  <span class="co"># Add `arg = NULL` to the call</span>
 <span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Remove the `arg` argument from the call</span></code></pre></div>

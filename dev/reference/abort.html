@@ -212,7 +212,10 @@ for more about bulleted messaging.</p>
 generated <strong>lazily</strong> through <code><a href="cnd_message.html">cnd_header()</a></code> and <code><a href="cnd_message.html">cnd_body()</a></code>
 methods. In that case, <code>class</code> must be supplied. Only <code>inform()</code>
 allows empty messages as it is occasionally useful to build user
-output incrementally.</p></dd>
+output incrementally.</p>
+<p>If a function, it is stored in the <code>header</code> field of the error
+condition. This acts as a <code><a href="cnd_message.html">cnd_header()</a></code> method that is invoked
+lazily when the error message is displayed.</p></dd>
 
 
 <dt>class</dt>
