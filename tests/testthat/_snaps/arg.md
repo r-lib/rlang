@@ -229,7 +229,7 @@
     Output
       <error/rlang_error>
       Error in <<CALL `h()`>>:
-      ! <<ARG `my_arg`>> must be one of "foo" or "bar", not "f".
+      ! `my_arg` must be one of "foo" or "bar", not "f".
       i Did you mean "foo"?
       ---
       Backtrace:

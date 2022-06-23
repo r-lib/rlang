@@ -53,11 +53,8 @@ arg_match <- function(arg,
   }
 
   if (length(arg) > 1 && !setequal(arg, values)) {
-    abort(
-      ~ arg_match_invalid_msg(arg, values, error_arg),
-      call = error_call,
-      arg = error_arg
-    )
+    msg <- arg_match_invalid_msg(arg, values, error_arg)
+    abort(msg, call = error_call, arg = error_arg)
   }
 
   arg <- arg[[1]]
@@ -116,40 +113,36 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     }
   }
 
-  message <- function(cnd, ...) {
-    msg <- arg_match_invalid_msg(arg, values, error_arg)
+  msg <- arg_match_invalid_msg(arg, values, error_arg)
 
-    # Try suggest the most probable and helpful candidate value
-    candidate <- NULL
-    i_partial <- pmatch(arg, values)
-    if (!is_na(i_partial)) {
-      candidate <- values[[i_partial]]
-    }
-
-    i_close <- adist(arg, values) / nchar(values)
-    if (any(i_close <= 0.5)) {
-      candidate <- values[[which.min(i_close)]]
-    }
-
-    if (is_null(candidate)) {
-      # Make case-insensitive match only after failed case-sensitive one to be
-      # more helpful in certain edge cases. For example,
-      # `arg_match0("aa", c("AA", "aA"))`: here "aA" is the closest candidate.
-      i_close_nocase <- adist(arg, values, ignore.case = TRUE) / nchar(values)
-      if (any(i_close_nocase <= 0.5)) {
-        candidate <- values[[which.min(i_close_nocase)]]
-      }
-    }
-
-    if (!is_null(candidate)) {
-      candidate <- chr_quoted(candidate, "\"")
-      msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
-    }
-
-    msg
+  # Try suggest the most probable and helpful candidate value
+  candidate <- NULL
+  i_partial <- pmatch(arg, values)
+  if (!is_na(i_partial)) {
+    candidate <- values[[i_partial]]
   }
 
-  abort(message, call = error_call, arg = error_arg)
+  i_close <- adist(arg, values) / nchar(values)
+  if (any(i_close <= 0.5)) {
+    candidate <- values[[which.min(i_close)]]
+  }
+
+  if (is_null(candidate)) {
+    # Make case-insensitive match only after failed case-sensitive one to be
+    # more helpful in certain edge cases. For example,
+    # `arg_match0("aa", c("AA", "aA"))`: here "aA" is the closest candidate.
+    i_close_nocase <- adist(arg, values, ignore.case = TRUE) / nchar(values)
+    if (any(i_close_nocase <= 0.5)) {
+      candidate <- values[[which.min(i_close_nocase)]]
+    }
+  }
+
+  if (!is_null(candidate)) {
+    candidate <- chr_quoted(candidate, "\"")
+    msg <- c(msg, i = paste0("Did you mean ", candidate, "?"))
+  }
+
+  abort(msg, call = error_call, arg = error_arg)
 }
 
 arg_match_invalid_msg <- function(val, values, error_arg) {
