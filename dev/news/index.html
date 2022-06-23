@@ -100,7 +100,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li>
+<ul><li><p>The <code>rlib_bytes</code> class now uses prettyunits to format bytes. The bytes are now represented with decimal prefixes instead of binary prefixes.</p></li>
+<li>
 <p>Supplying a frame environment to the <code>call</code> argument of <code><a href="../reference/abort.html">abort()</a></code> now causes the corresponding function call in the backtrace to be highlighted.</p>
 <p>In addition, if you store the argument name of a failing input in the <code>arg</code> error field, the argument is also highlighted in the backtrace.</p>
 <p>The function name and function argument are also highlighted and colour-code in the error message preceding the backtrace to make it it easy to find the call and argument in the backtrace. This relies on lazy formatting of the error message via a lambda function. Instead of:</p>

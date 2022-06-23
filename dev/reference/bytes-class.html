@@ -143,27 +143,27 @@ shorthand sizes (see examples).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>These memory sizes are always assumed to be base 1024, rather than 1000.</p>
+    <p>These memory sizes are always assumed to be base 1000, rather than 1024.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 B</span>
 <span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1K"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 kB</span>
 <span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1Kb"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 kB</span>
 <span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1KiB"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1KB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 kB</span>
 <span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1MB"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1MB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 MB</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">parse_bytes</span><span class="op">(</span><span class="st">"1KB"</span><span class="op">)</span> <span class="op">&lt;</span> <span class="st">"1MB"</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu">parse_bytes</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1MB"</span>, <span class="st">"5MB"</span>, <span class="st">"500KB"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.49MB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.50 MB</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
