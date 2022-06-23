@@ -32,31 +32,30 @@ test_that("parse_bytes() parses character input", {
 })
 
 test_that("format.rlib_bytes() formats bytes under 1024 as whole numbers", {
-  expect_equal(format(bytes2(0)), "0B")
-  expect_equal(format(bytes2(1)), "1B")
-  expect_equal(format(bytes2(1023)), "1023B")
+  expect_equal(format(bytes2(0)), "0 B")
+  expect_equal(format(bytes2(1)), "1 B")
+  expect_equal(format(bytes2(1023)), "1.02 kB")
 })
 
 test_that("format.rlib_bytes() formats bytes 1024 and up as abbreviated numbers", {
-  expect_equal(format(bytes2(1024)), "1KB")
-  expect_equal(format(bytes2(1025)), "1KB")
-  expect_equal(format(bytes2(2^16)), "64KB")
-  expect_equal(format(bytes2(2^24)), "16MB")
-  expect_equal(format(bytes2(2^24 + 555555)), "16.5MB")
-  expect_equal(format(bytes2(2^32)), "4GB")
-  expect_equal(format(bytes2(2^48)), "256TB")
-  expect_equal(format(bytes2(2^64)), "16EB")
+  expect_equal(format(bytes2(1024)), "1.02 kB")
+  expect_equal(format(bytes2(1025)), "1.02 kB")
+  expect_equal(format(bytes2(2^16)), "65.54 kB")
+  expect_equal(format(bytes2(2^24)), "16.78 MB")
+  expect_equal(format(bytes2(2^24 + 555555)), "17.33 MB")
+  expect_equal(format(bytes2(2^32)), "4.29 GB")
+  expect_equal(format(bytes2(2^48)), "281.47 TB")
+  expect_equal(format(bytes2(2^64)), "18.45 EB")
 })
 
 test_that("format.rlib_bytes() handles NA and NaN", {
-  expect_equal(format(bytes2(NA)), "NA")
-  expect_equal(format(bytes2(NaN)), "NaN")
+  expect_equal(format(bytes2(NA)), "NA B")
+  expect_equal(format(bytes2(NaN)), "NaN B")
 })
 
 test_that("format.rlib_bytes() works with vectors", {
-  expect_equal(
-    format(as_bytes(c(NA, 1, 2^13, 2^20, NaN, 2^15)), trim = TRUE),
-    c("NA", "1B", "8KB", "1MB", "NaN", "32KB")
+  expect_snapshot(
+    print(as_bytes(c(NA, 1, 2^13, 2^20, NaN, 2^15)))
   )
   expect_equal(
     format(as_bytes(numeric())),

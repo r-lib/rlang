@@ -14,7 +14,7 @@
 #' Note: A `bytes()` constructor will be exported soon.
 #'
 #' @details
-#' These memory sizes are always assumed to be base 1024, rather than 1000.
+#' These memory sizes are always assumed to be base 1000, rather than 1024.
 #'
 #' @param x A numeric or character vector. Character representations can use
 #'   shorthand sizes (see examples).
@@ -181,41 +181,9 @@ auto_name_seq <- function(names) {
 
 # Adapted from https://github.com/gaborcsardi/prettyunits
 #' @export
-format.rlib_bytes <- function(x,
-                              ...,
-                              digits = 3,
-                              scientific = FALSE,
-                              drop0trailing = TRUE) {
+format.rlib_bytes <- function(x, ...) {
   check_dots_used()
-
-  nms <- names(x)
-  bytes <- unclass(x)
-
-  unit <- map_chr(x, find_unit, byte_units)
-  res <- round(bytes / byte_units[unit], digits = digits)
-
-  ## Zero bytes
-  res[bytes == 0] <- 0
-  unit[bytes == 0] <- "B"
-
-  ## NA and NaN bytes
-  res[is.na(bytes)] <- NA_real_
-  res[is.nan(bytes)] <- NaN
-  unit[is.na(bytes)] <- ""            # Includes NaN as well
-
-  # Append an extra B to each unit
-  large_units <- unit %in% names(byte_units)[-1]
-  unit[large_units] <- paste0(unit[large_units], "B")
-
-  res <- format(
-    res,
-    scientific = scientific,
-    digits = digits,
-    drop0trailing = drop0trailing,
-    ...
-  )
-
-  stats::setNames(paste0(res, unit), nms)
+  format_bytes$pretty_bytes(unclass(x))
 }
 
 tolerance <- sqrt(.Machine$double.eps)

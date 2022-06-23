@@ -28,7 +28,7 @@ representing bytes.
 Note: A \code{bytes()} constructor will be exported soon.
 }
 \details{
-These memory sizes are always assumed to be base 1024, rather than 1000.
+These memory sizes are always assumed to be base 1000, rather than 1024.
 }
 \examples{
 parse_bytes("1")

@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* The `rlib_bytes` class now uses prettyunits to format bytes. The
+  bytes are now represented with decimal prefixes instead of binary
+  prefixes.
+
 * Supplying a frame environment to the `call` argument of `abort()`
   now causes the corresponding function call in the backtrace to be
   highlighted.
