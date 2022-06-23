@@ -64,7 +64,7 @@ dbl(10, !!! list(1, 2L), TRUE)
 # automatically composes inner and outer names:
 c(a = c(A = 10), b = c(B = 20, C = 30))
 
-# On the other hand, rlang's ctors use the inner names and issue a
+# On the other hand, rlang's constructors use the inner names and issue a
 # warning to inform the user that the outer names are ignored:
 dbl(a = c(A = 10), b = c(B = 20, C = 30))
 dbl(a = c(1, 2))
