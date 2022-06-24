@@ -1022,7 +1022,7 @@ call_deparse_highlight <- function(call, arg) {
 
   local_error_highlight()
 
-  if (!is_symbol(call[[1]]) || call_print_fine_type(call) != "call") {
+  if (!is_call_simple(call) || call_print_fine_type(call) != "call") {
     return(format_code_unquoted(as_label(call)))
   }
 
@@ -1038,7 +1038,13 @@ call_deparse_highlight <- function(call, arg) {
     args_list <- substring(args_list, 2, nchar(args_list) - 1)
   }
 
-  fn <- sym_text(call[[1]])
+  head <- call[[1]]
+  if (is_symbol(head)) {
+    fn <- sym_text(head)
+  } else {
+    fn <- as_label(head)
+  }
+
   open <- format_code_unquoted(sprintf("%s(", fn))
   close <- format_code_unquoted(")")
 

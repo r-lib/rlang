@@ -721,3 +721,14 @@ test_that("arg is defensively checked", {
     print_highlighted_trace(err)
   })
 })
+
+test_that("namespaced calls are highlighted", {
+  f <- function() g()
+  g <- function() h()
+  h <- function() rlang:::as_string(1)
+  err <- catch_error(f())
+
+  expect_snapshot({
+    print_highlighted_trace(err)
+  })
+})
