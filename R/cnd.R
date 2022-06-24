@@ -359,7 +359,7 @@ cnd_some <- function(cnd, fn, ...) {
       return(TRUE)
     }
 
-    cnd <- cnd$parent
+    cnd <- cnd[["parent"]]
   }
 
   FALSE
@@ -477,7 +477,7 @@ cnd_format <- function(x,
   alert <- alert %||% is_error(x)
 
   orig <- x
-  parent <- x$parent
+  parent <- x[["parent"]]
   style <- cli_box_chars()
 
   header <- cnd_type_header(x)
@@ -492,7 +492,7 @@ cnd_format <- function(x,
     message
   )
 
-  trace <- x$trace
+  trace <- x[["trace"]]
   last_trace <- NULL
   pending_trace <- NULL
 
@@ -520,7 +520,7 @@ cnd_format <- function(x,
 
     out <<- paste_trace(
       out,
-      pending_trace$trace,
+      pending_trace[["trace"]],
       simplify = simplify,
       ...,
       drop = drop
@@ -530,12 +530,12 @@ cnd_format <- function(x,
       out <<- paste_line(out, "---")
     }
 
-    last_trace <<- pending_trace$trace
+    last_trace <<- pending_trace[["trace"]]
     pending_trace <<- NULL
   }
 
   is_same_trace <- function() {
-    compare <- if (is_null(pending_trace)) last_trace else pending_trace$trace
+    compare <- if (is_null(pending_trace)) last_trace else pending_trace[["trace"]]
     if (!is_trace(trace) || !is_trace(compare)) {
       return(FALSE)
     }
@@ -551,8 +551,8 @@ cnd_format <- function(x,
 
   while (!is_null(parent)) {
     x <- parent
-    parent <- parent$parent
-    trace <- x$trace
+    parent <- parent[["parent"]]
+    trace <- x[["trace"]]
 
     if (!is_null(trace) && !is_same_trace()) {
       flush_trace()
