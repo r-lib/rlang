@@ -1063,7 +1063,7 @@ NULL
 #'
 #' @examples
 #' arg_checker <- function(x, arg = caller_arg(x), call = caller_env()) {
-#'   cli::cli_abort("{.arg arg} must be a thingy.", call = call)
+#'   cli::cli_abort("{.arg {arg}} must be a thingy.", arg = arg, call = call)
 #' }
 #'
 #' my_function <- function(my_arg) {
