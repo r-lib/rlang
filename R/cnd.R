@@ -536,6 +536,9 @@ cnd_format <- function(x,
 
   is_same_trace <- function() {
     compare <- if (is_null(pending_trace)) last_trace else pending_trace$trace
+    if (!is_trace(trace) || !is_trace(compare)) {
+      return(FALSE)
+    }
 
     # NOTE: Should we detect trace subsets as well?
     identical(
