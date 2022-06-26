@@ -387,3 +387,21 @@ test_that("picks up caller frame", {
     quote(get_call(cnd2))
   )
 })
+
+test_that("tree display option is picked up when printing errors", {
+  local_options(rlang_trace_format_srcrefs = FALSE)
+
+  f <- function() g()
+  g <- function() h()
+  h <- function() abort("foo")
+  cnd <- catch_cnd(f())
+
+  expect_snapshot({
+    print(cnd)
+
+    local({
+      local_options("rlang:::trace_display_tree_override" = TRUE)
+      print(cnd)
+    })
+  })
+})

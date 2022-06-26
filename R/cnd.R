@@ -382,13 +382,10 @@ is_rlang_error <- function(x) {
 format.rlang_error <- function(x,
                                ...,
                                backtrace = TRUE,
-                               simplify = c("branch", "none"),
+                               simplify = NULL,
                                drop = NULL) {
-  if (use_tree_display() && length(simplify) == 3) {
-    simplify <- "none"
-    drop <- drop %||% TRUE
-  }
-  drop <- drop %||% FALSE
+  simplify <- arg_match_simplify(simplify)
+  drop <- arg_match_drop(drop)
 
   # Allow overwriting default display via condition field
   simplify <- x$rlang$internal$trace_simplify %||% simplify
@@ -469,11 +466,13 @@ cnd_print <- function(x, ...) {
 cnd_format <- function(x,
                        ...,
                        backtrace = TRUE,
-                       simplify = c("branch", "none"),
+                       simplify = NULL,
                        prefix = TRUE,
                        alert = NULL,
-                       drop = FALSE) {
+                       drop = NULL) {
   simplify <- arg_match_simplify(simplify)
+  drop <- arg_match_drop(drop)
+
   alert <- alert %||% is_error(x)
 
   orig <- x

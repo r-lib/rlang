@@ -431,11 +431,26 @@ format.rlang_trace <- function(x,
 }
 
 arg_match_simplify <- function(simplify, call = caller_env()) {
+  if (is_null(simplify)) {
+    if (use_tree_display()) {
+      return("none")
+    } else {
+      return("branch")
+    }
+  }
+
   if (is_string(simplify, "collapse")) {
     deprecate_collapse()
     simplify <- "none"
   }
   arg_match0(simplify, c("none", "branch"), error_call = call)
+}
+arg_match_drop <- function(drop) {
+  if (is_null(drop)) {
+    use_tree_display()
+  } else {
+    drop
+  }
 }
 
 deprecate_collapse <- function() {
