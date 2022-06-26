@@ -495,3 +495,23 @@
       Error:
       ! <<ARG `arg1`>> - `code` - <<ARG `arg2`>>
 
+# chained errors may have empty messages
+
+    Code
+      print(child)
+    Output
+      <error/rlang_error>
+      Error:
+      Caused by error:
+      ! Tilt.
+
+---
+
+    Code
+      print(child)
+    Output
+      <error/rlang_error>
+      Error in `foo()`:
+      Caused by error:
+      ! Tilt.
+

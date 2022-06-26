@@ -1,5 +1,13 @@
 # rlang (development version)
 
+* Child errors may now have empty messages to enable this pattern:
+
+  ```
+  Error in `my_function()`:
+  Caused by error in `their_function()`:
+  ! Message.
+  ```
+
 * The `rlib_bytes` class now uses prettyunits to format bytes. The
   bytes are now represented with decimal prefixes instead of binary
   prefixes.

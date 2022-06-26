@@ -234,10 +234,6 @@ cnd_message_format_prefixed <- function(cnd,
   message <- cnd_message_format(cnd, ..., alert = alert)
   message <- strip_trailing_newline(message)
 
-  if (!nzchar(message)) {
-    return(NULL)
-  }
-
   has_loc <- FALSE
 
   if (is_null(call)) {
@@ -255,7 +251,11 @@ cnd_message_format_prefixed <- function(cnd,
     prefix <- style_bold(prefix)
   }
 
-  paste0(prefix, "\n", message)
+  if (nzchar(message)) {
+    paste0(prefix, "\n", message)
+  } else {
+    prefix
+  }
 }
 
 peek_call_format_srcref <- function() {

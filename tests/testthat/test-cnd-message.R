@@ -549,3 +549,13 @@ test_that("arguments are highlighted but code spans are not", {
     )
   })
 })
+
+test_that("chained errors may have empty messages", {
+  parent <- error_cnd(message = "Tilt.")
+  child <- error_cnd(parent = parent)
+  expect_snapshot(print(child))
+
+  # This is the intended usage
+  child <- error_cnd(call = call("foo"), parent = parent)
+  expect_snapshot(print(child))
+})
