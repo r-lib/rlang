@@ -223,7 +223,6 @@
       print(err)
     Output
       <error/foo>
-      Error:
 
 # base parent errors are printed with rlang method
 
@@ -448,7 +447,6 @@
       print(warning)
     Output
       <warning/rlang_warning>
-      Warning:
       ---
       Backtrace:
        1. f()
@@ -457,7 +455,6 @@
       print(message)
     Output
       <message/rlang_message>
-      Message:
       ---
       Backtrace:
        1. f()
@@ -466,7 +463,6 @@
       summary(warning)
     Output
       <warning/rlang_warning>
-      Warning:
       ---
       Backtrace:
           x
@@ -476,7 +472,6 @@
       summary(message)
     Output
       <message/rlang_message>
-      Message:
       ---
       Backtrace:
           x

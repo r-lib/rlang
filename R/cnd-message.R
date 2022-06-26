@@ -67,7 +67,15 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
   }
 
   if (prefix) {
-    msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE)
+    # Skip child errors that have empty messages and calls
+    while (!length(msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE))) {
+      parent <- cnd[["parent"]]
+      if (is_condition(parent)) {
+        cnd <- parent
+      } else {
+        break
+      }
+    }
   } else {
     msg <- cnd_message_format(cnd, ...)
   }
@@ -233,6 +241,10 @@ cnd_message_format_prefixed <- function(cnd,
 
   message <- cnd_message_format(cnd, ..., alert = alert)
   message <- strip_trailing_newline(message)
+
+  if (!nzchar(message) && is_null(cnd[["call"]])) {
+    return(character())
+  }
 
   has_loc <- FALSE
 

@@ -481,7 +481,15 @@ cnd_format <- function(x,
 
   header <- cnd_type_header(x)
   if (prefix) {
-    message <- cnd_message_format_prefixed(x, alert = alert)
+    # Skip child errors that have empty messages and calls
+    while (!length(message <- cnd_message_format_prefixed(x, alert = alert))) {
+      if (is_condition(parent)) {
+        x <- parent
+        parent <- x[["parent"]]
+      } else {
+        break
+      }
+    }
   } else {
     message <- cnd_message_format(x, alert = alert)
   }

@@ -502,7 +502,11 @@
     Output
       <error/rlang_error>
       Error:
-      Caused by error:
+      ! Tilt.
+    Code
+      cat_line(cnd_message(child, prefix = TRUE))
+    Output
+      Error:
       ! Tilt.
 
 ---
@@ -511,6 +515,12 @@
       print(child)
     Output
       <error/rlang_error>
+      Error in `foo()`:
+      Caused by error:
+      ! Tilt.
+    Code
+      cat_line(cnd_message(child, prefix = TRUE))
+    Output
       Error in `foo()`:
       Caused by error:
       ! Tilt.
