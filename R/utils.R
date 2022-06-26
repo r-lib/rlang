@@ -383,3 +383,7 @@ vec_remove <- function(x, values) {
     x[-loc]
   }
 }
+
+str_nzchar <- function(x) {
+  is_string(x) && nzchar(x)
+}

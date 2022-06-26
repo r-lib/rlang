@@ -525,3 +525,17 @@
       Caused by error:
       ! Tilt.
 
+---
+
+    Code
+      print(child)
+    Output
+      <error/rlang_error>
+      Error:
+      ! Tilt.
+    Code
+      cat_line(cnd_message(child, prefix = TRUE))
+    Output
+      Error:
+      ! Tilt.
+

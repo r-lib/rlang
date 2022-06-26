@@ -564,4 +564,11 @@ test_that("chained errors may have empty messages", {
     print(child)
     cat_line(cnd_message(child, prefix = TRUE))
   })
+
+  # Irrelevant calls are considered as NULL
+  child <- error_cnd(call = call("eval"), parent = parent)
+  expect_snapshot({
+    print(child)
+    cat_line(cnd_message(child, prefix = TRUE))
+  })
 })

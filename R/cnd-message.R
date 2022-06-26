@@ -236,13 +236,13 @@ cnd_message_format_prefixed <- function(cnd,
     if (is_true(peek_option("rlang:::error_highlight"))) {
       local_error_highlight()
     }
-    call <- format_error_call(cnd$call)
+    call <- format_error_call(cnd[["call"]])
   })
 
   message <- cnd_message_format(cnd, ..., alert = alert)
   message <- strip_trailing_newline(message)
 
-  if (!nzchar(message) && is_null(cnd[["call"]])) {
+  if (!nzchar(message) && is_null(call)) {
     return(character())
   }
 
@@ -251,7 +251,7 @@ cnd_message_format_prefixed <- function(cnd,
   if (is_null(call)) {
     prefix <- sprintf("%s:", prefix)
   } else {
-    src_loc <- src_loc(attr(cnd$call, "srcref"))
+    src_loc <- src_loc(attr(cnd[["call"]], "srcref"))
     if (nzchar(src_loc) && peek_call_format_srcref()) {
       prefix <- sprintf("%s in %s at %s:", prefix, call, src_loc)
       has_loc <- TRUE

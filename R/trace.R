@@ -627,10 +627,6 @@ trace_trim_env_idx <- function(n, frames, to) {
   seq2(start, n)
 }
 
-is_eval_call <- function(call) {
-  is_call2(call, c("eval", "evalq"), ns = c("", "base"))
-}
-
 trace_simplify_branch <- function(trace) {
   if (!trace_length(trace)) {
     return(trace)
