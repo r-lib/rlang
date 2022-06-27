@@ -6,6 +6,8 @@
 #include "cnd.h"
 
 #define R_ARR_SIZEOF(X) sizeof(X) / sizeof(X[0])
+#define R_MIN(a, b) ((a) < (b) ? (a) : (b))
+#define R_MAX(a, b) ((a) > (b) ? (a) : (b))
 
 // Like `memset()` with support for multi-byte types
 #define R_MEM_SET(TYPE, PTR, VALUE, N) do {     \
