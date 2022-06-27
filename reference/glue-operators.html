@@ -367,82 +367,82 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 
     <div class="ref-description section level2">
     <p><a href="dyn-dots.html">Dynamic dots</a> (and <a href="topic-data-mask.html">data-masked</a> dots which are dynamic by default) have built-in support for names interpolation with the <a href="https://glue.tidyverse.org/" class="external-link">glue package</a>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>foo <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;     foo</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     1</span>
-
-<span class="va">foo</span> <span class="op">&lt;-</span> <span class="st">"name"</span>
-<span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="st">"{foo}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    name</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     1</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>foo <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;     foo</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1</span></span>
+<span></span>
+<span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="st">"name"</span></span>
+<span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="st">"{foo}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    name</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1</span></span></code></pre><p></p></div>
 <p>Inside functions, embracing an argument with <code><a href="embrace-operator.html">{{</a></code> inserts the expression supplied as argument in the string. This gives an indication on the variable or computation supplied as argument:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">tib</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="st">"var: {{ x }}"</span> <span class="op">:=</span> <span class="va">x</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">tib</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   `var: 1 + 1`</span>
-<span class="co">#&gt;          &lt;dbl&gt;</span>
-<span class="co">#&gt; 1            2</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">tib</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="st">"var: {{ x }}"</span> <span class="op">:=</span> <span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">tib</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   `var: 1 + 1`</span></span>
+<span><span class="co">#&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1            2</span></span></code></pre><p></p></div>
 <p>See also <code><a href="englue.html">englue()</a></code> to string-embrace outside of dynamic dots.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/englue.html">englue</a></span><span class="op">(</span><span class="st">"var: {{ x }}"</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">g</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "var: 1 + 1"</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/englue.html">englue</a></span><span class="op">(</span><span class="st">"var: {{ x }}"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">g</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "var: 1 + 1"</span></span></code></pre><p></p></div>
 <p>Technically, <code>"{{"</code> <a href="topic-defuse.html">defuses</a> a function argument, calls <code><a href="as_label.html">as_label()</a></code> on the expression supplied as argument, and inserts the result in the string.</p><div class="section">
 <h3 id="-and-"><code>"{"</code> and <code>"{{"</code><a class="anchor" aria-label="anchor" href="#-and-"></a></h3>
 
 
 <p>While <code><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue::glue()</a></code> only supports <code>"{"</code>, dynamic dots support both <code>"{"</code> and <code>"{{"</code>. The double brace variant is similar to the embrace operator <code><a href="embrace-operator.html">{{</a></code> available in <a href="topic-data-mask.html">data-masked</a> arguments.</p>
 <p>In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="st">"{{ var }}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;     cyl</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   `cyl * am`</span>
-<span class="co">#&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       2.06</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="st">"{{ var }}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;     cyl</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   `cyl * am`</span></span>
+<span><span class="co">#&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1       2.06</span></span></code></pre><p></p></div>
 <p><code>"{{"</code> is only meant for inserting an expression supplied as argument to a function. The result of the expression is not inspected or used. To interpolate a string stored in a variable, use the regular glue operator <code>"{"</code> instead:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">name</span> <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="st">"{name}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span>, name <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;     cyl</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">name</span> <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="st">"{name}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span>, name <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;     cyl</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
 <p>Using the wrong operator causes unexpected results:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"name"</span>
-
-<span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="st">"{{ x }}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; $`"name"`</span>
-<span class="co">#&gt; [1] 1</span>
-
-<span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="st">"{x}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; $name</span>
-<span class="co">#&gt; [1] 1</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"name"</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="st">"{{ x }}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`"name"`</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="st">"{x}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $name</span></span>
+<span><span class="co">#&gt; [1] 1</span></span></code></pre><p></p></div>
 <p>Ideally, using <code>{{</code> on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See <a href="topic-embrace-non-args.html">Does {{ work on regular objects?</a> for more information about this limitation.</p>
 </div>
 
@@ -452,21 +452,21 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 
 <p>The implementation of <code>my_mean()</code> in the previous section forces a default name onto the result. But what if the caller wants to give it a different name? In functions that take dots, it is possible to just supply a named expression to override the default. In a function like <code>my_mean()</code> that takes a named argument we need a different approach.</p>
 <p>This is where <code><a href="englue.html">englue()</a></code> becomes useful. We can pull out the default name creation in another user-facing argument like this:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">name</span> <span class="op">=</span> <span class="fu"><a href="../reference/englue.html">englue</a></span><span class="op">(</span><span class="st">"{{ var }}"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="st">"{name}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">name</span> <span class="op">=</span> <span class="fu"><a href="../reference/englue.html">englue</a></span><span class="op">(</span><span class="st">"{{ var }}"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="st">"{name}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>Now the user may supply their own name if needed:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   `cyl * am`</span>
-<span class="co">#&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       2.06</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span>, name <span class="op">=</span> <span class="st">"mean_cyl_am"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   mean_cyl_am</span>
-<span class="co">#&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1        2.06</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   `cyl * am`</span></span>
+<span><span class="co">#&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1       2.06</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span>, name <span class="op">=</span> <span class="st">"mean_cyl_am"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   mean_cyl_am</span></span>
+<span><span class="co">#&gt;         &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1        2.06</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -474,10 +474,10 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 
 
 <p>Name injection in dynamic dots was originally implemented with <code>:=</code> instead of <code>=</code> to allow complex expressions on the LHS:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"name"</span>
-<span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">x</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; $name</span>
-<span class="co">#&gt; [1] 1</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"name"</span></span>
+<span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">x</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $name</span></span>
+<span><span class="co">#&gt; [1] 1</span></span></code></pre><p></p></div>
 <p>Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of <code>=</code>.</p>
 <p>As we are now moving away from <code><a href="injection-operator.html">!!</a></code> for common tasks, we are considering enabling glue strings with <code>=</code> and superseding <code>:=</code> usage. Track the progress of this change in <a href="https://github.com/r-lib/rlang/issues/1296" class="external-link">issue 1296</a>.</p>
 </div>
@@ -487,7 +487,7 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 
 
 <p>Since rlang does not depend directly on glue, you will have to ensure that glue is installed by adding it to your <code>Imports:</code> section.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_package.html" class="external-link">use_package</a></span><span class="op">(</span><span class="st">"glue"</span>, <span class="st">"Imports"</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_package.html" class="external-link">use_package</a></span><span class="op">(</span><span class="st">"glue"</span>, <span class="st">"Imports"</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 
     </div>

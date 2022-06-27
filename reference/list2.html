@@ -114,16 +114,16 @@ version that offers more control.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">dots_list</span><span class="op">(</span>
-  <span class="va">...</span>,
-  .named <span class="op">=</span> <span class="cn">FALSE</span>,
-  .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,
-  .preserve_empty <span class="op">=</span> <span class="cn">FALSE</span>,
-  .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,
-  .check_assign <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dots_list</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .named <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
+<span>  .preserve_empty <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
+<span>  .check_assign <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -179,76 +179,76 @@ This ensures assignments are explicit.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Let's create a function that takes a variable number of arguments:</span></span>
-<span class="r-in"><span class="va">numeric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">dots</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="set_names.html">set_names</a></span><span class="op">(</span><span class="va">num</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dots</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Let's create a function that takes a variable number of arguments:</span></span></span>
+<span class="r-in"><span><span class="va">numeric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">dots</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="set_names.html">set_names</a></span><span class="op">(</span><span class="va">num</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dots</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The main difference with list(...) is that list2(...) enables</span></span>
-<span class="r-in"><span class="co"># the `!!!` syntax to splice lists:</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="va">x</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The main difference with list(...) is that list2(...) enables</span></span></span>
+<span class="r-in"><span><span class="co"># the `!!!` syntax to splice lists:</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="va">x</span>, <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># As well as unquoting of names:</span></span>
-<span class="r-in"><span class="va">nm</span> <span class="op">&lt;-</span> <span class="st">"yup!"</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">nm</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># As well as unquoting of names:</span></span></span>
+<span class="r-in"><span><span class="va">nm</span> <span class="op">&lt;-</span> <span class="st">"yup!"</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">nm</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> yup! </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    1 </span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># One useful application of splicing is to work around exact and</span></span>
-<span class="r-in"><span class="co"># partial matching of arguments. Let's create a function taking</span></span>
-<span class="r-in"><span class="co"># named arguments and dots:</span></span>
-<span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You normally cannot pass an argument named `data` through the dots</span></span>
-<span class="r-in"><span class="co"># as it will match `fn`'s `data` argument. The splicing syntax</span></span>
-<span class="r-in"><span class="co"># provides a workaround:</span></span>
-<span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="st">"wrong!"</span>, data <span class="op">=</span> <span class="va">letters</span><span class="op">)</span>  <span class="co"># exact matching of `data`</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># One useful application of splicing is to work around exact and</span></span></span>
+<span class="r-in"><span><span class="co"># partial matching of arguments. Let's create a function taking</span></span></span>
+<span class="r-in"><span><span class="co"># named arguments and dots:</span></span></span>
+<span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">list2</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You normally cannot pass an argument named `data` through the dots</span></span></span>
+<span class="r-in"><span><span class="co"># as it will match `fn`'s `data` argument. The splicing syntax</span></span></span>
+<span class="r-in"><span><span class="co"># provides a workaround:</span></span></span>
+<span class="r-in"><span><span class="fu">fn</span><span class="op">(</span><span class="st">"wrong!"</span>, data <span class="op">=</span> <span class="va">letters</span><span class="op">)</span>  <span class="co"># exact matching of `data`</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "wrong!"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="st">"wrong!"</span>, dat <span class="op">=</span> <span class="va">letters</span><span class="op">)</span>   <span class="co"># partial matching of `data`</span></span>
+<span class="r-in"><span><span class="fu">fn</span><span class="op">(</span><span class="st">"wrong!"</span>, dat <span class="op">=</span> <span class="va">letters</span><span class="op">)</span>   <span class="co"># partial matching of `data`</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "wrong!"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="va">some_data</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">letters</span><span class="op">)</span><span class="op">)</span>  <span class="co"># no matching</span></span>
+<span class="r-in"><span><span class="fu">fn</span><span class="op">(</span><span class="va">some_data</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">letters</span><span class="op">)</span><span class="op">)</span>  <span class="co"># no matching</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Empty arguments trigger an error by default:</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span>, <span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Empty arguments trigger an error by default:</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span>, <span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can choose to preserve empty arguments instead:</span></span>
-<span class="r-in"><span class="va">list3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu">dots_list</span><span class="op">(</span><span class="va">...</span>, .preserve_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note how the last empty argument is still ignored because</span></span>
-<span class="r-in"><span class="co"># `.ignore_empty` defaults to "trailing":</span></span>
-<span class="r-in"><span class="fu">list3</span><span class="op">(</span>, <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can choose to preserve empty arguments instead:</span></span></span>
+<span class="r-in"><span><span class="va">list3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu">dots_list</span><span class="op">(</span><span class="va">...</span>, .preserve_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note how the last empty argument is still ignored because</span></span></span>
+<span class="r-in"><span><span class="co"># `.ignore_empty` defaults to "trailing":</span></span></span>
+<span class="r-in"><span><span class="fu">list3</span><span class="op">(</span>, <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The list with preserved empty arguments is equivalent to:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="missing_arg.html">missing_arg</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The list with preserved empty arguments is equivalent to:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="missing_arg.html">missing_arg</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Arguments with duplicated names are kept by default:</span></span>
-<span class="r-in"><span class="fu">list2</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Arguments with duplicated names are kept by default:</span></span></span>
+<span class="r-in"><span><span class="fu">list2</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -267,9 +267,9 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use the `.homonyms` argument to keep only the first of these:</span></span>
-<span class="r-in"><span class="fu">dots_list</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, .homonyms <span class="op">=</span> <span class="st">"first"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use the `.homonyms` argument to keep only the first of these:</span></span></span>
+<span class="r-in"><span><span class="fu">dots_list</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, .homonyms <span class="op">=</span> <span class="st">"first"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -282,9 +282,9 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Or the last:</span></span>
-<span class="r-in"><span class="fu">dots_list</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, .homonyms <span class="op">=</span> <span class="st">"last"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or the last:</span></span></span>
+<span class="r-in"><span><span class="fu">dots_list</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, .homonyms <span class="op">=</span> <span class="st">"last"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -297,19 +297,19 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Or raise an informative error:</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">dots_list</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, .homonyms <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or raise an informative error:</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">dots_list</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span>, b <span class="op">=</span> <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, .homonyms <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir, enclos) : </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Arguments in `...` must have unique names.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Multiple arguments named `a` at positions 1 and 2.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Multiple arguments named `b` at positions 3 and 4.</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># dots_list() can be configured to warn when a `&lt;-` call is</span></span>
-<span class="r-in"><span class="co"># detected:</span></span>
-<span class="r-in"><span class="va">my_list</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu">dots_list</span><span class="op">(</span><span class="va">...</span>, .check_assign <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">my_list</span><span class="op">(</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># dots_list() can be configured to warn when a `&lt;-` call is</span></span></span>
+<span class="r-in"><span><span class="co"># detected:</span></span></span>
+<span class="r-in"><span><span class="va">my_list</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu">dots_list</span><span class="op">(</span><span class="va">...</span>, .check_assign <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">my_list</span><span class="op">(</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using `&lt;-` as argument is often a mistake.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Do you need to use `=` to match an argument?</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> </span>
@@ -324,10 +324,10 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># There is no warning if the assignment is wrapped in braces.</span></span>
-<span class="r-in"><span class="co"># This requires users to be explicit about their intent:</span></span>
-<span class="r-in"><span class="fu">my_list</span><span class="op">(</span><span class="op">{</span> <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">}</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># There is no warning if the assignment is wrapped in braces.</span></span></span>
+<span class="r-in"><span><span class="co"># This requires users to be explicit about their intent:</span></span></span>
+<span class="r-in"><span><span class="fu">my_list</span><span class="op">(</span><span class="op">{</span> <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

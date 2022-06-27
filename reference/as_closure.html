@@ -114,7 +114,7 @@ error.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_closure</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as_closure</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -142,17 +142,17 @@ is a string.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Primitive functions are regularised as closures</span></span>
-<span class="r-in"><span class="fu">as_closure</span><span class="op">(</span><span class="va">list</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Primitive functions are regularised as closures</span></span></span>
+<span class="r-in"><span><span class="fu">as_closure</span><span class="op">(</span><span class="va">list</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (...) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> .Primitive("list")(...)</span>
-<span class="r-in"><span class="fu">as_closure</span><span class="op">(</span><span class="st">"list"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">as_closure</span><span class="op">(</span><span class="st">"list"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (...) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> .Primitive("list")(...)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Operators have `.x` and `.y` as arguments, just like lambda</span></span>
-<span class="r-in"><span class="co"># functions created with the formula syntax:</span></span>
-<span class="r-in"><span class="fu">as_closure</span><span class="op">(</span><span class="va">`+`</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Operators have `.x` and `.y` as arguments, just like lambda</span></span></span>
+<span class="r-in"><span><span class="co"># functions created with the formula syntax:</span></span></span>
+<span class="r-in"><span><span class="fu">as_closure</span><span class="op">(</span><span class="va">`+`</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (e1, e2, .x = e1, .y = e2) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     if (missing(.x)) {</span>
@@ -174,8 +174,8 @@ is a string.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         .x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else .x + .y</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a1be43a40&gt;</span>
-<span class="r-in"><span class="fu">as_closure</span><span class="op">(</span><span class="va">`~`</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575d2c5bce8&gt;</span>
+<span class="r-in"><span><span class="fu">as_closure</span><span class="op">(</span><span class="va">`~`</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (.x, .y) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     if (is_missing(substitute(.y))) {</span>
@@ -185,9 +185,9 @@ is a string.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         new_formula(substitute(.x), substitute(.y), caller_env())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x559a17275f08&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a1bea5670&gt;</span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;bytecode: 0x5575cdbf1f08&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575d2cc1748&gt;</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

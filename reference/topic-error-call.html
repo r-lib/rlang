@@ -119,13 +119,13 @@ This works well when abort() is called directly within the failing function. How
 
     <div class="ref-description section level2">
     <p>Starting with rlang 1.0, <code><a href="abort.html">abort()</a></code> includes the erroring function in the message by default:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do that."</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_function</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Error in `my_function()`:</span>
-<span class="co">#&gt; ! Can't do that.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do that."</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_function</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `my_function()`:</span></span>
+<span><span class="co">#&gt; ! Can't do that.</span></span></code></pre><p></p></div>
 <p>This works well when <code><a href="abort.html">abort()</a></code> is called directly within the failing function. However, when the <code><a href="abort.html">abort()</a></code> call is exported to another function (which we call an "error helper"), we need to be explicit about which function <code><a href="abort.html">abort()</a></code> is throwing an error for.</p>
     </div>
 
@@ -133,122 +133,122 @@ This works well when abort() is called directly within the failing function. How
     <div class="section level2">
     <h2 id="passing-the-user-context">Passing the user context<a class="anchor" aria-label="anchor" href="#passing-the-user-context"></a></h2>
     <p>There are two main kinds of error helpers:</p><ul><li><p>Simple <code><a href="abort.html">abort()</a></code> wrappers. These often aim at adding classes and attributes to an error condition in a structured way:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">stop_my_class</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">message</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="va">message</span>, class <span class="op">=</span> <span class="st">"my_class"</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div></li>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">stop_my_class</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">message</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="va">message</span>, class <span class="op">=</span> <span class="st">"my_class"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div></li>
 <li><p>Input checking functions. An input checker is typically passed an input and an argument name. It throws an error if the input doesn't conform to expectations:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">check_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">arg</span> <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a string."</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span></code></pre><p></p></div></li>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">check_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">arg</span> <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a string."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div></li>
 </ul><p>In both cases, the default error call is not very helpful to the end user because it reflects an internal function rather than a user function:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_string</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="fu">stop_my_class</span><span class="op">(</span><span class="st">"Unimplemented"</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
-<span class="co">#&gt; Error in `check_string()`:</span>
-<span class="co">#&gt; ! `x` must be a string.</span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">my_function</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span>
-<span class="co">#&gt; Error in `stop_my_class()`:</span>
-<span class="co">#&gt; ! Unimplemented</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_string</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="fu">stop_my_class</span><span class="op">(</span><span class="st">"Unimplemented"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `check_string()`:</span></span>
+<span><span class="co">#&gt; ! `x` must be a string.</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">my_function</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `stop_my_class()`:</span></span>
+<span><span class="co">#&gt; ! Unimplemented</span></span></code></pre><p></p></div>
 <p>To fix this, let <code><a href="abort.html">abort()</a></code> knows about the function that it is throwing the error for by passing the corresponding function environment as <code>call</code> argument:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">stop_my_class</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">message</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="va">message</span>, class <span class="op">=</span> <span class="st">"my_class"</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">check_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">arg</span> <span class="op">=</span> <span class="st">"x"</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a string."</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
-<span class="co">#&gt; Error in `my_function()`:</span>
-<span class="co">#&gt; ! `x` must be a string.</span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">my_function</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span>
-<span class="co">#&gt; Error in `my_function()`:</span>
-<span class="co">#&gt; ! Unimplemented</span></code></pre><p></p></div><div class="section">
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">stop_my_class</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">message</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="va">message</span>, class <span class="op">=</span> <span class="st">"my_class"</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">check_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">arg</span> <span class="op">=</span> <span class="st">"x"</span>, <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a string."</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `my_function()`:</span></span>
+<span><span class="co">#&gt; ! `x` must be a string.</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">my_function</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `my_function()`:</span></span>
+<span><span class="co">#&gt; ! Unimplemented</span></span></code></pre><p></p></div><div class="section">
 <h3 id="input-checkers-and-caller-arg-">Input checkers and <code><a href="caller_arg.html">caller_arg()</a></code><a class="anchor" aria-label="anchor" href="#input-checkers-and-caller-arg-"></a></h3>
 
 
 <p>The <code><a href="caller_arg.html">caller_arg()</a></code> helper is useful in input checkers which check an input on the behalf of another function. Instead of hard-coding <code>arg = "x"</code>, and forcing the callers to supply it if <code>"x"</code> is not the name of the argument being checked, use <code><a href="caller_arg.html">caller_arg()</a></code>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">check_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,
-                         <span class="va">arg</span> <span class="op">=</span> <span class="fu"><a href="../reference/caller_arg.html">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-                         <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a string."</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">check_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,</span>
+<span>                         <span class="va">arg</span> <span class="op">=</span> <span class="fu"><a href="../reference/caller_arg.html">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>                         <span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="../reference/scalar-type-predicates.html">is_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a string."</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>It is a combination of <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code> and <code><a href="as_label.html">rlang::as_label()</a></code> which provides a more generally applicable default:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">my_arg</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">check_string</span><span class="op">(</span><span class="va">my_arg</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
-<span class="co">#&gt; Error in `my_function()`:</span>
-<span class="co">#&gt; ! `my_arg` must be a string.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">my_arg</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">check_string</span><span class="op">(</span><span class="va">my_arg</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `my_function()`:</span></span>
+<span><span class="co">#&gt; ! `my_arg` must be a string.</span></span></code></pre><p></p></div>
 </div>
 
     </div>
     <div class="section level2">
     <h2 id="side-benefit-backtrace-trimming">Side benefit: backtrace trimming<a class="anchor" aria-label="anchor" href="#side-benefit-backtrace-trimming"></a></h2>
     <p>Another benefit of passing <code><a href="stack.html">caller_env()</a></code> as <code>call</code> is that it allows <code><a href="abort.html">abort()</a></code> to automatically hide the error helpers</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">their_function</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">their_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">error_helper1</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">error_helper1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">error_helper2</span><span class="op">(</span>call <span class="op">=</span> <span class="va">call</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">error_helper2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">use_call</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
-<span class="fu">their_function</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Error in `error_helper2()`:</span>
-<span class="co">#&gt; ! Can't do this</span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;error/rlang_error&gt;</span>
-<span class="co">#&gt; Error in `error_helper2()`:</span>
-<span class="co">#&gt; ! Can't do this</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;  1. rlang (local) their_function()</span>
-<span class="co">#&gt;  2. rlang (local) error_helper1()</span>
-<span class="co">#&gt;  3. rlang (local) error_helper2(call = call)</span>
-<span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">their_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">error_helper1</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">error_helper1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">error_helper2</span><span class="op">(</span>call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">error_helper2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">use_call</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span>
+<span><span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `error_helper2()`:</span></span>
+<span><span class="co">#&gt; ! Can't do this</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;error/rlang_error&gt;</span></span>
+<span><span class="co">#&gt; Error in `error_helper2()`:</span></span>
+<span><span class="co">#&gt; ! Can't do this</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Backtrace:</span></span>
+<span><span class="co">#&gt;  1. rlang (local) their_function()</span></span>
+<span><span class="co">#&gt;  2. rlang (local) error_helper1()</span></span>
+<span><span class="co">#&gt;  3. rlang (local) error_helper2(call = call)</span></span>
+<span><span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></span></code></pre><p></p></div>
 <p>With the correct <code>call</code>, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
-<span class="fu">their_function</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Error in `their_function()`:</span>
-<span class="co">#&gt; ! Can't do this</span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; &lt;error/rlang_error&gt;</span>
-<span class="co">#&gt; Error in `their_function()`:</span>
-<span class="co">#&gt; ! Can't do this</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Backtrace:</span>
-<span class="co">#&gt;  1. rlang (local) their_function()</span>
-<span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
+<span><span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `their_function()`:</span></span>
+<span><span class="co">#&gt; ! Can't do this</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;error/rlang_error&gt;</span></span>
+<span><span class="co">#&gt; Error in `their_function()`:</span></span>
+<span><span class="co">#&gt; ! Can't do this</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Backtrace:</span></span>
+<span><span class="co">#&gt;  1. rlang (local) their_function()</span></span>
+<span><span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="testthat-workflow">testthat workflow<a class="anchor" aria-label="anchor" href="#testthat-workflow"></a></h2>
     <p>Error snapshots are the main way of checking that the correct error call is included in an error message. However you'll need to opt into a new testthat display for warning and error snapshots. With the new display, these are printed by rlang, including the <code>call</code> field. This makes it easy to monitor the full appearance of warning and error messages as they are displayed to users.</p>
 <p>This display is not applied to all packages yet. With testthat 3.1.2, depend explicitly on rlang &gt;= 1.0.0 to opt in. Starting from testthat 3.1.3, depending on rlang, no matter the version, is sufficient to opt in. In the future, the new display will be enabled for all packages.</p>
 <p>Once enabled, create error snapshots with:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">expect_snapshot</span><span class="op">(</span>error <span class="op">=</span> <span class="cn">TRUE</span>, <span class="op">{</span>
-  <span class="fu">my_function</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="fu">expect_snapshot_error</span><span class="op">(</span><span class="fu">my_function</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">expect_snapshot</span><span class="op">(</span>error <span class="op">=</span> <span class="cn">TRUE</span>, <span class="op">{</span></span>
+<span>  <span class="fu">my_function</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">expect_snapshot_error</span><span class="op">(</span><span class="fu">my_function</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>You'll have to make sure that the snapshot coverage for error messages is sufficient for your package.</p>
     </div>
 

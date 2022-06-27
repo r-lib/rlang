@@ -239,44 +239,44 @@ summarise_stats(mtcars, times100(cyl))
 
     <div class="ref-description section level2">
     <p>One inherent risk to metaprogramming is to evaluate multiple times a piece of code that appears to be evaluated only once. Take this data-masking function which takes a single input and produces two summaries:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
-      mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>,
-      sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
-    <span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;    mean    sd</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19  1.79</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>      mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>,</span>
+<span>      sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;    mean    sd</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19  1.79</span></span></code></pre><p></p></div>
 <p>This function is perfectly fine if the user supplies simple column names. However, data-masked arguments may also include <em>computations</em>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;    mean    sd</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  619.  179.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;    mean    sd</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  619.  179.</span></span></code></pre><p></p></div>
 <p>Computations may be slow and may produce side effects. For these
 reasons, they should only be performed as many times as they appear in the code (unless explicitly documented, e.g. once per group with grouped data frames). Let's try again with a more complex computation:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">times100</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Takes a long time..."</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-
-  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"And causes side effects such as messages!"</span><span class="op">)</span>
-  <span class="va">x</span> <span class="op">*</span> <span class="fl">100</span>
-<span class="op">}</span>
-
-<span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Takes a long time...</span>
-<span class="co">#&gt; And causes side effects such as messages!</span>
-<span class="co">#&gt; Takes a long time...</span>
-<span class="co">#&gt; And causes side effects such as messages!</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;    mean    sd</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  619.  179.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">times100</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Takes a long time..."</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"And causes side effects such as messages!"</span><span class="op">)</span></span>
+<span>  <span class="va">x</span> <span class="op">*</span> <span class="fl">100</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Takes a long time...</span></span>
+<span><span class="co">#&gt; And causes side effects such as messages!</span></span>
+<span><span class="co">#&gt; Takes a long time...</span></span>
+<span><span class="co">#&gt; And causes side effects such as messages!</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;    mean    sd</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  619.  179.</span></span></code></pre><p></p></div>
 <p>Because of the side effects and the long running time, it is clear that <code>summarise_stats()</code> evaluates its input twice. This is because we've injected a defused expression in two different places. The data-masked expression created down the line looks like this (with caret signs representing <a href="topic-quosure.html">quosure</a> boundaries):</p>
 <p></p><div class="sourceCode r"><pre><code>dplyr::summarise(
   mean = ^mean(^times100(cyl)),
@@ -285,48 +285,48 @@ reasons, they should only be performed as many times as they appear in the code 
 </code></pre><p></p></div>
 <p>The <code>times100(cyl)</code> expression is evaluated twice, even though it only appears once in the code. We have a double evaluation bug.</p>
 <p>One simple way to fix it is to assign the defused input to a constant. You can then refer to that constant in the remaining of the code.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span>
-      var <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>,
-    <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
-      mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>,
-      sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-    <span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span></span>
+<span>      var <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>,</span>
+<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>      mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>,</span>
+<span>      sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>The defused input is now evaluated only once because it is injected only once:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Takes a long time...</span>
-<span class="co">#&gt; And causes side effects such as messages!</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;    mean    sd</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  619.  179.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Takes a long time...</span></span>
+<span><span class="co">#&gt; And causes side effects such as messages!</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;    mean    sd</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  619.  179.</span></span></code></pre><p></p></div>
     </div>
 
 
     <div class="section level2">
     <h2 id="what-about-glue-strings-">What about glue strings?<a class="anchor" aria-label="anchor" href="#what-about-glue-strings-"></a></h2>
     <p><code>{{</code> <a href="glue-operators.html">embracing in glue strings</a> doesn't suffer from the double evaluation problem:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span>
-      var <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>,
-    <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
-      <span class="st">"mean_{{ var }}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>,
-      <span class="st">"sd_{{ var }}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-    <span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Takes a long time...</span>
-<span class="co">#&gt; And causes side effects such as messages!</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;   `mean_times100(cyl)` `sd_times100(cyl)`</span>
-<span class="co">#&gt;                  &lt;dbl&gt;              &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                 619.               179.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">summarise_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span></span>
+<span>      var <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>,</span>
+<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>      <span class="st">"mean_{{ var }}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>,</span>
+<span>      <span class="st">"sd_{{ var }}"</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">summarise_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">times100</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Takes a long time...</span></span>
+<span><span class="co">#&gt; And causes side effects such as messages!</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;   `mean_times100(cyl)` `sd_times100(cyl)`</span></span>
+<span><span class="co">#&gt;                  &lt;dbl&gt;              &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1                 619.               179.</span></span></code></pre><p></p></div>
 <p>Since a glue string doesn't need the result of an expression, only the original code converted (deparsed) to a string, it doesn't evaluate injected expressions.</p>
     </div>
 

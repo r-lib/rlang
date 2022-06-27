@@ -162,19 +162,19 @@ or a package environment) is attached to the search path.</p></li>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">search_envs</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">search_env</span><span class="op">(</span><span class="va">name</span><span class="op">)</span>
-
-<span class="fu">pkg_env</span><span class="op">(</span><span class="va">pkg</span><span class="op">)</span>
-
-<span class="fu">pkg_env_name</span><span class="op">(</span><span class="va">pkg</span><span class="op">)</span>
-
-<span class="fu">is_attached</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">base_env</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">global_env</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">search_envs</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">search_env</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pkg_env</span><span class="op">(</span><span class="va">pkg</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pkg_env_name</span><span class="op">(</span><span class="va">pkg</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">is_attached</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">base_env</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">global_env</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -211,15 +211,15 @@ to the search path with <code><a href="https://rdrr.io/r/base/attach.html" class
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># List the search names of environments attached to the search path:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/search.html" class="external-link">search</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># List the search names of environments attached to the search path:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/search.html" class="external-link">search</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] ".GlobalEnv"        "package:rlang"     "package:stats"    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "package:graphics"  "package:grDevices" "package:utils"    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "package:datasets"  "package:methods"   "Autoloads"        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10] "package:base"     </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Get the corresponding environments:</span></span>
-<span class="r-in"><span class="fu">search_envs</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Get the corresponding environments:</span></span></span>
+<span class="r-in"><span><span class="fu">search_envs</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [[1]] $ &lt;env: global&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [[2]] $ &lt;env: package:rlang&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [[3]] $ &lt;env: package:stats&gt;</span>
@@ -230,35 +230,35 @@ to the search path with <code><a href="https://rdrr.io/r/base/attach.html" class
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [[8]] $ &lt;env: package:methods&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [[9]] $ &lt;env: Autoloads&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]] $ &lt;env: package:base&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The global environment and the base package are always first and</span></span>
-<span class="r-in"><span class="co"># last in the chain, respectively:</span></span>
-<span class="r-in"><span class="va">envs</span> <span class="op">&lt;-</span> <span class="fu">search_envs</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">envs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The global environment and the base package are always first and</span></span></span>
+<span class="r-in"><span><span class="co"># last in the chain, respectively:</span></span></span>
+<span class="r-in"><span><span class="va">envs</span> <span class="op">&lt;-</span> <span class="fu">search_envs</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">envs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: R_GlobalEnv&gt;</span>
-<span class="r-in"><span class="va">envs</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">envs</span><span class="op">)</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="va">envs</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">envs</span><span class="op">)</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: base&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># These two environments have their own shortcuts:</span></span>
-<span class="r-in"><span class="fu">global_env</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># These two environments have their own shortcuts:</span></span></span>
+<span class="r-in"><span><span class="fu">global_env</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: R_GlobalEnv&gt;</span>
-<span class="r-in"><span class="fu">base_env</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">base_env</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: base&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Packages appear in the search path with a special name. Use</span></span>
-<span class="r-in"><span class="co"># pkg_env_name() to create that name:</span></span>
-<span class="r-in"><span class="fu">pkg_env_name</span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Packages appear in the search path with a special name. Use</span></span></span>
+<span class="r-in"><span><span class="co"># pkg_env_name() to create that name:</span></span></span>
+<span class="r-in"><span><span class="fu">pkg_env_name</span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "package:rlang"</span>
-<span class="r-in"><span class="fu">search_env</span><span class="op">(</span><span class="fu">pkg_env_name</span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">search_env</span><span class="op">(</span><span class="fu">pkg_env_name</span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: package:rlang&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"name")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "package:rlang"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"path")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/work/_temp/Library/rlang"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Alternatively, get the scoped environment of a package with</span></span>
-<span class="r-in"><span class="co"># pkg_env():</span></span>
-<span class="r-in"><span class="fu">pkg_env</span><span class="op">(</span><span class="st">"utils"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Alternatively, get the scoped environment of a package with</span></span></span>
+<span class="r-in"><span><span class="co"># pkg_env():</span></span></span>
+<span class="r-in"><span><span class="fu">pkg_env</span><span class="op">(</span><span class="st">"utils"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: package:utils&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"name")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "package:utils"</span>

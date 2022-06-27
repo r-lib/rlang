@@ -138,16 +138,16 @@ in most applications.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">enquo</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span>
-
-<span class="fu">enquos</span><span class="op">(</span>
-  <span class="va">...</span>,
-  .named <span class="op">=</span> <span class="cn">FALSE</span>,
-  .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,
-  .unquote_names <span class="op">=</span> <span class="cn">TRUE</span>,
-  .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,
-  .check_assign <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">enquo</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">enquos</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .named <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
+<span>  .unquote_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
+<span>  .check_assign <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -213,13 +213,13 @@ This ensures assignments are explicit.</p></dd>
 
 <p>Arguments defused with <code>enquo()</code> and <code>enquos()</code> automatically gain
 <a href="topic-inject.html">injection</a> support.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># Can now use `!!` and `{{`</span>
-<span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"cyl"</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Can now use `!!` and `{{`</span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"cyl"</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>See <code><a href="defusing-advanced.html">enquo0()</a></code> and <code><a href="defusing-advanced.html">enquos0()</a></code> for variants that don't enable
 injection.</p>
     </div>
@@ -236,61 +236,61 @@ of a defused expression.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># `enquo()` defuses the expression supplied by your user</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">enquo</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">f</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># `enquo()` defuses the expression supplied by your user</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">enquo</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^1 + 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x559a1ad971d0</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `enquos()` works with arguments and dots. It returns a list of</span></span>
-<span class="r-in"><span class="co"># expressions</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">enquos</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">f</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>, <span class="fl">2</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x5575ca04ac08</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `enquos()` works with arguments and dots. It returns a list of</span></span></span>
+<span class="r-in"><span><span class="co"># expressions</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">enquos</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>, <span class="fl">2</span> <span class="op">*</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;list_of&lt;quosure&gt;&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^1 + 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x559a1ad971d0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x5575ca04ac08</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^2 * 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x559a1ad971d0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x5575ca04ac08</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `enquo()` and `enquos()` enable _injection_ and _embracing_ for</span></span>
-<span class="r-in"><span class="co"># your users</span></span>
-<span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">f</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu">g</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `enquo()` and `enquos()` enable _injection_ and _embracing_ for</span></span></span>
+<span class="r-in"><span><span class="co"># your users</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">f</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">g</span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;list_of&lt;quosure&gt;&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^(</span>^100<span style="color: #0000BB;">) * 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x559a1bc483f0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x5575d17ab9f8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">column</span> <span class="op">&lt;-</span> <span class="fu"><a href="sym.html">sym</a></span><span class="op">(</span><span class="st">"cyl"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">g</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">column</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">column</span> <span class="op">&lt;-</span> <span class="fu"><a href="sym.html">sym</a></span><span class="op">(</span><span class="st">"cyl"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">g</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">column</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;list_of&lt;quosure&gt;&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^(</span><span style="color: #00BB00;">^cyl</span><span style="color: #0000BB;">) * 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x559a186fe900</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x5575d0de0290</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

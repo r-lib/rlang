@@ -107,105 +107,105 @@
     <div class="section level2">
     <h2 id="turning-off-unicode-bullets">Turning off unicode bullets<a class="anchor" aria-label="anchor" href="#turning-off-unicode-bullets"></a></h2>
     <p>By default, bulleted lists are prefixed with unicode symbols:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-  <span class="st">"The error message."</span>,
-  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,
-  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,
-  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,
-  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,
-  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error:</span>
-<span class="co">#&gt; ! The error message.</span>
-<span class="co">#&gt; • Regular bullet.</span>
-<span class="co">#&gt; ℹ Informative bullet.</span>
-<span class="co">#&gt; ✖ Cross bullet.</span>
-<span class="co">#&gt; ✔ Victory bullet.</span>
-<span class="co">#&gt; → Arrow bullet.</span></code></pre></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"The error message."</span>,</span>
+<span>  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,</span>
+<span>  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,</span>
+<span>  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,</span>
+<span>  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,</span>
+<span>  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! The error message.</span></span>
+<span><span class="co">#&gt; • Regular bullet.</span></span>
+<span><span class="co">#&gt; ℹ Informative bullet.</span></span>
+<span><span class="co">#&gt; ✖ Cross bullet.</span></span>
+<span><span class="co">#&gt; ✔ Victory bullet.</span></span>
+<span><span class="co">#&gt; → Arrow bullet.</span></span></code></pre></div>
 <p>Set this option to use simple letters instead:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.condition_unicode_bullets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-  <span class="st">"The error message."</span>,
-  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,
-  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,
-  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,
-  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,
-  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error:</span>
-<span class="co">#&gt; ! The error message.</span>
-<span class="co">#&gt; * Regular bullet.</span>
-<span class="co">#&gt; i Informative bullet.</span>
-<span class="co">#&gt; x Cross bullet.</span>
-<span class="co">#&gt; v Victory bullet.</span>
-<span class="co">#&gt; &gt; Arrow bullet.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.condition_unicode_bullets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"The error message."</span>,</span>
+<span>  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,</span>
+<span>  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,</span>
+<span>  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,</span>
+<span>  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,</span>
+<span>  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! The error message.</span></span>
+<span><span class="co">#&gt; * Regular bullet.</span></span>
+<span><span class="co">#&gt; i Informative bullet.</span></span>
+<span><span class="co">#&gt; x Cross bullet.</span></span>
+<span><span class="co">#&gt; v Victory bullet.</span></span>
+<span><span class="co">#&gt; &gt; Arrow bullet.</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="changing-the-bullet-symbols">Changing the bullet symbols<a class="anchor" aria-label="anchor" href="#changing-the-bullet-symbols"></a></h2>
     <p>You can specify what symbol to use for each type of bullet through your cli user theme. For instance, here is how to uniformly use <code>*</code> for all bullet kinds:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.user_theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="st">".cli_rlang .bullet-*"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,
-  <span class="st">".cli_rlang .bullet-i"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,
-  <span class="st">".cli_rlang .bullet-x"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,
-  <span class="st">".cli_rlang .bullet-v"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,
-  <span class="st">".cli_rlang .bullet-&gt;"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span>
-
-<span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-  <span class="st">"The error message."</span>,
-  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,
-  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,
-  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,
-  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,
-  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error:</span>
-<span class="co">#&gt; ! The error message.</span>
-<span class="co">#&gt; * Regular bullet.</span>
-<span class="co">#&gt; * Informative bullet.</span>
-<span class="co">#&gt; * Cross bullet.</span>
-<span class="co">#&gt; * Victory bullet.</span>
-<span class="co">#&gt; * Arrow bullet.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.user_theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="st">".cli_rlang .bullet-*"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,</span>
+<span>  <span class="st">".cli_rlang .bullet-i"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,</span>
+<span>  <span class="st">".cli_rlang .bullet-x"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,</span>
+<span>  <span class="st">".cli_rlang .bullet-v"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>,</span>
+<span>  <span class="st">".cli_rlang .bullet-&gt;"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"The error message."</span>,</span>
+<span>  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,</span>
+<span>  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,</span>
+<span>  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,</span>
+<span>  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,</span>
+<span>  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! The error message.</span></span>
+<span><span class="co">#&gt; * Regular bullet.</span></span>
+<span><span class="co">#&gt; * Informative bullet.</span></span>
+<span><span class="co">#&gt; * Cross bullet.</span></span>
+<span><span class="co">#&gt; * Victory bullet.</span></span>
+<span><span class="co">#&gt; * Arrow bullet.</span></span></code></pre><p></p></div>
 <p>If you want all the bullets to be the same, including the leading bullet, you can achieve this using the <code>bullet</code> class:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.user_theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="st">".cli_rlang .bullet"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span>
-
-<span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-  <span class="st">"The error message."</span>,
-  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,
-  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,
-  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,
-  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,
-  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error:</span>
-<span class="co">#&gt; * The error message.</span>
-<span class="co">#&gt; * Regular bullet.</span>
-<span class="co">#&gt; * Informative bullet.</span>
-<span class="co">#&gt; * Cross bullet.</span>
-<span class="co">#&gt; * Victory bullet.</span>
-<span class="co">#&gt; * Arrow bullet.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.user_theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="st">".cli_rlang .bullet"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>before <span class="op">=</span> <span class="st">"* "</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"The error message."</span>,</span>
+<span>  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"Regular bullet."</span>,</span>
+<span>  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"Informative bullet."</span>,</span>
+<span>  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"Cross bullet."</span>,</span>
+<span>  <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Victory bullet."</span>,</span>
+<span>  <span class="st">"&gt;"</span> <span class="op">=</span> <span class="st">"Arrow bullet."</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; * The error message.</span></span>
+<span><span class="co">#&gt; * Regular bullet.</span></span>
+<span><span class="co">#&gt; * Informative bullet.</span></span>
+<span><span class="co">#&gt; * Cross bullet.</span></span>
+<span><span class="co">#&gt; * Victory bullet.</span></span>
+<span><span class="co">#&gt; * Arrow bullet.</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="changing-the-foreground-and-background-colour-of-error-calls">Changing the foreground and background colour of error calls<a class="anchor" aria-label="anchor" href="#changing-the-foreground-and-background-colour-of-error-calls"></a></h2>
     <p>When called inside a function, <code><a href="abort.html">abort()</a></code> displays the function call to help contextualise the error:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">splash</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't splash without water."</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">splash</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Error in `splash()`:</span>
-<span class="co">#&gt; ! Can't splash without water.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">splash</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't splash without water."</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">splash</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `splash()`:</span></span>
+<span><span class="co">#&gt; ! Can't splash without water.</span></span></code></pre><p></p></div>
 <p>The call is formatted with cli as a <code>code</code> element. This is not visible in the manual, but code text is formatted with a highlighted background colour by default. When this can be reliably detected, that background colour is different depending on whether you're using a light or dark theme.</p>
 <p>You can override the colour of code elements in your cli theme. Here is my personal configuration that fits well with the colour theme I currently use in my IDE:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.user_theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  span.code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    <span class="st">"background-color"</span> <span class="op">=</span> <span class="st">"#3B4252"</span>,
-    color <span class="op">=</span> <span class="st">"#E5E9F0"</span>
-  <span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>cli.user_theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  span.code <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    <span class="st">"background-color"</span> <span class="op">=</span> <span class="st">"#3B4252"</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"#E5E9F0"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -120,7 +120,7 @@ and much faster.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="va">x</span>, prefix <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="va">x</span>, prefix <span class="op">=</span> <span class="cn">NULL</span>, suffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -142,11 +142,11 @@ and much faster.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/raw.html" class="external-link">raw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/raw.html" class="external-link">raw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
-<span class="r-in"><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">charToRaw</a></span><span class="op">(</span><span class="st">"string"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">charToRaw</a></span><span class="op">(</span><span class="st">"string"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "737472696e67"</span>
-<span class="r-in"><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/raw.html" class="external-link">raw</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, prefix <span class="op">=</span> <span class="st">"'0x"</span>, suffix <span class="op">=</span> <span class="st">"'"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">raw_deparse_str</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/raw.html" class="external-link">raw</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, prefix <span class="op">=</span> <span class="st">"'0x"</span>, suffix <span class="op">=</span> <span class="st">"'"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "'0x00000000000000000000'"</span>
 </code></pre></div>
     </div>

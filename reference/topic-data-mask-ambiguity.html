@@ -429,23 +429,23 @@ If tidy selections were affected by the data mask ambiguity, this function would
 
     <div class="ref-description section level2">
     <p><a href="topic-data-mask.html">Data masking</a> is an R feature that blends programming variables that live inside environments (env-variables) with statistical variables stored in data frames (data-variables). This mixture makes it easy to refer to data frame columns as well as objects defined in the current environment.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">disp</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   `mean(disp/x)`</span>
-<span class="co">#&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt; 1           2.31</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">disp</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   `mean(disp/x)`</span></span>
+<span><span class="co">#&gt;            &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1           2.31</span></span></code></pre><p></p></div>
 <p>However this convenience introduces an ambiguity between data-variables and env-variables which might cause <strong>collisions</strong>.</p><div class="section">
 <h3 id="column-collisions">Column collisions<a class="anchor" aria-label="anchor" href="#column-collisions"></a></h3>
 
 
 <p>In the following snippet, are we referring to the env-variable <code>x</code> or to the data-variable of the same name?</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NA</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-
-<span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt;    x  y</span>
-<span class="co">#&gt; 1 NA NA</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NA</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span> <span class="op">/</span> <span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    x  y</span></span>
+<span><span class="co">#&gt; 1 NA NA</span></span></code></pre><p></p></div>
 <p>A column collision occurs when you want to use an object defined outside of the data frame, but a column of the same name happens to exist.</p>
 </div>
 
@@ -454,12 +454,12 @@ If tidy selections were affected by the data mask ambiguity, this function would
 
 
 <p>The opposite problem occurs when there is a typo in a data-variable name and an env-variable of the same name exists:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>foo <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span>
-<span class="va">ffo</span> <span class="op">&lt;-</span> <span class="st">"wrong"</span>
-
-<span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>foo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">ffo</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;     foo</span>
-<span class="co">#&gt; 1 WRONG</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>foo <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span></span>
+<span><span class="va">ffo</span> <span class="op">&lt;-</span> <span class="st">"wrong"</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>foo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">ffo</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     foo</span></span>
+<span><span class="co">#&gt; 1 WRONG</span></span></code></pre><p></p></div>
 <p>Instead of a typo, it might also be that you were expecting a column in the data frame which is unexpectedly missing. In both cases, if a variable can't be found in the data mask, R looks for variables in the surrounding environment. This isn't what we intended here and it would have been better to fail early with a "Column not found" error.</p>
 </div>
 
@@ -473,35 +473,35 @@ If tidy selections were affected by the data mask ambiguity, this function would
 
 
 <p>The simplest solution is to use the <code><a href="dot-data.html">.data</a></code> and <code><a href="dot-data.html">.env</a></code> pronouns to disambiguate between data-variables and env-variables.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-
-<span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">y</span> <span class="op">/</span> <span class="va">.env</span><span class="op">$</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt;   x    y</span>
-<span class="co">#&gt; 1 1 0.02</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">.data</span><span class="op">$</span><span class="va">y</span> <span class="op">/</span> <span class="va">.env</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   x    y</span></span>
+<span><span class="co">#&gt; 1 1 0.02</span></span></code></pre><p></p></div>
 <p>This is especially useful in functions because the data frame is not known in advance and potentially contain masking columns for any of the env-variables in scope in the function:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_rescale</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">factor</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"{{ var }}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">/</span> <span class="va">factor</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># This works</span>
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span>
-<span class="co">#&gt;   value</span>
-<span class="co">#&gt; 1   0.1</span>
-
-<span class="co"># Oh no!</span>
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>factor <span class="op">=</span> <span class="fl">0</span>, value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span>
-<span class="co">#&gt;   factor value</span>
-<span class="co">#&gt; 1      0   Inf</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_rescale</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">factor</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"{{ var }}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">/</span> <span class="va">factor</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># This works</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   value</span></span>
+<span><span class="co">#&gt; 1   0.1</span></span>
+<span></span>
+<span><span class="co"># Oh no!</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>factor <span class="op">=</span> <span class="fl">0</span>, value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   factor value</span></span>
+<span><span class="co">#&gt; 1      0   Inf</span></span></code></pre><p></p></div>
 <p>Subsetting function arguments with <code>.env</code> ensures we never hit a masking column:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_rescale</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">factor</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"{{ var }}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">/</span> <span class="va">.env</span><span class="op">$</span><span class="va">factor</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># Yay!</span>
-<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>factor <span class="op">=</span> <span class="fl">0</span>, value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span>
-<span class="co">#&gt;   factor value</span>
-<span class="co">#&gt; 1      0   0.1</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_rescale</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">factor</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"{{ var }}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">/</span> <span class="va">.env</span><span class="op">$</span><span class="va">factor</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Yay!</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>factor <span class="op">=</span> <span class="fl">0</span>, value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   factor value</span></span>
+<span><span class="co">#&gt; 1      0   0.1</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -509,23 +509,23 @@ If tidy selections were affected by the data mask ambiguity, this function would
 
 
 <p>The <code><a href="dot-data.html">.data</a></code> pronoun may be used as a name-to-data-mask pattern (see <a href="topic-data-mask-programming.html">Data mask programming patterns</a>):</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
 <p>In this example, the env-variable <code>var</code> is used inside the data mask to subset the <code>.data</code> pronoun. Does this mean that <code>var</code> is at risk of a column collision if the input data frame contains a column of the same name? Fortunately not:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span>
-
-<span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span>
-<span class="va">mtcars2</span><span class="op">$</span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"wrong"</span>
-
-<span class="va">mtcars2</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
+<span></span>
+<span><span class="va">mtcars2</span> <span class="op">&lt;-</span> <span class="va">mtcars</span></span>
+<span><span class="va">mtcars2</span><span class="op">$</span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"wrong"</span></span>
+<span></span>
+<span><span class="va">mtcars2</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
 <p>The evaluation of <code>.data[[var]]</code> is set up in such a way that there is no ambiguity. The <code>.data</code> pronoun can only be subsetted with env-variables, not data-variables. Technically, this is because <code>[[</code> behaves like an <em>injection operator</em> when applied to <code>.data</code>. It is evaluated very early before the data mask is even created. See the <code>!!</code> section below.</p>
 </div>
 
@@ -535,12 +535,12 @@ If tidy selections were affected by the data mask ambiguity, this function would
 
 <p><a href="topic-inject.html">Injection operators</a> such as <code><a href="injection-operator.html">!!</a></code> have interesting properties regarding the ambiguity problem. They modify a piece of code early on by injecting objects or other expressions before any data-masking logic comes into play. If you inject the <em>value</em> of a variable, it becomes inlined in the expression. R no longer needs to look up any variable to find the value.</p>
 <p>Taking the earlier division example, let's use <code>!!</code> to inject the value of the env-variable <code>x</code> inside the division expression:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NA</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-
-<span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span> <span class="op">/</span> <span class="op">!</span><span class="op">!</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt;    x    y</span>
-<span class="co">#&gt; 1 NA 0.02</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NA</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">y</span> <span class="op">/</span> <span class="op">!</span><span class="op">!</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    x    y</span></span>
+<span><span class="co">#&gt; 1 NA 0.02</span></span></code></pre><p></p></div>
 <p>While injection solves issues of ambiguity, it is a bit heavy handed compared to using the <code><a href="dot-data.html">.env</a></code> pronoun. Big objects inlined in expressions might cause issues in unexpected places, for instance they might make the calls in a <code><a href="https://rdrr.io/r/base/traceback.html" class="external-link">traceback()</a></code> less readable.</p>
 </div>
 
@@ -553,15 +553,15 @@ If tidy selections were affected by the data mask ambiguity, this function would
 
 <p><a href="https://tidyselect.r-lib.org/reference/language.html" class="external-link">Tidy selection</a> is a dialect of R that optimises column selection in tidyverse packages. Examples of functions that use tidy selections are <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code> and <code>tidyr::pivot_longer()</code>.</p>
 <p>Unlike data masking, tidy selections do not suffer from ambiguity. The selection language is designed in such a way that evaluation of expressions is either scoped in the data mask only, or in the environment only. Take this example:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">gear</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">gear</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p><code>gear</code> is a symbol supplied to a selection operator <code>:</code> and thus scoped in the data mask only. Any other kind of expression, such as <code>ncol(mtcars)</code>, is evaluated as normal R code outside of any data context. This is why there is no column collision here:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
-
-<span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">data</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;   data</span>
-<span class="co">#&gt; 1    1</span>
-<span class="co">#&gt; 2    2</span>
-<span class="co">#&gt; 3    3</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">data</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   data</span></span>
+<span><span class="co">#&gt; 1    1</span></span>
+<span><span class="co">#&gt; 2    2</span></span>
+<span><span class="co">#&gt; 3    3</span></span></code></pre><p></p></div>
 <p>It is useful to introduce two new terms. Tidy selections distinguish data-expressions and env-expressions:</p><ul><li><p><code>data</code> is a data-expression that refers to the data-variable.</p></li>
 <li><p><code>ncol(data)</code> is an env-expression that refers to the env-variable.</p></li>
 </ul><p>To learn more about the difference between the two kinds of expressions, see the <a href="https://tidyselect.r-lib.org/articles/syntax.html" class="external-link">technical description of the tidy selection syntax</a>.</p><div class="section">
@@ -569,9 +569,9 @@ If tidy selections were affected by the data mask ambiguity, this function would
 
 
 <p><code>all_of()</code> is often used in functions as a <a href="topic-data-mask-programming.html">programming pattern</a> that connects column names to a data mask, similarly to the <code><a href="dot-data.html">.data</a></code> pronoun. A simple example is:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">vars</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">vars</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>If tidy selections were affected by the data mask ambiguity, this function would be at risk of a column collision. It would break as soon as the user supplies a data frame containing a <code>vars</code> column. However, <code>all_of()</code> is an env-expression that is evaluated outside of the data mask, so there is no possibility of collisions.</p>
 </div>
 

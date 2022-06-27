@@ -132,9 +132,9 @@ latter are only preserved on R &gt;= 4.0.0).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_clone</span><span class="op">(</span><span class="va">env</span>, parent <span class="op">=</span> <span class="fu"><a href="env_parent.html">env_parent</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">env_coalesce</span><span class="op">(</span><span class="va">env</span>, <span class="va">from</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">env_clone</span><span class="op">(</span><span class="va">env</span>, parent <span class="op">=</span> <span class="fu"><a href="env_parent.html">env_parent</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">env_coalesce</span><span class="op">(</span><span class="va">env</span>, <span class="va">from</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -154,62 +154,62 @@ latter are only preserved on R &gt;= 4.0.0).</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># A clone initially contains the same bindings as the original</span></span>
-<span class="r-in"><span class="co"># environment</span></span>
-<span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">clone</span> <span class="op">&lt;-</span> <span class="fu">env_clone</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">clone</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559a15bd63e0&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559a15d56790&gt;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># A clone initially contains the same bindings as the original</span></span></span>
+<span class="r-in"><span><span class="co"># environment</span></span></span>
+<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">clone</span> <span class="op">&lt;-</span> <span class="fu">env_clone</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">clone</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x5575d1f645d0&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x5575d20a7c70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
-<span class="r-in"><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559a15cacc10&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559a15d56790&gt;</span>
+<span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x5575d2358d90&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x5575d20a7c70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># But it can acquire new bindings or change existing ones without</span></span>
-<span class="r-in"><span class="co"># impacting the original environment</span></span>
-<span class="r-in"><span class="fu"><a href="env_bind.html">env_bind</a></span><span class="op">(</span><span class="va">clone</span>, a <span class="op">=</span> <span class="st">"foo"</span>, c <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">clone</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559a15bd63e0&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559a15d56790&gt;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># But it can acquire new bindings or change existing ones without</span></span></span>
+<span class="r-in"><span><span class="co"># impacting the original environment</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="env_bind.html">env_bind</a></span><span class="op">(</span><span class="va">clone</span>, a <span class="op">=</span> <span class="st">"foo"</span>, c <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">clone</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x5575d1f645d0&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x5575d20a7c70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;chr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> c: &lt;dbl&gt;</span>
-<span class="r-in"><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559a15cacc10&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559a15d56790&gt;</span>
+<span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x5575d2358d90&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x5575d20a7c70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `env_coalesce()` copies bindings from one environment to another</span></span>
-<span class="r-in"><span class="va">lhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">rhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="st">"a"</span>, b <span class="op">=</span> <span class="st">"b"</span>, c <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">env_coalesce</span><span class="op">(</span><span class="va">lhs</span>, <span class="va">rhs</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">lhs</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559a19e32bf8&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559a15d56790&gt;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `env_coalesce()` copies bindings from one environment to another</span></span></span>
+<span class="r-in"><span><span class="va">lhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="st">"a"</span>, b <span class="op">=</span> <span class="st">"b"</span>, c <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">env_coalesce</span><span class="op">(</span><span class="va">lhs</span>, <span class="va">rhs</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">lhs</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x5575d1c1ef38&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x5575d20a7c70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;chr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> c: &lt;chr&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># To copy all the bindings from `rhs` into `lhs`, first delete the</span></span>
-<span class="r-in"><span class="co"># conflicting bindings from `rhs`</span></span>
-<span class="r-in"><span class="fu"><a href="env_unbind.html">env_unbind</a></span><span class="op">(</span><span class="va">lhs</span>, <span class="fu"><a href="env_names.html">env_names</a></span><span class="op">(</span><span class="va">rhs</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">env_coalesce</span><span class="op">(</span><span class="va">lhs</span>, <span class="va">rhs</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">lhs</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559a19e32bf8&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559a15d56790&gt;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To copy all the bindings from `rhs` into `lhs`, first delete the</span></span></span>
+<span class="r-in"><span><span class="co"># conflicting bindings from `rhs`</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="env_unbind.html">env_unbind</a></span><span class="op">(</span><span class="va">lhs</span>, <span class="fu"><a href="env_names.html">env_names</a></span><span class="op">(</span><span class="va">rhs</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">env_coalesce</span><span class="op">(</span><span class="va">lhs</span>, <span class="va">rhs</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">lhs</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x5575d1c1ef38&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x5575d20a7c70&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;chr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;chr&gt;</span>

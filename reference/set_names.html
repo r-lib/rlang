@@ -108,7 +108,7 @@ stricter argument checking.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">set_names</span><span class="op">(</span><span class="va">x</span>, nm <span class="op">=</span> <span class="va">x</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">set_names</span><span class="op">(</span><span class="va">x</span>, nm <span class="op">=</span> <span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -140,26 +140,26 @@ to the function.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a b c d </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2 3 4 </span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a b c d </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2 3 4 </span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a b c d </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 2 3 4 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If the second argument is ommitted a vector is named with itself</span></span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If the second argument is ommitted a vector is named with itself</span></span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   a   b   c   d   e </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "a" "b" "c" "d" "e" </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Alternatively you can supply a function</span></span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">~</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Alternatively you can supply a function</span></span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">~</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  a  b  c  d  e  f  g  h  i  j </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1  2  3  4  5  6  7  8  9 10 </span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, <span class="va">toupper</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, <span class="va">toupper</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    MPG CYL DISP  HP DRAT    WT  QSEC VS AM GEAR CARB</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4</span>
@@ -167,17 +167,17 @@ to the function.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If the input vector is unnamed, it is first named after itself</span></span>
-<span class="r-in"><span class="co"># before the function is applied:</span></span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="va">letters</span>, <span class="va">toupper</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If the input vector is unnamed, it is first named after itself</span></span></span>
+<span class="r-in"><span><span class="co"># before the function is applied:</span></span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="va">letters</span>, <span class="va">toupper</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O   P   Q   R </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   S   T   U   V   W   X   Y   Z </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> "s" "t" "u" "v" "w" "x" "y" "z" </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `...` is passed to the function:</span></span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, <span class="va">paste0</span>, <span class="st">"_foo"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `...` is passed to the function:</span></span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, <span class="va">paste0</span>, <span class="st">"_foo"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   mpg_foo cyl_foo disp_foo hp_foo drat_foo wt_foo</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4            21.0       6      160    110     3.90  2.620</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4 Wag        21.0       6      160    110     3.90  2.875</span>
@@ -192,12 +192,12 @@ to the function.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hornet 4 Drive       19.44      1      0        3        1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hornet Sportabout    17.02      0      0        3        2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Valiant              20.22      1      0        3        1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If length 1, the second argument is recycled to the length of the first:</span></span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"foo"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If length 1, the second argument is recycled to the length of the first:</span></span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="st">"foo"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> foo foo foo </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1   2   3 </span>
-<span class="r-in"><span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">""</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">set_names</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">""</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> named list()</span>
 </code></pre></div>
     </div>

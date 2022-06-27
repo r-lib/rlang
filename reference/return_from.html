@@ -117,7 +117,7 @@ active context.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">return_from</span><span class="op">(</span><span class="va">frame</span>, value <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">return_from</span><span class="op">(</span><span class="va">frame</span>, value <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -134,20 +134,20 @@ function.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">g</span><span class="op">(</span><span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="st">"ignored"</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">h</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
-<span class="r-in">  <span class="st">"ignored"</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">return_from</span><span class="op">(</span><span class="va">env</span>, <span class="st">"early return"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="st">"ignored"</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">fn</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">g</span><span class="op">(</span><span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"ignored"</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">h</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"ignored"</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">env</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">return_from</span><span class="op">(</span><span class="va">env</span>, <span class="st">"early return"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"ignored"</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">fn</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "early return"</span>
 </code></pre></div>
     </div>

@@ -129,9 +129,9 @@ still modify the values of existing bindings. See
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_lock</span><span class="op">(</span><span class="va">env</span><span class="op">)</span>
-
-<span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">env_lock</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -153,24 +153,24 @@ still modify the values of existing bindings. See
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># New environments are unlocked by default:</span></span>
-<span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># New environments are unlocked by default:</span></span></span>
+<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use env_lock() to lock them:</span></span>
-<span class="r-in"><span class="fu">env_lock</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use env_lock() to lock them:</span></span></span>
+<span class="r-in"><span><span class="fu">env_lock</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">env_is_locked</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Now that `env` is locked, it is no longer possible to remove or</span></span>
-<span class="r-in"><span class="co"># add bindings. If run, the following would fail:</span></span>
-<span class="r-in"><span class="co"># env_unbind(env, "a")</span></span>
-<span class="r-in"><span class="co"># env_bind(env, b = 2)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note that even though the environment as a container is locked,</span></span>
-<span class="r-in"><span class="co"># the individual bindings are still unlocked and can be modified:</span></span>
-<span class="r-in"><span class="va">env</span><span class="op">$</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Now that `env` is locked, it is no longer possible to remove or</span></span></span>
+<span class="r-in"><span><span class="co"># add bindings. If run, the following would fail:</span></span></span>
+<span class="r-in"><span><span class="co"># env_unbind(env, "a")</span></span></span>
+<span class="r-in"><span><span class="co"># env_bind(env, b = 2)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that even though the environment as a container is locked,</span></span></span>
+<span class="r-in"><span><span class="co"># the individual bindings are still unlocked and can be modified:</span></span></span>
+<span class="r-in"><span><span class="va">env</span><span class="op">$</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">10</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

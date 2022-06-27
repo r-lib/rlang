@@ -150,53 +150,53 @@ customised, see <a href="topic-condition-customisation.html">Customising conditi
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">abort</span><span class="op">(</span>
-  message <span class="op">=</span> <span class="cn">NULL</span>,
-  class <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>,
-  <span class="va">call</span>,
-  body <span class="op">=</span> <span class="cn">NULL</span>,
-  footer <span class="op">=</span> <span class="cn">NULL</span>,
-  trace <span class="op">=</span> <span class="cn">NULL</span>,
-  parent <span class="op">=</span> <span class="cn">NULL</span>,
-  use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
-  .internal <span class="op">=</span> <span class="cn">FALSE</span>,
-  .file <span class="op">=</span> <span class="cn">NULL</span>,
-  .frame <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>,
-  .trace_bottom <span class="op">=</span> <span class="cn">NULL</span>,
-  .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">warn</span><span class="op">(</span>
-  message <span class="op">=</span> <span class="cn">NULL</span>,
-  class <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>,
-  body <span class="op">=</span> <span class="cn">NULL</span>,
-  footer <span class="op">=</span> <span class="cn">NULL</span>,
-  use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
-  .frequency <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"always"</span>, <span class="st">"regularly"</span>, <span class="st">"once"</span><span class="op">)</span>,
-  .frequency_id <span class="op">=</span> <span class="cn">NULL</span>,
-  .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">inform</span><span class="op">(</span>
-  message <span class="op">=</span> <span class="cn">NULL</span>,
-  class <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>,
-  body <span class="op">=</span> <span class="cn">NULL</span>,
-  footer <span class="op">=</span> <span class="cn">NULL</span>,
-  use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
-  .file <span class="op">=</span> <span class="cn">NULL</span>,
-  .frequency <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"always"</span>, <span class="st">"regularly"</span>, <span class="st">"once"</span><span class="op">)</span>,
-  .frequency_id <span class="op">=</span> <span class="cn">NULL</span>,
-  .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">signal</span><span class="op">(</span><span class="va">message</span>, <span class="va">class</span>, <span class="va">...</span>, .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">reset_warning_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span>
-
-<span class="fu">reset_message_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">abort</span><span class="op">(</span></span>
+<span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  class <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  <span class="va">call</span>,</span>
+<span>  body <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  footer <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  trace <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  parent <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .internal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .file <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .frame <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  .trace_bottom <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .subclass <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">warn</span><span class="op">(</span></span>
+<span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  class <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  body <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  footer <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .frequency <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"always"</span>, <span class="st">"regularly"</span>, <span class="st">"once"</span><span class="op">)</span>,</span>
+<span>  .frequency_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .subclass <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">inform</span><span class="op">(</span></span>
+<span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  class <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  body <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  footer <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .file <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .frequency <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"always"</span>, <span class="st">"regularly"</span>, <span class="st">"once"</span><span class="op">)</span>,</span>
+<span>  .frequency_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  .subclass <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">signal</span><span class="op">(</span><span class="va">message</span>, <span class="va">class</span>, <span class="va">...</span>, .subclass <span class="op">=</span> <span class="fu">deprecated</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">reset_warning_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">reset_message_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -412,65 +412,65 @@ non-interactive sessions, and when sinks are active.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># These examples are guarded to avoid throwing errors</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Signal an error with a message just like stop():</span></span>
-<span class="r-in"><span class="fu">abort</span><span class="op">(</span><span class="st">"The error message."</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Unhandled errors are saved automatically by `abort()` and can be</span></span>
-<span class="r-in"><span class="co"># retrieved with `last_error()`. The error prints with a simplified</span></span>
-<span class="r-in"><span class="co"># backtrace:</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">evalq</a></span><span class="op">(</span><span class="fu">h</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">abort</span><span class="op">(</span><span class="st">"Tilt."</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use `summary()` to print the full backtrace and the condition fields:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Give a class to the error:</span></span>
-<span class="r-in"><span class="fu">abort</span><span class="op">(</span><span class="st">"The error message"</span>, <span class="st">"mypkg_bad_error"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This allows callers to handle the error selectively</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu">mypkg_function</span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  mypkg_bad_error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">err</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="fu">warn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="va">err</span><span class="op">)</span><span class="op">)</span> <span class="co"># Demote the error to a warning</span></span>
-<span class="r-in">    <span class="cn">NA</span>                          <span class="co"># Return an alternative value</span></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can also specify metadata that will be stored in the condition:</span></span>
-<span class="r-in"><span class="fu">abort</span><span class="op">(</span><span class="st">"The error message."</span>, <span class="st">"mypkg_bad_error"</span>, data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This data can then be consulted by user handlers:</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu">mypkg_function</span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  mypkg_bad_error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">err</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="co"># Compute an alternative return value with the data:</span></span>
-<span class="r-in">    <span class="fu">recover_error</span><span class="op">(</span><span class="va">err</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If you call low-level APIs it may be a good idea to create a</span></span>
-<span class="r-in"><span class="co"># chained error with the low-level error wrapped in a more</span></span>
-<span class="r-in"><span class="co"># user-friendly error. Use `try_fetch()` to fetch errors of a given</span></span>
-<span class="r-in"><span class="co"># class and rethrow them with the `parent` argument of `abort()`:</span></span>
-<span class="r-in"><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"http://foo.bar/baz"</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="try_fetch.html">try_fetch</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="fu">download</span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,</span>
-<span class="r-in">    error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">err</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">      <span class="va">msg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Can't download `%s`"</span>, <span class="va">file</span><span class="op">)</span></span>
-<span class="r-in">      <span class="fu">abort</span><span class="op">(</span><span class="va">msg</span>, parent <span class="op">=</span> <span class="va">err</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># These examples are guarded to avoid throwing errors</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Signal an error with a message just like stop():</span></span></span>
+<span class="r-in"><span><span class="fu">abort</span><span class="op">(</span><span class="st">"The error message."</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Unhandled errors are saved automatically by `abort()` and can be</span></span></span>
+<span class="r-in"><span><span class="co"># retrieved with `last_error()`. The error prints with a simplified</span></span></span>
+<span class="r-in"><span><span class="co"># backtrace:</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">evalq</a></span><span class="op">(</span><span class="fu">h</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">abort</span><span class="op">(</span><span class="st">"Tilt."</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use `summary()` to print the full backtrace and the condition fields:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Give a class to the error:</span></span></span>
+<span class="r-in"><span><span class="fu">abort</span><span class="op">(</span><span class="st">"The error message"</span>, <span class="st">"mypkg_bad_error"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This allows callers to handle the error selectively</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu">mypkg_function</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  mypkg_bad_error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">err</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu">warn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="va">err</span><span class="op">)</span><span class="op">)</span> <span class="co"># Demote the error to a warning</span></span></span>
+<span class="r-in"><span>    <span class="cn">NA</span>                          <span class="co"># Return an alternative value</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can also specify metadata that will be stored in the condition:</span></span></span>
+<span class="r-in"><span><span class="fu">abort</span><span class="op">(</span><span class="st">"The error message."</span>, <span class="st">"mypkg_bad_error"</span>, data <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This data can then be consulted by user handlers:</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu">mypkg_function</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  mypkg_bad_error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">err</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="co"># Compute an alternative return value with the data:</span></span></span>
+<span class="r-in"><span>    <span class="fu">recover_error</span><span class="op">(</span><span class="va">err</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If you call low-level APIs it may be a good idea to create a</span></span></span>
+<span class="r-in"><span><span class="co"># chained error with the low-level error wrapped in a more</span></span></span>
+<span class="r-in"><span><span class="co"># user-friendly error. Use `try_fetch()` to fetch errors of a given</span></span></span>
+<span class="r-in"><span><span class="co"># class and rethrow them with the `parent` argument of `abort()`:</span></span></span>
+<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="st">"http://foo.bar/baz"</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="try_fetch.html">try_fetch</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu">download</span><span class="op">(</span><span class="va">file</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">err</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="va">msg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Can't download `%s`"</span>, <span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="fu">abort</span><span class="op">(</span><span class="va">msg</span>, parent <span class="op">=</span> <span class="va">err</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

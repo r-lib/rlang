@@ -120,11 +120,11 @@ simplifying code when writing generic functions for environments).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_env</span><span class="op">(</span><span class="va">env</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">set_env</span><span class="op">(</span><span class="va">env</span>, new_env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">env_poke_parent</span><span class="op">(</span><span class="va">env</span>, <span class="va">new_env</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_env</span><span class="op">(</span><span class="va">env</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">set_env</span><span class="op">(</span><span class="va">env</span>, new_env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">env_poke_parent</span><span class="op">(</span><span class="va">env</span>, <span class="va">new_env</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -160,57 +160,57 @@ package.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Environment of closure functions:</span></span>
-<span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="st">"foo"</span></span>
-<span class="r-in"><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a1b068540&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Or of quosures or formulas:</span></span>
-<span class="r-in"><span class="fu">get_env</span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a1b068540&gt;</span>
-<span class="r-in"><span class="fu">get_env</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a1b068540&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Provide a default in case the object doesn't bundle an environment.</span></span>
-<span class="r-in"><span class="co"># Let's create an unevaluated formula:</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The following line would fail if run because unevaluated formulas</span></span>
-<span class="r-in"><span class="co"># don't bundle an environment (they didn't have the chance to</span></span>
-<span class="r-in"><span class="co"># record one yet):</span></span>
-<span class="r-in"><span class="co"># get_env(f)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># It is often useful to provide a default when you're writing</span></span>
-<span class="r-in"><span class="co"># functions accepting formulas as input:</span></span>
-<span class="r-in"><span class="va">default</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">f</span>, <span class="va">default</span><span class="op">)</span>, <span class="va">default</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Environment of closure functions:</span></span></span>
+<span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="st">"foo"</span></span></span>
+<span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575ce917d40&gt;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or of quosures or formulas:</span></span></span>
+<span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575ce917d40&gt;</span>
+<span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575ce917d40&gt;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Provide a default in case the object doesn't bundle an environment.</span></span></span>
+<span class="r-in"><span><span class="co"># Let's create an unevaluated formula:</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The following line would fail if run because unevaluated formulas</span></span></span>
+<span class="r-in"><span><span class="co"># don't bundle an environment (they didn't have the chance to</span></span></span>
+<span class="r-in"><span><span class="co"># record one yet):</span></span></span>
+<span class="r-in"><span><span class="co"># get_env(f)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It is often useful to provide a default when you're writing</span></span></span>
+<span class="r-in"><span><span class="co"># functions accepting formulas as input:</span></span></span>
+<span class="r-in"><span><span class="va">default</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">f</span>, <span class="va">default</span><span class="op">)</span>, <span class="va">default</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># set_env() can be used to set the enclosure of functions and</span></span>
-<span class="r-in"><span class="co"># formulas. Let's create a function with a particular environment:</span></span>
-<span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu">set_env</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="cn">NULL</span>, <span class="va">env</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># That function now has `env` as enclosure:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">env</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># set_env() can be used to set the enclosure of functions and</span></span></span>
+<span class="r-in"><span><span class="co"># formulas. Let's create a function with a particular environment:</span></span></span>
+<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu">set_env</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="cn">NULL</span>, <span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># That function now has `env` as enclosure:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># set_env() does not work by side effect. Setting a new environment</span></span>
-<span class="r-in"><span class="co"># for fn has no effect on the original function:</span></span>
-<span class="r-in"><span class="va">other_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">set_env</span><span class="op">(</span><span class="va">fn</span>, <span class="va">other_env</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># set_env() does not work by side effect. Setting a new environment</span></span></span>
+<span class="r-in"><span><span class="co"># for fn has no effect on the original function:</span></span></span>
+<span class="r-in"><span><span class="va">other_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">set_env</span><span class="op">(</span><span class="va">fn</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a1ab4f0c0&gt;</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">other_env</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575cdfc3b30&gt;</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Since set_env() returns a new function with a different</span></span>
-<span class="r-in"><span class="co"># environment, you'll need to reassign the result:</span></span>
-<span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu">set_env</span><span class="op">(</span><span class="va">fn</span>, <span class="va">other_env</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">other_env</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Since set_env() returns a new function with a different</span></span></span>
+<span class="r-in"><span><span class="co"># environment, you'll need to reassign the result:</span></span></span>
+<span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="fu">set_env</span><span class="op">(</span><span class="va">fn</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>

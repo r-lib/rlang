@@ -151,28 +151,28 @@ The reason for this has to do with compilation of R code which makes it impossib
 
     <div class="ref-description section level2">
     <p>Function arguments are <a href="topic-defuse.html">defused</a> into <a href="topic-quosure.html">quosures</a> that keep track of the environment of the defused expression.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; &lt;quosure&gt;</span>
-<span class="co">#&gt; expr: ^1 + 1</span>
-<span class="co">#&gt; env:  global</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;quosure&gt;</span></span>
+<span><span class="co">#&gt; expr: ^1 + 1</span></span>
+<span><span class="co">#&gt; env:  global</span></span></code></pre><p></p></div>
 <p>You might have noticed that when constants are supplied, the quosure tracks the empty environment instead of the current environmnent.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/defusing-advanced.html">quos</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="fl">1</span>, <span class="cn">NULL</span><span class="op">)</span>
-<span class="co">#&gt; &lt;list_of&lt;quosure&gt;&gt;</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; &lt;quosure&gt;</span>
-<span class="co">#&gt; expr: ^"foo"</span>
-<span class="co">#&gt; env:  empty</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; &lt;quosure&gt;</span>
-<span class="co">#&gt; expr: ^1</span>
-<span class="co">#&gt; env:  empty</span>
-<span class="co">#&gt;</span>
-<span class="co">#&gt; [[3]]</span>
-<span class="co">#&gt; &lt;quosure&gt;</span>
-<span class="co">#&gt; expr: ^NULL</span>
-<span class="co">#&gt; env:  empty</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/defusing-advanced.html">quos</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="fl">1</span>, <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;list_of&lt;quosure&gt;&gt;</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; &lt;quosure&gt;</span></span>
+<span><span class="co">#&gt; expr: ^"foo"</span></span>
+<span><span class="co">#&gt; env:  empty</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; &lt;quosure&gt;</span></span>
+<span><span class="co">#&gt; expr: ^1</span></span>
+<span><span class="co">#&gt; env:  empty</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; &lt;quosure&gt;</span></span>
+<span><span class="co">#&gt; expr: ^NULL</span></span>
+<span><span class="co">#&gt; env:  empty</span></span></code></pre><p></p></div>
 <p>The reason for this has to do with compilation of R code which makes it impossible to consistently capture environments of constants from function arguments. Argument defusing relies on the <em>promise</em> mechanism of R for lazy evaluation of arguments. When functions are compiled and R notices that an argument is constant, it avoids creating a promise since they slow down function evaluation. Instead, the function is directly supplied a naked constant instead of constant wrapped in a promise.</p>
     </div>
 
@@ -180,30 +180,30 @@ The reason for this has to do with compilation of R code which makes it impossib
     <div class="section level2">
     <h2 id="concrete-case-of-promise-unwrapping-by-compilation">Concrete case of promise unwrapping by compilation<a class="anchor" aria-label="anchor" href="#concrete-case-of-promise-unwrapping-by-compilation"></a></h2>
     <p>We can observe this optimisation by calling into the C-level <code>findVar()</code> function to capture promises.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Return the object bound to `arg` without triggering evaluation of</span>
-<span class="co"># promises</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">rlang</span><span class="fu">:::</span><span class="fu">find_var</span><span class="op">(</span><span class="fu"><a href="../reference/stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"arg"</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># Call `f()` with a symbol or with a constant</span>
-<span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">symbolic</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">symbolic</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu">f</span><span class="op">(</span><span class="va">letters</span><span class="op">)</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="fu">f</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-
-<span class="co"># Make sure these small functions are compiled</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">compiler</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/compiler/compile.html" class="external-link">cmpfun</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
-<span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">compiler</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/compiler/compile.html" class="external-link">cmpfun</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Return the object bound to `arg` without triggering evaluation of</span></span>
+<span><span class="co"># promises</span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">rlang</span><span class="fu">:::</span><span class="fu">find_var</span><span class="op">(</span><span class="fu"><a href="../reference/stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"arg"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Call `f()` with a symbol or with a constant</span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">symbolic</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">symbolic</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu">f</span><span class="op">(</span><span class="va">letters</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="fu">f</span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Make sure these small functions are compiled</span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">compiler</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/compiler/compile.html" class="external-link">cmpfun</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">compiler</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/compiler/compile.html" class="external-link">cmpfun</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>When <code>f()</code> is called with a symbolic argument, we get the promise object created by R.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">g</span><span class="op">(</span>symbolic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; &lt;promise: 0x7ffd79bac130&gt;</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">g</span><span class="op">(</span>symbolic <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;promise: 0x7ffd79bac130&gt;</span></span></code></pre><p></p></div>
 <p>However, supplying a constant to <code>"f"</code> returns the constant directly.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">g</span><span class="op">(</span>symbolic <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="co">#&gt; [1] "foo"</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">g</span><span class="op">(</span>symbolic <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "foo"</span></span></code></pre><p></p></div>
 <p>Without a promise, there is no way to figure out the original environment of an argument.</p>
     </div>
     <div class="section level2">

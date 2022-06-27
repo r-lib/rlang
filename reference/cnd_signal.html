@@ -150,7 +150,7 @@ the condition:</p><ul><li><p>A message is signalled if the condition inherits fr
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cnd_signal</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cnd_signal</span><span class="op">(</span><span class="va">cnd</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -177,15 +177,15 @@ particular condition classes.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># The type of signal depends on the class. If the condition</span></span>
-<span class="r-in"><span class="co"># inherits from "warning", a warning is issued:</span></span>
-<span class="r-in"><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="cnd.html">warning_cnd</a></span><span class="op">(</span><span class="st">"my_warning_class"</span>, message <span class="op">=</span> <span class="st">"This is a warning"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">cnd_signal</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># The type of signal depends on the class. If the condition</span></span></span>
+<span class="r-in"><span><span class="co"># inherits from "warning", a warning is issued:</span></span></span>
+<span class="r-in"><span><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="cnd.html">warning_cnd</a></span><span class="op">(</span><span class="st">"my_warning_class"</span>, message <span class="op">=</span> <span class="st">"This is a warning"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">cnd_signal</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>This is a warning</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If it inherits from "error", an error is raised:</span></span>
-<span class="r-in"><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="cnd.html">error_cnd</a></span><span class="op">(</span><span class="st">"my_error_class"</span>, message <span class="op">=</span> <span class="st">"This is an error"</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">cnd_signal</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If it inherits from "error", an error is raised:</span></span></span>
+<span class="r-in"><span><span class="va">cnd</span> <span class="op">&lt;-</span> <span class="fu"><a href="cnd.html">error_cnd</a></span><span class="op">(</span><span class="st">"my_error_class"</span>, message <span class="op">=</span> <span class="st">"This is an error"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">cnd_signal</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : This is an error</span>
 </code></pre></div>
     </div>

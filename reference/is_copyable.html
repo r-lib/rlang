@@ -123,7 +123,7 @@ effects.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_copyable</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">is_copyable</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -135,28 +135,28 @@ effects.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Let's add attributes with structure() to uncopyable types. Since</span></span>
-<span class="r-in"><span class="co"># they are not copied, the attributes are changed in place:</span></span>
-<span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="va">env</span>, foo <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a18716200&gt;</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Let's add attributes with structure() to uncopyable types. Since</span></span></span>
+<span class="r-in"><span><span class="co"># they are not copied, the attributes are changed in place:</span></span></span>
+<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="va">env</span>, foo <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575d292eb30&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"foo")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bar"</span>
-<span class="r-in"><span class="va">env</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559a18716200&gt;</span>
+<span class="r-in"><span><span class="va">env</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5575d292eb30&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"foo")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bar"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># These objects that can only be changed with side effect are not</span></span>
-<span class="r-in"><span class="co"># copyable:</span></span>
-<span class="r-in"><span class="fu">is_copyable</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># These objects that can only be changed with side effect are not</span></span></span>
+<span class="r-in"><span><span class="co"># copyable:</span></span></span>
+<span class="r-in"><span><span class="fu">is_copyable</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span>, foo <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span>, foo <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (...)  .Primitive("list")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"foo")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "bar"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (...)  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "foo")= chr "bar"</span>
 </code></pre></div>

@@ -126,9 +126,9 @@ branch.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">NULL</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">is_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">NULL</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">x</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span>, lhs <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -163,50 +163,50 @@ check whether the formula carries an environment.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="fl">10</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If you don't supply `lhs`, both one-sided and two-sided formulas</span></span>
-<span class="r-in"><span class="co"># will return `TRUE`</span></span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">am</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If you don't supply `lhs`, both one-sided and two-sided formulas</span></span></span>
+<span class="r-in"><span><span class="co"># will return `TRUE`</span></span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">am</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="va">am</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="va">am</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># You can also specify whether you expect a LHS:</span></span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can also specify whether you expect a LHS:</span></span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="va">disp</span> <span class="op">~</span> <span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="op">~</span><span class="va">am</span>, lhs <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Handling of unevaluated formulas is a bit tricky. These formulas</span></span>
-<span class="r-in"><span class="co"># are special because they don't inherit from `"formula"` and they</span></span>
-<span class="r-in"><span class="co"># don't carry an environment (they are not scoped):</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="f_rhs.html">f_env</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Handling of unevaluated formulas is a bit tricky. These formulas</span></span></span>
+<span class="r-in"><span><span class="co"># are special because they don't inherit from `"formula"` and they</span></span></span>
+<span class="r-in"><span><span class="co"># don't carry an environment (they are not scoped):</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="f_rhs.html">f_env</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># By default unevaluated formulas are treated as formulas</span></span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># By default unevaluated formulas are treated as formulas</span></span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Supply `scoped = TRUE` to ensure you have an evaluated formula</span></span>
-<span class="r-in"><span class="fu">is_formula</span><span class="op">(</span><span class="va">f</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Supply `scoped = TRUE` to ensure you have an evaluated formula</span></span></span>
+<span class="r-in"><span><span class="fu">is_formula</span><span class="op">(</span><span class="va">f</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># By default unevaluated formulas not treated as bare formulas</span></span>
-<span class="r-in"><span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># By default unevaluated formulas not treated as bare formulas</span></span></span>
+<span class="r-in"><span><span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If you supply `scoped = TRUE`, they will be considered bare</span></span>
-<span class="r-in"><span class="co"># formulas even though they don't inherit from `"formula"`</span></span>
-<span class="r-in"><span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">f</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If you supply `scoped = TRUE`, they will be considered bare</span></span></span>
+<span class="r-in"><span><span class="co"># formulas even though they don't inherit from `"formula"`</span></span></span>
+<span class="r-in"><span><span class="fu">is_bare_formula</span><span class="op">(</span><span class="va">f</span>, scoped <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>

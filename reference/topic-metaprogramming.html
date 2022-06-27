@@ -116,19 +116,19 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 <p><code><a href="embrace-operator.html">{{</a></code> and <code>...</code> are sufficient for most purposes. Sometimes however, it is necessary to decompose the forwarding action into its two constitutive steps, <a href="topic-defuse.html">defusing</a> and <a href="topic-inject.html">injecting</a>.</p>
 <p><code>{{</code> is the combination of <code><a href="enquo.html">enquo()</a></code> and <code><a href="injection-operator.html">!!</a></code>. These functions are completely equivalent:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>Passing <code>...</code> is equivalent to the combination of <code><a href="enquo.html">enquos()</a></code> and <code><a href="splice-operator.html">!!!</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>The advantage of decomposing the steps is that you gain access to the <a href="topic-defuse.html">defused expressions</a>. Once defused, you can inspect or modify the expressions before injecting them in their target context.</p>
 </div>
 
@@ -137,34 +137,34 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 
 <p>For instance, here is how to create an automatic name for a defused argument using <code><a href="as_label.html">as_label()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-  <span class="fu"><a href="../reference/as_label.html">as_label</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">f</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>
-<span class="co">#&gt; [1] "cyl"</span>
-
-<span class="fu">f</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "1 + 1"</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/as_label.html">as_label</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">f</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "cyl"</span></span>
+<span></span>
+<span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "1 + 1"</span></span></code></pre><p></p></div>
 <p>This is essentially equivalent to formatting an argument using <code><a href="englue.html">englue()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">f2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/englue.html">englue</a></span><span class="op">(</span><span class="st">"{{ var }}"</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">f2</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "1 + 1"</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/englue.html">englue</a></span><span class="op">(</span><span class="st">"{{ var }}"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">f2</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "1 + 1"</span></span></code></pre><p></p></div>
 <p>With multiple arguments, use the plural variant <code><a href="enquo.html">enquos()</a></code>. Set <code>.named</code> to <code>TRUE</code> to automatically call <code><a href="as_label.html">as_label()</a></code> on the inputs for which the user has not provided a name (the same behaviour as in most dplyr verbs):</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span>, .named <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">g</span><span class="op">(</span><span class="va">cyl</span>, <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "cyl"   "1 + 1"</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span>, .named <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">g</span><span class="op">(</span><span class="va">cyl</span>, <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "cyl"   "1 + 1"</span></span></code></pre><p></p></div>
 <p>Just like with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>, the user can override automatic names by supplying explicit names:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">g</span><span class="op">(</span>foo <span class="op">=</span> <span class="va">cyl</span>, bar <span class="op">=</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "foo" "bar"</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">g</span><span class="op">(</span>foo <span class="op">=</span> <span class="va">cyl</span>, bar <span class="op">=</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "foo" "bar"</span></span></code></pre><p></p></div>
 <p>Defuse-and-inject patterns are most useful for transforming inputs. Some applications are explored in the Transformation patterns section.</p>
 </div>
 
@@ -178,37 +178,37 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 <p>The symbolise-and-inject pattern is a <em>names pattern</em> that you can use when <code>across(all_of())</code> is not supported. It consists in creating <a href="topic-defuse.html">defused expressions</a> that refer to the data-variables represented in the names vector. These are then injected in the data mask context.</p>
 <p>Symbolise a single string with <code><a href="sym.html">sym()</a></code> or <code><a href="sym.html">data_sym()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span>
-
-<span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-<span class="co">#&gt; cyl</span>
-
-<span class="fu"><a href="../reference/sym.html">data_sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-<span class="co">#&gt; .data$cyl</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span><span class="co">#&gt; cyl</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/sym.html">data_sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span><span class="co">#&gt; .data$cyl</span></span></code></pre><p></p></div>
 <p>Symbolise a character vector with <code><a href="sym.html">syms()</a></code> or <code><a href="sym.html">data_syms()</a></code>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/sym.html">syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; cyl</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; am</span>
-
-<span class="fu"><a href="../reference/sym.html">data_syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; .data$cyl</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; .data$am</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/sym.html">syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; cyl</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; am</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/sym.html">data_syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; .data$cyl</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; .data$am</span></span></code></pre><p></p></div>
 <p>Simple symbols returned by <code><a href="sym.html">sym()</a></code> and <code><a href="sym.html">syms()</a></code> work in a wider variety of cases (with base functions in particular) but we'll use mostly use <code><a href="sym.html">data_sym()</a></code> and <code><a href="sym.html">data_syms()</a></code> because they are more robust (see <a href="topic-data-mask-ambiguity.html">The data mask ambiguity</a>). Note that these do not return <em>symbols</em> per se, instead they create <em>calls</em> to <code>$</code> that subset the <code><a href="dot-data.html">.data</a></code> pronoun.</p>
 <p>Since the <code>.data</code> pronoun is a tidy eval feature, you can't use it in base functions. As a rule, prefer the <code>data_</code>-prefixed variants when you're injecting in tidy eval functions and the unprefixed functions for base functions.</p>
 <p>A list of symbols can be injected in data-masked dots with the splice operator <code><a href="splice-operator.html">!!!</a></code>, which injects each element of the list as a separate argument. For instance, to implement a <code>group_by()</code> variant that takes a character vector of column names, you might write:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">vars</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/sym.html">data_syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_group_by</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">vars</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/sym.html">data_syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_group_by</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>In more complex case, you might want to add R code around the symbols. This requires <em>transformation</em> patterns, see the section below.</p>
 </div>
 
@@ -221,20 +221,20 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 
 <p>This is a variant of the <code>transmute()</code> bridge pattern described in <a href="topic-data-mask-programming.html">Data mask programming patterns</a> that does not materialise <code>...</code> in the intermediate step. Instead, the <code>...</code> expressions are defused and inspected. Then the expressions, rather than the columns, are spliced in <code>mutate()</code>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Defuse the dots and inspect the names</span>
-  <span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span>, .named <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dots</span><span class="op">)</span>
-
-  <span class="co"># Pass the inputs to `mutate()`</span>
-  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">dots</span><span class="op">)</span>
-
-  <span class="co"># Select `...` inputs by name with `all_of()`</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span>
-    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">all_of</span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span>, am <span class="op">=</span> <span class="va">am</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></code></pre><p></p></div><ol><li><p>Defuse the <code>...</code> expressions. The <code>.named</code> argument ensures unnamed inputs get a default name, just like they would if passed to <code>mutate()</code>. Take the names of the list of inputs.</p></li>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Defuse the dots and inspect the names</span></span>
+<span>  <span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span>, .named <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">dots</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Pass the inputs to `mutate()`</span></span>
+<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">dots</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Select `...` inputs by name with `all_of()`</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">all_of</span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span>, am <span class="op">=</span> <span class="va">am</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span></code></pre><p></p></div><ol><li><p>Defuse the <code>...</code> expressions. The <code>.named</code> argument ensures unnamed inputs get a default name, just like they would if passed to <code>mutate()</code>. Take the names of the list of inputs.</p></li>
 <li><p>Once we have the names, inject the argument expressions into <code>mutate()</code> to update the data frame.</p></li>
 <li><p>Finally, pass the names to the tidy selection via <a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link"><code>all_of()</code></a>.</p></li>
 </ol></div>
@@ -249,45 +249,45 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 <p>If <code>across()</code> and variants are not available, you will need to transform the inputs yourself using metaprogramming techniques. To illustrate the technique we'll reimplement <code>my_mean()</code> and without using <code>across()</code>. The pattern consists in defusing the input expression, building larger calls around them, and finally inject the modified expressions inside the data-masking functions.</p>
 <p>We'll start with a single named argument for simplicity:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Defuse the expression</span>
-  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-
-  <span class="co"># Wrap it in a call to `mean()`</span>
-  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co"># Inject the expanded expression</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="va">var</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Defuse the expression</span></span>
+<span>  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Wrap it in a call to `mean()`</span></span>
+<span>  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Inject the expanded expression</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="va">var</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
 <p>With <code>...</code> the technique is similar, though a little more involved. We'll use the plural variants <code><a href="enquo.html">enquos()</a></code> and <code><a href="splice-operator.html">!!!</a></code>. We'll also loop over the variable number of inputs using <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">purrr::map()</a></code>. But the pattern is otherwise basically the same:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Defuse the dots. Make sure they are automatically named.</span>
-  <span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span>, .named <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-  <span class="co"># Map over each defused expression and wrap it in a call to `mean()`</span>
-  <span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">vars</span>, <span class="op">~</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co"># Inject the expressions</span>
-  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">vars</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;     cyl</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Defuse the dots. Make sure they are automatically named.</span></span>
+<span>  <span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquos</a></span><span class="op">(</span><span class="va">...</span>, .named <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Map over each defused expression and wrap it in a call to `mean()`</span></span>
+<span>  <span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">vars</span>, <span class="op">~</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Inject the expressions</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">vars</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;     cyl</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
 <p>Note that we are inheriting the data-masking behaviour of <code>summarise()</code> because we have effectively forwarded <code>...</code> inside that verb. This is different than transformation patterns based on <code>across()</code> which inherit tidy selection behaviour. In practice, this means the function doesn't support selection helpers and syntax. Instead, it gains the ability to create new vectors on the fly:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;     cyl</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  619.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;     cyl</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  619.</span></span></code></pre><p></p></div>
 </div>
 
     </div>
@@ -298,20 +298,20 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 
 <p>In the simplest version of this pattern, <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> is called with a variable name to retrieve objects from the data mask:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] 6.1875</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6.1875</span></span></code></pre><p></p></div>
 <p>This sort of pattern is susceptible to <a href="topic-data-mask-ambiguity.html">names collisions</a>. For instance, the input data frame might contain a variable called <code>var</code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"wrong"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in get(var): object 'wrong' not found</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"wrong"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">df</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/get.html" class="external-link">get</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in get(var): object 'wrong' not found</span></span></code></pre><p></p></div>
 <p>In general, prefer symbol injection over <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> to prevent this sort of collisions. With base functions you will need to enable injection operators explicitly using <code><a href="inject.html">inject()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">#&gt; [1] 6.1875</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6.1875</span></span></code></pre><p></p></div>
 <p>See <a href="topic-data-mask-ambiguity.html">The data mask ambiguity</a> for more information about names collisions.</p>
 </div>
 
@@ -320,52 +320,52 @@ If you haven't already, read Data mask programming patterns which covers simpler
 
 
 <p>A more involved pattern consists in building R code in a string and evaluating it in the mask:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"am"</span>
-<span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span>
-
-<span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">var1</span>, <span class="st">"=="</span>, <span class="va">var2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] 0.59375</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"am"</span></span>
+<span><span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span></span>
+<span></span>
+<span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">var1</span>, <span class="st">"=="</span>, <span class="va">var2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.59375</span></span></code></pre><p></p></div>
 <p>As before, the <code>code</code> variable is vulnerable to <a href="topic-data-mask-ambiguity.html">names collisions</a>. More importantly, if <code>var1</code> and <code>var2</code> are user inputs, they could contain <a href="https://xkcd.com/327/" class="external-link">adversarial code</a>. Evaluating code assembled from strings is always a risky business:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"(function() {
-  Sys.sleep(Inf)  # Could be a coin mining routine
-})()"</span>
-<span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span>
-
-<span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">var1</span>, <span class="st">"=="</span>, <span class="va">var2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"(function() {</span></span>
+<span><span class="st">  Sys.sleep(Inf)  # Could be a coin mining routine</span></span>
+<span><span class="st">})()"</span></span>
+<span><span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span></span>
+<span></span>
+<span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">var1</span>, <span class="st">"=="</span>, <span class="va">var2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>This is not a big deal if your code is only used internally. However, this code could be part of a public Shiny app which Internet users could exploit. But even internally, parsing is a source of bugs when variable names contain syntactic symbols like <code>-</code> or <code>:</code>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">":var:"</span>
-<span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span>
-
-<span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">var1</span>, <span class="st">"=="</span>, <span class="va">var2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in parse(text = code): &lt;text&gt;:1:1: unexpected ':'</span>
-<span class="co">#&gt; 1: :</span>
-<span class="co">#&gt;     ^</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">":var:"</span></span>
+<span><span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span></span>
+<span></span>
+<span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">var1</span>, <span class="st">"=="</span>, <span class="va">var2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/parse.html" class="external-link">parse</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in parse(text = code): &lt;text&gt;:1:1: unexpected ':'</span></span>
+<span><span class="co">#&gt; 1: :</span></span>
+<span><span class="co">#&gt;     ^</span></span></code></pre><p></p></div>
 <p>For these reasons, always prefer to <em>build</em> code instead of parsing code. Building variable names with <code><a href="sym.html">sym()</a></code> is a way of sanitising inputs.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"(function() {
-  Sys.sleep(Inf)  # Could be a coin mining routine
-})()"</span>
-<span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span>
-
-<span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"=="</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var1</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var2</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">code</span>
-<span class="co">#&gt; `(function() {\n  Sys.sleep(Inf)  # Could be a coin mining routine\n})()` == </span>
-<span class="co">#&gt;     vs</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"(function() {</span></span>
+<span><span class="st">  Sys.sleep(Inf)  # Could be a coin mining routine</span></span>
+<span><span class="st">})()"</span></span>
+<span><span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span></span>
+<span></span>
+<span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"=="</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var1</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var2</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">code</span></span>
+<span><span class="co">#&gt; `(function() {\n  Sys.sleep(Inf)  # Could be a coin mining routine\n})()` == </span></span>
+<span><span class="co">#&gt;     vs</span></span></code></pre><p></p></div>
 <p>The adversarial input now produces an error:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in eval(code): object '(function() {\n  Sys.sleep(Inf)  # Could be a coin mining routine\n})()' not found</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in eval(code): object '(function() {\n  Sys.sleep(Inf)  # Could be a coin mining routine\n})()' not found</span></span></code></pre><p></p></div>
 <p>Finally, it is recommended to inject the code instead of evaluating it to avoid names collisions:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"am"</span>
-<span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span>
-
-<span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"=="</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var1</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">code</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">#&gt; [1] 0.59375</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">var1</span> <span class="op">&lt;-</span> <span class="st">"am"</span></span>
+<span><span class="va">var2</span> <span class="op">&lt;-</span> <span class="st">"vs"</span></span>
+<span></span>
+<span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"=="</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var1</span><span class="op">)</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">code</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.59375</span></span></code></pre><p></p></div>
 </div>
 
     </div>

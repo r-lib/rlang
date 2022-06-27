@@ -146,65 +146,65 @@ eval(e, mtcars)
     <div class="ref-description section level2">
     <p>When a piece of R code is defused, R doesn't return its value like it normally would. Instead it returns the expression in a special tree-like object that describes how to compute a value. These defused expressions can be thought of as blueprints or recipes for computing values.</p>
 <p>Using <code><a href="expr.html">expr()</a></code> we can observe the difference between computing an expression and defusing it:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Return the result of `1 + 1`</span>
-<span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span>
-<span class="co">#&gt; [1] 2</span>
-
-<span class="co"># Return the expression `1 + 1`</span>
-<span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; 1 + 1</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Return the result of `1 + 1`</span></span>
+<span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span></span>
+<span><span class="co"># Return the expression `1 + 1`</span></span>
+<span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1 + 1</span></span></code></pre><p></p></div>
 <p>Evaluation of a defused expression can be resumed at any time with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> (see also <code><a href="eval_tidy.html">eval_tidy()</a></code>).</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Return the expression `1 + 1`</span>
-<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="co"># Return the result of `1 + 1`</span>
-<span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span>
-<span class="co">#&gt; [1] 2</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Return the expression `1 + 1`</span></span>
+<span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Return the result of `1 + 1`</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span></code></pre><p></p></div>
 <p>The most common use case for defusing expressions is to resume its evaluation in a <a href="topic-data-mask.html">data mask</a>. This makes it possible for the expression to refer to columns of a data frame as if they were regular objects.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">e</span>, <span class="va">mtcars</span><span class="op">)</span>
-<span class="co">#&gt; [1] 6.1875</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">e</span>, <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6.1875</span></span></code></pre><p></p></div>
     </div>
 
 
     <div class="section level2">
     <h2 id="do-i-need-to-know-about-defused-expressions-">Do I need to know about defused expressions?<a class="anchor" aria-label="anchor" href="#do-i-need-to-know-about-defused-expressions-"></a></h2>
     <p>As a tidyverse user you will rarely need to defuse expressions manually with <code><a href="expr.html">expr()</a></code>, and even more rarely need to resume evaluation with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> or <code><a href="eval_tidy.html">eval_tidy()</a></code>. Instead, you call <a href="topic-data-mask.html">data-masking</a> functions which take care of defusing your arguments and resuming them in the context of a data mask.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>  <span class="co"># This is defused and data-masked</span>
-<span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   `mean(cyl)`</span>
-<span class="co">#&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1        6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>  <span class="co"># This is defused and data-masked</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   `mean(cyl)`</span></span>
+<span><span class="co">#&gt;         &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1        6.19</span></span></code></pre><p></p></div>
 <p>It is important to know that a function defuses its arguments because it requires slightly different methods when called from a function. The main thing is that arguments must be transported with the <a href="embrace-operator.html">embrace operator</a> <code>{{</code>. It allows the data-masking function to defuse the correct expression.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>Read more about this in:</p><ul><li><p><a href="topic-data-mask.html">What is data-masking and why do I need {{?</a></p></li>
 <li><p><a href="topic-data-mask-programming.html">Data mask programming patterns</a></p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="the-booby-trap-analogy">The booby trap analogy<a class="anchor" aria-label="anchor" href="#the-booby-trap-analogy"></a></h2>
     <p>The term "defusing" comes from an analogy to the evaluation model in R. As you may know, R uses lazy evaluation, which means that arguments are only evaluated when they are needed for a computation. Let's take two functions, <code>ignore()</code> which doesn't do anything with its argument, and <code><a href="https://rdrr.io/r/base/force.html" class="external-link">force()</a></code> which returns it:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">ignore</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="cn">NULL</span>
-<span class="va">force</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="va">arg</span>
-
-<span class="fu">ignore</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; NULL</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Warning in force(warning("boom")): boom</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">ignore</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="cn">NULL</span></span>
+<span><span class="va">force</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="va">arg</span></span>
+<span></span>
+<span><span class="fu">ignore</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in force(warning("boom")): boom</span></span></code></pre><p></p></div>
 <p>A warning is only emitted when the function actually <em>triggers</em> evaluation of its argument. Evaluation of arguments can be chained by passing them to other functions. If one of the functions ignores its argument, it breaks the chain of evaluation.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">g</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="fu">h</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">ignore</span><span class="op">(</span><span class="va">z</span><span class="op">)</span>
-
-<span class="fu">f</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; NULL</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">g</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">y</span><span class="op">)</span> <span class="fu">h</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="fu">ignore</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">f</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre><p></p></div>
 <p>In a way, arguments are like <em>booby traps</em> which explode (evaluate) when touched. Defusing an argument can be seen as defusing the booby trap.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; force(warning("boom"))</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; force(warning("boom"))</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="types-of-defused-expressions">Types of defused expressions<a class="anchor" aria-label="anchor" href="#types-of-defused-expressions"></a></h2>
@@ -213,27 +213,27 @@ eval(e, mtcars)
 <li><p><strong>Symbols</strong>, like <code>x</code> or <code>df</code>, represent named objects. When the object pointed to by the symbol was defined in a function or in the global environment, we call it an environment-variable. When the object is a column in a data frame, we call it a data-variable.</p></li>
 <li><p><strong>Constants</strong>, like <code>1</code> or <code>NULL</code>.</p></li>
 </ul><p>You can create new call or symbol objects by using the defusing function <code><a href="expr.html">expr()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Create a symbol representing objects called `foo`</span>
-<span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span>
-<span class="co">#&gt; foo</span>
-
-<span class="co"># Create a call representing the computation of the mean of `foo`</span>
-<span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">foo</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; mean(foo, na.rm = TRUE)</span>
-
-<span class="co"># Return a constant</span>
-<span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1</span>
-
-<span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
-<span class="co">#&gt; NULL</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Create a symbol representing objects called `foo`</span></span>
+<span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span>
+<span><span class="co">#&gt; foo</span></span>
+<span></span>
+<span><span class="co"># Create a call representing the computation of the mean of `foo`</span></span>
+<span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">foo</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; mean(foo, na.rm = TRUE)</span></span>
+<span></span>
+<span><span class="co"># Return a constant</span></span>
+<span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre><p></p></div>
 <p>Defusing is not the only way to create defused expressions. You can also assemble them from data:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Assemble a symbol from a string</span>
-<span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"foo"</span>
-<span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>
-
-<span class="co"># Assemble a call from strings, symbols, and constants</span>
-<span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Assemble a symbol from a string</span></span>
+<span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
+<span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Assemble a call from strings, symbols, and constants</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="local-expressions-versus-function-arguments">Local expressions versus function arguments<a class="anchor" aria-label="anchor" href="#local-expressions-versus-function-arguments"></a></h2>
@@ -243,32 +243,32 @@ eval(e, mtcars)
     <div class="section level2">
     <h2 id="defuse-and-inject">Defuse and inject<a class="anchor" aria-label="anchor" href="#defuse-and-inject"></a></h2>
     <p>One purpose for defusing evaluation of an expression is to interface with <a href="topic-data-mask.html">data-masking</a> functions by injecting the expression back into another function with <code>!!</code>. This is the <a href="topic-metaprogramming.html">defuse-and-inject pattern</a>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Defuse the user expression in `arg`</span>
-  <span class="va">arg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span>
-
-  <span class="co"># Inject the expression contained in `arg`</span>
-  <span class="co"># inside a `summarise()` argument</span>
-  <span class="va">data</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">arg</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Defuse the user expression in `arg`</span></span>
+<span>  <span class="va">arg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Inject the expression contained in `arg`</span></span>
+<span>  <span class="co"># inside a `summarise()` argument</span></span>
+<span>  <span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">arg</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>Defuse-and-inject is usually performed in a single step with the embrace operator <code><a href="embrace-operator.html">{{</a></code>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Defuse and inject in a single step with the embracing operator</span>
-  <span class="va">data</span> |&gt; <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Defuse and inject in a single step with the embracing operator</span></span>
+<span>  <span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>Using <code><a href="enquo.html">enquo()</a></code> and <code>!!</code> separately is useful in more complex cases where you need access to the defused expression instead of just passing it on.</p>
     </div>
     <div class="section level2">
     <h2 id="defused-arguments-and-quosures">Defused arguments and quosures<a class="anchor" aria-label="anchor" href="#defused-arguments-and-quosures"></a></h2>
     <p>If you inspect the return values of <code><a href="expr.html">expr()</a></code> and <code><a href="enquo.html">enquo()</a></code>, you'll notice that the latter doesn't return a raw expression like the former. Instead it returns a <a href="quosure-tools.html">quosure</a>, a wrapper containing an expression and an environment.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; 1 + 1</span>
-
-<span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span>
-<span class="fu">my_function</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; &lt;quosure&gt;</span>
-<span class="co">#&gt; expr: ^1 + 1</span>
-<span class="co">#&gt; env:  global</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1 + 1</span></span>
+<span></span>
+<span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span></span>
+<span><span class="fu">my_function</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;quosure&gt;</span></span>
+<span><span class="co">#&gt; expr: ^1 + 1</span></span>
+<span><span class="co">#&gt; env:  global</span></span></code></pre><p></p></div>
 <p>R needs information about the environment to properly evaluate argument expressions because they come from a different context than the current function. For instance when a function in your package calls <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>, the quosure environment indicates where all the private functions of your package are defined.</p>
 <p>Read more about the role of quosures in <a href="topic-quosure.html">What are quosures and when are they needed?</a>.</p>
     </div>

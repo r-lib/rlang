@@ -127,17 +127,17 @@ While data-masking makes it easy to program interactively with data frames, it m
 
     <div class="ref-description section level2">
     <p>Data-masking is a distinctive feature of R whereby programming is performed directly on a data set, with columns defined as normal objects.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Unmasked programming</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; [1] 6.59375</span>
-
-<span class="co"># Referring to columns is an error - Where is the data?</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; Error in mean(cyl + am): object 'cyl' not found</span>
-
-<span class="co"># Data-masking</span>
-<span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] 6.59375</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Unmasked programming</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6.59375</span></span>
+<span></span>
+<span><span class="co"># Referring to columns is an error - Where is the data?</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in mean(cyl + am): object 'cyl' not found</span></span>
+<span></span>
+<span><span class="co"># Data-masking</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6.59375</span></span></code></pre><p></p></div>
 <p>While data-masking makes it easy to program interactively with data frames, it makes it harder to create functions. Passing data-masked arguments to functions requires injection with the embracing operator <code><a href="embrace-operator.html">{{</a></code> or, in more complex cases, the injection operator <code><a href="injection-operator.html">!!</a></code>.</p>
     </div>
 
@@ -146,81 +146,81 @@ While data-masking makes it easy to program interactively with data frames, it m
     <h2 id="why-does-data-masking-require-embracing-and-injection-">Why does data-masking require embracing and injection?<a class="anchor" aria-label="anchor" href="#why-does-data-masking-require-embracing-and-injection-"></a></h2>
     <p>Injection (also known as quasiquotation) is a metaprogramming feature that allows you to modify parts of a program. This is needed because under the hood data-masking works by <a href="topic-defuse.html">defusing</a> R code to prevent its immediate evaluation. The defused code is resumed later on in a context where data frame columns are defined.</p>
 <p>Let's see what happens when we pass arguments to a data-masking function like <code>summarise()</code> in the normal way:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var1</span>, <span class="va">var2</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">var1</span> <span class="op">+</span> <span class="va">var2</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; Error in `dplyr::summarise()`:</span>
-<span class="co">#&gt; ! Problem while computing `..1 = mean(var1 + var2)`.</span>
-<span class="co">#&gt; Caused by error in `mean()`:</span>
-<span class="co">#&gt; ! object 'cyl' not found</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var1</span>, <span class="va">var2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">var1</span> <span class="op">+</span> <span class="va">var2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `dplyr::summarise()`:</span></span>
+<span><span class="co">#&gt; ! Problem while computing `..1 = mean(var1 + var2)`.</span></span>
+<span><span class="co">#&gt; Caused by error in `mean()`:</span></span>
+<span><span class="co">#&gt; ! object 'cyl' not found</span></span></code></pre><p></p></div>
 <p>The problem here is that <code>summarise()</code> defuses the R code it was supplied, i.e. <code>mean(var1 + var2)</code>.  Instead we want it to see <code>mean(cyl + am)</code>. This is why we need injection, we need to modify that piece of code by injecting the code supplied to the function in place of <code>var1</code> and <code>var2</code>.</p>
 <p>To inject a function argument in data-masked context, just embrace it with <code>{{</code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var1</span>, <span class="va">var2</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var1</span> <span class="op">}</span><span class="op">}</span> <span class="op">+</span> <span class="op">{</span><span class="op">{</span> <span class="va">var2</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   `mean(cyl + am)`</span>
-<span class="co">#&gt;              &lt;dbl&gt;</span>
-<span class="co">#&gt; 1             6.59</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var1</span>, <span class="va">var2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var1</span> <span class="op">}</span><span class="op">}</span> <span class="op">+</span> <span class="op">{</span><span class="op">{</span> <span class="va">var2</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   `mean(cyl + am)`</span></span>
+<span><span class="co">#&gt;              &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1             6.59</span></span></code></pre><p></p></div>
 <p>See <a href="topic-data-mask-programming.html">Data mask programming patterns</a> to learn more about creating functions around data-masking functions.</p>
     </div>
     <div class="section level2">
     <h2 id="what-does-masking-mean-">What does "masking" mean?<a class="anchor" aria-label="anchor" href="#what-does-masking-mean-"></a></h2>
     <p>In normal R programming objects are defined in the current environment, for instance in the global environment or the environment of a function.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">factor</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-
-<span class="co"># Can now use `factor` in computations</span>
-<span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">factor</span><span class="op">)</span>
-<span class="co">#&gt; [1] 6187.5</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">factor</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span></span>
+<span><span class="co"># Can now use `factor` in computations</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">factor</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6187.5</span></span></code></pre><p></p></div>
 <p>This environment also contains all functions currently in scope. In a script this includes the functions attached with <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> calls; in a package, the functions imported from other packages. If evaluation was performed only in the data frame, we'd lose track of these objects and functions necessary to perform computations.</p>
 <p>To keep these objects and functions in scope, the data frame is inserted at the bottom of the current chain of environments. It comes first and has precedence over the user environment. In other words, it <em>masks</em> the user environment.</p>
 <p>Since masking blends the data and the user environment by giving priority to the former, R can sometimes use a data frame column when you really intended to use a local object.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Defining an env-variable</span>
-<span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-
-<span class="co"># Referring to a data-variable</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;   `mean(cyl)`</span>
-<span class="co">#&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1        6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Defining an env-variable</span></span>
+<span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span></span>
+<span><span class="co"># Referring to a data-variable</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;   `mean(cyl)`</span></span>
+<span><span class="co">#&gt;         &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1        6.19</span></span></code></pre><p></p></div>
 <p>The tidy eval framework provides <a href="dot-data.html">pronouns</a> to help disambiguate between the mask and user contexts. It is often a good idea to use these pronouns in production code.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fl">1000</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>
-    mean_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>,
-    mean_env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.env</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;   mean_data mean_env</span>
-<span class="co">#&gt;       &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1      6.19     1000</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">cyl</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>    mean_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span>,</span>
+<span>    mean_env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.env</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;   mean_data mean_env</span></span>
+<span><span class="co">#&gt;       &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1      6.19     1000</span></span></code></pre><p></p></div>
 <p>Read more about this in <a href="topic-data-mask-ambiguity.html">The data mask ambiguity</a>.</p>
     </div>
     <div class="section level2">
     <h2 id="how-does-data-masking-work-">How does data-masking work?<a class="anchor" aria-label="anchor" href="#how-does-data-masking-work-"></a></h2>
     <p>Data-masking relies on three language features:</p><ul><li><p><a href="topic-defuse.html">Argument defusal</a> with <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code> (base R) or <code><a href="enquo.html">enquo()</a></code>, <code><a href="enquo.html">enquos()</a></code>, and <code><a href="embrace-operator.html">{{</a></code> (rlang). R code is defused so it can be evaluated later on in a special environment enriched with data.</p></li>
 <li><p>First class environments. Environments are a special type of list-like object in which defused R code can be evaluated.  The named elements in an environment define objects. Lists and data frames can be transformed to environments:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/as.environment.html" class="external-link">as.environment</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>
-<span class="co">#&gt; &lt;environment: 0x7febb17e3468&gt;</span></code></pre><p></p></div></li>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/as.environment.html" class="external-link">as.environment</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x7febb17e3468&gt;</span></span></code></pre><p></p></div></li>
 <li><p>Explicit evaluation with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> (base) or <code><a href="eval_tidy.html">eval_tidy()</a></code> (rlang). When R code is defused, evaluation is interrupted. It can be resumed later on with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; 1 + 1</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] 2</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 1 + 1</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span></code></pre><p></p></div>
 <p>By default <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> and <code><a href="eval_tidy.html">eval_tidy()</a></code> evaluate in the current environment.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span>
-<span class="co">#&gt; Error in mean(cyl + am): object 'am' not found</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in mean(cyl + am): object 'am' not found</span></span></code></pre><p></p></div>
 <p>You can supply an optional list or data frame that will be converted to an environment.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span>, <span class="va">mtcars</span><span class="op">)</span>
-<span class="co">#&gt; [1] 6.59375</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span>, <span class="va">mtcars</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 6.59375</span></span></code></pre><p></p></div>
 <p>Evaluation of defused code then occurs in the context of a data mask.</p></li>
 </ul></div>
     <div class="section level2">

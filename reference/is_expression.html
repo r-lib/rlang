@@ -153,11 +153,11 @@ supported in rlang.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_expression</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu">is_symbolic</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">is_expression</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">is_symbolic</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -194,66 +194,66 @@ internal data structure and can't be returned as is by the parser,
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">is_expression</span><span class="op">(</span><span class="va">q1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">is_expression</span><span class="op">(</span><span class="va">q1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="va">q1</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="va">q1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">q2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">is_expression</span><span class="op">(</span><span class="va">q2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">q2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">is_expression</span><span class="op">(</span><span class="va">q2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu"><a href="is_symbol.html">is_symbol</a></span><span class="op">(</span><span class="va">q2</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="is_symbol.html">is_symbol</a></span><span class="op">(</span><span class="va">q2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">q3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">is_expression</span><span class="op">(</span><span class="va">q3</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">q3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">is_expression</span><span class="op">(</span><span class="va">q3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu"><a href="is_call.html">is_call</a></span><span class="op">(</span><span class="va">q3</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="is_call.html">is_call</a></span><span class="op">(</span><span class="va">q3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Atomic expressions are the terminating nodes of a call tree:</span></span>
-<span class="r-in"><span class="co"># NULL or a scalar atomic vector:</span></span>
-<span class="r-in"><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="st">"string"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Atomic expressions are the terminating nodes of a call tree:</span></span></span>
+<span class="r-in"><span><span class="co"># NULL or a scalar atomic vector:</span></span></span>
+<span class="r-in"><span><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="st">"string"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="va">letters</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="va">letters</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">is_syntactic_literal</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Parsable literals have the property of being self-quoting:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Parsable literals have the property of being self-quoting:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Like any literals, they can be evaluated within the empty</span></span>
-<span class="r-in"><span class="co"># environment:</span></span>
-<span class="r-in"><span class="fu"><a href="eval_bare.html">eval_bare</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span>, <span class="fu"><a href="empty_env.html">empty_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Like any literals, they can be evaluated within the empty</span></span></span>
+<span class="r-in"><span><span class="co"># environment:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="eval_bare.html">eval_bare</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span>, <span class="fu"><a href="empty_env.html">empty_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Whereas it would fail for symbolic expressions:</span></span>
-<span class="r-in"><span class="co"># eval_bare(quote(c(1L, 2L)), empty_env())</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pairlists are also language objects representing argument lists.</span></span>
-<span class="r-in"><span class="co"># You will usually encounter them with extracted formals:</span></span>
-<span class="r-in"><span class="va">fmls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals</a></span><span class="op">(</span><span class="va">is_expression</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">fmls</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Whereas it would fail for symbolic expressions:</span></span></span>
+<span class="r-in"><span><span class="co"># eval_bare(quote(c(1L, 2L)), empty_env())</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pairlists are also language objects representing argument lists.</span></span></span>
+<span class="r-in"><span><span class="co"># You will usually encounter them with extracted formals:</span></span></span>
+<span class="r-in"><span><span class="va">fmls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/formals.html" class="external-link">formals</a></span><span class="op">(</span><span class="va">is_expression</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">fmls</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "pairlist"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Since they are mostly an internal data structure, is_expression()</span></span>
-<span class="r-in"><span class="co"># returns FALSE for pairlists, so you will have to check explicitly</span></span>
-<span class="r-in"><span class="co"># for them:</span></span>
-<span class="r-in"><span class="fu">is_expression</span><span class="op">(</span><span class="va">fmls</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Since they are mostly an internal data structure, is_expression()</span></span></span>
+<span class="r-in"><span><span class="co"># returns FALSE for pairlists, so you will have to check explicitly</span></span></span>
+<span class="r-in"><span><span class="co"># for them:</span></span></span>
+<span class="r-in"><span><span class="fu">is_expression</span><span class="op">(</span><span class="va">fmls</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span class="fu"><a href="is_pairlist.html">is_pairlist</a></span><span class="op">(</span><span class="va">fmls</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="is_pairlist.html">is_pairlist</a></span><span class="op">(</span><span class="va">fmls</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
 </code></pre></div>
     </div>

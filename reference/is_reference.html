@@ -144,7 +144,7 @@ even if you modify one of the references.</p></li>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">is_reference</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">is_reference</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -156,24 +156,24 @@ even if you modify one of the references.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Reassigning an uncopyable object such as an environment creates a</span></span>
-<span class="r-in"><span class="co"># reference:</span></span>
-<span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ref</span> <span class="op">&lt;-</span> <span class="va">env</span></span>
-<span class="r-in"><span class="fu">is_reference</span><span class="op">(</span><span class="va">ref</span>, <span class="va">env</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Reassigning an uncopyable object such as an environment creates a</span></span></span>
+<span class="r-in"><span><span class="co"># reference:</span></span></span>
+<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ref</span> <span class="op">&lt;-</span> <span class="va">env</span></span></span>
+<span class="r-in"><span><span class="fu">is_reference</span><span class="op">(</span><span class="va">ref</span>, <span class="va">env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Due to copy-on-write optimisation, a copied vector can</span></span>
-<span class="r-in"><span class="co"># temporarily reference the original vector:</span></span>
-<span class="r-in"><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
-<span class="r-in"><span class="va">copy</span> <span class="op">&lt;-</span> <span class="va">vec</span></span>
-<span class="r-in"><span class="fu">is_reference</span><span class="op">(</span><span class="va">copy</span>, <span class="va">vec</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Due to copy-on-write optimisation, a copied vector can</span></span></span>
+<span class="r-in"><span><span class="co"># temporarily reference the original vector:</span></span></span>
+<span class="r-in"><span><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span></span>
+<span class="r-in"><span><span class="va">copy</span> <span class="op">&lt;-</span> <span class="va">vec</span></span></span>
+<span class="r-in"><span><span class="fu">is_reference</span><span class="op">(</span><span class="va">copy</span>, <span class="va">vec</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Once you modify on of them, the copy is triggered in the</span></span>
-<span class="r-in"><span class="co"># background and the objects cease to reference each other:</span></span>
-<span class="r-in"><span class="va">vec</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
-<span class="r-in"><span class="fu">is_reference</span><span class="op">(</span><span class="va">copy</span>, <span class="va">vec</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Once you modify on of them, the copy is triggered in the</span></span></span>
+<span class="r-in"><span><span class="co"># background and the objects cease to reference each other:</span></span></span>
+<span class="r-in"><span><span class="va">vec</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span><span class="fu">is_reference</span><span class="op">(</span><span class="va">copy</span>, <span class="va">vec</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 </code></pre></div>
     </div>

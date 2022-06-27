@@ -132,36 +132,36 @@ of a defused expression.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># R normally returns the result of an expression</span></span>
-<span class="r-in"><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># R normally returns the result of an expression</span></span></span>
+<span class="r-in"><span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># `expr()` defuses the expression that you have supplied and</span></span>
-<span class="r-in"><span class="co"># returns it instead of its value</span></span>
-<span class="r-in"><span class="fu">expr</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># `expr()` defuses the expression that you have supplied and</span></span></span>
+<span class="r-in"><span><span class="co"># returns it instead of its value</span></span></span>
+<span class="r-in"><span><span class="fu">expr</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 + 1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">expr</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">expr</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">toupper</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> toupper(letters)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># It supports _injection_ with `!!` and `!!!`. This is a convenient</span></span>
-<span class="r-in"><span class="co"># way of modifying part of an expression by injecting other</span></span>
-<span class="r-in"><span class="co"># objects.</span></span>
-<span class="r-in"><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
-<span class="r-in"><span class="fu">expr</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It supports _injection_ with `!!` and `!!!`. This is a convenient</span></span></span>
+<span class="r-in"><span><span class="co"># way of modifying part of an expression by injecting other</span></span></span>
+<span class="r-in"><span><span class="co"># objects.</span></span></span>
+<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span></span>
+<span class="r-in"><span><span class="fu">expr</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> with(mtcars, mean(cyl))</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">expr</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="sym.html">syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">expr</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="sym.html">syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> with(mtcars, c(cyl, am))</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Compare to the normal way of building expressions</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"with"</span>, <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="fu"><a href="sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Compare to the normal way of building expressions</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"with"</span>, <span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="fu"><a href="sym.html">sym</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> with(mean(cyl))</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"with"</span>, <span class="fu"><a href="call2.html">call2</a></span><span class="op">(</span><span class="st">"c"</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="sym.html">syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="st">"with"</span>, <span class="fu"><a href="call2.html">call2</a></span><span class="op">(</span><span class="st">"c"</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="sym.html">syms</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> with(c(cyl, am))</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
