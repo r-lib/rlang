@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 1.0.3
 
 * Child errors may now have empty messages to enable this pattern:
 
