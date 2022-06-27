@@ -20,20 +20,16 @@
   the `arg` error field, the argument is also highlighted in the
   backtrace.
 
-  The function name and function argument are also highlighted and
-  colour-code in the error message preceding the backtrace to make it
-  it easy to find the call and argument in the backtrace. This relies
-  on lazy formatting of the error message via a lambda function.
   Instead of:
 
   ```
-  cli::cli_abort("{.arg {arg}} must be a foobar.")
+  cli::cli_abort("{.arg {arg}} must be a foobar.", call = call)
   ```
 
-  Write:
+  You can now write this to benefit from arg highlighting:
 
   ```
-  cli::cli_abort(\(...) cli::format_inline("{.arg {arg}} must be a foobar."), arg = arg)
+  cli::cli_abort("{.arg {arg}} must be a foobar.", arg = arg, call = call)
   ```
 
 * `abort(message = )` can now be a function. In this case, it is
