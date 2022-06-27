@@ -15,7 +15,7 @@ Supply another condition as parent to create a chained condition.
 
 Certain components of condition messages are formatted with unicode
 symbols and terminal colours by default. These aspects can be
-customised, see Customising condition messages."><title>Signal an error, warning, or message — abort • rlang</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Signal an error, warning, or message — abort"><meta property="og:description" content="These functions are equivalent to base functions base::stop(),
+customised, see Customising condition messages."><title>Signal an error, warning, or message — abort • rlang</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.1/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.1/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Signal an error, warning, or message — abort"><meta property="og:description" content="These functions are equivalent to base functions base::stop(),
 base::warning(), and base::message(). They signal a condition
 (an error, warning, or message respectively) and make it easy to
 supply condition metadata:
@@ -42,7 +42,7 @@ customised, see Customising condition messages."><meta property="og:image" conte
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -162,7 +162,8 @@ customised, see <a href="topic-condition-customisation.html">Customising conditi
   use_cli_format <span class="op">=</span> <span class="cn">NULL</span>,
   .internal <span class="op">=</span> <span class="cn">FALSE</span>,
   .file <span class="op">=</span> <span class="cn">NULL</span>,
-  .frame <span class="op">=</span> <span class="cn">NULL</span>,
+  .frame <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>,
+  .trace_bottom <span class="op">=</span> <span class="cn">NULL</span>,
   .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
 
@@ -191,7 +192,11 @@ customised, see <a href="topic-condition-customisation.html">Customising conditi
   .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="fu">signal</span><span class="op">(</span><span class="va">message</span>, <span class="va">class</span>, <span class="va">...</span>, .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">signal</span><span class="op">(</span><span class="va">message</span>, <span class="va">class</span>, <span class="va">...</span>, .subclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu">reset_warning_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span>
+
+<span class="fu">reset_message_verbosity</span><span class="op">(</span><span class="va">id</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -199,23 +204,32 @@ customised, see <a href="topic-condition-customisation.html">Customising conditi
     <dl><dt>message</dt>
 <dd><p>The message to display, formatted as a <strong>bulleted
 list</strong>. The first element is displayed as an <em>alert</em> bullet
-prefixed with <code>!</code> by default. Elements named <code>"*"</code>, <code>"i"</code>, and
-<code>"x"</code> are formatted as regular, info, and cross bullets
-respectively. Se<a href="topic-condition-formatting.html">Formatting messages with cli</a>)` for more
-about bulleted messaging.</p>
+prefixed with <code>!</code> by default. Elements named <code>"*"</code>, <code>"i"</code>, <code>"v"</code>,
+<code>"x"</code>, and <code>"!"</code> are formatted as regular, info, success,
+failure, and error bullets respectively. Se<a href="topic-condition-formatting.html">Formatting messages with cli</a>)`
+for more about bulleted messaging.</p>
 <p>If a message is not supplied, it is expected that the message is
 generated <strong>lazily</strong> through <code><a href="cnd_message.html">cnd_header()</a></code> and <code><a href="cnd_message.html">cnd_body()</a></code>
 methods. In that case, <code>class</code> must be supplied. Only <code>inform()</code>
 allows empty messages as it is occasionally useful to build user
-output incrementally.</p></dd>
+output incrementally.</p>
+<p>If a function, it is stored in the <code>header</code> field of the error
+condition. This acts as a <code><a href="cnd_message.html">cnd_header()</a></code> method that is invoked
+lazily when the error message is displayed.</p></dd>
+
+
 <dt>class</dt>
 <dd><p>Subclass of the condition.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional data to be stored in the condition object.
 If you supply condition fields, you should usually provide a
 <code>class</code> argument. You may consider prefixing condition fields
 with the name of your package or organisation to prevent name
 collisions.</p></dd>
+
+
 <dt>call</dt>
 <dd><p>The execution environment of a currently running
 function, e.g. <code>call = caller_env()</code>. The corresponding function
@@ -227,10 +241,16 @@ message.</p>
 <p>Can also be <code>NULL</code> or a <a href="topic-defuse.html">defused function call</a> to
 respectively not display any call or hard-code a code to display.</p>
 <p>For more information about error calls, see <a href="topic-error-call.html">Including function calls in error messages</a>.</p></dd>
+
+
 <dt>body, footer</dt>
 <dd><p>Additional bullets.</p></dd>
+
+
 <dt>trace</dt>
 <dd><p>A <code>trace</code> object created by <code><a href="trace_back.html">trace_back()</a></code>.</p></dd>
+
+
 <dt>parent</dt>
 <dd><p>Supply <code>parent</code> when you rethrow an error from a
 condition handler (e.g. with <code><a href="try_fetch.html">try_fetch()</a></code>).</p><ul><li><p>If <code>parent</code> is a condition object, a <em>chained error</em> is
@@ -245,6 +265,8 @@ from a condition handler. This helps it create simpler
 backtraces where the condition handling context is hidden by
 default.</p></li>
 </ul><p>For more information about error calls, see <a href="topic-error-chaining.html">Including contextual information with error chains</a>.</p></dd>
+
+
 <dt>use_cli_format</dt>
 <dd><p>Whether to format <code>message</code> lazily using
 <a href="https://cli.r-lib.org/" class="external-link">cli</a> if available. This results in
@@ -255,37 +277,61 @@ package namespace.</p>
 individual and unformatted lines. Any newline character <code>"\\n"</code>
 already present in <code>message</code> is reformatted by cli's paragraph
 formatter. See <a href="topic-condition-formatting.html">Formatting messages with cli</a>.</p></dd>
+
+
 <dt>.internal</dt>
 <dd><p>If <code>TRUE</code>, a footer bullet is added to <code>message</code>
 to let the user know that the error is internal and that they
 should report it to the package authors. This argument is
 incompatible with <code>footer</code>.</p></dd>
+
+
 <dt>.file</dt>
 <dd><p>A connection or a string specifying where to print the
 message. The default depends on the context, see the <code>stdout</code> vs
 <code>stderr</code> section.</p></dd>
+
+
 <dt>.frame</dt>
-<dd><p>The throwing context. Defaults to <code>call</code> if it is an
-environment, <code><a href="stack.html">caller_env()</a></code> otherwise. This is used in the
-display of simplified backtraces as the last relevant call frame
-to show. This way, the irrelevant parts of backtraces
-corresponding to condition handling (<code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>, <code><a href="try_fetch.html">try_fetch()</a></code>,
-<code>abort()</code>, etc.) are hidden by default.</p></dd>
+<dd><p>The throwing context. Used as default for
+<code>.trace_bottom</code>, and to determine the internal package to mention
+in internal errors when <code>.internal</code> is <code>TRUE</code>.</p></dd>
+
+
+<dt>.trace_bottom</dt>
+<dd><p>Used in the display of simplified backtraces
+as the last relevant call frame to show. This way, the irrelevant
+parts of backtraces corresponding to condition handling
+(<code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>, <code><a href="try_fetch.html">try_fetch()</a></code>, <code>abort()</code>, etc.) are hidden by
+default. Defaults to <code>call</code> if it is an environment, or <code>.frame</code>
+otherwise. Without effect if <code>trace</code> is supplied.</p></dd>
+
+
 <dt>.subclass</dt>
 <dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> This argument
 was renamed to <code>class</code> in rlang 0.4.2 for consistency with our
 conventions for class constructors documented in
 <a href="https://adv-r.hadley.nz/s3.html#s3-subclassing" class="external-link">https://adv-r.hadley.nz/s3.html#s3-subclassing</a>.</p></dd>
+
+
 <dt>.frequency</dt>
 <dd><p>How frequently should the warning or message be
 displayed? By default (<code>"always"</code>) it is displayed at each
 time. If <code>"regularly"</code>, it is displayed once every 8 hours. If
 <code>"once"</code>, it is displayed once per session.</p></dd>
+
+
 <dt>.frequency_id</dt>
 <dd><p>A unique identifier for the warning or
 message. This is used when <code>.frequency</code> is supplied to recognise
 recurring conditions. This argument must be supplied if
 <code>.frequency</code> is not set to <code>"always"</code>.</p></dd>
+
+
+<dt>id</dt>
+<dd><p>The identifying string of the condition that was supplied
+as <code>.frequency_id</code> to <code>warn()</code> or <code>inform()</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -438,7 +484,7 @@ non-interactive sessions, and when sinks are active.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
   </div></footer></body></html>

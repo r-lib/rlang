@@ -4,7 +4,8 @@ Using {{ out of context
 
 
 The embrace operator {{ is a feature available in data-masked arguments powered by tidy eval. If you use it elsewhere, it is interpreted as a double { wrapping.
-In the R language, { is like ( but takes multiple expressions instead of one:{
+In the R language, { is like ( but takes multiple expressions instead of one:
+{
   1 # Discarded
   2
 }
@@ -17,19 +18,22 @@ list(
 #&amp;gt; [[1]]
 #&amp;gt; [1] 2
 
-Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:((1))
+Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:
+((1))
 #&amp;gt; [1] 1
 
 {{ 2 }}
 #&amp;gt; [1] 2
 
-So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:f &amp;lt;- function(arg) list({{ arg }})
+So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:
+f &amp;lt;- function(arg) list({{ arg }})
 f(1)
 #&amp;gt; [[1]]
 #&amp;gt; [1] 1
 
 This sort of no-effect embracing should be avoided in real code because it falsely suggests that the function supports the tidy eval operator and that something special is happening.
-However in many cases embracing is done to implement data masking. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:my_mean &amp;lt;- function(data, var) {
+However in many cases embracing is done to implement data masking. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:
+my_mean &amp;lt;- function(data, var) {
   with(data, mean({{ var }}))
 }
 
@@ -44,19 +48,22 @@ Using !! and !!! out of context
 
 
 The injection operators !! and !!! are implemented in data-masked arguments, dynamic dots, and within inject(). When used in other contexts, they are interpreted by R as double and triple negations.
-Double negation can be used in ordinary code to convert an input to logical:!!10
+Double negation can be used in ordinary code to convert an input to logical:
+!!10
 #&amp;gt; [1] TRUE
 
 !!0
 #&amp;gt; [1] FALSE
 
-Triple negation is essentially the same as simple negation:!10
+Triple negation is essentially the same as simple negation:
+!10
 #&amp;gt; [1] FALSE
 
 !!!10
 #&amp;gt; [1] FALSE
 
-This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:!&quot;foo&quot;
+This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:
+!&quot;foo&quot;
 #&amp;gt; Error in !&quot;foo&quot;: invalid argument type
 
 !quote(foo)
@@ -67,12 +74,13 @@ This means that when injection operators are used in the wrong place, they will 
 
 In the worst case, R will silently convert the input to logical. Unfortunately there is no systematic way of checking for these errors.
 
-"><title>What happens if I use injection operators out of context? — topic-inject-out-of-context • rlang</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="What happens if I use injection operators out of context? — topic-inject-out-of-context"><meta property="og:description" content="The injection operators {{, !!, and !!! are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
+"><title>What happens if I use injection operators out of context? — topic-inject-out-of-context • rlang</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.1/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.1/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="What happens if I use injection operators out of context? — topic-inject-out-of-context"><meta property="og:description" content="The injection operators {{, !!, and !!! are an extension of the R syntax developed for tidyverse packages. Because they are not part of base R, they suffer from some limitations. In particular no specific error is thrown when they are used in unexpected places.
 Using {{ out of context
 
 
 The embrace operator {{ is a feature available in data-masked arguments powered by tidy eval. If you use it elsewhere, it is interpreted as a double { wrapping.
-In the R language, { is like ( but takes multiple expressions instead of one:{
+In the R language, { is like ( but takes multiple expressions instead of one:
+{
   1 # Discarded
   2
 }
@@ -85,19 +93,22 @@ list(
 #&amp;gt; [[1]]
 #&amp;gt; [1] 2
 
-Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:((1))
+Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:
+((1))
 #&amp;gt; [1] 1
 
 {{ 2 }}
 #&amp;gt; [1] 2
 
-So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:f &amp;lt;- function(arg) list({{ arg }})
+So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:
+f &amp;lt;- function(arg) list({{ arg }})
 f(1)
 #&amp;gt; [[1]]
 #&amp;gt; [1] 1
 
 This sort of no-effect embracing should be avoided in real code because it falsely suggests that the function supports the tidy eval operator and that something special is happening.
-However in many cases embracing is done to implement data masking. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:my_mean &amp;lt;- function(data, var) {
+However in many cases embracing is done to implement data masking. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:
+my_mean &amp;lt;- function(data, var) {
   with(data, mean({{ var }}))
 }
 
@@ -112,19 +123,22 @@ Using !! and !!! out of context
 
 
 The injection operators !! and !!! are implemented in data-masked arguments, dynamic dots, and within inject(). When used in other contexts, they are interpreted by R as double and triple negations.
-Double negation can be used in ordinary code to convert an input to logical:!!10
+Double negation can be used in ordinary code to convert an input to logical:
+!!10
 #&amp;gt; [1] TRUE
 
 !!0
 #&amp;gt; [1] FALSE
 
-Triple negation is essentially the same as simple negation:!10
+Triple negation is essentially the same as simple negation:
+!10
 #&amp;gt; [1] FALSE
 
 !!!10
 #&amp;gt; [1] FALSE
 
-This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:!&quot;foo&quot;
+This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:
+!&quot;foo&quot;
 #&amp;gt; Error in !&quot;foo&quot;: invalid argument type
 
 !quote(foo)
@@ -146,7 +160,7 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -241,7 +255,8 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 
 
 <p>The embrace operator <code><a href="embrace-operator.html">{{</a></code> is a feature available in <a href="topic-data-mask.html">data-masked</a> arguments powered by tidy eval. If you use it elsewhere, it is interpreted as a double <code>{</code> wrapping.</p>
-<p>In the R language, <code>{</code> is like <code>(</code> but takes multiple expressions instead of one:</p><div class="sourceCode r"><pre><code><span class="op">{</span>
+<p>In the R language, <code>{</code> is like <code>(</code> but takes multiple expressions instead of one:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="op">{</span>
   <span class="fl">1</span> <span class="co"># Discarded</span>
   <span class="fl">2</span>
 <span class="op">}</span>
@@ -253,17 +268,20 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 <span class="co">#&gt; foo</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [1] 2</span></code></pre><p></p></div>
-<p>Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:</p><div class="sourceCode r"><pre><code><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<p>Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1</span>
 
 <span class="op">{</span><span class="op">{</span> <span class="fl">2</span> <span class="op">}</span><span class="op">}</span>
 <span class="co">#&gt; [1] 2</span></code></pre><p></p></div>
-<p>So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:</p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
+<p>So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
 <span class="fu">f</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [1] 1</span></code></pre><p></p></div>
 <p>This sort of no-effect embracing should be avoided in real code because it falsely suggests that the function supports the tidy eval operator and that something special is happening.</p>
-<p>However in many cases embracing is done to implement <a href="topic-data-mask.html">data masking</a>. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:</p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
+<p>However in many cases embracing is done to implement <a href="topic-data-mask.html">data masking</a>. It is likely that the function will be called with data-variables references which R won't be able to resolve properly:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">data</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
@@ -277,17 +295,20 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 
 
 <p>The injection operators <code><a href="injection-operator.html">!!</a></code> and <code><a href="splice-operator.html">!!!</a></code> are implemented in <a href="topic-data-mask.html">data-masked</a> arguments, <a href="dyn-dots.html">dynamic dots</a>, and within <code><a href="inject.html">inject()</a></code>. When used in other contexts, they are interpreted by R as double and triple <em>negations</em>.</p>
-<p>Double negation can be used in ordinary code to convert an input to logical:</p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="op">!</span><span class="fl">10</span>
+<p>Double negation can be used in ordinary code to convert an input to logical:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="op">!</span><span class="fl">10</span>
 <span class="co">#&gt; [1] TRUE</span>
 
 <span class="op">!</span><span class="op">!</span><span class="fl">0</span>
 <span class="co">#&gt; [1] FALSE</span></code></pre><p></p></div>
-<p>Triple negation is essentially the same as simple negation:</p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="fl">10</span>
+<p>Triple negation is essentially the same as simple negation:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="fl">10</span>
 <span class="co">#&gt; [1] FALSE</span>
 
 <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">10</span>
 <span class="co">#&gt; [1] FALSE</span></code></pre><p></p></div>
-<p>This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:</p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="st">"foo"</span>
+<p>This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="op">!</span><span class="st">"foo"</span>
 <span class="co">#&gt; Error in !"foo": invalid argument type</span>
 
 <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span>
@@ -313,7 +334,7 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
   </div></footer></body></html>
