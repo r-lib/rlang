@@ -24,7 +24,7 @@ They use dynamic dots.
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -123,17 +123,17 @@ the rules described in <a href="vector-coercion.html">vector-coercion</a>.</p></
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lgl</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">int</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">dbl</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">cpl</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">chr</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="fu">bytes</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lgl</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">int</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dbl</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cpl</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">chr</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">bytes</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -156,56 +156,56 @@ in a future version. Please splice explicitly with <code>!!!</code>.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># These constructors are like a typed version of c():</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># These constructors are like a typed version of c():</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  TRUE FALSE</span>
-<span class="r-in"><span class="fu">lgl</span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">lgl</span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  TRUE FALSE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># They follow a restricted set of coercion rules:</span></span>
-<span class="r-in"><span class="fu">int</span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># They follow a restricted set of coercion rules:</span></span></span>
+<span class="r-in"><span><span class="fu">int</span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1  0 20</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Lists can be spliced:</span></span>
-<span class="r-in"><span class="fu">dbl</span><span class="op">(</span><span class="fl">10</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2L</span><span class="op">)</span>, <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Lists can be spliced:</span></span></span>
+<span class="r-in"><span><span class="fu">dbl</span><span class="op">(</span><span class="fl">10</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2L</span><span class="op">)</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10  1  2  1</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># They splice names a bit differently than c(). The latter</span></span>
-<span class="r-in"><span class="co"># automatically composes inner and outer names:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>B <span class="op">=</span> <span class="fl">20</span>, C <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># They splice names a bit differently than c(). The latter</span></span></span>
+<span class="r-in"><span><span class="co"># automatically composes inner and outer names:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>B <span class="op">=</span> <span class="fl">20</span>, C <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a.A b.B b.C </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  10  20  30 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># On the other hand, rlang's constructors use the inner names and issue a</span></span>
-<span class="r-in"><span class="co"># warning to inform the user that the outer names are ignored:</span></span>
-<span class="r-in"><span class="fu">dbl</span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>B <span class="op">=</span> <span class="fl">20</span>, C <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># On the other hand, rlang's constructors use the inner names and issue a</span></span></span>
+<span class="r-in"><span><span class="co"># warning to inform the user that the outer names are ignored:</span></span></span>
+<span class="r-in"><span><span class="fu">dbl</span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>B <span class="op">=</span> <span class="fl">20</span>, C <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outer names are only allowed for unnamed scalar atomic inputs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  A  B  C </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 20 30 </span>
-<span class="r-in"><span class="fu">dbl</span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">dbl</span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outer names are only allowed for unnamed scalar atomic inputs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># As an exception, it is allowed to provide an outer name when the</span></span>
-<span class="r-in"><span class="co"># inner vector is an unnamed scalar atomic:</span></span>
-<span class="r-in"><span class="fu">dbl</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># As an exception, it is allowed to provide an outer name when the</span></span></span>
+<span class="r-in"><span><span class="co"># inner vector is an unnamed scalar atomic:</span></span></span>
+<span class="r-in"><span><span class="fu">dbl</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Spliced lists behave the same way:</span></span>
-<span class="r-in"><span class="fu">dbl</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Spliced lists behave the same way:</span></span></span>
+<span class="r-in"><span><span class="fu">dbl</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 </span>
-<span class="r-in"><span class="fu">dbl</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">dbl</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Outer names are only allowed for unnamed scalar atomic inputs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> A </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># bytes() accepts integerish inputs</span></span>
-<span class="r-in"><span class="fu">bytes</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># bytes() accepts integerish inputs</span></span></span>
+<span class="r-in"><span><span class="fu">bytes</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 01 02 03 04 05 06 07 08 09 0a</span>
-<span class="r-in"><span class="fu">bytes</span><span class="op">(</span><span class="fl">0x01</span>, <span class="fl">0xff</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0x03</span>, <span class="fl">0x05</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30L</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">bytes</span><span class="op">(</span><span class="fl">0x01</span>, <span class="fl">0xff</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0x03</span>, <span class="fl">0x05</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30L</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 01 ff 03 05 0a 14 1e</span>
 </code></pre></div>
     </div>

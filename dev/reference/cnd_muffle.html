@@ -18,7 +18,7 @@ being called for that condition."><meta property="og:image" content="https://rla
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,7 +117,7 @@ being called for that condition.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cnd_muffle</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cnd_muffle</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -161,33 +161,33 @@ be called from a <a href="with_handlers.html">calling</a> handler.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu"><a href="abort.html">inform</a></span><span class="op">(</span><span class="st">"Beware!"</span>, <span class="st">"my_particular_msg"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="abort.html">inform</a></span><span class="op">(</span><span class="st">"On your guard!"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="st">"foobar"</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Let's install a muffling handler for the condition thrown by `fn()`.</span></span>
-<span class="r-in"><span class="co"># This will suppress all `my_particular_wng` warnings but let other</span></span>
-<span class="r-in"><span class="co"># types of warnings go through:</span></span>
-<span class="r-in"><span class="fu"><a href="with_handlers.html">with_handlers</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  my_particular_msg <span class="op">=</span> <span class="fu"><a href="with_handlers.html">calling</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="fu"><a href="abort.html">inform</a></span><span class="op">(</span><span class="st">"Dealt with this particular message"</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu">cnd_muffle</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="abort.html">inform</a></span><span class="op">(</span><span class="st">"Beware!"</span>, <span class="st">"my_particular_msg"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="abort.html">inform</a></span><span class="op">(</span><span class="st">"On your guard!"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="st">"foobar"</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Let's install a muffling handler for the condition thrown by `fn()`.</span></span></span>
+<span class="r-in"><span><span class="co"># This will suppress all `my_particular_wng` warnings but let other</span></span></span>
+<span class="r-in"><span><span class="co"># types of warnings go through:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="with_handlers.html">with_handlers</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  my_particular_msg <span class="op">=</span> <span class="fu"><a href="with_handlers.html">calling</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="abort.html">inform</a></span><span class="op">(</span><span class="st">"Dealt with this particular message"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">cnd_muffle</span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Dealt with this particular message</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> On your guard!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "foobar"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note how execution of `fn()` continued normally after dealing</span></span>
-<span class="r-in"><span class="co"># with that particular message.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># cnd_muffle() can also be passed to with_handlers() as a calling</span></span>
-<span class="r-in"><span class="co"># handler:</span></span>
-<span class="r-in"><span class="fu"><a href="with_handlers.html">with_handlers</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  my_particular_msg <span class="op">=</span> <span class="fu"><a href="with_handlers.html">calling</a></span><span class="op">(</span><span class="va">cnd_muffle</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note how execution of `fn()` continued normally after dealing</span></span></span>
+<span class="r-in"><span><span class="co"># with that particular message.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># cnd_muffle() can also be passed to with_handlers() as a calling</span></span></span>
+<span class="r-in"><span><span class="co"># handler:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="with_handlers.html">with_handlers</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  my_particular_msg <span class="op">=</span> <span class="fu"><a href="with_handlers.html">calling</a></span><span class="op">(</span><span class="va">cnd_muffle</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> On your guard!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "foobar"</span>
 </code></pre></div>

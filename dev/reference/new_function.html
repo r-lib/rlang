@@ -12,7 +12,7 @@ list of arguments, body code and parent environment."><meta property="og:image" 
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,7 +108,7 @@ list of arguments, body code and parent environment.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">new_function</span><span class="op">(</span><span class="va">args</span>, <span class="va">body</span>, env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">new_function</span><span class="op">(</span><span class="va">args</span>, <span class="va">body</span>, env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -134,43 +134,43 @@ calling environment of <code>new_function()</code></p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="va">letters</span></span>
-<span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">new_function</span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">f</span>, <span class="va">g</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="va">letters</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">new_function</span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">letters</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">f</span>, <span class="va">g</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pass a list or pairlist of named arguments to create a function</span></span>
-<span class="r-in"><span class="co"># with parameters. The name becomes the parameter name and the</span></span>
-<span class="r-in"><span class="co"># argument the default value for this parameter:</span></span>
-<span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pass a list or pairlist of named arguments to create a function</span></span></span>
+<span class="r-in"><span><span class="co"># with parameters. The name becomes the parameter name and the</span></span></span>
+<span class="r-in"><span><span class="co"># argument the default value for this parameter:</span></span></span>
+<span class="r-in"><span><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x561dbc7952c8&gt;</span>
-<span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x558f11b34760&gt;</span>
+<span class="r-in"><span><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x561dbc7952c8&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use `exprs()` to create quoted defaults. Compare:</span></span>
-<span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x558f11b34760&gt;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use `exprs()` to create quoted defaults. Compare:</span></span></span>
+<span class="r-in"><span><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x561dbc7952c8&gt;</span>
-<span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">exprs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x558f11b34760&gt;</span>
+<span class="r-in"><span><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">exprs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x = 5 + 5) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x561dbc7952c8&gt;</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pass empty arguments to omit defaults. `list()` doesn't allow</span></span>
-<span class="r-in"><span class="co"># empty arguments but `pairlist2()` does:</span></span>
-<span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> , y <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x558f11b34760&gt;</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pass empty arguments to omit defaults. `list()` doesn't allow</span></span></span>
+<span class="r-in"><span><span class="co"># empty arguments but `pairlist2()` does:</span></span></span>
+<span class="r-in"><span><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="pairlist2.html">pairlist2</a></span><span class="op">(</span>x <span class="op">=</span> , y <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, y = 10) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x + y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x561dbc7952c8&gt;</span>
-<span class="r-in"><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">exprs</a></span><span class="op">(</span>x <span class="op">=</span> , y <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x558f11b34760&gt;</span>
+<span class="r-in"><span><span class="fu">new_function</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">exprs</a></span><span class="op">(</span>x <span class="op">=</span> , y <span class="op">=</span> <span class="fl">5</span> <span class="op">+</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function (x, y = 5 + 5) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> x + y</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x561dbc7952c8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x558f11b34760&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

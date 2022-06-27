@@ -166,7 +166,7 @@ Creating error conditions with error_cnd(). These condition messages will be aut
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -257,17 +257,17 @@ Creating error conditions with error_cnd(). These condition messages will be aut
 
     <div class="ref-description section level2">
     <p>Condition formatting is a set of operations applied to raw inputs for error messages that includes:</p><ul><li><p>Transforming a character vector of lines to a width-wrapped list of error bullets. This makes it easy to write messages in a list format where each bullet conveys a single important point.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-  <span class="st">"The error header"</span>,
-  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"An error bullet"</span>,
-  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"An info bullet"</span>,
-  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"A cross bullet"</span>
-<span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error:</span>
-<span class="co">#&gt; ! The error header</span>
-<span class="co">#&gt; * An error bullet</span>
-<span class="co">#&gt; i An info bullet</span>
-<span class="co">#&gt; x A cross bullet</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"The error header"</span>,</span>
+<span>  <span class="st">"*"</span> <span class="op">=</span> <span class="st">"An error bullet"</span>,</span>
+<span>  <span class="st">"i"</span> <span class="op">=</span> <span class="st">"An info bullet"</span>,</span>
+<span>  <span class="st">"x"</span> <span class="op">=</span> <span class="st">"A cross bullet"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! The error header</span></span>
+<span><span class="co">#&gt; * An error bullet</span></span>
+<span><span class="co">#&gt; i An info bullet</span></span>
+<span><span class="co">#&gt; x A cross bullet</span></span></code></pre><p></p></div>
 <p>See the <a href="https://style.tidyverse.org/error-messages.html" class="external-link">tidyverse error style guide</a> for more about this style of error messaging.</p></li>
 <li><p>Applying style (emphasis, boldness, ...) and colours to message elements.</p></li>
 </ul><p>While the rlang package embeds rudimentary formatting routines, the main formatting engine is implemented in the <a href="https://cli.r-lib.org/" class="external-link">cli package</a>.</p><div class="section">
@@ -275,26 +275,26 @@ Creating error conditions with error_cnd(). These condition messages will be aut
 
 
 <p>By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the <a href="https://cli.r-lib.org/" class="external-link">cli package</a> by using <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code>, <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code>, and <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long <code>!</code> bullet is broken with an indented newline:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/global_entrace.html">global_entrace</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"errorr"</span><span class="op">)</span>
-<span class="co">#&gt; Error in `rlang::global_entrace()`:</span>
-<span class="co">#&gt; ! `class` must be one of "error", "warning", or "message",</span>
-<span class="co">#&gt;   not "errorr".</span>
-<span class="co">#&gt; i Did you mean "error"?</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/global_entrace.html">global_entrace</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"errorr"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `rlang::global_entrace()`:</span></span>
+<span><span class="co">#&gt; ! `class` must be one of "error", "warning", or "message",</span></span>
+<span><span class="co">#&gt;   not "errorr".</span></span>
+<span><span class="co">#&gt; i Did you mean "error"?</span></span></code></pre><p></p></div>
 <p>The cli wrappers also add many features such as interpolation, semantic formatting of text elements, and pluralisation:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">inform_marbles</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n_marbles</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_inform</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-    <span class="st">"i"</span> <span class="op">=</span> <span class="st">"I have {n_marbles} shiny marble{?s} in my bag."</span>,
-    <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Way to go {.code cli::cli_inform()}!"</span>
-  <span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">inform_marbles</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; i I have 1 shiny marble in my bag.</span>
-<span class="co">#&gt; v Way to go `cli::cli_inform()`!</span>
-
-<span class="fu">inform_marbles</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt; i I have 2 shiny marbles in my bag.</span>
-<span class="co">#&gt; v Way to go `cli::cli_inform()`!</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">inform_marbles</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n_marbles</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_inform</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"i"</span> <span class="op">=</span> <span class="st">"I have {n_marbles} shiny marble{?s} in my bag."</span>,</span>
+<span>    <span class="st">"v"</span> <span class="op">=</span> <span class="st">"Way to go {.code cli::cli_inform()}!"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">inform_marbles</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; i I have 1 shiny marble in my bag.</span></span>
+<span><span class="co">#&gt; v Way to go `cli::cli_inform()`!</span></span>
+<span></span>
+<span><span class="fu">inform_marbles</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; i I have 2 shiny marbles in my bag.</span></span>
+<span><span class="co">#&gt; v Way to go `cli::cli_inform()`!</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -302,14 +302,14 @@ Creating error conditions with error_cnd(). These condition messages will be aut
 
 
 <p>If you plan to mass-rename calls from <code><a href="abort.html">abort()</a></code> to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code>, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly <a href="https://xkcd.com/327/" class="external-link">unexpected behaviour</a>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">user_input</span> <span class="op">&lt;-</span> <span class="st">"{base::stop('Wrong message.', call. = FALSE)}"</span>
-<span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Can't handle input `%s`."</span>, <span class="va">user_input</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error: Wrong message.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">user_input</span> <span class="op">&lt;-</span> <span class="st">"{base::stop('Wrong message.', call. = FALSE)}"</span></span>
+<span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Can't handle input `%s`."</span>, <span class="va">user_input</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error: Wrong message.</span></span></code></pre><p></p></div>
 <p>To avoid this, protect your error messages by using cli to assemble the pieces:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">user_input</span> <span class="op">&lt;-</span> <span class="st">"{base::stop('Wrong message.', call. = FALSE)}"</span>
-<span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"Can't handle input {.code {user_input}}."</span><span class="op">)</span>
-<span class="co">#&gt; Error:</span>
-<span class="co">#&gt; ! Can't handle input `{base::stop('Wrong message.', call. = FALSE)}`.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">user_input</span> <span class="op">&lt;-</span> <span class="st">"{base::stop('Wrong message.', call. = FALSE)}"</span></span>
+<span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"Can't handle input {.code {user_input}}."</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! Can't handle input `{base::stop('Wrong message.', call. = FALSE)}`.</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -317,7 +317,7 @@ Creating error conditions with error_cnd(). These condition messages will be aut
 
 
 <p>To enable cli formatting for all <code><a href="abort.html">abort()</a></code> calls in your namespace, call <code><a href="local_use_cli.html">local_use_cli()</a></code> in the <code>onLoad</code> hook of your package. Using <code><a href="on_load.html">on_load()</a></code> (make sure to call <code><a href="on_load.html">run_on_load()</a></code> in your hook):</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/on_load.html">on_load</a></span><span class="op">(</span><span class="fu"><a href="../reference/local_use_cli.html">local_use_cli</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/on_load.html">on_load</a></span><span class="op">(</span><span class="fu"><a href="../reference/local_use_cli.html">local_use_cli</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>Enabling cli formatting in <code><a href="abort.html">abort()</a></code> is useful for:</p><ul><li><p>Transitioning from <code><a href="abort.html">abort()</a></code> to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> progressively.</p></li>
 <li><p>Using <code><a href="abort.html">abort()</a></code> when you'd like to disable interpolation syntax.</p></li>
 <li><p>Creating error conditions with <code><a href="cnd.html">error_cnd()</a></code>. These condition messages will be automatically formatted with cli as well.</p></li>

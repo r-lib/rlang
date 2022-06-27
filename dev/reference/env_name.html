@@ -38,7 +38,7 @@ address of anonymous environments as fallback.'><meta property="og:image" conten
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -144,9 +144,9 @@ address of anonymous environments as fallback.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">env_name</span><span class="op">(</span><span class="va">env</span><span class="op">)</span>
-
-<span class="fu">env_label</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">env_name</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">env_label</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -158,18 +158,18 @@ address of anonymous environments as fallback.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Some environments have specific names:</span></span>
-<span class="r-in"><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Some environments have specific names:</span></span></span>
+<span class="r-in"><span><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "global"</span>
-<span class="r-in"><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="ns_env.html">ns_env</a></span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="ns_env.html">ns_env</a></span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "namespace:rlang"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Anonymous environments don't have names but are labelled by their</span></span>
-<span class="r-in"><span class="co"># address in memory:</span></span>
-<span class="r-in"><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Anonymous environments don't have names but are labelled by their</span></span></span>
+<span class="r-in"><span><span class="co"># address in memory:</span></span></span>
+<span class="r-in"><span><span class="fu">env_name</span><span class="op">(</span><span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
-<span class="r-in"><span class="fu">env_label</span><span class="op">(</span><span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x561dbbbaf698"</span>
+<span class="r-in"><span><span class="fu">env_label</span><span class="op">(</span><span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x558f101f8200"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -34,7 +34,7 @@ width-wrapping to produce a polished display of messages."><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,7 +138,7 @@ width-wrapping to produce a polished display of messages.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">local_use_cli</span><span class="op">(</span><span class="va">...</span>, format <span class="op">=</span> <span class="cn">TRUE</span>, inline <span class="op">=</span> <span class="cn">FALSE</span>, frame <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">local_use_cli</span><span class="op">(</span><span class="va">...</span>, format <span class="op">=</span> <span class="cn">TRUE</span>, inline <span class="op">=</span> <span class="cn">FALSE</span>, frame <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -169,7 +169,7 @@ function.</p></dd>
     
 
 
-<p>To use cli formatting automatically in your package:</p><ol><li><p>Make sure <code><a href="on_load.html">run_on_load()</a></code> is called from your <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onLoad()</a></code> hook.</p></li>
+<p>To use cli formatting automatically in your package:</p><ol><li><p>Make sure <code><a href="on_load.html">run_on_load()</a></code> is called from your <code>.onLoad()</code> hook.</p></li>
 <li><p>Call <code>on_load(local_use_cli())</code> at the top level of your namespace.</p></li>
 </ol><p>It is also possible to call <code>local_use_cli()</code> inside a running
 function, in which case the flag only applies within that function.</p>

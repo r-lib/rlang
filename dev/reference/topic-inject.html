@@ -18,7 +18,7 @@ The metaprogramming operators !!, {{, and "{{". Splicing with !!! can also be do
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,32 +120,32 @@ The metaprogramming operators !!, {{, and "{{". Splicing with !!! can also be do
 
 
 <p>For instance, take a function like <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code> which takes data in <code>...</code>. To bind rows, you supply them as separate arguments:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
-<span class="co">#&gt;   [,1] [,2]</span>
-<span class="co">#&gt; a    1    2</span>
-<span class="co">#&gt; b    3    4</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [,1] [,2]</span></span>
+<span><span class="co">#&gt; a    1    2</span></span>
+<span><span class="co">#&gt; b    3    4</span></span></code></pre><p></p></div>
 <p>But how do you bind a variable number of rows stored in a list? The base R solution is to invoke <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code> with <code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">rows</span><span class="op">)</span>
-<span class="co">#&gt;   [,1] [,2]</span>
-<span class="co">#&gt; a    1    2</span>
-<span class="co">#&gt; b    3    4</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">rows</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [,1] [,2]</span></span>
+<span><span class="co">#&gt; a    1    2</span></span>
+<span><span class="co">#&gt; b    3    4</span></span></code></pre><p></p></div>
 <p>Functions that implement dynamic dots include a built-in way of folding a list of arguments in <code>...</code>. To illustrate this, we'll create a variant of <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code> that takes dynamic dots by collecting <code>...</code> with <code><a href="list2.html">list2()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">rbind2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">rbind2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>It can be used just like <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">rbind2</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
-<span class="co">#&gt;   [,1] [,2]</span>
-<span class="co">#&gt; a    1    2</span>
-<span class="co">#&gt; b    3    4</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rbind2</span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, b <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [,1] [,2]</span></span>
+<span><span class="co">#&gt; a    1    2</span></span>
+<span><span class="co">#&gt; b    3    4</span></span></code></pre><p></p></div>
 <p>And a list of arguments can be supplied by <em>splicing</em> the list with <code><a href="splice-operator.html">!!!</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="fu">rbind2</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">rows</span>, c <span class="op">=</span> <span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-<span class="co">#&gt;   [,1] [,2]</span>
-<span class="co">#&gt; a    1    2</span>
-<span class="co">#&gt; b    3    4</span>
-<span class="co">#&gt; c    5    6</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rbind2</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">rows</span>, c <span class="op">=</span> <span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [,1] [,2]</span></span>
+<span><span class="co">#&gt; a    1    2</span></span>
+<span><span class="co">#&gt; b    3    4</span></span>
+<span><span class="co">#&gt; c    5    6</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -153,17 +153,17 @@ The metaprogramming operators !!, {{, and "{{". Splicing with !!! can also be do
 
 
 <p>A related problem comes up when an argument name is stored in a variable. With dynamic dots, you can inject the name using <a href="https://glue.tidyverse.org/" class="external-link">glue syntax</a> with <code><a href="glue-operators.html">"{"</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">name</span> <span class="op">&lt;-</span> <span class="st">"foo"</span>
-
-<span class="fu">rbind2</span><span class="op">(</span><span class="st">"{name}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, bar <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
-<span class="co">#&gt;     [,1] [,2]</span>
-<span class="co">#&gt; foo    1    2</span>
-<span class="co">#&gt; bar    3    4</span>
-
-<span class="fu">rbind2</span><span class="op">(</span><span class="st">"prefix_{name}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, bar <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>
-<span class="co">#&gt;            [,1] [,2]</span>
-<span class="co">#&gt; prefix_foo    1    2</span>
-<span class="co">#&gt; bar           3    4</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">name</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
+<span></span>
+<span><span class="fu">rbind2</span><span class="op">(</span><span class="st">"{name}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, bar <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     [,1] [,2]</span></span>
+<span><span class="co">#&gt; foo    1    2</span></span>
+<span><span class="co">#&gt; bar    3    4</span></span>
+<span></span>
+<span><span class="fu">rbind2</span><span class="op">(</span><span class="st">"prefix_{name}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, bar <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt;            [,1] [,2]</span></span>
+<span><span class="co">#&gt; prefix_foo    1    2</span></span>
+<span><span class="co">#&gt; bar           3    4</span></span></code></pre><p></p></div>
 </div>
 
     </div>
@@ -174,24 +174,24 @@ The metaprogramming operators !!, {{, and "{{". Splicing with !!! can also be do
 
 
 <p>The embracing operator <code><a href="embrace-operator.html">{{</a></code> is made specially for function arguments. It <a href="topic-defuse.html">defuses</a> the expression supplied as argument and immediately injects it in place. The injected argument is then evaluated in another context such as a <a href="topic-data-mask.html">data mask</a>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Inject function arguments that might contain</span>
-<span class="co"># data-variables by embracing them with {{ }}</span>
-<span class="va">mean_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">by</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">by</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>avg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># The data-variables `cyl` and `disp` inside the</span>
-<span class="co"># env-variables `by` and `var` are injected inside `group_by()`</span>
-<span class="co"># and `summarise()`</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">mean_by</span><span class="op">(</span>by <span class="op">=</span> <span class="va">cyl</span>, var <span class="op">=</span> <span class="va">disp</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 3 x 2</span>
-<span class="co">#&gt;     cyl   avg</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     4  105.</span>
-<span class="co">#&gt; 2     6  183.</span>
-<span class="co">#&gt; 3     8  353.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Inject function arguments that might contain</span></span>
+<span><span class="co"># data-variables by embracing them with {{ }}</span></span>
+<span><span class="va">mean_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">by</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">by</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>avg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># The data-variables `cyl` and `disp` inside the</span></span>
+<span><span class="co"># env-variables `by` and `var` are injected inside `group_by()`</span></span>
+<span><span class="co"># and `summarise()`</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">mean_by</span><span class="op">(</span>by <span class="op">=</span> <span class="va">cyl</span>, var <span class="op">=</span> <span class="va">disp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 x 2</span></span>
+<span><span class="co">#&gt;     cyl   avg</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     4  105.</span></span>
+<span><span class="co">#&gt; 2     6  183.</span></span>
+<span><span class="co">#&gt; 3     8  353.</span></span></code></pre><p></p></div>
 <p>Learn more about this pattern in <a href="topic-data-mask-programming.html">Data mask programming patterns</a>.</p>
 </div>
 
@@ -200,28 +200,28 @@ The metaprogramming operators !!, {{, and "{{". Splicing with !!! can also be do
 
 
 <p>Unlike <code><a href="splice-operator.html">!!!</a></code> which injects a list of arguments, the injection operator <code><a href="injection-operator.html">!!</a></code> (pronounced "bang-bang") injects a <em>single</em> object. One use case for <code>!!</code>  is to substitute an environment-variable (created with <code>&lt;-</code>) with a data-variable (inside a data frame).</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># The env-variable `var` contains a data-symbol object, in this</span>
-<span class="co"># case a reference to the data-variable `height`</span>
-<span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sym.html">data_sym</a></span><span class="op">(</span><span class="st">"disp"</span><span class="op">)</span>
-
-<span class="co"># We inject the data-variable contained in `var` inside `summarise()` </span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>avg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;     avg</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  231.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># The env-variable `var` contains a data-symbol object, in this</span></span>
+<span><span class="co"># case a reference to the data-variable `height`</span></span>
+<span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sym.html">data_sym</a></span><span class="op">(</span><span class="st">"disp"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># We inject the data-variable contained in `var` inside `summarise()` </span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>avg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;     avg</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  231.</span></span></code></pre><p></p></div>
 <p>Another use case is to inject a variable by value to avoid <a href="topic-data-mask-ambiguity.html">name collisions</a>.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
-
-<span class="co"># This name conflicts with a column in `df`</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-
-<span class="co"># Inject the env-variable</span>
-<span class="va">df</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span> <span class="op">/</span> <span class="op">!</span><span class="op">!</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt;      x</span>
-<span class="co">#&gt; 1 0.01</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># This name conflicts with a column in `df`</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="co"># Inject the env-variable</span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span> <span class="op">/</span> <span class="op">!</span><span class="op">!</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      x</span></span>
+<span><span class="co">#&gt; 1 0.01</span></span></code></pre><p></p></div>
 <p>Note that in most cases you don't need injection with <code>!!</code>. For instance, the <code><a href="dot-data.html">.data</a></code> and <code><a href="dot-data.html">.env</a></code> pronouns provide more intuitive alternatives to injecting a column name and injecting a value.</p>
 </div>
 
@@ -230,9 +230,9 @@ The metaprogramming operators !!, {{, and "{{". Splicing with !!! can also be do
 
 
 <p>The splice operator <code><a href="splice-operator.html">!!!</a></code> of dynamic dots can also be used in metaprogramming context (inside <a href="topic-data-mask.html">data-masked</a> arguments and inside <code><a href="inject.html">inject()</a></code>). For instance, we could reimplement the <code>rbind2()</code> function presented above using <code><a href="inject.html">inject()</a></code> instead of <code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">rbind2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">rbind2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>There are two things going on here. We collect <code>...</code> with <code><a href="list2.html">list2()</a></code> so that the callers of <code>rbind2()</code> may use <code>!!!</code>. And we use <code><a href="inject.html">inject()</a></code> so that <code>rbind2()</code> itself may use <code>!!!</code> to splice the list of arguments passed to <code>rbind2()</code>.</p>
 </div>
 

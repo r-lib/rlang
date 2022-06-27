@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,9 +105,9 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">call_args</span><span class="op">(</span><span class="va">call</span><span class="op">)</span>
-
-<span class="fu">call_args_names</span><span class="op">(</span><span class="va">call</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">call_args</span><span class="op">(</span><span class="va">call</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">call_args_names</span><span class="op">(</span><span class="va">call</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -129,23 +129,23 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">call</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Subsetting a call returns the arguments converted to a language</span></span>
-<span class="r-in"><span class="co"># object:</span></span>
-<span class="r-in"><span class="va">call</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">call</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Subsetting a call returns the arguments converted to a language</span></span></span>
+<span class="r-in"><span><span class="co"># object:</span></span></span>
+<span class="r-in"><span><span class="va">call</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a(b)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># On the other hand, call_args() returns a regular list that is</span></span>
-<span class="r-in"><span class="co"># often easier to work with:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">call_args</span><span class="op">(</span><span class="va">call</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># On the other hand, call_args() returns a regular list that is</span></span></span>
+<span class="r-in"><span><span class="co"># often easier to work with:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu">call_args</span><span class="op">(</span><span class="va">call</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ : symbol a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ : symbol b</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># When the arguments are unnamed, a vector of empty strings is</span></span>
-<span class="r-in"><span class="co"># supplied (rather than NULL):</span></span>
-<span class="r-in"><span class="fu">call_args_names</span><span class="op">(</span><span class="va">call</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># When the arguments are unnamed, a vector of empty strings is</span></span></span>
+<span class="r-in"><span><span class="co"># supplied (rather than NULL):</span></span></span>
+<span class="r-in"><span><span class="fu">call_args_names</span><span class="op">(</span><span class="va">call</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "" ""</span>
 </code></pre></div>
     </div>

@@ -28,7 +28,7 @@ the lossy squashing."><meta property="og:image" content="https://rlang.r-lib.org
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,7 +132,7 @@ the lossy squashing.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">quo_squash</span><span class="op">(</span><span class="va">quo</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">quo_squash</span><span class="op">(</span><span class="va">quo</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -153,15 +153,15 @@ the user about it.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Quosures can contain nested quosures:</span></span>
-<span class="r-in"><span class="va">quo</span> <span class="op">&lt;-</span> <span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">wrapper</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">wrappee</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">quo</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Quosures can contain nested quosures:</span></span></span>
+<span class="r-in"><span><span class="va">quo</span> <span class="op">&lt;-</span> <span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">wrapper</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">wrappee</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">quo</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^wrapper(^wrappee)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561dbc049398</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># quo_squash() flattens all the quosures and returns a simple expression:</span></span>
-<span class="r-in"><span class="fu">quo_squash</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558f108d44e0</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># quo_squash() flattens all the quosures and returns a simple expression:</span></span></span>
+<span class="r-in"><span><span class="fu">quo_squash</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wrapper(wrappee)</span>
 </code></pre></div>
     </div>

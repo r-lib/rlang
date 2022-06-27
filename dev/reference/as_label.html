@@ -46,7 +46,7 @@ captured with ensym()."><meta property="og:image" content="https://rlang.r-lib.o
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -156,7 +156,7 @@ captured with <code><a href="defusing-advanced.html">ensym()</a></code>.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">as_label</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as_label</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -184,19 +184,19 @@ deterministically.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># as_label() is useful with quoted expressions:</span></span>
-<span class="r-in"><span class="fu">as_label</span><span class="op">(</span><span class="fu"><a href="expr.html">expr</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># as_label() is useful with quoted expressions:</span></span></span>
+<span class="r-in"><span><span class="fu">as_label</span><span class="op">(</span><span class="fu"><a href="expr.html">expr</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "foo(bar)"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">as_label</span><span class="op">(</span><span class="fu"><a href="expr.html">expr</a></span><span class="op">(</span><span class="va">foobar</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">as_label</span><span class="op">(</span><span class="fu"><a href="expr.html">expr</a></span><span class="op">(</span><span class="va">foobar</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "foobar"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># It works with any R object. This is also useful for quoted</span></span>
-<span class="r-in"><span class="co"># arguments because the user might unquote constant objects:</span></span>
-<span class="r-in"><span class="fu">as_label</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It works with any R object. This is also useful for quoted</span></span></span>
+<span class="r-in"><span><span class="co"># arguments because the user might unquote constant objects:</span></span></span>
+<span class="r-in"><span><span class="fu">as_label</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "&lt;int&gt;"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">as_label</span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">as_label</span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "&lt;fn&gt;"</span>
 </code></pre></div>
     </div>

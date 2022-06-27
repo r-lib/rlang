@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,8 +98,9 @@
       <small>Source: <a href="https://github.com/r-lib/rlang/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2"><h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.3" id="rlang-103">rlang 1.0.3<a class="anchor" aria-label="anchor" href="#rlang-103"></a></h2>
 <ul><li>
 <p>Child errors may now have empty messages to enable this pattern:</p>
 <pre><code>Error in `my_function()`:
@@ -111,9 +112,9 @@ Caused by error in `their_function()`:
 <p>Supplying a frame environment to the <code>call</code> argument of <code><a href="../reference/abort.html">abort()</a></code> now causes the corresponding function call in the backtrace to be highlighted.</p>
 <p>In addition, if you store the argument name of a failing input in the <code>arg</code> error field, the argument is also highlighted in the backtrace.</p>
 <p>Instead of:</p>
-<pre><code><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a foobar."</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a foobar."</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span></code></pre>
 <p>You can now write this to benefit from arg highlighting:</p>
-<pre><code><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a foobar."</span>, arg <span class="op">=</span> <span class="va">arg</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"{.arg {arg}} must be a foobar."</span>, arg <span class="op">=</span> <span class="va">arg</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span></code></pre>
 </li>
 <li><p><code>abort(message = )</code> can now be a function. In this case, it is stored in the <code>header</code> field and acts as a <code><a href="../reference/cnd_message.html">cnd_header()</a></code> method invoked when the message is displayed.</p></li>
 <li><p>New <code>obj_type_oo()</code> function in <code>compat-obj-type.R</code> (<a href="https://github.com/r-lib/rlang/issues/1426" class="external-link">#1426</a>).</p></li>
@@ -195,8 +196,8 @@ Caused by error in `their_function()`:
 <li>
 <p><code><a href="../reference/is_expression.html">is_expression()</a></code> now returns <code>FALSE</code> for manually constructed expressions that can’t be created by the parser. It used to return <code>TRUE</code> for any calls, including those that contain injected objects.</p>
 <p>Consider using <code><a href="../reference/is_call.html">is_call()</a></code> or just remove the expression check. In many cases it is fine letting all objects go through when an expression is expected. For instance you can inject objects directly inside dplyr arguments:</p>
-<pre><code><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">data</span>, col <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="va">x</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">data</span>, col <span class="op">=</span> <span class="op">!</span><span class="op">!</span><span class="va">x</span><span class="op">)</span></span></code></pre>
 </li>
 <li>
 <p>If a string is supplied to <code><a href="../reference/as_function.html">as_function()</a></code> instead of an object (function or formula), the function is looked up in the global environment instead of the calling environment. In general, passing a function name as a string is brittle. It is easy to forget to pass the user environment to <code><a href="../reference/as_function.html">as_function()</a></code> and sometimes there is no obvious user environment. The support for strings should be considered a convenience for end users only, not for programmers.</p>
@@ -284,9 +285,9 @@ Caused by error in `their_function()`:
 <li>
 <p>A <code><a href="https://rdrr.io/pkg/knitr/man/sew.html" class="external-link">knitr::sew()</a></code> method is registered for <code>rlang_error</code>. This makes it possible to consult <code><a href="../reference/last_error.html">last_error()</a></code> (the call must occur in a different chunk than the error) and to set <code>rlang_backtrace_on_error_report</code> global options in knitr to display a backtrace for expected errors.</p>
 <p>If you show rlang backtraces in a knitted document, also set this in a hidden chunk to trim the knitr context from the backtraces:</p>
-<pre><code><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>
-  rlang_trace_top_env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span></span>
+<span>  rlang_trace_top_env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
 <p>This change replaces an ad hoc mechanism that caused bugs in corner cases (<a href="https://github.com/r-lib/rlang/issues/1205" class="external-link">#1205</a>).</p>
 </li>
 <li><p>The <code>rlang_trace_top_env</code> global option for <code><a href="../reference/trace_back.html">trace_back()</a></code> now detects when backtraces are created within knitr. If the option is not set, its default value becomes <code><a href="https://rdrr.io/pkg/knitr/man/knit_global.html" class="external-link">knitr::knit_global()</a></code> when knitr is in progress (as determined from <code>knitr.in.progress</code> global option). This prevents the knitr evaluation context from appearing in the backtraces (<a href="https://github.com/r-lib/rlang/issues/932" class="external-link">#932</a>).</p></li>
@@ -317,7 +318,7 @@ Caused by error in `their_function()`:
 </ul></div>
 <div class="section level4">
 <h4 id="r-apis-1-0-0">R APIs<a class="anchor" aria-label="anchor" href="#r-apis-1-0-0"></a></h4>
-<ul><li><p><code><a href="../reference/on_load.html">on_load()</a></code> and <code><a href="../reference/on_load.html">run_on_load()</a></code> lets you run <code><a href="https://rdrr.io/r/base/ns-hooks.html" class="external-link">.onLoad()</a></code> expressions from any file of your package. <code><a href="../reference/on_load.html">on_package_load()</a></code> runs expressions when another package is loaded. (<a href="https://github.com/r-lib/rlang/issues/1284" class="external-link">#1284</a>)</p></li>
+<ul><li><p><code><a href="../reference/on_load.html">on_load()</a></code> and <code><a href="../reference/on_load.html">run_on_load()</a></code> lets you run <code>.onLoad()</code> expressions from any file of your package. <code><a href="../reference/on_load.html">on_package_load()</a></code> runs expressions when another package is loaded. (<a href="https://github.com/r-lib/rlang/issues/1284" class="external-link">#1284</a>)</p></li>
 <li>
 <p>The new predicate <code><a href="../reference/call_name.html">is_call_simple()</a></code> indicates whether a call has a name and/or a namespace. It provides two invariants:</p>
 <ul><li><p>If <code>is_call_simple(x)</code> is <code>TRUE</code>, <code><a href="../reference/call_name.html">call_name()</a></code> always returns a string.</p></li>
@@ -466,32 +467,32 @@ Caused by error in `their_function()`:
 <p>You can now use glue syntax to unquote on the LHS of <code>:=</code>. This syntax is automatically available in all functions taking dots with <code><a href="../reference/list2.html">list2()</a></code> and <code><a href="../reference/enquo.html">enquos()</a></code>, and thus most of the tidyverse. Note that if you use the glue syntax in an R package, you need to import glue.</p>
 <p>A single pair of braces triggers normal glue interpolation:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
-
-<span class="va">suffix</span> <span class="op">&lt;-</span> <span class="st">"foo"</span>
-<span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"var_{suffix}"</span> <span class="op">:=</span> <span class="va">x</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>
-<span class="co">#&gt;   x var_foo</span>
-<span class="co">#&gt; 1 1       2</span>
-<span class="co">#&gt; 2 2       4</span>
-<span class="co">#&gt; 3 3       6</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">suffix</span> <span class="op">&lt;-</span> <span class="st">"foo"</span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"var_{suffix}"</span> <span class="op">:=</span> <span class="va">x</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   x var_foo</span></span>
+<span><span class="co">#&gt; 1 1       2</span></span>
+<span><span class="co">#&gt; 2 2       4</span></span>
+<span><span class="co">#&gt; 3 3       6</span></span></code></pre></div>
 <p>Using a pair of double braces is for labelling a function argument. Technically, this is shortcut for <code>"{as_label(enquo(arg))}"</code>. The syntax is similar to the curly-curly syntax for interpolating function arguments:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">suffix</span> <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"{{ var }}_{suffix}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">my_wrapper</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt;   x x_foo</span>
-<span class="co">#&gt; 1 1     2</span>
-<span class="co">#&gt; 2 2     4</span>
-<span class="co">#&gt; 3 3     6</span>
-
-<span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">my_wrapper</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;   x sqrt(x)_foo</span>
-<span class="co">#&gt; 1 1    2.000000</span>
-<span class="co">#&gt; 2 2    2.828427</span>
-<span class="co">#&gt; 3 3    3.464102</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">suffix</span> <span class="op">=</span> <span class="st">"foo"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="st">"{{ var }}_{suffix}"</span> <span class="op">:=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">my_wrapper</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   x x_foo</span></span>
+<span><span class="co">#&gt; 1 1     2</span></span>
+<span><span class="co">#&gt; 2 2     4</span></span>
+<span><span class="co">#&gt; 3 3     6</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">my_wrapper</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   x sqrt(x)_foo</span></span>
+<span><span class="co">#&gt; 1 1    2.000000</span></span>
+<span><span class="co">#&gt; 2 2    2.828427</span></span>
+<span><span class="co">#&gt; 3 3    3.464102</span></span></code></pre></div>
 </li>
 <li><p>Fixed a bug in magrittr backtraces that caused duplicate calls to appear in the trace.</p></li>
 <li><p>Fixed a bug in magrittr backtraces that caused wrong call indices.</p></li>
@@ -545,26 +546,26 @@ Caused by error in `their_function()`:
 <div class="section level4">
 <h4 id="interpolate-function-inputs-with-the-curly-curly-operator-0-4-0">Interpolate function inputs with the curly-curly operator<a class="anchor" aria-label="anchor" href="#interpolate-function-inputs-with-the-curly-curly-operator-0-4-0"></a></h4>
 <p>The main change of this release is the new tidy evaluation operator <code>{{</code>. This operator abstracts the quote-and-unquote idiom into a single interpolation step:</p>
-<pre><code><span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">by</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">by</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">summarise</span><span class="op">(</span>average <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre>
+<pre><code><span><span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">by</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">group_by</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">by</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">summarise</span><span class="op">(</span>average <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 <p><code>{{ var }}</code> is a shortcut for <code>!!enquo(var)</code> that should be easier on the eyes, and easier to learn and teach.</p>
 <p>Note that for multiple inputs, the existing documentation doesn’t stress enough that you can just pass dots straight to other tidy eval functions. There is no need for quote-and-unquote unless you need to modify the inputs or their names in some way:</p>
-<pre><code><span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span>
-    <span class="fu">group_by</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">summarise</span><span class="op">(</span>average <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre>
+<pre><code><span><span class="va">my_wrapper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">group_by</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">summarise</span><span class="op">(</span>average <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="more-robust-env-pronoun-0-4-0">More robust <code>.env</code> pronoun<a class="anchor" aria-label="anchor" href="#more-robust-env-pronoun-0-4-0"></a></h4>
 <p>Another improvement to tidy evaluation should make it easier to use the <code>.env</code> pronoun. Starting from this release, subsetting an object from the <code>.env</code> pronoun now evaluates the corresponding symbol. This makes <code>.env</code> more robust, in particular in magrittr pipelines. The following example would previously fail:</p>
-<pre><code><span class="va">foo</span> <span class="op">&lt;-</span> <span class="fl">10</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="va">.env</span><span class="op">$</span><span class="va">foo</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="va">.env</span><span class="op">$</span><span class="va">foo</span><span class="op">)</span></span></code></pre>
 <p>This way, using the <code>.env</code> pronoun is now equivalent to unquoting a constant objects, but with an easier syntax:</p>
-<pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="op">!</span><span class="op">!</span><span class="va">foo</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="op">!</span><span class="op">!</span><span class="va">foo</span><span class="op">)</span></span></code></pre>
 <p>Note that following this change, and despite its name, <code>.env</code> is no longer referring to a bare environment. Instead, it is a special shortcut with its own rules. Similarly, the <code>.data</code> pronoun is not really a data frame.</p>
 </div>
 </div>
@@ -576,9 +577,9 @@ Caused by error in `their_function()`:
 <li><p>Lists of quosures now have pillar methods for display in tibbles.</p></li>
 <li>
 <p><code><a href="../reference/set_names.html">set_names()</a></code> now names unnamed input vectors before applying a function. The following expressions are now equivalent:</p>
-<pre><code><span class="va">letters</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/set_names.html">set_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/set_names.html">set_names</a></span><span class="op">(</span><span class="va">toupper</span><span class="op">)</span>
-
-<span class="va">letters</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/set_names.html">set_names</a></span><span class="op">(</span><span class="va">toupper</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">letters</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/set_names.html">set_names</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/set_names.html">set_names</a></span><span class="op">(</span><span class="va">toupper</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">letters</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/set_names.html">set_names</a></span><span class="op">(</span><span class="va">toupper</span><span class="op">)</span></span></code></pre>
 </li>
 <li><p>You can now pass a character vector as message argument for <code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, <code><a href="../reference/abort.html">inform()</a></code>, and <code><a href="../reference/abort.html">signal()</a></code>. The vector is collapsed to a single string with a <code>"\n"</code> newline separating each element of the input vector (<a href="https://github.com/r-lib/rlang/issues/744" class="external-link">#744</a>).</p></li>
 <li><p><code><a href="../reference/missing_arg.html">maybe_missing()</a></code> gains a <code>default</code> argument.</p></li>
@@ -589,8 +590,8 @@ Caused by error in `their_function()`:
 <ul><li><p>The performance of <code><a href="../reference/exec.html">exec()</a></code> has been improved. It is now on the same order of performance as <code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call()</a></code>, though slightly slower.</p></li>
 <li>
 <p><code><a href="../reference/call2.html">call2()</a></code> now uses the new <code><a href="../reference/pairlist2.html">pairlist2()</a></code> function internally. This considerably improves its performance. This also means it now preserves empty arguments:</p>
-<pre><code><span class="fu"><a href="../reference/call2.html">call2</a></span><span class="op">(</span><span class="st">"fn"</span>, <span class="fl">1</span>, , foo <span class="op">=</span> <span class="op">)</span>
-<span class="co">#&gt; fn(1, , foo = )</span></code></pre>
+<pre><code><span><span class="fu"><a href="../reference/call2.html">call2</a></span><span class="op">(</span><span class="st">"fn"</span>, <span class="fl">1</span>, , foo <span class="op">=</span> <span class="op">)</span></span>
+<span><span class="co">#&gt; fn(1, , foo = )</span></span></code></pre>
 </li>
 </ul></div>
 <div class="section level3">
@@ -634,21 +635,21 @@ Caused by error in `their_function()`:
 <ul><li>
 <p>New <code><a href="../reference/entrace.html">entrace()</a></code> condition handler. Add this to your RProfile to enable rlang backtraces for all errors, including warnings promoted to errors:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"rlang"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>error <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="../reference/entrace.html">entrace</a></span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"rlang"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>error <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="va"><a href="../reference/entrace.html">entrace</a></span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>This handler also works as a calling handler:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="../reference/with_handlers.html">with_handlers</a></span><span class="op">(</span>
-  error <span class="op">=</span> <span class="fu"><a href="../reference/with_handlers.html">calling</a></span><span class="op">(</span><span class="va">entrace</span><span class="op">)</span>,
-  <span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/with_handlers.html">with_handlers</a></span><span class="op">(</span></span>
+<span>  error <span class="op">=</span> <span class="fu"><a href="../reference/with_handlers.html">calling</a></span><span class="op">(</span><span class="va">entrace</span><span class="op">)</span>,</span>
+<span>  <span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>However it’s often more practical to use <code>with_abort()</code> in that case:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu">with_abort</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu">with_abort</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </li>
 <li><p><code>with_abort()</code> gains a <code>classes</code> argument to promote any kind of condition to an rlang error.</p></li>
 <li><p>New <code><a href="../reference/last_error.html">last_trace()</a></code> shortcut to print the backtrace stored in the <code><a href="../reference/last_error.html">last_error()</a></code>.</p></li>
@@ -698,8 +699,8 @@ Caused by error in `their_function()`:
 <p>The rlang API is still maturing. In this section, you’ll find hard breaking changes. See the life cycle section below for an exhaustive list of API changes.</p>
 <ul><li>
 <p><code><a href="../reference/quo_label.html">quo_text()</a></code> now deparses non-syntactic symbols with backticks:</p>
-<pre><code><span class="fu"><a href="../reference/quo_label.html">quo_text</a></span><span class="op">(</span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"foo+"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "`foo+`"</span></code></pre>
+<pre><code><span><span class="fu"><a href="../reference/quo_label.html">quo_text</a></span><span class="op">(</span><span class="fu"><a href="../reference/sym.html">sym</a></span><span class="op">(</span><span class="st">"foo+"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "`foo+`"</span></span></code></pre>
 <p>This caused a number of issues in reverse dependencies as <code><a href="../reference/quo_label.html">quo_text()</a></code> tends to be used for converting symbols to strings. <code><a href="../reference/quo_label.html">quo_text()</a></code> and <code><a href="../reference/quo_label.html">quo_name()</a></code> should not be used for this purpose because they are general purpose deparsers. These functions should generally only be used for printing outputs or creating default labels. If you need to convert symbols to strings, please use <code><a href="../reference/as_string.html">as_string()</a></code> rather than <code><a href="../reference/quo_label.html">quo_text()</a></code>.</p>
 <p>We have extended the documentation of <code><a href="../reference/quo_label.html">?quo_text</a></code> and <code><a href="../reference/quo_label.html">?quo_name</a></code> to make these points clearer.</p>
 </li>
@@ -707,9 +708,9 @@ Caused by error in `their_function()`:
 <li>
 <p>The sentinel for removing arguments in <code><a href="../reference/call_modify.html">call_modify()</a></code> has been changed from <code>NULL</code> to <code><a href="../reference/zap.html">zap()</a></code>. This breaking change is motivated by the ambiguity of <code>NULL</code> with valid argument values.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>  <span class="co"># Add `arg = NULL` to the call</span>
-<span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Remove the `arg` argument from the call</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>  <span class="co"># Add `arg = NULL` to the call</span></span>
+<span><span class="fu"><a href="../reference/call_modify.html">call_modify</a></span><span class="op">(</span><span class="va">call</span>, arg <span class="op">=</span> <span class="fu"><a href="../reference/zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Remove the `arg` argument from the call</span></span></code></pre></div>
 </li>
 <li><p>The <code>%@%</code> operator now quotes its input and supports S4 objects. This makes it directly equivalent to <code>@</code> except that it extracts attributes for non-S4 objects (<a href="https://github.com/r-lib/rlang/issues/207" class="external-link">#207</a>).</p></li>
 <li><p>Taking the <code><a href="../reference/env_parent.html">env_parent()</a></code> of the empty environment is now an error.</p></li>
@@ -791,8 +792,8 @@ Caused by error in `their_function()`:
 <li><p><code>env_bind_exprs()</code> and <code>env_bind_fns()</code> are soft-deprecated and renamed to <code><a href="../reference/env_bind.html">env_bind_lazy()</a></code> and <code><a href="../reference/env_bind.html">env_bind_active()</a></code> for clarity and consistency.</p></li>
 <li>
 <p><code><a href="../reference/env_bind.html">env_bind()</a></code>, <code>env_bind_exprs()</code>, and <code>env_bind_fns()</code> now return the list of old binding values (or missing arguments when there is no old value). This makes it easy to restore the original environment state:</p>
-<pre><code><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/env_bind.html">env_bind</a></span><span class="op">(</span><span class="va">env</span>, foo <span class="op">=</span> <span class="st">"foo"</span>, bar <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/env_bind.html">env_bind</a></span><span class="op">(</span><span class="va">env</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">old</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="va">old</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/env_bind.html">env_bind</a></span><span class="op">(</span><span class="va">env</span>, foo <span class="op">=</span> <span class="st">"foo"</span>, bar <span class="op">=</span> <span class="st">"bar"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/env_bind.html">env_bind</a></span><span class="op">(</span><span class="va">env</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">old</span><span class="op">)</span></span></code></pre>
 </li>
 <li><p><code><a href="../reference/env_bind.html">env_bind()</a></code> now supports binding missing arguments and removing bindings with zap sentinels. <code>env_bind(env, foo = )</code> binds a missing argument and <code>env_bind(env, foo = zap())</code> removes the <code>foo</code> binding.</p></li>
 <li><p>The <code>inherit</code> argument of <code><a href="../reference/env_get.html">env_get()</a></code> and <code><a href="../reference/env_get.html">env_get_list()</a></code> has changed position. It now comes after <code>default</code>.</p></li>
@@ -867,14 +868,14 @@ Caused by error in `their_function()`:
 <p>Deprecated functions and arguments issue a warning inconditionally, but only once per session.</p>
 <ul><li>
 <p>Calling <code><a href="../reference/UQ.html">UQ()</a></code> and <code><a href="../reference/UQ.html">UQS()</a></code> with the rlang namespace qualifier is deprecated as of rlang 0.3.0. Just use the unqualified forms instead:</p>
-<pre><code><span class="co"># Bad</span>
-<span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/UQ.html">UQ</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Ok</span>
-<span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="../reference/UQ.html">UQ</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Good</span>
-<span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="co"># Bad</span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/UQ.html">UQ</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Ok</span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="../reference/UQ.html">UQ</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Good</span></span>
+<span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="va">var</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 <p>Although soft-deprecated since rlang 0.2.0, <code><a href="../reference/UQ.html">UQ()</a></code> and <code><a href="../reference/UQ.html">UQS()</a></code> can still be used for now.</p>
 </li>
 <li><p>The <code>call</code> argument of <code><a href="../reference/abort.html">abort()</a></code> and condition constructors is now deprecated in favour of storing full backtraces.</p></li>
@@ -932,9 +933,9 @@ Caused by error in `their_function()`:
 </li>
 <li>
 <p>It is now possible to use <code><a href="../reference/enquo.html">enquo()</a></code> within a magrittr pipe:</p>
-<pre><code><span class="va">select_one</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre>
+<pre><code><span><span class="va">select_one</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="fu"><a href="../reference/enquo.html">enquo</a></span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre>
 <p>Technically, this is because <code><a href="../reference/enquo.html">enquo()</a></code> now also captures arguments in parents of the current environment rather than just in the current environment. The flip side of this increased flexibility is that if you made a typo in the name of the variable you want to capture, and if an object of that name exists anywhere in the parent contexts, you will capture that object rather than getting an error.</p>
 </li>
 <li><p><code><a href="../reference/quo_expr.html">quo_expr()</a></code> has been renamed to <code><a href="../reference/quo_squash.html">quo_squash()</a></code> in order to better reflect that it is a lossy operation that flattens all nested quosures.</p></li>
@@ -948,8 +949,8 @@ Caused by error in `their_function()`:
 <li><p>Parentheses around <code>!!</code> are automatically removed. This makes the generated expression call cleaner: <code>(!! sym("name"))(arg)</code>. Note that removing the parentheses will never affect the actual precedence within the expression as the parentheses are only useful when parsing code as text. The parentheses will also be added by R when printing code if needed (<a href="https://github.com/r-lib/rlang/issues/296" class="external-link">#296</a>).</p></li>
 <li>
 <p>Quasiquotation now supports <code>!!</code> and <code>!!!</code> as functional forms:</p>
-<pre><code><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu">`!!`</span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="fu">`!!!`</span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre>
+<pre><code><span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu">`!!`</span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/call.html" class="external-link">call</a></span><span class="op">(</span><span class="fu">`!!!`</span><span class="op">(</span><span class="va">var</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 <p>This is consistent with the way native R operators parses to function calls. These new functional forms are to be preferred to <code><a href="../reference/UQ.html">UQ()</a></code> and <code><a href="../reference/UQ.html">UQS()</a></code>. We are now questioning the latter and might deprecate them in a future release.</p>
 </li>
 <li><p>The quasiquotation parser now gives meaningful errors in corner cases to help you figure out what is wrong.</p></li>

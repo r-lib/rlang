@@ -26,7 +26,7 @@ The type of special and builtin functions is "primitive".
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,7 +126,7 @@ make dispatching easier:</p><ul><li><p>The type of one-sided formulas is "quote"
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">type_of</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">type_of</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -138,45 +138,45 @@ make dispatching easier:</p><ul><li><p>The type of one-sided formulas is "quote"
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">type_of</span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">type_of</span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`type_of()` is deprecated as of rlang 0.4.0.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Please use `typeof()` or your own version instead.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once per session.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "integer"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Quosures are treated as a new base type but not formulas:</span></span>
-<span class="r-in"><span class="fu">type_of</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Quosures are treated as a new base type but not formulas:</span></span></span>
+<span class="r-in"><span><span class="fu">type_of</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "formula"</span>
-<span class="r-in"><span class="fu">type_of</span><span class="op">(</span><span class="op">~</span><span class="fl">10L</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">type_of</span><span class="op">(</span><span class="op">~</span><span class="fl">10L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "formula"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Compare to base::typeof():</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Compare to base::typeof():</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fl">10L</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "language"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Strings are treated as a new base type:</span></span>
-<span class="r-in"><span class="fu">type_of</span><span class="op">(</span><span class="va">letters</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Strings are treated as a new base type:</span></span></span>
+<span class="r-in"><span><span class="fu">type_of</span><span class="op">(</span><span class="va">letters</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "character"</span>
-<span class="r-in"><span class="fu">type_of</span><span class="op">(</span><span class="va">letters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">type_of</span><span class="op">(</span><span class="va">letters</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "string"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This is a bit inconsistent with the core language tenet that data</span></span>
-<span class="r-in"><span class="co"># types are vectors. However, treating strings as a different</span></span>
-<span class="r-in"><span class="co"># scalar type is quite helpful for switching on function inputs</span></span>
-<span class="r-in"><span class="co"># since so many arguments expect strings:</span></span>
-<span class="r-in"><span class="fu"><a href="switch_type.html">switch_type</a></span><span class="op">(</span><span class="st">"foo"</span>, character <span class="op">=</span> <span class="fu"><a href="abort.html">abort</a></span><span class="op">(</span><span class="st">"vector!"</span><span class="op">)</span>, string <span class="op">=</span> <span class="st">"result"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This is a bit inconsistent with the core language tenet that data</span></span></span>
+<span class="r-in"><span><span class="co"># types are vectors. However, treating strings as a different</span></span></span>
+<span class="r-in"><span><span class="co"># scalar type is quite helpful for switching on function inputs</span></span></span>
+<span class="r-in"><span><span class="co"># since so many arguments expect strings:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="switch_type.html">switch_type</a></span><span class="op">(</span><span class="st">"foo"</span>, character <span class="op">=</span> <span class="fu"><a href="abort.html">abort</a></span><span class="op">(</span><span class="st">"vector!"</span><span class="op">)</span>, string <span class="op">=</span> <span class="st">"result"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "result"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Special and builtin primitives are both treated as primitives.</span></span>
-<span class="r-in"><span class="co"># That's because it is often irrelevant which type of primitive an</span></span>
-<span class="r-in"><span class="co"># input is:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">list</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Special and builtin primitives are both treated as primitives.</span></span></span>
+<span class="r-in"><span><span class="co"># That's because it is often irrelevant which type of primitive an</span></span></span>
+<span class="r-in"><span><span class="co"># input is:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">list</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "builtin"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">`$`</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/typeof.html" class="external-link">typeof</a></span><span class="op">(</span><span class="va">`$`</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "special"</span>
-<span class="r-in"><span class="fu">type_of</span><span class="op">(</span><span class="va">list</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">type_of</span><span class="op">(</span><span class="va">list</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "primitive"</span>
-<span class="r-in"><span class="fu">type_of</span><span class="op">(</span><span class="va">`$`</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">type_of</span><span class="op">(</span><span class="va">`$`</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "primitive"</span>
 </code></pre></div>
     </div>

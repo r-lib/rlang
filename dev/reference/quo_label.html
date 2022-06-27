@@ -44,7 +44,7 @@ and strings is non-lossy and well defined."><meta property="og:image" content="h
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -153,11 +153,11 @@ and strings is non-lossy and well defined.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">quo_label</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span>
-
-<span class="fu">quo_text</span><span class="op">(</span><span class="va">quo</span>, width <span class="op">=</span> <span class="fl">60L</span>, nlines <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span>
-
-<span class="fu">quo_name</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">quo_label</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">quo_text</span><span class="op">(</span><span class="va">quo</span>, width <span class="op">=</span> <span class="fl">60L</span>, nlines <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">quo_name</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -197,29 +197,29 @@ about a new deparsing API.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Quosures can contain nested quosures:</span></span>
-<span class="r-in"><span class="va">quo</span> <span class="op">&lt;-</span> <span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">quo</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Quosures can contain nested quosures:</span></span></span>
+<span class="r-in"><span><span class="va">quo</span> <span class="op">&lt;-</span> <span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span> <span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">quo</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo(^bar)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561dbccedb20</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># quo_squash() unwraps all quosures and returns a raw expression:</span></span>
-<span class="r-in"><span class="fu"><a href="quo_squash.html">quo_squash</a></span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x558f107b1af0</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># quo_squash() unwraps all quosures and returns a raw expression:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="quo_squash.html">quo_squash</a></span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> foo(bar)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># This is used by quo_text() and quo_label():</span></span>
-<span class="r-in"><span class="fu">quo_text</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># This is used by quo_text() and quo_label():</span></span></span>
+<span class="r-in"><span><span class="fu">quo_text</span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "foo(bar)"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Compare to the unwrapped expression:</span></span>
-<span class="r-in"><span class="fu"><a href="expr_label.html">expr_text</a></span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Compare to the unwrapped expression:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="expr_label.html">expr_text</a></span><span class="op">(</span><span class="va">quo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "~foo(~bar)"</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># quo_name() is helpful when you need really short labels:</span></span>
-<span class="r-in"><span class="fu">quo_name</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">sym</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># quo_name() is helpful when you need really short labels:</span></span></span>
+<span class="r-in"><span><span class="fu">quo_name</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">sym</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "sym"</span>
-<span class="r-in"><span class="fu">quo_name</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span> <span class="va">sym</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">quo_name</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span> <span class="va">sym</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "function (x) ..."</span>
 </code></pre></div>
     </div>

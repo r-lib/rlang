@@ -22,7 +22,7 @@ If you'd like to go further and learn about defusing and injecting expressions, 
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -150,25 +150,25 @@ If you'd like to go further and learn about defusing and injecting expressions, 
 
 
 <p>The embrace operator <code><a href="embrace-operator.html">{{</a></code> is a forwarding syntax for single arguments. You can forward an argument in data-masked context:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>Or in tidyselections:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>The function automatically inherits the behaviour of the surrounding context. For instance arguments forwarded to a data-masked context may refer to columns or use the <code><a href="dot-data.html">.data</a></code> pronoun:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_summarise</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_summarise</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_summarise</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_summarise</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>And arguments forwarded to a tidy selection may use all tidyselect features:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">vs</span><span class="op">:</span><span class="va">gear</span><span class="op">)</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">vs</span><span class="op">:</span><span class="va">gear</span><span class="op">)</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -176,23 +176,23 @@ If you'd like to go further and learn about defusing and injecting expressions, 
 
 
 <p>Simple forwarding of <code>...</code> arguments does not require any special syntax since dots are already a forwarding syntax. Just pass them to another function like you normally would. This works with data-masked arguments:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="fl">100</span>, <span class="va">am</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span>cyl <span class="op">=</span> <span class="va">cyl</span> <span class="op">*</span> <span class="fl">100</span>, <span class="va">am</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>As well as tidy selections:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_select</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_select</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, <span class="va">vs</span><span class="op">:</span><span class="va">carb</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_select</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_select</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, <span class="va">vs</span><span class="op">:</span><span class="va">carb</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>Some functions take a tidy selection in a single named argument. In that case, pass the <code>...</code> inside <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, <span class="va">vs</span><span class="op">:</span><span class="va">carb</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, <span class="va">vs</span><span class="op">:</span><span class="va">carb</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>Inside a tidy selection, <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> is not a vector concatenator but a selection combinator. This makes it handy to interface between functions that take <code>...</code> and functions that take a single argument.</p>
 </div>
 
@@ -206,62 +206,62 @@ If you'd like to go further and learn about defusing and injecting expressions, 
 
 
 <p>The <code><a href="dot-data.html">.data</a></code> pronoun is a tidy eval feature that is enabled in all data-masked arguments, just like <code><a href="embrace-operator.html">{{</a></code>. The pronoun represents the data mask and can be subsetted with <code>[[</code> and <code>$</code>. These three statements are equivalent:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">var</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>The <code>.data</code> pronoun can be subsetted in loops:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span>
-
-<span class="kw">for</span> <span class="op">(</span><span class="va">var</span> <span class="kw">in</span> <span class="va">vars</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">mtcars</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 0.406</span>
-
-<span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">vars</span>, <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">mtcars</span>, mean <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">.x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [[1]]</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; [[2]]</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 0.406</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">var</span> <span class="kw">in</span> <span class="va">vars</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">mtcars</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 0.406</span></span>
+<span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">vars</span>, <span class="op">~</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">mtcars</span>, mean <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">.x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 0.406</span></span></code></pre><p></p></div>
 <p>And it can be used to connect function arguments to a data-variable:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"cyl"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[[</span><span class="va">var</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"cyl"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
 <p>With this implementation, <code>my_mean()</code> is completely insulated from data-masking behaviour and is called like an ordinary function.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># No masking</span>
-<span class="va">am</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span>
-<span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">am</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span>
-
-<span class="co"># Programmable</span>
-<span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="st">"CYL"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 1</span>
-<span class="co">#&gt;    mean</span>
-<span class="co">#&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># No masking</span></span>
+<span><span class="va">am</span> <span class="op">&lt;-</span> <span class="st">"cyl"</span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">am</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span>
+<span></span>
+<span><span class="co"># Programmable</span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="st">"CYL"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
+<span><span class="co">#&gt;    mean</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -269,22 +269,22 @@ If you'd like to go further and learn about defusing and injecting expressions, 
 
 
 <p>The <code>.data</code> pronoun can only be subsetted with single column names. It doesn't support single-bracket indexing:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="co">#&gt; Error in `dplyr::summarise()`:</span>
-<span class="co">#&gt; ! Problem while computing `..1 = .data[c("cyl", "am")]`.</span>
-<span class="co">#&gt; Caused by error in `.data[c("cyl", "am")]`:</span>
-<span class="co">#&gt; ! `[` is not supported by the `.data` pronoun, use `[[` or $ instead.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="va">.data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `dplyr::summarise()`:</span></span>
+<span><span class="co">#&gt; ! Problem while computing `..1 = .data[c("cyl", "am")]`.</span></span>
+<span><span class="co">#&gt; Caused by error in `.data[c("cyl", "am")]`:</span></span>
+<span><span class="co">#&gt; ! `[` is not supported by the `.data` pronoun, use `[[` or $ instead.</span></span></code></pre><p></p></div>
 <p>There is no plural variant of <code>.data</code> built in tidy eval. Instead, we'll used the <code>all_of()</code> operator available in tidy selections to supply character vectors. This is straightforward in functions that take tidy selections, like <code>tidyr::pivot_longer()</code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span>
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 64 x 11</span>
-<span class="co">#&gt;     mpg  disp    hp  drat    wt  qsec    vs  gear  carb name  value</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    21   160   110   3.9  2.62  16.5     0     4     4 cyl       6</span>
-<span class="co">#&gt; 2    21   160   110   3.9  2.62  16.5     0     4     4 am        1</span>
-<span class="co">#&gt; 3    21   160   110   3.9  2.88  17.0     0     4     4 cyl       6</span>
-<span class="co">#&gt; 4    21   160   110   3.9  2.88  17.0     0     4     4 am        1</span>
-<span class="co">#&gt; # ... with 60 more rows</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 64 x 11</span></span>
+<span><span class="co">#&gt;     mpg  disp    hp  drat    wt  qsec    vs  gear  carb name  value</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1    21   160   110   3.9  2.62  16.5     0     4     4 cyl       6</span></span>
+<span><span class="co">#&gt; 2    21   160   110   3.9  2.62  16.5     0     4     4 am        1</span></span>
+<span><span class="co">#&gt; 3    21   160   110   3.9  2.88  17.0     0     4     4 cyl       6</span></span>
+<span><span class="co">#&gt; 4    21   160   110   3.9  2.88  17.0     0     4     4 am        1</span></span>
+<span><span class="co">#&gt; # ... with 60 more rows</span></span></code></pre><p></p></div>
 <p>If the function does not take a tidy selection, it might be possible to use a <em>bridge pattern</em>. This option is presented in the bridge section below. If a bridge is impossible or inconvenient, a little metaprogramming with the <a href="topic-metaprogramming.html">symbolise-and-inject pattern</a> can help.</p>
 </div>
 
@@ -296,11 +296,11 @@ If you'd like to go further and learn about defusing and injecting expressions, 
 
 
 <p>dplyr 1.0 added support for tidy selections in all verbs via <code>across()</code>. This function is normally used for mapping over columns but can also be used to perform a simple selection. For instance, if you'd like to pass an argument to <code>group_by()</code> with a tidy-selection interface instead of a data-masked one, use <code>across()</code> as a bridge:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>Since <code>across()</code> takes selections in a single argument (unlike <code>select()</code> which takes multiple arguments), you can't directly pass <code>...</code>. Instead, take them within <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>, which is the tidyselect way of supplying multiple selections within a single argument:</p>
 <p></p><div class="sourceCode r"><pre><code>my_group_by &lt;- function(.data, ...) {
   .data %&gt;% dplyr::group_by(across(c(...)}))
@@ -315,11 +315,11 @@ mtcars %&gt;% my_group_by(starts_with("c"), vs:gear)
 
 
 <p>If instead of forwarding variables in <code>across()</code> you pass them to <code>all_of()</code>, you create a names to data mask bridge.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">vars</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">vars</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu">all_of</span><span class="op">(</span><span class="va">vars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cyl"</span>, <span class="st">"am"</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>Use this bridge technique to connect vectors of names to a data-masked context.</p>
 </div>
 
@@ -328,20 +328,20 @@ mtcars %&gt;% my_group_by(starts_with("c"), vs:gear)
 
 
 <p>Passing data-masked arguments to a tidy selection is a little more tricky and requires a three step process.</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># Forward `...` in data-mask context with `transmute()`</span>
-  <span class="co"># and save the inputs names</span>
-  <span class="va">inputs</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">inputs</span><span class="op">)</span>
-  
-  <span class="co"># Update the data with the inputs</span>
-  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">inputs</span><span class="op">)</span>
-
-  <span class="co"># Select the inputs by name with `all_of()`</span>
-  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="va">data</span>, cols <span class="op">=</span> <span class="fu">all_of</span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span>, am <span class="op">=</span> <span class="va">am</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></code></pre><p></p></div><ol><li><p>In a first step we pass the <code>...</code> expressions to <code>transmute()</code>. Unlike <code>mutate()</code>, it creates a new data frame from the user inputs. The only goal of this step is to inspect the names in <code>...</code>, including the default names created for unnamed arguments.</p></li>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_pivot_longer</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># Forward `...` in data-mask context with `transmute()`</span></span>
+<span>  <span class="co"># and save the inputs names</span></span>
+<span>  <span class="va">inputs</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">transmute</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span>
+<span>  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">inputs</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="co"># Update the data with the inputs</span></span>
+<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">data</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">inputs</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Select the inputs by name with `all_of()`</span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu">pivot_longer</span><span class="op">(</span><span class="va">data</span>, cols <span class="op">=</span> <span class="fu">all_of</span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_pivot_longer</span><span class="op">(</span><span class="va">cyl</span>, am <span class="op">=</span> <span class="va">am</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span></code></pre><p></p></div><ol><li><p>In a first step we pass the <code>...</code> expressions to <code>transmute()</code>. Unlike <code>mutate()</code>, it creates a new data frame from the user inputs. The only goal of this step is to inspect the names in <code>...</code>, including the default names created for unnamed arguments.</p></li>
 <li><p>Once we have the names, we inject the arguments into <code>mutate()</code> to update the data frame.</p></li>
 <li><p>Finally, we pass the names to the tidy selection via <a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link"><code>all_of()</code></a>.</p></li>
 </ol></div>
@@ -355,13 +355,13 @@ mtcars %&gt;% my_group_by(starts_with("c"), vs:gear)
 
 
 <p>In the case of a named argument, transformation is easy. We simply surround the embraced input it in R code. For instance, the <code>my_summarise()</code> function is not exactly useful compared to just calling <code>summarise()</code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>We can make it more useful by adding code around the variable:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre><p></p></div>
 <p>For inputs in <code>...</code> however, this technique does not work. We would need some kind of templating syntax for dots that lets us specify R code with a placeholder for the dots elements. This isn't built in tidy eval but you can use operators like <code><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">dplyr::across()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">dplyr::if_all()</a></code>, or <code><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">dplyr::if_any()</a></code>. When that isn't possible, you can template the expression manually.</p>
 </div>
 
@@ -370,27 +370,27 @@ mtcars %&gt;% my_group_by(starts_with("c"), vs:gear)
 
 
 <p>The <code>across()</code> operation in dplyr is a convenient way of mapping an expression across a set of inputs. We will create a variant of <code>my_mean()</code> that computes the <code><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a></code> of all arguments supplied in <code>...</code>. The easiest way it to forward the dots to <code>across()</code> (which causes <code>...</code> to inherit its tidy selection behaviour):</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">carb</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;     cyl  carb</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19  2.81</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span>foo <span class="op">=</span> <span class="va">cyl</span>, bar <span class="op">=</span> <span class="va">carb</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 2</span>
-<span class="co">#&gt;     foo   bar</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19  2.81</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, <span class="va">mpg</span><span class="op">:</span><span class="va">disp</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 4</span>
-<span class="co">#&gt;     cyl  carb   mpg  disp</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1  6.19  2.81  20.1  231.</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span>, <span class="va">carb</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;     cyl  carb</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19  2.81</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span>foo <span class="op">=</span> <span class="va">cyl</span>, bar <span class="op">=</span> <span class="va">carb</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 2</span></span>
+<span><span class="co">#&gt;     foo   bar</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19  2.81</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, <span class="va">mpg</span><span class="op">:</span><span class="va">disp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 x 4</span></span>
+<span><span class="co">#&gt;     cyl  carb   mpg  disp</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  6.19  2.81  20.1  231.</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
@@ -399,11 +399,11 @@ mtcars %&gt;% my_group_by(starts_with("c"), vs:gear)
 
 <p><code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> requires a different operation than <code>across()</code> because it needs to combine the logical expressions with <code>&amp;</code> or <code>|</code>. To solve this problem dplyr introduced the <code>if_all()</code> and <code>if_any()</code> variants of <code>across()</code>.</p>
 <p>In the following example, we filter all rows for which a set of variables are not equal to their minimum value:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">filter_non_baseline</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">if_all</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, <span class="op">~</span> <span class="va">.x</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">filter_non_baseline</span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span>, <span class="va">gear</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">filter_non_baseline</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">if_all</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>, <span class="op">~</span> <span class="va">.x</span> <span class="op">!=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">.x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">filter_non_baseline</span><span class="op">(</span><span class="va">vs</span>, <span class="va">am</span>, <span class="va">gear</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 
     </div>

@@ -18,7 +18,7 @@ string version checks that the input contains a scalar string."><meta property="
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,7 +117,7 @@ string version checks that the input contains a scalar string.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">string</span><span class="op">(</span><span class="va">x</span>, encoding <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">string</span><span class="op">(</span><span class="va">x</span>, encoding <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -135,25 +135,25 @@ declarative, no encoding conversion is performed.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># As everywhere in R, you can specify a string with Unicode</span></span>
-<span class="r-in"><span class="co"># escapes. The characters corresponding to Unicode codepoints will</span></span>
-<span class="r-in"><span class="co"># be encoded in UTF-8, and the string will be marked as UTF-8</span></span>
-<span class="r-in"><span class="co"># automatically:</span></span>
-<span class="r-in"><span class="va">cafe</span> <span class="op">&lt;-</span> <span class="fu">string</span><span class="op">(</span><span class="st">"caf\uE9"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Encoding.html" class="external-link">Encoding</a></span><span class="op">(</span><span class="va">cafe</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># As everywhere in R, you can specify a string with Unicode</span></span></span>
+<span class="r-in"><span><span class="co"># escapes. The characters corresponding to Unicode codepoints will</span></span></span>
+<span class="r-in"><span><span class="co"># be encoded in UTF-8, and the string will be marked as UTF-8</span></span></span>
+<span class="r-in"><span><span class="co"># automatically:</span></span></span>
+<span class="r-in"><span><span class="va">cafe</span> <span class="op">&lt;-</span> <span class="fu">string</span><span class="op">(</span><span class="st">"caf\uE9"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Encoding.html" class="external-link">Encoding</a></span><span class="op">(</span><span class="va">cafe</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "UTF-8"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">charToRaw</a></span><span class="op">(</span><span class="va">cafe</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">charToRaw</a></span><span class="op">(</span><span class="va">cafe</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63 61 66 c3 a9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># In addition, string() provides useful conversions to let</span></span>
-<span class="r-in"><span class="co"># programmers control how the string is represented in memory. For</span></span>
-<span class="r-in"><span class="co"># encodings other than UTF-8, you'll need to supply the bytes in</span></span>
-<span class="r-in"><span class="co"># hexadecimal form. If it is a latin1 encoding, you can mark the</span></span>
-<span class="r-in"><span class="co"># string explicitly:</span></span>
-<span class="r-in"><span class="va">cafe_latin1</span> <span class="op">&lt;-</span> <span class="fu">string</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0x63</span>, <span class="fl">0x61</span>, <span class="fl">0x66</span>, <span class="fl">0xE9</span><span class="op">)</span>, <span class="st">"latin1"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Encoding.html" class="external-link">Encoding</a></span><span class="op">(</span><span class="va">cafe_latin1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># In addition, string() provides useful conversions to let</span></span></span>
+<span class="r-in"><span><span class="co"># programmers control how the string is represented in memory. For</span></span></span>
+<span class="r-in"><span><span class="co"># encodings other than UTF-8, you'll need to supply the bytes in</span></span></span>
+<span class="r-in"><span><span class="co"># hexadecimal form. If it is a latin1 encoding, you can mark the</span></span></span>
+<span class="r-in"><span><span class="co"># string explicitly:</span></span></span>
+<span class="r-in"><span><span class="va">cafe_latin1</span> <span class="op">&lt;-</span> <span class="fu">string</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0x63</span>, <span class="fl">0x61</span>, <span class="fl">0x66</span>, <span class="fl">0xE9</span><span class="op">)</span>, <span class="st">"latin1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Encoding.html" class="external-link">Encoding</a></span><span class="op">(</span><span class="va">cafe_latin1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "latin1"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">charToRaw</a></span><span class="op">(</span><span class="va">cafe_latin1</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">charToRaw</a></span><span class="op">(</span><span class="va">cafe_latin1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 63 61 66 e9</span>
 </code></pre></div>
     </div>

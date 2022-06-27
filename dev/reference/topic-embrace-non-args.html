@@ -54,7 +54,7 @@ Note that this issue also applies to enquo() (on which {{ is based)."><meta prop
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.2.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.3.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,24 +145,24 @@ Note that this issue also applies to enquo() (on which {{ is based)."><meta prop
 
     <div class="ref-description section level2">
     <p>The embrace operator <code><a href="embrace-operator.html">{{</a></code> should be used exclusively with function arguments:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">fn</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; &lt;quosure&gt;</span>
-<span class="co">#&gt; expr: ^foo(^1 + 1)</span>
-<span class="co">#&gt; env:  0x7ffd89aac518</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">fn</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;quosure&gt;</span></span>
+<span><span class="co">#&gt; expr: ^foo(^1 + 1)</span></span>
+<span><span class="co">#&gt; env:  0x7ffd89aac518</span></span></code></pre><p></p></div>
 <p>However you may have noticed that it also works on regular objects:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">arg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span>
-  <span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu">fn</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; &lt;quosure&gt;</span>
-<span class="co">#&gt; expr: ^foo(^2)</span>
-<span class="co">#&gt; env:  0x7ffd8a633398</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">arg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="va">arg</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/defusing-advanced.html">quo</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">arg</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">fn</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; &lt;quosure&gt;</span></span>
+<span><span class="co">#&gt; expr: ^foo(^2)</span></span>
+<span><span class="co">#&gt; env:  0x7ffd8a633398</span></span></code></pre><p></p></div>
 <p>In that case, <code>{{</code> captures the <em>value</em> of the expression instead of a defused expression. That's because only function arguments can be defused.</p>
 <p>Note that this issue also applies to <code><a href="enquo.html">enquo()</a></code> (on which <code>{{</code> is based).</p>
     </div>
