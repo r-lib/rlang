@@ -216,3 +216,10 @@ test_that("`check_installed()` works within `tryCatch(error = )` (#1402, tidyver
     ))
   })
 })
+
+test_that("is_installed('base') works (#1434)", {
+  expect_true(is_installed("base"))
+  expect_true(is_installed("base", version = "0.0.1"))
+  expect_true(is_installed("base", version = as.character(getRversion())))
+  expect_false(is_installed("base", version = "999.9.9"))
+})
