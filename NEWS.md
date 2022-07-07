@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `is_installed()` and `check_installed()` now properly detect that
+  the base package is installed on older versions of R (#1434).
+
+
 # rlang 1.0.3
 
 * Child errors may now have empty messages to enable this pattern:
