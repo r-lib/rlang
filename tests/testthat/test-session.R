@@ -218,8 +218,19 @@ test_that("`check_installed()` works within `tryCatch(error = )` (#1402, tidyver
 })
 
 test_that("is_installed('base') works (#1434)", {
+  r_ver <- as.character(getRversion())
+
   expect_true(is_installed("base"))
   expect_true(is_installed("base", version = "0.0.1"))
-  expect_true(is_installed("base", version = as.character(getRversion())))
+  expect_true(is_installed("base", version = r_ver))
   expect_false(is_installed("base", version = "999.9.9"))
+
+  skip_if_not(is_string(Sys.getenv("R_DEFAULT_PACKAGES"), ""))
+
+  for (pkg in peek_option("defaultPackages")) {
+    expect_true(is_installed(pkg))
+    expect_true(is_installed(pkg, version = "0.0.1"))
+    expect_true(is_installed(pkg, version = r_ver))
+    expect_false(is_installed(pkg, version = "999.9.9"))
+  }
 })
