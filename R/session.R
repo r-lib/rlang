@@ -106,17 +106,6 @@ pkg_version_info <- function(pkg,
   info <- data_frame(pkg = pkg, cmp = na_chr, ver = na_chr)
   info <- vec_assign(info, matches, pkg_info)
 
-  is_invalid <- grepl("[^A-Za-z0-9.]", info$pkg)
-  if (any(is_invalid)) {
-    elts <- encodeString(info$pkg[is_invalid], quote = '"')
-    msg <- c(
-      "Must supply valid package names.",
-      "x" = "Problematic names:",
-      set_names(elts, "*")
-    )
-    abort(msg, call = call)
-  }
-
   if (!is_null(version)) {
     has_version <- !detect_na(version)
     is_redundant <- has_version & matches

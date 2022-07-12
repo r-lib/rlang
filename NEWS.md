@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `is_installed()` no longer throws an error with irregular package
+  names.
+
 * `is_installed()` and `check_installed()` now properly detect that
   the base package is installed on older versions of R (#1434).
 

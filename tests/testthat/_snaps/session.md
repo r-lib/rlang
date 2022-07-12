@@ -111,14 +111,6 @@
 # pkg_version_info() parses info
 
     Code
-      (expect_error(pkg_version_info("foo 1.0"), "valid"))
-    Output
-      <error/rlang_error>
-      Error in `caller()`:
-      ! Must supply valid package names.
-      x Problematic names:
-      * "foo 1.0"
-    Code
       (expect_error(pkg_version_info("foo (1.0)"), "parse"))
     Output
       <error/rlang_error>
