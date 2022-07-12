@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,12 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.3" id="rlang-103">rlang 1.0.3<a class="anchor" aria-label="anchor" href="#rlang-103"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.4" id="rlang-104">rlang 1.0.4<a class="anchor" aria-label="anchor" href="#rlang-104"></a></h2>
+<ul><li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> no longer throws an error with irregular package names.</p></li>
+<li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> and <code><a href="../reference/is_installed.html">check_installed()</a></code> now properly detect that the base package is installed on older versions of R (<a href="https://github.com/r-lib/rlang/issues/1434" class="external-link">#1434</a>).</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.3" id="rlang-103">rlang 1.0.3<a class="anchor" aria-label="anchor" href="#rlang-103"></a></h2><p class="text-muted">CRAN release: 2022-06-27</p>
 <ul><li>
 <p>Child errors may now have empty messages to enable this pattern:</p>
 <pre><code>Error in `my_function()`:
