@@ -1,3 +1,5 @@
+# rlang (development version)
+
 # rlang 1.0.4
 
 * `is_installed()` no longer throws an error with irregular package
