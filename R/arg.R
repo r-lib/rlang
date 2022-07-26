@@ -181,7 +181,7 @@ check_required <- function(x,
                            arg = caller_arg(x),
                            call = caller_env()) {
   if (!missing(x)) {
-    invisible(return(TRUE))
+    return(invisible(TRUE))
   }
 
   arg_expr <- substitute(x)
