@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* Fixed backtrace display with calls containing long lists of
+  arguments (#1456).
+
+
 # rlang 1.0.4
 
 * `is_installed()` no longer throws an error with irregular package

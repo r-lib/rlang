@@ -692,3 +692,20 @@ test_that("binary op without arguments", {
     "`~`()"
   )
 })
+
+test_that("call_deparse_highlight() handles long lists of arguments (#1456)", {
+  out <- call_deparse_highlight(quote(
+    foo(
+      aaaaaa = aaaaaa,
+      bbbbbb = bbbbbb,
+      cccccc = cccccc,
+      dddddd = dddddd,
+      eeeeee = eeeeee
+    )
+  ), NULL)
+
+  expect_equal(
+    cli::ansi_strip(out),
+    "foo(aaaaaa = aaaaaa, bbbbbb = bbbbbb, cccccc = cccccc, dddddd = dddddd, eeeeee = eeeeee)"
+  )
+})

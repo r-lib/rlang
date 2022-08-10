@@ -1034,7 +1034,8 @@ call_deparse_highlight <- function(call, arg) {
     args_list <- sprintf("%s = %s", arg, as_label(call[[arg]]))
     args_list <- format_arg_unquoted(args_list)
   } else {
-    args_list <- args_deparse(node_cdr(call))
+    lines <- new_lines(width = .Machine$integer.max)
+    args_list <- args_deparse(node_cdr(call), lines)
     args_list <- substring(args_list, 2, nchar(args_list) - 1)
   }
 
