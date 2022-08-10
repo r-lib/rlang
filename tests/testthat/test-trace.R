@@ -732,3 +732,31 @@ test_that("namespaced calls are highlighted", {
     print_highlighted_trace(err)
   })
 })
+
+test_that("can highlight long lists of arguments in backtrace (#1456)", {
+  f <- function(...) g(
+    aaaaaaaaaaaa = aaaaaaaaaaaa,
+    bbbbbbbbbbbb = bbbbbbbbbbbb,
+    cccccccccccc = cccccccccccc,
+    dddddddddddd = dddddddddddd,
+    eeeeeeeeeeee = eeeeeeeeeeee,
+    ...
+  )
+  g <- function(aaaaaaaaaaaa,
+                bbbbbbbbbbbb,
+                cccccccccccc,
+                dddddddddddd,
+                eeeeeeeeeeee, ...) {
+    rlang::abort("foo", ...)
+  }
+
+  err <- catch_error(f())
+  expect_snapshot({
+    print_highlighted_trace(err)
+  })
+
+  err <- catch_error(f(arg = "bbbbbbbbbbbb"))
+  expect_snapshot({
+    print_highlighted_trace(err)
+  })
+})
