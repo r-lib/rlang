@@ -118,7 +118,7 @@ eval_top <- function(expr, env = caller_env()) {
 #' @param .fn A function, or function name as a string.
 #' @param ... <[dynamic][dyn-dots]> Arguments for `.fn`.
 #' @param  .env Environment in which to evaluate the call. This will be
-#'   most useful if `f` is a string, or the function has side-effects.
+#'   most useful if `.fn` is a string, or the function has side-effects.
 #' @export
 #' @examples
 #' args <- list(x = c(1:10, 100, NA), na.rm = TRUE)
