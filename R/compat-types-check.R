@@ -1,5 +1,10 @@
 # nocov start --- r-lib/rlang compat-types-check
 #
+# Dependencies
+# ============
+#
+# - compat-obj-type.R
+#
 # Changelog
 # =========
 #
