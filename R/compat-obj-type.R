@@ -3,6 +3,9 @@
 # Changelog
 # =========
 #
+# 2022-08-11:
+# - Prefixed usage of rlang functions with `rlang::`.
+#
 # 2022-06-22:
 # - `friendly_type_of()` is now `obj_type_friendly()`.
 # - Added `obj_type_oo()`.
@@ -28,7 +31,7 @@
 #'   article, e.g. "an integer vector".
 #' @noRd
 obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
-  if (is_missing(x)) {
+  if (rlang::is_missing(x)) {
     return("absent")
   }
 
@@ -48,7 +51,7 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
   n_dim <- length(dim(x))
 
   if (value && !n_dim) {
-    if (is_na(x)) {
+    if (rlang::is_na(x)) {
       return(switch(
         typeof(x),
         logical = "`NA`",
@@ -59,7 +62,7 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         .rlang_stop_unexpected_typeof(x)
       ))
     }
-    if (length(x) == 1 && !is_list(x)) {
+    if (length(x) == 1 && !rlang::is_list(x)) {
       return(switch(
         typeof(x),
         logical = if (x) "`TRUE`" else "`FALSE`",
