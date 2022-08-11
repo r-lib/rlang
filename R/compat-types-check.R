@@ -33,9 +33,13 @@ check_number <- function(x,
                          what = "a round number",
                          arg = rlang::caller_arg(x),
                          call = rlang::caller_env()) {
-  if (!rlang::is_number(x)) {
+  if (!is_number(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
+}
+
+is_number <- function(x) {
+  rlang::is_integerish(x, n = 1, finite = TRUE)
 }
 
 check_symbol <- function(x,

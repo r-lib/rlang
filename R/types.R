@@ -188,10 +188,6 @@ is_bool <- function(x) {
   is_logical(x, n = 1) && !is.na(x)
 }
 
-is_number <- function(x) {
-  is_integerish(x, n = 1, finite = TRUE)
-}
-
 #' Bare type predicates
 #'
 #' These predicates check for a given type but only return `TRUE` for
