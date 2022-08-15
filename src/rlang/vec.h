@@ -339,7 +339,7 @@ bool r_is_string(r_obj* x) {
 static inline
 bool r_arg_as_bool(r_obj* x, const char* arg) {
   if (!r_is_bool(x)) {
-    r_abort("`%s` must be a logical value.", arg);
+    r_abort("`%s` must be `TRUE` or `FALSE`.", arg);
   }
   return r_lgl_get(x, 0);
 }
@@ -351,7 +351,7 @@ bool r_as_bool(r_obj* x) {
 static inline
 int r_arg_as_int(r_obj* x, const char* arg) {
   if (!r_is_int(x)) {
-    r_abort("`%s` must be an integer value.", arg);
+    r_abort("`%s` must be a single integer value.", arg);
   }
   return r_int_get(x, 0);
 }
@@ -364,7 +364,7 @@ static inline
 double r_arg_as_double(r_obj* x, const char* arg) {
   // TODO: Coercion of int and lgl values
   if (!_r_is_double(x, 1, 1)) {
-    r_abort("`%s` must be a double value.", arg);
+    r_abort("`%s` must be a single double value.", arg);
   }
   return r_dbl_get(x, 0);
 }
@@ -376,7 +376,7 @@ double r_as_double(r_obj* x) {
 static inline
 r_complex r_arg_as_complex(r_obj* x, const char* arg) {
   if (!_r_is_complex(x, 1, 1)) {
-    r_abort("`%s` must be a complex value.", arg);
+    r_abort("`%s` must be a single complex value.", arg);
   }
   return r_cpl_get(x, 0);
 }
@@ -388,7 +388,7 @@ r_complex r_as_complex(r_obj* x) {
 static inline
 char r_arg_as_char(r_obj* x, const char* arg) {
   if (r_typeof(x) != R_TYPE_raw && r_length(x) != 1) {
-    r_abort("`%s` must be a raw value.", arg);
+    r_abort("`%s` must be a single raw value.", arg);
   }
   return r_raw_get(x, 0);
 }
