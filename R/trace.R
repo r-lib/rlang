@@ -287,6 +287,9 @@ normalise_parents <- function(parents) {
 winch_available_env <- new.env(parent = emptyenv())
 
 add_winch_trace <- function(trace) {
+  # FIXME: Until r-prof/winch#56 is fixed
+  return(trace)
+
   avail <- winch_available_env$installed
   if (is_null(avail)) {
     avail <- rlang::is_installed("winch")
