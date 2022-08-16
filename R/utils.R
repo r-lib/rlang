@@ -49,20 +49,20 @@ bold      <- function(x) if (has_cli) unstructure(cli::style_bold(x))      else 
 italic    <- function(x) if (has_cli) unstructure(cli::style_italic(x))    else x
 underline <- function(x) if (has_cli) unstructure(cli::style_underline(x)) else x
 
-open_red     <- function() if (.rlang_cli_has_ansi()) open_style("red")
-open_blue    <- function() if (.rlang_cli_has_ansi()) open_style("blue")
-open_green   <- function() if (.rlang_cli_has_ansi()) open_style("green")
-open_yellow  <- function() if (.rlang_cli_has_ansi()) open_style("yellow")
-open_magenta <- function() if (.rlang_cli_has_ansi()) open_style("magenta")
-open_cyan    <- function() if (.rlang_cli_has_ansi()) open_style("cyan")
-open_bold    <- function() if (.rlang_cli_has_ansi()) open_style("bold")
-close_colour <- function() if (.rlang_cli_has_ansi()) "\u001b[39m"
-close_italic <- function() if (.rlang_cli_has_ansi()) "\u001b[23m"
-close_bold   <- function() if (.rlang_cli_has_ansi()) close_style("bold")
+open_red     <- function() if (has_ansi()) open_style("red")
+open_blue    <- function() if (has_ansi()) open_style("blue")
+open_green   <- function() if (has_ansi()) open_style("green")
+open_yellow  <- function() if (has_ansi()) open_style("yellow")
+open_magenta <- function() if (has_ansi()) open_style("magenta")
+open_cyan    <- function() if (has_ansi()) open_style("cyan")
+open_bold    <- function() if (has_ansi()) open_style("bold")
+close_colour <- function() if (has_ansi()) "\u001b[39m"
+close_italic <- function() if (has_ansi()) "\u001b[23m"
+close_bold   <- function() if (has_ansi()) close_style("bold")
 
-open_yellow_italic   <- function() if (.rlang_cli_has_ansi()) "\u001b[33m\u001b[3m"
-open_blurred_italic  <- function() if (.rlang_cli_has_ansi()) "\u001b[2m\u001b[3m"
-close_blurred_italic <- function() if (.rlang_cli_has_ansi()) "\u001b[23m\u001b[22m"
+open_yellow_italic   <- function() if (has_ansi()) "\u001b[33m\u001b[3m"
+open_blurred_italic  <- function() if (has_ansi()) "\u001b[2m\u001b[3m"
+close_blurred_italic <- function() if (has_ansi()) "\u001b[23m\u001b[22m"
 
 
 open_style <- function(style) {
