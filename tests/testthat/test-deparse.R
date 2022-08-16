@@ -31,8 +31,8 @@ test_that("line_push() handles the nchar(line) == boundary case", {
 
 test_that("line_push() strips ANSI codes before computing overflow", {
   local_options(crayon.enabled = TRUE)
-  if (!has_crayon()) {
-    skip("test needs crayon")
+  if (!.rlang_cli_has_ansi()) {
+    skip("test needs cli")
   }
   expect_identical(length(line_push("foo", open_blue(), width = 3L)), 2L)
   expect_identical(length(line_push("foo", open_blue(), width = 3L, has_colour = TRUE)), 1L)

@@ -571,7 +571,7 @@ quo_deparse <- function(x, lines = new_quo_deparser()) {
 
 new_quo_deparser <- function(width = peek_option("width"),
                              max_elements = 5L,
-                             crayon = has_crayon()) {
+                             crayon = .rlang_cli_has_ansi()) {
   lines <- new_lines(
     width = width,
     max_elements = max_elements,

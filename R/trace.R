@@ -766,7 +766,7 @@ trace_as_tree <- function(trace,
     trace$node_type <- rep_len("main", nrow(trace))
   }
 
-  if (has_crayon()) {
+  if (.rlang_cli_has_ansi()) {
     # Detect runs of namespaces/global
     ns <- trace$namespace
     ns <- ifelse(is.na(ns) & trace$scope == "global", "global", ns)
