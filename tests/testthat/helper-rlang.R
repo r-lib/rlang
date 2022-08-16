@@ -33,7 +33,7 @@ run_code <- function(code) {
   out <- run_script(file)
   list(
     success = identical(attr(out, "status"), 0L),
-    output = unstructure(out)
+    output = vec_unstructure(out)
   )
 }
 
@@ -75,7 +75,7 @@ Rscript <- function(args, ...) {
   ))
 
   list(
-    out = unstructure(out),
+    out = vec_unstructure(out),
     status = attr(out, "status")
   )
 }

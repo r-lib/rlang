@@ -217,6 +217,11 @@ strip_trailing_newline <- function(x) {
 }
 
 unstructure <- function(x) {
+  attributes(x) <- NULL
+  x
+}
+
+vec_unstructure <- function(x) {
   out <- x
   attributes(out) <- NULL
 

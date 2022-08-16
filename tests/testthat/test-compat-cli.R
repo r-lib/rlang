@@ -146,7 +146,7 @@ cli::test_that_cli(configs = c("plain", "ansi"), "cli_escape() conditionally esc
 test_that("hyperlinks are supported", {
   local_options(cli.hyperlink = FALSE)
   expect_equal(
-    unstructure(style_hyperlink("foo", "bar")),
+    vec_unstructure(style_hyperlink("foo", "bar")),
     "foo"
   )
 

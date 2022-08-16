@@ -483,7 +483,7 @@ rlang_as_list <- function(x) {
     # `x` explicitly inherits from `"list"`, which we take it to mean
     # that it has list storage (i.e. it's not a class like POSIXlt,
     # it's not proxied, and it's not a scalar object like `"lm"`)
-    out <- unstructure(x)
+    out <- vec_unstructure(x)
   } else if (is.list(x)) {
     out <- rlang_as_list_from_list_impl(x)
   } else {

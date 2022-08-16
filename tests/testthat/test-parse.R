@@ -39,14 +39,14 @@ test_that("parse_exprs() and parse_quos() support empty input", {
 
 test_that("parse_exprs() supports empty expressions (#954)", {
   x <- c("1", "", "2")
-  expect_equal(unstructure(parse_exprs(x)), list(1, 2))
-  expect_equal(unstructure(parse_exprs("")), list())
+  expect_equal(vec_unstructure(parse_exprs(x)), list(1, 2))
+  expect_equal(vec_unstructure(parse_exprs("")), list())
 })
 
 test_that("parse_exprs() preserves names (#808)", {
   x <- c(a = "1 + 2; 3", b = "", c = "4")
   expect_identical(
-    unstructure(parse_exprs(x)),
+    vec_unstructure(parse_exprs(x)),
     alist(a = 1 + 2, a = 3, c = 4)
   )
 })
