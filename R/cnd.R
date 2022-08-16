@@ -416,12 +416,12 @@ format.rlang_error <- function(x,
       hidden <- sprintf(hidden, n_hidden)
 
       last_trace <- style_rlang_run("last_trace(drop = FALSE)")
-      reminder <- silver(sprintf("Run %s to see %s.", last_trace, hidden))
+      reminder <- col_silver(sprintf("Run %s to see %s.", last_trace, hidden))
 
       out <- paste_line(out, reminder)
     } else if (simplify == "branch") {
       last_trace <- style_rlang_run("last_trace()")
-      reminder <- silver(paste0("Run `", last_trace, "` to see the full context."))
+      reminder <- col_silver(paste0("Run `", last_trace, "` to see the full context."))
       out <- paste_line(out, reminder)
     }
   }
@@ -584,7 +584,7 @@ paste_trace <- function(x, trace, simplify, ...) {
     ...,
     simplify = simplify
   )
-  paste_line(x, bold("Backtrace:"), trace_lines)
+  paste_line(x, style_bold("Backtrace:"), trace_lines)
 }
 
 cnd_type_header <- function(cnd) {
@@ -595,7 +595,7 @@ cnd_type_header <- function(cnd) {
     class <- c(type, class)
   }
 
-  bold(format_cls(class))
+  style_bold(format_cls(class))
 }
 
 testthat_print_cnd <- function(x, ...) {

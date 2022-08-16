@@ -1382,7 +1382,7 @@ format_onerror_backtrace <- function(cnd, opt = peek_backtrace_on_error()) {
       } else {
         last_error <- style_rlang_run("last_error()")
       }
-      reminder <- silver(paste0("Run `", last_error, "` to see where the error occurred."))
+      reminder <- col_silver(paste0("Run `", last_error, "` to see where the error occurred."))
     } else {
       reminder <- NULL
     }

@@ -508,7 +508,7 @@ cli_branch <- function(tree,
   indices <- paste0(" ", indices, ". ")
   padding <- spaces(nchar(indices[[1]]))
 
-  lines <- paste0(silver(indices), lines)
+  lines <- paste0(col_silver(indices), lines)
 
   src_locs <- tree$src_loc
   src_locs <- map_if(src_locs, nzchar, ~ paste0(padding, "  at ", .x))

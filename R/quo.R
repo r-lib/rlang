@@ -493,7 +493,7 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
 #' @export
 print.quosure <- function(x, ...) {
   cat_line(.trailing = FALSE,
-    bold("<quosure>"),
+    style_bold("<quosure>"),
     "expr: "
   )
   quo_print(x)
@@ -652,7 +652,7 @@ quo_env_print <- function(env) {
   nm <- env_label(env)
 
   if (!is_reference(env, global_env()) && !is_reference(env, empty_env())) {
-    nm <- blue(nm)
+    nm <- col_blue(nm)
   }
 
   cat_line(nm)

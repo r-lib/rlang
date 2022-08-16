@@ -37,18 +37,6 @@ paste_line <- function(..., .trailing = FALSE) {
   }
 }
 
-red       <- function(x) if (has_cli) unstructure(cli::col_red(x))         else x
-blue      <- function(x) if (has_cli) unstructure(cli::col_blue(x))        else x
-green     <- function(x) if (has_cli) unstructure(cli::col_green(x))       else x
-yellow    <- function(x) if (has_cli) unstructure(cli::col_yellow(x))      else x
-magenta   <- function(x) if (has_cli) unstructure(cli::col_magenta(x))     else x
-cyan      <- function(x) if (has_cli) unstructure(cli::col_cyan(x))        else x
-silver    <- function(x) if (has_cli) unstructure(cli::col_silver(x))      else x
-blurred   <- function(x) if (has_cli) unstructure(cli::style_blurred(x))   else x
-bold      <- function(x) if (has_cli) unstructure(cli::style_bold(x))      else x
-italic    <- function(x) if (has_cli) unstructure(cli::style_italic(x))    else x
-underline <- function(x) if (has_cli) unstructure(cli::style_underline(x)) else x
-
 open_red     <- function() if (has_ansi()) open_style("red")
 open_blue    <- function() if (has_ansi()) open_style("blue")
 open_green   <- function() if (has_ansi()) open_style("green")
@@ -170,15 +158,15 @@ on_load({
 
 info <- function() {
   i <- if (has_cli) cli::symbol$info else "i"
-  blue(i)
+  col_blue(i)
 }
 cross <- function() {
   x <- if (has_cli) cli::symbol$cross else "x"
-  red(x)
+  col_red(x)
 }
 tick <- function() {
   x <- if (has_cli) cli::symbol$tick else "v"
-  green(x)
+  col_green(x)
 }
 bullet <- function() {
   x <- if (has_cli) cli::symbol$bullet else "*"
@@ -199,7 +187,7 @@ style_dim_soft <- function(x) {
   if (cli::num_ansi_colors() >= 256) {
     crayon::make_style(grDevices::grey(0.6), colors =  256)(x)
   } else {
-    silver(x)
+    col_silver(x)
   }
 }
 
