@@ -662,7 +662,7 @@ env_print <- function(env = caller_env()) {
 
   header <- format_cls(sprintf("environment: %s", env_label(env)))
   cat_line(
-    bold(paste0(header, locked)),
+    style_bold(paste0(header, locked)),
     sprintf("Parent: %s", parent)
   )
 

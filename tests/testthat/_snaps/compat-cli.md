@@ -484,198 +484,159 @@
     Code
       col_black("foo")
     Output
-      <cli_ansi_string>
-      [1] [30mfoo[39m
+      [1] "\033[30mfoo\033[39m"
     Code
       col_blue("foo")
     Output
-      <cli_ansi_string>
-      [1] [34mfoo[39m
+      [1] "\033[34mfoo\033[39m"
     Code
       col_cyan("foo")
     Output
-      <cli_ansi_string>
-      [1] [36mfoo[39m
+      [1] "\033[36mfoo\033[39m"
     Code
       col_green("foo")
     Output
-      <cli_ansi_string>
-      [1] [32mfoo[39m
+      [1] "\033[32mfoo\033[39m"
     Code
       col_magenta("foo")
     Output
-      <cli_ansi_string>
-      [1] [35mfoo[39m
+      [1] "\033[35mfoo\033[39m"
     Code
       col_red("foo")
     Output
-      <cli_ansi_string>
-      [1] [31mfoo[39m
+      [1] "\033[31mfoo\033[39m"
     Code
       col_white("foo")
     Output
-      <cli_ansi_string>
-      [1] [37mfoo[39m
+      [1] "\033[37mfoo\033[39m"
     Code
       col_yellow("foo")
     Output
-      <cli_ansi_string>
-      [1] [33mfoo[39m
+      [1] "\033[33mfoo\033[39m"
     Code
       col_grey("foo")
     Output
-      <cli_ansi_string>
-      [1] [90mfoo[39m
+      [1] "\033[90mfoo\033[39m"
     Code
       col_silver("foo")
     Output
-      <cli_ansi_string>
-      [1] [90mfoo[39m
+      [1] "\033[90mfoo\033[39m"
     Code
       col_none("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[24m[27m[28m[29m[49mfoo[39m
+      [1] "\033[0m\033[22m\033[23m\033[24m\033[27m\033[28m\033[29m\033[49mfoo\033[39m"
     Code
       bg_black("foo")
     Output
-      <cli_ansi_string>
-      [1] [40mfoo[49m
+      [1] "\033[40mfoo\033[49m"
     Code
       bg_blue("foo")
     Output
-      <cli_ansi_string>
-      [1] [44mfoo[49m
+      [1] "\033[44mfoo\033[49m"
     Code
       bg_cyan("foo")
     Output
-      <cli_ansi_string>
-      [1] [46mfoo[49m
+      [1] "\033[46mfoo\033[49m"
     Code
       bg_green("foo")
     Output
-      <cli_ansi_string>
-      [1] [42mfoo[49m
+      [1] "\033[42mfoo\033[49m"
     Code
       bg_magenta("foo")
     Output
-      <cli_ansi_string>
-      [1] [45mfoo[49m
+      [1] "\033[45mfoo\033[49m"
     Code
       bg_red("foo")
     Output
-      <cli_ansi_string>
-      [1] [41mfoo[49m
+      [1] "\033[41mfoo\033[49m"
     Code
       bg_white("foo")
     Output
-      <cli_ansi_string>
-      [1] [47mfoo[49m
+      [1] "\033[47mfoo\033[49m"
     Code
       bg_yellow("foo")
     Output
-      <cli_ansi_string>
-      [1] [43mfoo[49m
+      [1] "\033[43mfoo\033[49m"
     Code
       bg_none("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[24m[27m[28m[29m[39mfoo[49m
+      [1] "\033[0m\033[22m\033[23m\033[24m\033[27m\033[28m\033[29m\033[39mfoo\033[49m"
     Code
       style_dim("foo")
     Output
-      <cli_ansi_string>
-      [1] [2mfoo[22m
+      [1] "\033[2mfoo\033[22m"
     Code
       style_blurred("foo")
     Output
-      <cli_ansi_string>
-      [1] [2mfoo[22m
+      [1] "\033[2mfoo\033[22m"
     Code
       style_bold("foo")
     Output
-      <cli_ansi_string>
-      [1] [1mfoo[22m
+      [1] "\033[1mfoo\033[22m"
     Code
       style_hidden("foo")
     Output
-      <cli_ansi_string>
-      [1] [8mfoo[28m
+      [1] "\033[8mfoo\033[28m"
     Code
       style_inverse("foo")
     Output
-      <cli_ansi_string>
-      [1] [7mfoo[27m
+      [1] "\033[7mfoo\033[27m"
     Code
       style_italic("foo")
     Output
-      <cli_ansi_string>
-      [1] [3mfoo[23m
+      [1] "\033[3mfoo\033[23m"
     Code
       style_strikethrough("foo")
     Output
-      <cli_ansi_string>
-      [1] [9mfoo[29m
+      [1] "\033[9mfoo\033[29m"
     Code
       style_underline("foo")
     Output
-      <cli_ansi_string>
-      [1] [4mfoo[24m
+      [1] "\033[4mfoo\033[24m"
     Code
       style_no_dim("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[23m[24m[27m[28m[29m[39m[49mfoo[22m
+      [1] "\033[0m\033[23m\033[24m\033[27m\033[28m\033[29m\033[39m\033[49mfoo\033[22m"
     Code
       style_no_blurred("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[23m[24m[27m[28m[29m[39m[49mfoo[22m
+      [1] "\033[0m\033[23m\033[24m\033[27m\033[28m\033[29m\033[39m\033[49mfoo\033[22m"
     Code
       style_no_bold("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[23m[24m[27m[28m[29m[39m[49mfoo[22m
+      [1] "\033[0m\033[23m\033[24m\033[27m\033[28m\033[29m\033[39m\033[49mfoo\033[22m"
     Code
       style_no_hidden("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[24m[27m[29m[39m[49mfoo[28m
+      [1] "\033[0m\033[22m\033[23m\033[24m\033[27m\033[29m\033[39m\033[49mfoo\033[28m"
     Code
       style_no_inverse("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[24m[28m[29m[39m[49mfoo[27m
+      [1] "\033[0m\033[22m\033[23m\033[24m\033[28m\033[29m\033[39m\033[49mfoo\033[27m"
     Code
       style_no_italic("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[24m[27m[28m[29m[39m[49mfoo[23m
+      [1] "\033[0m\033[22m\033[24m\033[27m\033[28m\033[29m\033[39m\033[49mfoo\033[23m"
     Code
       style_no_strikethrough("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[24m[27m[28m[39m[49mfoo[29m
+      [1] "\033[0m\033[22m\033[23m\033[24m\033[27m\033[28m\033[39m\033[49mfoo\033[29m"
     Code
       style_no_underline("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[27m[28m[29m[39m[49mfoo[24m
+      [1] "\033[0m\033[22m\033[23m\033[27m\033[28m\033[29m\033[39m\033[49mfoo\033[24m"
     Code
       style_reset("foo")
     Output
-      <cli_ansi_string>
-      [1] [0mfoo[0m[22m[23m[24m[27m[28m[29m[39m[49m
+      [1] "\033[0mfoo\033[0m\033[22m\033[23m\033[24m\033[27m\033[28m\033[29m\033[39m\033[49m"
     Code
       style_no_colour("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[24m[27m[28m[29m[49mfoo[39m
+      [1] "\033[0m\033[22m\033[23m\033[24m\033[27m\033[28m\033[29m\033[49mfoo\033[39m"
     Code
       style_no_bg_colour("foo")
     Output
-      <cli_ansi_string>
-      [1] [0m[22m[23m[24m[27m[28m[29m[39mfoo[49m
+      [1] "\033[0m\033[22m\033[23m\033[24m\033[27m\033[28m\033[29m\033[39mfoo\033[49m"
 
 # can create symbols with cli [plain]
 
@@ -817,23 +778,19 @@
     Code
       ansi_info()
     Output
-      <cli_ansi_string>
-      [1] [34mi[39m
+      [1] "\033[34mi\033[39m"
     Code
       ansi_cross()
     Output
-      <cli_ansi_string>
-      [1] [31mx[39m
+      [1] "\033[31mx\033[39m"
     Code
       ansi_tick()
     Output
-      <cli_ansi_string>
-      [1] [32mv[39m
+      [1] "\033[32mv\033[39m"
     Code
       ansi_bullet()
     Output
-      <cli_ansi_string>
-      [1] [36m*[39m
+      [1] "\033[36m*\033[39m"
     Code
       ansi_arrow()
     Output
@@ -841,8 +798,7 @@
     Code
       ansi_alert()
     Output
-      <cli_ansi_string>
-      [1] [33m![39m
+      [1] "\033[33m!\033[39m"
 
 # can create ANSI symbols with cli [unicode]
 
@@ -876,23 +832,19 @@
     Code
       ansi_info()
     Output
-      <cli_ansi_string>
-      [1] [34mℹ[39m
+      [1] "\033[34mℹ\033[39m"
     Code
       ansi_cross()
     Output
-      <cli_ansi_string>
-      [1] [31m✖[39m
+      [1] "\033[31m✖\033[39m"
     Code
       ansi_tick()
     Output
-      <cli_ansi_string>
-      [1] [32m✔[39m
+      [1] "\033[32m✔\033[39m"
     Code
       ansi_bullet()
     Output
-      <cli_ansi_string>
-      [1] [36m•[39m
+      [1] "\033[36m•\033[39m"
     Code
       ansi_arrow()
     Output
@@ -900,8 +852,7 @@
     Code
       ansi_alert()
     Output
-      <cli_ansi_string>
-      [1] [33m![39m
+      [1] "\033[33m!\033[39m"
 
 # can format messages [plain]
 
