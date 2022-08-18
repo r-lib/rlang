@@ -230,8 +230,8 @@ But what if you want to take multiple columns in a single named argument rather 
 <p>However this parsing approach quickly shows limits:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `group_by()`: Can't add columns.</span></span>
-<span><span class="co">#&gt; ℹ `..1 = list2(cyl, am)`.</span></span>
-<span><span class="co">#&gt; ℹ `..1` must be size 32 or 1, not 2.</span></span></code></pre><p></p></div>
+<span><span class="co">#&gt; i `..1 = list2(cyl, am)`.</span></span>
+<span><span class="co">#&gt; i `..1` must be size 32 or 1, not 2.</span></span></code></pre><p></p></div>
 <p>Also, it would be better for overall consistency of interfaces to use the tidyselect syntax <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> for passing multiple columns. In general, we recommend to use either the tidyselect or the external defusal approaches.</p>
     </div>
 
