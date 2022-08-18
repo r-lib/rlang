@@ -126,8 +126,8 @@ However this parsing approach quickly shows limits:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(list2(cyl, am))
 #> Error in `group_by()`: Can't add columns.
-#> ℹ `..1 = list2(cyl, am)`.
-#> ℹ `..1` must be size 32 or 1, not 2.
+#> i `..1 = list2(cyl, am)`.
+#> i `..1` must be size 32 or 1, not 2.
 }\if{html}{\out{</div>}}
 
 Also, it would be better for overall consistency of interfaces to use the tidyselect syntax \code{c()} for passing multiple columns. In general, we recommend to use either the tidyselect or the external defusal approaches.
