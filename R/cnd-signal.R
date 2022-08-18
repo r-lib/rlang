@@ -327,12 +327,7 @@ needs_signal <- function(frequency,
       format_arg(".frequency")
     ))
   }
-  if (!is_string(id)) {
-    abort(sprintf(
-      "%s must be a string.",
-      format_arg(".frequency")
-    ))
-  }
+  check_string(id, arg = ".frequency")
 
   sentinel <- env[[id]]
   if (is_null(sentinel)) {
