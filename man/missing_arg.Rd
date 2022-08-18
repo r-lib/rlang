@@ -53,15 +53,9 @@ missing argument:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) base::missing(x)
 
 fn()
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] TRUE
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
+#> [1] TRUE
+fn(1)
+#> [1] FALSE
 }\if{html}{\out{</div>}}
 
 This only happens within a function. If the default value has been
@@ -69,9 +63,7 @@ generated in a calling function, it is never treated as missing:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{caller <- function(x = 1) fn(x)
 caller()
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
+#> [1] FALSE
 }\if{html}{\out{</div>}}
 
 \code{rlang::is_missing()} simplifies these rules by never treating
@@ -80,15 +72,9 @@ default arguments as missing, even in internal contexts:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{fn <- function(x = 1) rlang::is_missing(x)
 
 fn()
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{## [1] FALSE
+#> [1] FALSE
+fn(1)
+#> [1] FALSE
 }\if{html}{\out{</div>}}
 
 This is a little less flexible because you can't specialise

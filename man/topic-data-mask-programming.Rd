@@ -224,6 +224,7 @@ mtcars \%>\% tidyr::pivot_longer(all_of(vars))
 #> 3    21   160   110   3.9  2.88  17.0     0     4     4 cyl       6
 #> 4    21   160   110   3.9  2.88  17.0     0     4     4 am        1
 #> # ... with 60 more rows
+#> # i Use `print(n = ...)` to see more rows
 }\if{html}{\out{</div>}}
 
 If the function does not take a tidy selection, it might be possible to use a \emph{bridge pattern}. This option is presented in the bridge section below. If a bridge is impossible or inconvenient, a little metaprogramming with the \link[=topic-metaprogramming]{symbolise-and-inject pattern} can help.

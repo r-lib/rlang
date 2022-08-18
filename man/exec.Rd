@@ -12,7 +12,7 @@ exec(.fn, ..., .env = caller_env())
 \item{...}{<\link[=dyn-dots]{dynamic}> Arguments for \code{.fn}.}
 
 \item{.env}{Environment in which to evaluate the call. This will be
-most useful if \code{f} is a string, or the function has side-effects.}
+most useful if \code{.fn} is a string, or the function has side-effects.}
 }
 \description{
 This function constructs and evaluates a call to \code{.fn}.
