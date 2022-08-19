@@ -262,49 +262,50 @@ extern uint64_t XXH3_64bits(const void*, size_t);
 
 r_visible
 void R_init_rlang(DllInfo* dll) {
-  R_RegisterCCallable("rlang", "rlang_arg_match",           (DL_FUNC) &arg_match_legacy);
-  R_RegisterCCallable("rlang", "rlang_arg_match_2",         (DL_FUNC) &cci_arg_match);
-  R_RegisterCCallable("rlang", "rlang_as_data_mask_3.0.0",  (DL_FUNC) &ffi_as_data_mask);
-  R_RegisterCCallable("rlang", "rlang_as_data_pronoun",     (DL_FUNC) &ffi_as_data_pronoun);
-  R_RegisterCCallable("rlang", "rlang_env_unbind",          (DL_FUNC) &r_env_unbind);
-  R_RegisterCCallable("rlang", "rlang_eval_tidy",           (DL_FUNC) &rlang_eval_tidy);
-  R_RegisterCCallable("rlang", "rlang_format_error_arg",    (DL_FUNC) &rlang_format_error_arg);
-  R_RegisterCCallable("rlang", "rlang_is_quosure",          (DL_FUNC) &is_quosure);
-  R_RegisterCCallable("rlang", "rlang_names_as_unique",     (DL_FUNC) &names_as_unique);
-  R_RegisterCCallable("rlang", "rlang_new_data_mask_3.0.0", (DL_FUNC) &ffi_new_data_mask);
-  R_RegisterCCallable("rlang", "rlang_new_quosure",         (DL_FUNC) &ffi_new_quosure);
-  R_RegisterCCallable("rlang", "rlang_quo_get_env",         (DL_FUNC) &ffi_quo_get_env);
-  R_RegisterCCallable("rlang", "rlang_quo_get_expr",        (DL_FUNC) &ffi_quo_get_expr);
-  R_RegisterCCallable("rlang", "rlang_quo_set_env",         (DL_FUNC) &ffi_quo_set_env);
-  R_RegisterCCallable("rlang", "rlang_quo_set_expr",        (DL_FUNC) &ffi_quo_set_expr);
-  R_RegisterCCallable("rlang", "rlang_stop_internal",       (DL_FUNC) &rlang_stop_internal);
-  R_RegisterCCallable("rlang", "rlang_stop_internal2",      (DL_FUNC) &rlang_stop_internal2);
+  R_RegisterCCallable("rlang", "rlang_arg_match",              (DL_FUNC) &arg_match_legacy);
+  R_RegisterCCallable("rlang", "rlang_arg_match_2",            (DL_FUNC) &cci_arg_match);
+  R_RegisterCCallable("rlang", "rlang_as_data_mask_3.0.0",     (DL_FUNC) &ffi_as_data_mask);
+  R_RegisterCCallable("rlang", "rlang_as_data_pronoun",        (DL_FUNC) &ffi_as_data_pronoun);
+  R_RegisterCCallable("rlang", "rlang_env_unbind",             (DL_FUNC) &r_env_unbind);
+  R_RegisterCCallable("rlang", "rlang_eval_tidy",              (DL_FUNC) &rlang_eval_tidy);
+  R_RegisterCCallable("rlang", "rlang_format_error_arg",       (DL_FUNC) &rlang_format_error_arg);
+  R_RegisterCCallable("rlang", "rlang_is_quosure",             (DL_FUNC) &is_quosure);
+  R_RegisterCCallable("rlang", "rlang_names_as_unique",        (DL_FUNC) &names_as_unique);
+  R_RegisterCCallable("rlang", "rlang_new_data_mask_3.0.0",    (DL_FUNC) &ffi_new_data_mask);
+  R_RegisterCCallable("rlang", "rlang_new_quosure",            (DL_FUNC) &ffi_new_quosure);
+  R_RegisterCCallable("rlang", "rlang_obj_type_friendly_full", (DL_FUNC) &rlang_obj_type_friendly_full);
+  R_RegisterCCallable("rlang", "rlang_quo_get_env",            (DL_FUNC) &ffi_quo_get_env);
+  R_RegisterCCallable("rlang", "rlang_quo_get_expr",           (DL_FUNC) &ffi_quo_get_expr);
+  R_RegisterCCallable("rlang", "rlang_quo_set_env",            (DL_FUNC) &ffi_quo_set_env);
+  R_RegisterCCallable("rlang", "rlang_quo_set_expr",           (DL_FUNC) &ffi_quo_set_expr);
+  R_RegisterCCallable("rlang", "rlang_stop_internal",          (DL_FUNC) &rlang_stop_internal);
+  R_RegisterCCallable("rlang", "rlang_stop_internal2",         (DL_FUNC) &rlang_stop_internal2);
 
   r_obj* r_as_function(r_obj* x, const char* arg);
-  R_RegisterCCallable("rlang", "rlang_as_function",         (DL_FUNC) &r_as_function);
+  R_RegisterCCallable("rlang", "rlang_as_function",            (DL_FUNC) &r_as_function);
 
-  R_RegisterCCallable("rlang", "rlang_xxh3_64bits",         (DL_FUNC) &XXH3_64bits);
+  R_RegisterCCallable("rlang", "rlang_xxh3_64bits",            (DL_FUNC) &XXH3_64bits);
 
   // Maturing
-  R_RegisterCCallable("rlang", "rlang_env_dots_list",       (DL_FUNC) &rlang_env_dots_list);
-  R_RegisterCCallable("rlang", "rlang_env_dots_values",     (DL_FUNC) &rlang_env_dots_values);
-  R_RegisterCCallable("rlang", "rlang_is_splice_box",       (DL_FUNC) &is_splice_box);
-  R_RegisterCCallable("rlang", "rlang_obj_encode_utf8",     (DL_FUNC) &obj_encode_utf8);
-  R_RegisterCCallable("rlang", "rlang_str_as_symbol",       (DL_FUNC) &r_str_as_symbol);
-  R_RegisterCCallable("rlang", "rlang_sym_as_character",    (DL_FUNC) &ffi_sym_as_character);
-  R_RegisterCCallable("rlang", "rlang_sym_as_string",       (DL_FUNC) &ffi_sym_as_string);
-  R_RegisterCCallable("rlang", "rlang_unbox",               (DL_FUNC) &rlang_unbox);
+  R_RegisterCCallable("rlang", "rlang_env_dots_list",          (DL_FUNC) &rlang_env_dots_list);
+  R_RegisterCCallable("rlang", "rlang_env_dots_values",        (DL_FUNC) &rlang_env_dots_values);
+  R_RegisterCCallable("rlang", "rlang_is_splice_box",          (DL_FUNC) &is_splice_box);
+  R_RegisterCCallable("rlang", "rlang_obj_encode_utf8",        (DL_FUNC) &obj_encode_utf8);
+  R_RegisterCCallable("rlang", "rlang_str_as_symbol",          (DL_FUNC) &r_str_as_symbol);
+  R_RegisterCCallable("rlang", "rlang_sym_as_character",       (DL_FUNC) &ffi_sym_as_character);
+  R_RegisterCCallable("rlang", "rlang_sym_as_string",          (DL_FUNC) &ffi_sym_as_string);
+  R_RegisterCCallable("rlang", "rlang_unbox",                  (DL_FUNC) &rlang_unbox);
 
   // Experimental
-  R_RegisterCCallable("rlang", "rlang_squash_if",           (DL_FUNC) &r_squash_if);
+  R_RegisterCCallable("rlang", "rlang_squash_if",              (DL_FUNC) &r_squash_if);
 
   // Compatibility
-  R_RegisterCCallable("rlang", "rlang_as_data_mask",        (DL_FUNC) &ffi_as_data_mask_compat);
-  R_RegisterCCallable("rlang", "rlang_new_data_mask",       (DL_FUNC) &ffi_new_data_mask_compat);
+  R_RegisterCCallable("rlang", "rlang_as_data_mask",           (DL_FUNC) &ffi_as_data_mask_compat);
+  R_RegisterCCallable("rlang", "rlang_new_data_mask",          (DL_FUNC) &ffi_new_data_mask_compat);
 
   // Only for debugging - no stability guaranteed
-  R_RegisterCCallable("rlang", "rlang_print_backtrace",     (DL_FUNC) &rlang_print_backtrace);
-  R_RegisterCCallable("rlang", "rlang_env_print",           (DL_FUNC) &rlang_env_print);
+  R_RegisterCCallable("rlang", "rlang_print_backtrace",        (DL_FUNC) &rlang_print_backtrace);
+  R_RegisterCCallable("rlang", "rlang_env_print",              (DL_FUNC) &rlang_env_print);
 
   R_registerRoutines(dll, NULL, r_callables, NULL, externals);
   R_useDynamicSymbols(dll, FALSE);

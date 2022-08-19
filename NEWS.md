@@ -3,6 +3,10 @@
 * Fixed backtrace display with calls containing long lists of
   arguments (#1456).
 
+* New `r_obj_type_friendly()` function in the C library (#1463). It
+  interfaces with `obj_type_friendly()` from `compat-obj-type.R` via a
+  C callable.
+
 
 # rlang 1.0.4
 

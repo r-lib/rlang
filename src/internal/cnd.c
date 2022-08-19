@@ -156,13 +156,13 @@ r_obj* ffi_new_condition(r_obj* class,
     msg = r_chrs.empty_string;
   } else if (r_typeof(msg) != R_TYPE_character) {
     const char* arg = r_format_error_arg(r_sym("message"));
-    const char* what = obj_type_friendly(msg);
+    const char* what = r_obj_type_friendly(msg);
     r_abort("%s must be a character vector, not %s.", arg, what);
   }
 
   if (r_typeof(class) != R_TYPE_character) {
     const char* arg = r_format_error_arg(r_sym("class"));
-    const char* what = obj_type_friendly(class);
+    const char* what = r_obj_type_friendly(class);
     r_abort("%s must be a character vector, not %s.", arg, what);
   }
 
@@ -202,8 +202,12 @@ r_obj* new_condition_names(r_obj* data) {
   return nms;
 }
 
-const char* obj_type_friendly(r_obj* x) {
-  r_obj* out_obj = KEEP(r_eval_with_x(obj_type_friendly_call, x, rlang_ns_env));
+const char* rlang_obj_type_friendly_full(r_obj* x, bool value, bool length) {
+  r_obj* out_obj = KEEP(r_eval_with_xyz(obj_type_friendly_call,
+                                        x,
+                                        r_lgl(value),
+                                        r_lgl(length),
+                                        rlang_ns_env));
 
   if (!r_is_string(out_obj)) {
     r_stop_unexpected_type(r_typeof(out_obj));
@@ -219,12 +223,11 @@ const char* obj_type_friendly(r_obj* x) {
   return out;
 }
 
-
 void rlang_init_cnd(r_obj* ns) {
   format_arg_call = r_parse("format_arg(x)");
   r_preserve(format_arg_call);
 
-  obj_type_friendly_call = r_parse("obj_type_friendly(x)");
+  obj_type_friendly_call = r_parse("obj_type_friendly(x, y, z)");
   r_preserve(obj_type_friendly_call);
 }
 

@@ -13,8 +13,20 @@ void r_no_return r_abort_call(r_obj* call, const char* fmt, ...);
 
 // Formats input as an argument, using cli if available. Returns a
 // vmax-protected string.
-extern const char* (*r_format_error_arg)(r_obj* arg);
+extern
+const char* (*r_format_error_arg)(r_obj* arg);
+
 const char* r_format_lazy_error_arg(struct r_lazy arg);
+
+// Return vmax-protected strings
+extern
+const char* (*r_obj_type_friendly_full)(r_obj* x, bool value, bool length);
+
+static inline
+const char* r_obj_type_friendly(r_obj* x) {
+  return r_obj_type_friendly_full(x, true, false);
+}
+
 
 extern
 r_no_return
