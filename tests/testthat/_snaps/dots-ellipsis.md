@@ -1,7 +1,13 @@
 # error if dots not used by another function
 
     Code
-      expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused")
+      (expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused"))
+    Output
+      <error/rlib_error_dots_unused>
+      Error in `f()`:
+      ! Arguments in `...` must be used.
+      x Problematic argument:
+      * c = 3
 
 # error if dots named
 

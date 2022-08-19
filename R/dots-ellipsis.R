@@ -44,6 +44,9 @@ check_dots_used <- function(env = caller_env(),
                             call = caller_env(),
                             error = NULL,
                             action = deprecated()) {
+  # Capture frame environment before `caller_env()` exits (#1448)
+  force(call)
+
   handler <- function() check_dots(env, error, action, call)
   inject(base::on.exit(!!call2(handler), add = TRUE), env)
   invisible()

@@ -20,7 +20,7 @@ test_that("error if dots not used by another function", {
   expect_error(f(x = 10, a = 1), NA)
 
   expect_snapshot({
-    expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused")
+    (expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused"))
   })
 })
 
