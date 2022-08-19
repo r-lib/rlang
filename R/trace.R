@@ -871,7 +871,7 @@ src_loc <- function(srcref) {
 
   style_hyperlink(
     paste0(file_trim, ":", line, ":", column),
-    paste0("file://", normalizePath(file)),
+    paste0("file://", normalizePath(file, mustWork = FALSE)),
     params = c(line = line, col = column)
   )
 }
