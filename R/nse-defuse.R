@@ -106,7 +106,7 @@ expr <- function(expr) {
 #'
 #' These are advanced tools. Make sure to first learn about the embrace
 #' operator `r link("{{")` in `r link("topic_data_mask_programming")`.
-#' `{{` is easier to work with with less theory, and it is sufficient
+#' `{{` is easier to work with less theory, and it is sufficient
 #' in most applications.
 #'
 #' @inheritParams dots_list

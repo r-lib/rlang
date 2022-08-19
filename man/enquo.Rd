@@ -66,7 +66,7 @@ using the \link[=topic-metaprogramming]{defuse-and-inject} pattern.
 
 These are advanced tools. Make sure to first learn about the embrace
 operator \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} in \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}.
-\verb{\{\{} is easier to work with with less theory, and it is sufficient
+\verb{\{\{} is easier to work with less theory, and it is sufficient
 in most applications.
 }
 \section{Implicit injection}{
