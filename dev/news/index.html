@@ -100,7 +100,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li>Fixed backtrace display with calls containing long lists of arguments (<a href="https://github.com/r-lib/rlang/issues/1456" class="external-link">#1456</a>).</li></ul></div>
+<ul><li><p>Fixed backtrace display with calls containing long lists of arguments (<a href="https://github.com/r-lib/rlang/issues/1456" class="external-link">#1456</a>).</p></li>
+<li><p>New <code>r_obj_type_friendly()</code> function in the C library (<a href="https://github.com/r-lib/rlang/issues/1463" class="external-link">#1463</a>). It interfaces with <code>obj_type_friendly()</code> from <code>compat-obj-type.R</code> via a C callable.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.4" id="rlang-104">rlang 1.0.4<a class="anchor" aria-label="anchor" href="#rlang-104"></a></h2><p class="text-muted">CRAN release: 2022-07-12</p>
 <ul><li><p><code><a href="../reference/is_installed.html">is_installed()</a></code> no longer throws an error with irregular package names.</p></li>
