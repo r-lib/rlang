@@ -203,7 +203,7 @@ r_obj* new_condition_names(r_obj* data) {
 }
 
 const char* obj_type_friendly(r_obj* x) {
-  r_obj* out_obj = KEEP(r_eval_with_x(friendly_type_of_call, x, rlang_ns_env));
+  r_obj* out_obj = KEEP(r_eval_with_x(obj_type_friendly_call, x, rlang_ns_env));
 
   if (!r_is_string(out_obj)) {
     r_stop_unexpected_type(r_typeof(out_obj));
@@ -224,12 +224,12 @@ void rlang_init_cnd(r_obj* ns) {
   format_arg_call = r_parse("format_arg(x)");
   r_preserve(format_arg_call);
 
-  friendly_type_of_call = r_parse("obj_type_friendly(x)");
-  r_preserve(friendly_type_of_call);
+  obj_type_friendly_call = r_parse("obj_type_friendly(x)");
+  r_preserve(obj_type_friendly_call);
 }
 
 static
 r_obj* format_arg_call = NULL;
 
 static
-r_obj* friendly_type_of_call = NULL;
+r_obj* obj_type_friendly_call = NULL;

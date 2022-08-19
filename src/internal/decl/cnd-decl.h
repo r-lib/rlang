@@ -22,4 +22,4 @@ static
 r_obj* format_arg_call;
 
 static
-r_obj* friendly_type_of_call;
+r_obj* obj_type_friendly_call;
