@@ -240,8 +240,8 @@ check_installed <- function(pkg,
     "Would you like to install them?"
   )
   question <- paste_line(
-    paste0(info(), " ", header),
-    paste0(cross(), " ", question),
+    paste0(ansi_info(), " ", header),
+    paste0(ansi_cross(), " ", question),
     .trailing = TRUE
   )
 

@@ -134,9 +134,6 @@ pluralise <- function(n, singular, plural) {
     plural
   }
 }
-pluralise_n <- function(n, singular, plural) {
-  pluralise(n, singular, plural)
-}
 
 pad_spaces <- function(x, left = TRUE) {
   widths <- nchar(x)
@@ -155,33 +152,6 @@ on_load({
   has_cli_format <- is_installed("cli", version = "3.0.0")
   has_cli_start_app <- is_installed("cli", version = "2.0.0")
 })
-
-info <- function() {
-  i <- if (has_cli) cli::symbol$info else "i"
-  col_blue(i)
-}
-cross <- function() {
-  x <- if (has_cli) cli::symbol$cross else "x"
-  col_red(x)
-}
-tick <- function() {
-  x <- if (has_cli) cli::symbol$tick else "v"
-  col_green(x)
-}
-bullet <- function() {
-  x <- if (has_cli) cli::symbol$bullet else "*"
-
-  # Use small bullet if cli is too old.
-  # See https://github.com/r-lib/cli/issues/241
-  if (!has_cli_format && !is_string(x, "*")) {
-    x <- "\u2022"
-  }
-
-  cyan(x)
-}
-arrow_right <- function() {
-  if (has_cli) cli::symbol$arrow_right else ">"
-}
 
 style_dim_soft <- function(x) {
   if (cli::num_ansi_colors() >= 256) {
