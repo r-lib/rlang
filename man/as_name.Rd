@@ -22,10 +22,6 @@ to \emph{refer} to an object by its name.
 \item Use \code{\link[=as_label]{as_label()}} when you need to transform any kind of object to
 a string to \emph{represent} that object with a short description.
 }
-
-Expect \code{as_name()} to gain
-\href{https://principles.tidyverse.org/names-attribute.html#minimal-unique-universal}{name-repairing}
-features in the future.
 }
 \details{
 \code{rlang::as_name()} is the \emph{opposite} of \code{\link[base:name]{base::as.name()}}. If
