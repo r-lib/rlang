@@ -1,10 +1,9 @@
 # Revdeps
 
-## Failed to check (11)
+## Failed to check (10)
 
 |package       |version |error |warning |note |
 |:-------------|:-------|:-----|:-------|:----|
-|NA            |?       |      |        |     |
 |NA            |?       |      |        |     |
 |NA            |?       |      |        |     |
 |ggPMX         |?       |      |        |     |
