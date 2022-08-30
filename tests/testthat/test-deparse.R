@@ -709,3 +709,17 @@ test_that("call_deparse_highlight() handles long lists of arguments (#1456)", {
     "foo(aaaaaa = aaaaaa, bbbbbb = bbbbbb, cccccc = cccccc, dddddd = dddddd, eeeeee = eeeeee)"
   )
 })
+
+test_that("call_deparse_highlight() handles multi-line arguments (#1456)", {
+  out <- call_deparse_highlight(quote(
+    fn(arg = {
+      a
+      b
+    })
+  ), NULL)
+
+  expect_equal(
+    cli::ansi_strip(out),
+    "fn(arg = {\n  a\n  b\n})"
+  )
+})

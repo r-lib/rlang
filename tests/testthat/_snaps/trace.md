@@ -1441,7 +1441,8 @@
         7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
         9. \-rlang (local) f()
-       10.   \-rlang (local) <<CALL g(>>aaaaaaaaaaaa = aaaaaaaaaaaa, bbbbbbbbbbbb = bbbbbbbbbbbb, cccccccccccc = cccccccccccc, dddddddddddd = dddddddddddd, eeeeeeeeeeee = eeeeeeeeeeee, ...<<CALL )>>
+       10.   \-rlang (local) <<CALL g(>>aaaaaaaaaaaa = aaaaaaaaaaaa, bbbbbbbbbbbb = bbbbbbbbbbbb, cccccccccccc = cccccccccccc,
+        dddddddddddd = dddddddddddd, eeeeeeeeeeee = eeeeeeeeeeee, ...<<CALL )>>
 
 ---
 
@@ -1464,4 +1465,51 @@
         8. |   \-base::force(expr)
         9. \-rlang (local) f(arg = "bbbbbbbbbbbb")
        10.   \-rlang (local) <<CALL g(>><<ARG bbbbbbbbbbbb = bbbbbbbbbbbb>><<CALL )>>
+
+# can highlight multi-line arguments in backtrace (#1456)
+
+    Code
+      print_highlighted_trace(err)
+    Output
+      <error/rlang_error>
+      Error in <<CALL `g()`>>:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(f())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) f()
+       10.   \-rlang (local) <<CALL g(>>x = {
+        a
+        b
+      }, ...<<CALL )>>
+
+---
+
+    Code
+      print_highlighted_trace(err)
+    Output
+      <error/rlang_error>
+      Error in <<CALL `g()`>>:
+      ! foo
+      ---
+      Backtrace:
+           x
+        1. +-rlang:::catch_error(f(arg = "x"))
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) f(arg = "x")
+       10.   \-rlang (local) <<CALL g(>><<ARG x = { ... }>><<CALL )>>
 
