@@ -1,4 +1,4 @@
-# rlang 1.0.5
+# rlang (development version)
 
 * Fixed backtrace display with calls containing long lists of
   arguments (#1456).
