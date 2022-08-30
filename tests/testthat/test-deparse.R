@@ -30,7 +30,7 @@ test_that("line_push() handles the nchar(line) == boundary case", {
 })
 
 test_that("line_push() strips ANSI codes before computing overflow", {
-  local_options(crayon.enabled = TRUE)
+  local_options(cli.num_colors = 8L)
   if (!has_ansi()) {
     skip("test needs cli")
   }
