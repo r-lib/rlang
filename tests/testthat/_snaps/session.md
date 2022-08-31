@@ -132,7 +132,7 @@
     Output
       <error/rlang_error>
       Error in `caller()`:
-      ! `compare` must be one of ">", ">=", "<", or "<=".
+      ! `compare` must be one of ">", ">=", "==" ,"<", or "<=".
 
 # pkg_version_info() supports `cmp`
 
@@ -161,7 +161,15 @@
     Output
       <error/rlang_error>
       Error in `caller()`:
-      ! `compare` must be one of ">", ">=", "<", or "<=".
+      ! `compare` must be one of ">", ">=", "==" ,"<", or "<=".
+    Code
+      err(pkg_version_info("bar (== 1.0)", "1.0", "=="))
+    Output
+      <error/rlang_error>
+      Error in `caller()`:
+      ! Can't supply version in both `pkg` and `version`.
+      x Redundant versions:
+      * "bar (== 1.0)"
 
 # `action` is checked
 
