@@ -1,8 +1,10 @@
 # rlang (development version)
 
-# rlang 1.0.5
+* The `pkg_version_info()` function now allows `==` for package
+  version comparison (#1469, @kryekuzhinieri).
 
-* The `pkg_version_info()` function now allows `==` for package version comparison. ([#1469](https://github.com/r-lib/rlang/issues/1469), [@kryekuzhinieri](https://github.com/KryeKuzhinieri))
+
+# rlang 1.0.5
 
 * Fixed backtrace display with calls containing long lists of
   arguments (#1456).
