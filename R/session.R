@@ -130,9 +130,9 @@ pkg_version_info <- function(pkg,
     info$cmp[has_version] <- compare
   }
 
-  if (!all(detect_na(info$cmp) | info$cmp %in% c(">", ">=", "<", "<="))) {
+  if (!all(detect_na(info$cmp) | info$cmp %in% c(">", ">=", "<", "<=", "=="))) {
     msg <- sprintf(
-      '%s must be one of ">", ">=", "<", or "<=".',
+      '%s must be one of ">", ">=", "==" ,"<", or "<=".',
       format_arg("compare")
     )
     abort(msg, call = call)

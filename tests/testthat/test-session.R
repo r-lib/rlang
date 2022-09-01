@@ -143,31 +143,31 @@ test_that("`pkg` is type-checked", {
 test_that("pkg_version_info() parses info", {
   local_error_call(call("caller"))
 
-  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)")
+  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "pkg (== 2.1)")
   out <- pkg_version_info(pkg, NULL)
 
   expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz"),
-    cmp = c(">=", NA, ">"),
-    ver = c("1.0", NA, "3.0")
+    pkg = c("foo", "bar", "baz", "pkg"),
+    cmp = c(">=", NA, ">", "=="),
+    ver = c("1.0", NA, "3.0", "2.1")
   ))
 
-  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux")
-  out <- pkg_version_info(pkg, c(NA, "2.0", NA, NA))
+  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux", "dplyr (== 2.1)")
+  out <- pkg_version_info(pkg, c(NA, "2.0", NA, NA, NA))
 
   expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz", "quux"),
-    cmp = c(">=", ">=", ">", NA),
-    ver = c("1.0", "2.0", "3.0", NA)
+    pkg = c("foo", "bar", "baz", "quux", "dplyr"),
+    cmp = c(">=", ">=", ">", NA, "=="),
+    ver = c("1.0", "2.0", "3.0", NA, "2.1")
   ))
 
-  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux")
-  out <- pkg_version_info(pkg, c(NA, "2.0", NA, "4.0"))
+  pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux", "shiny (== 3.0)")
+  out <- pkg_version_info(pkg, c(NA, "2.0", NA, "4.0", NA))
 
   expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz", "quux"),
-    cmp = c(">=", ">=", ">", ">="),
-    ver = c("1.0", "2.0", "3.0", "4.0")
+    pkg = c("foo", "bar", "baz", "quux", "shiny"),
+    cmp = c(">=", ">=", ">", ">=", "=="),
+    ver = c("1.0", "2.0", "3.0", "4.0", "3.0")
   ))
 
   expect_snapshot({
@@ -180,13 +180,13 @@ test_that("pkg_version_info() parses info", {
 test_that("pkg_version_info() supports `cmp`", {
   local_error_call(call("caller"))
 
-  pkg <- c("foo", "bar", "baz")
-  out <- pkg_version_info(pkg, c("1.0", "2.0", "3.0"), c(NA, NA, "<"))
+  pkg <- c("foo", "bar", "baz", "shiny")
+  out <- pkg_version_info(pkg, c("1.0", "2.0", "3.0", "3.1"), c(NA, NA, "<", "=="))
 
   expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz"),
-    cmp = c(">=", ">=", "<"),
-    ver = c("1.0", "2.0", "3.0")
+    pkg = c("foo", "bar", "baz", "shiny"),
+    cmp = c(">=", ">=", "<", "=="),
+    ver = c("1.0", "2.0", "3.0", "3.1")
   ))
 
   expect_snapshot({
@@ -194,6 +194,7 @@ test_that("pkg_version_info() supports `cmp`", {
     err(pkg_version_info(c("foo", "bar", "baz"), c("1", "2", NA), c(NA, NA, ">=")))
     err(pkg_version_info(c("foo", "bar (>= 2.0)"), c(NA, "2.0"), c(NA, ">=")))
     err(pkg_version_info("foo", "1.0", "!="))
+    err(pkg_version_info("bar (== 1.0)", "1.0", "=="))
   })
 })
 
