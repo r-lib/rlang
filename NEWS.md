@@ -1,13 +1,13 @@
 # rlang 1.0.5
 
+* The `pkg_version_info()` function now allows `==` for package version comparison. ([#1469](https://github.com/r-lib/rlang/issues/1469), [@kryekuzhinieri](https://github.com/KryeKuzhinieri))
+
 * Fixed backtrace display with calls containing long lists of
   arguments (#1456).
 
 * New `r_obj_type_friendly()` function in the C library (#1463). It
   interfaces with `obj_type_friendly()` from `compat-obj-type.R` via a
   C callable.
-
-* The `pkg_version_info()` function now allows `==` for package version comparison. ([#1469](https://github.com/r-lib/rlang/issues/1469), [@kryekuzhinieri](https://github.com/KryeKuzhinieri))
 
 # rlang 1.0.4
 
