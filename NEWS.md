@@ -7,6 +7,7 @@
   interfaces with `obj_type_friendly()` from `compat-obj-type.R` via a
   C callable.
 
+* The `pkg_version_info()` function now allows `==` for package version comparison. ([#1469](https://github.com/r-lib/rlang/issues/1469), [@kryekuzhinieri](https://github.com/KryeKuzhinieri))
 
 # rlang 1.0.4
 
