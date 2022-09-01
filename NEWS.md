@@ -13,6 +13,7 @@
   interfaces with `obj_type_friendly()` from `compat-obj-type.R` via a
   C callable.
 
+
 # rlang 1.0.4
 
 * `is_installed()` no longer throws an error with irregular package
