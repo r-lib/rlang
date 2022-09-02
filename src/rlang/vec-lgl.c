@@ -26,8 +26,10 @@ r_ssize r_lgl_sum(r_obj* x, bool na_true) {
 }
 
 r_obj* r_lgl_which(r_obj* x, bool na_propagate) {
-  if (r_typeof(x) != R_TYPE_logical) {
-    r_stop_internal("Expected logical vector.");
+  const enum r_type type = r_typeof(x);
+
+  if (type != R_TYPE_logical) {
+    r_stop_unexpected_type(type);
   }
 
   const r_ssize n = r_length(x);
