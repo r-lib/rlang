@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The C API function `r_lgl_which()` now propagates the names of the input
+  (#1471).
+
 * The `pkg_version_info()` function now allows `==` for package
   version comparison (#1469, @kryekuzhinieri).
 

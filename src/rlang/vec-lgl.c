@@ -26,32 +26,65 @@ r_ssize r_lgl_sum(r_obj* x, bool na_true) {
 }
 
 r_obj* r_lgl_which(r_obj* x, bool na_propagate) {
-  if (r_typeof(x) != R_TYPE_logical) {
-    r_abort("Internal error: Expected logical vector in `r_lgl_which()`");
+  const enum r_type type = r_typeof(x);
+
+  if (type != R_TYPE_logical) {
+    r_stop_unexpected_type(type);
   }
 
-  r_ssize n = r_length(x);
-  const int* p_x = r_lgl_cbegin(x);
+  const r_ssize n = r_length(x);
+  const int* v_x = r_lgl_cbegin(x);
 
-  r_ssize which_n = r_lgl_sum(x, na_propagate);
+  r_obj* names = r_names(x);
+  const bool has_names = names != r_null;
+  r_obj* const* v_names = NULL;
+  if (has_names) {
+    v_names = r_chr_cbegin(names);
+  }
+
+  const r_ssize which_n = r_lgl_sum(x, na_propagate);
 
   if (which_n > INT_MAX) {
-    r_abort("Internal error: Can't fit result of `r_lgl_which()` in an integer vector");
+    r_stop_internal("Can't fit result in an integer vector.");
   }
 
   r_obj* which = KEEP(r_alloc_integer(which_n));
-  int* p_which = r_int_begin(which);
+  int* v_which = r_int_begin(which);
 
-  for (int i = 0; i < n; ++i) {
-    int elt = p_x[i];
+  r_obj* which_names = r_null;
+  if (has_names) {
+    which_names = r_alloc_character(which_n);
+    r_attrib_poke_names(which, which_names);
+  }
 
-    if (elt) {
-      if (na_propagate && elt == r_globals.na_lgl) {
-        *p_which = r_globals.na_int;
-        ++p_which;
-      } else if (elt != r_globals.na_lgl) {
-        *p_which = i + 1;
-        ++p_which;
+  r_ssize j = 0;
+
+  if (na_propagate) {
+    for (r_ssize i = 0; i < n; ++i) {
+      const int elt = v_x[i];
+
+      if (elt != 0) {
+        v_which[j] = (elt == r_globals.na_lgl) ? r_globals.na_int : i + 1;
+
+        if (has_names) {
+          r_chr_poke(which_names, j, v_names[i]);
+        }
+
+        ++j;
+      }
+    }
+  } else {
+    for (r_ssize i = 0; i < n; ++i) {
+      const int elt = v_x[i];
+
+      if (elt == 1) {
+        v_which[j] = i + 1;
+
+        if (has_names) {
+          r_chr_poke(which_names, j, v_names[i]);
+        }
+
+        ++j;
       }
     }
   }
