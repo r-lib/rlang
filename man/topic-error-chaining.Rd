@@ -37,7 +37,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 To create an error chain, you must first capture causal errors when they occur. We recommend using \code{try_fetch()} instead of \code{tryCatch()} or \code{withCallingHandlers()}.
 \itemize{
 \item Compared to \code{tryCatch()}, \code{try_fetch()} fully preserves the context of the error. This is important for debugging because it ensures complete backtraces are reported to users (e.g. via \code{last_error()}) and allows \code{options(error = recover)} to reach into the deepest error context.
-\item Compared to \code{withCallingHandlers()}, which also preserves the error context, \code{try_fetch()} is able to catch stack overflow errors on R versions >= 4.2.0 (unreleased at the time of writing).
+\item Compared to \code{withCallingHandlers()}, which also preserves the error context, \code{try_fetch()} is able to catch stack overflow errors on R versions >= 4.2.0.
 }
 
 In practice, \code{try_fetch()} works just like \code{tryCatch()}. It takes pairs of error class names and handling functions. To chain an error, simply rethrow it from an error handler by passing it as \code{parent} argument.
