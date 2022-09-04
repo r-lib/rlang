@@ -185,10 +185,10 @@ try_fetch <- function(expr, ...) {
   frame <- environment()
 
   catch <- value <- NULL
-  delayedAssign("catch", return(value), frame, frame)
 
   throw <- function(x) {
     value <<- x
+    delayedAssign("catch", return(value), frame, frame)
     catch
   }
 
