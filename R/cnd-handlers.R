@@ -122,7 +122,7 @@ environment(hnd_prompt_install) <- baseenv()
 #' code along the way) and then calls the handler, `try_fetch()` first
 #' calls the handler with the condition on top of the currently
 #' running code (fetches it where it stands) and then catches the
-#' return value . This is a subtle difference that has implications
+#' return value. This is a subtle difference that has implications
 #' for the debuggability of your functions. See the comparison with
 #' `tryCatch()` section below.
 #'
