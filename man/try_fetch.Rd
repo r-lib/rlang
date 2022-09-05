@@ -57,7 +57,7 @@ Whereas \code{tryCatch()} catches conditions (discarding any running
 code along the way) and then calls the handler, \code{try_fetch()} first
 calls the handler with the condition on top of the currently
 running code (fetches it where it stands) and then catches the
-return value . This is a subtle difference that has implications
+return value. This is a subtle difference that has implications
 for the debuggability of your functions. See the comparison with
 \code{tryCatch()} section below.
 }
