@@ -34,7 +34,7 @@ To create an error chain, you must first capture causal errors when they occur. 
 
 - Compared to `tryCatch()`, `try_fetch()` fully preserves the context of the error. This is important for debugging because it ensures complete backtraces are reported to users (e.g. via `last_error()`) and allows `options(error = recover)` to reach into the deepest error context.
 
-- Compared to `withCallingHandlers()`, which also preserves the error context, `try_fetch()` is able to catch stack overflow errors on R versions >= 4.2.0 (unreleased at the time of writing).
+- Compared to `withCallingHandlers()`, which also preserves the error context, `try_fetch()` is able to catch stack overflow errors on R versions >= 4.2.0.
 
 In practice, `try_fetch()` works just like `tryCatch()`. It takes pairs of error class names and handling functions. To chain an error, simply rethrow it from an error handler by passing it as `parent` argument.
 
