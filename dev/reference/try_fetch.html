@@ -253,11 +253,11 @@ stack memory.</p>
 assume that the whole call stack is preserved. For instance a
 <code><a href="trace_back.html">trace_back()</a></code> capture might miss frames.</p>
 <p>Note that error handlers are only run for stack overflows on R &gt;=
-4.2 (unreleased at the time of writing). On older versions of R the
-handlers are simply not run. This is because these errors do not
-inherit from the class <code>stackOverflowError</code> before R 4.2. Consider
-using <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> instead with critical error handlers that need
-to capture all errors on old versions of R.</p>
+4.2. On older versions of R the handlers are simply not run. This
+is because these errors do not inherit from the class
+<code>stackOverflowError</code> before R 4.2. Consider using <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code>
+instead with critical error handlers that need to capture all
+errors on old versions of R.</p>
     </div>
     <div class="section level2">
     <h2 id="comparison-with-trycatch-">Comparison with <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code><a class="anchor" aria-label="anchor" href="#comparison-with-trycatch-"></a></h2>
