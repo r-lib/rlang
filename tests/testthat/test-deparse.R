@@ -706,7 +706,7 @@ test_that("call_deparse_highlight() handles long lists of arguments (#1456)", {
 
   expect_equal(
     cli::ansi_strip(out),
-    "foo(aaaaaa = aaaaaa, bbbbbb = bbbbbb, cccccc = cccccc, dddddd = dddddd, eeeeee = eeeeee)"
+    "foo(...)"
   )
 })
 
@@ -720,6 +720,6 @@ test_that("call_deparse_highlight() handles multi-line arguments (#1456)", {
 
   expect_equal(
     cli::ansi_strip(out),
-    "fn(arg = {\n  a\n  b\n})"
+    "fn(...)"
   )
 })

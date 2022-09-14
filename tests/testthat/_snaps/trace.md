@@ -1441,8 +1441,7 @@
         7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
         9. \-rlang (local) f()
-       10.   \-rlang (local) <<CALL g(>>aaaaaaaaaaaa = aaaaaaaaaaaa, bbbbbbbbbbbb = bbbbbbbbbbbb, cccccccccccc = cccccccccccc,
-        dddddddddddd = dddddddddddd, eeeeeeeeeeee = eeeeeeeeeeee, ...<<CALL )>>
+       10.   \-rlang (local) <<CALL g(>>...<<CALL )>>
 
 ---
 
@@ -1486,10 +1485,7 @@
         7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
         8. |   \-base::force(expr)
         9. \-rlang (local) f()
-       10.   \-rlang (local) <<CALL g(>>x = {
-        a
-        b
-      }, ...<<CALL )>>
+       10.   \-rlang (local) <<CALL g(>>...<<CALL )>>
 
 ---
 

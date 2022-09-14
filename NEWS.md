@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Fixed an issue that caused multiline calls in backtraces.
+
 * The C API function `r_lgl_which()` now propagates the names of the input
   (#1471).
 
