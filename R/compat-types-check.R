@@ -8,6 +8,10 @@
 # Changelog
 # =========
 #
+# 2022-09-16:
+# - Unprefixed usage of rlang functions with `rlang::` to
+#   avoid onLoad issues when called from rlang (#1482).
+#
 # 2022-08-11:
 # - Added changelog.
 
@@ -16,9 +20,9 @@
 check_bool <- function(x,
                        ...,
                        what = "`TRUE` or `FALSE`",
-                       arg = rlang::caller_arg(x),
-                       call = rlang::caller_env()) {
-  if (!rlang::is_bool(x)) {
+                       arg = caller_arg(x),
+                       call = caller_env()) {
+  if (!is_bool(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -26,9 +30,9 @@ check_bool <- function(x,
 check_string <- function(x,
                          ...,
                          what = "a single string",
-                         arg = rlang::caller_arg(x),
-                         call = rlang::caller_env()) {
-  if (!rlang::is_string(x)) {
+                         arg = caller_arg(x),
+                         call = caller_env()) {
+  if (!is_string(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -36,23 +40,23 @@ check_string <- function(x,
 check_number <- function(x,
                          ...,
                          what = "a round number",
-                         arg = rlang::caller_arg(x),
-                         call = rlang::caller_env()) {
+                         arg = caller_arg(x),
+                         call = caller_env()) {
   if (!is_number(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
 
 is_number <- function(x) {
-  rlang::is_integerish(x, n = 1, finite = TRUE)
+  is_integerish(x, n = 1, finite = TRUE)
 }
 
 check_symbol <- function(x,
                          ...,
                          what = "a symbol",
-                         arg = rlang::caller_arg(x),
-                         call = rlang::caller_env()) {
-  if (!rlang::is_symbol(x)) {
+                         arg = caller_arg(x),
+                         call = caller_env()) {
+  if (!is_symbol(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -60,17 +64,17 @@ check_symbol <- function(x,
 check_arg <- function(x,
                       ...,
                       what = "an argument name",
-                      arg = rlang::caller_arg(x),
-                      call = rlang::caller_env()) {
+                      arg = caller_arg(x),
+                      call = caller_env()) {
   check_symbol(x, ..., what = what, arg = arg, call = call)
 }
 
 check_call <- function(x,
                        ...,
                        what = "a defused call",
-                       arg = rlang::caller_arg(x),
-                       call = rlang::caller_env()) {
-  if (!rlang::is_call(x)) {
+                       arg = caller_arg(x),
+                       call = caller_env()) {
+  if (!is_call(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -78,9 +82,9 @@ check_call <- function(x,
 check_environment <- function(x,
                               ...,
                               what = "an environment",
-                              arg = rlang::caller_arg(x),
-                              call = rlang::caller_env()) {
-  if (!rlang::is_environment(x)) {
+                              arg = caller_arg(x),
+                              call = caller_env()) {
+  if (!is_environment(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -88,9 +92,9 @@ check_environment <- function(x,
 check_function <- function(x,
                            ...,
                            what = "a function",
-                           arg = rlang::caller_arg(x),
-                           call = rlang::caller_env()) {
-  if (!rlang::is_function(x)) {
+                           arg = caller_arg(x),
+                           call = caller_env()) {
+  if (!is_function(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -98,9 +102,9 @@ check_function <- function(x,
 check_closure <- function(x,
                            ...,
                            what = "an R function",
-                           arg = rlang::caller_arg(x),
-                           call = rlang::caller_env()) {
-  if (!rlang::is_closure(x)) {
+                           arg = caller_arg(x),
+                           call = caller_env()) {
+  if (!is_closure(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -108,9 +112,9 @@ check_closure <- function(x,
 check_formula <- function(x,
                           ...,
                           what = "a formula",
-                          arg = rlang::caller_arg(x),
-                          call = rlang::caller_env()) {
-  if (!rlang::is_formula(x)) {
+                          arg = caller_arg(x),
+                          call = caller_env()) {
+  if (!is_formula(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }
@@ -123,9 +127,9 @@ check_formula <- function(x,
 check_character <- function(x,
                             ...,
                             what = "a character vector",
-                            arg = rlang::caller_arg(x),
-                            call = rlang::caller_env()) {
-  if (!rlang::is_character(x)) {
+                            arg = caller_arg(x),
+                            call = caller_env()) {
+  if (!is_character(x)) {
     stop_input_type(x, what, ..., arg = arg, call = call)
   }
 }

@@ -3,6 +3,10 @@
 # Changelog
 # =========
 #
+# 2022-09-16:
+# - Unprefixed usage of rlang functions with `rlang::` to
+#   avoid onLoad issues when called from rlang (#1482).
+#
 # 2022-08-11:
 # - Prefixed usage of rlang functions with `rlang::`.
 #
@@ -31,7 +35,7 @@
 #'   article, e.g. "an integer vector".
 #' @noRd
 obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
-  if (rlang::is_missing(x)) {
+  if (is_missing(x)) {
     return("absent")
   }
 
@@ -44,14 +48,14 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
     return(sprintf("a <%s> object", type))
   }
 
-  if (!rlang::is_vector(x)) {
+  if (!is_vector(x)) {
     return(.rlang_as_friendly_type(typeof(x)))
   }
 
   n_dim <- length(dim(x))
 
   if (value && !n_dim) {
-    if (rlang::is_na(x)) {
+    if (is_na(x)) {
       return(switch(
         typeof(x),
         logical = "`NA`",
@@ -62,7 +66,7 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         .rlang_stop_unexpected_typeof(x)
       ))
     }
-    if (length(x) == 1 && !rlang::is_list(x)) {
+    if (length(x) == 1 && !is_list(x)) {
       return(switch(
         typeof(x),
         logical = if (x) "`TRUE`" else "`FALSE`",
@@ -164,8 +168,8 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
   )
 }
 
-.rlang_stop_unexpected_typeof <- function(x, call = rlang::caller_env()) {
-  rlang::abort(
+.rlang_stop_unexpected_typeof <- function(x, call = caller_env()) {
+  abort(
     sprintf("Unexpected type <%s>.", typeof(x)),
     call = call
   )
@@ -203,10 +207,10 @@ obj_type_oo <- function(x) {
 stop_input_type <- function(x,
                             what,
                             ...,
-                            arg = rlang::caller_arg(x),
-                            call = rlang::caller_env()) {
+                            arg = caller_arg(x),
+                            call = caller_env()) {
   # From compat-cli.R
-  format_arg <- rlang::env_get(
+  format_arg <- env_get(
     nm = "format_arg",
     last = topenv(),
     default = NULL,
@@ -223,7 +227,7 @@ stop_input_type <- function(x,
     obj_type_friendly(x)
   )
 
-  rlang::abort(message, ..., call = call, arg = arg)
+  abort(message, ..., call = call, arg = arg)
 }
 
 # nocov end

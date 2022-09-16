@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed an issue that caused a failure about a missing `is_character`
+  function when rlang is installed alongside an old version of vctrs (#1482).
+
 * Fixed an issue that caused multiline calls in backtraces.
 
 * The C API function `r_lgl_which()` now propagates the names of the input
