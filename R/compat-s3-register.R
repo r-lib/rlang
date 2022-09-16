@@ -128,23 +128,22 @@ s3_register <- function(generic, class, method = NULL) {
     is_installed = return(function(pkg) requireNamespace(pkg, quietly = TRUE))
   )
 
-  if (try_rlang && requireNamespace("rlang", quietly = TRUE)) {
-    # Don't use `::` because this is also called from rlang's onLoad
-    # hook and exports are not initialised at this point
-    ns <- asNamespace("rlang")
-
+  # Only use rlang if it is fully loaded (#1482)
+  if (try_rlang &&
+        requireNamespace("rlang", quietly = TRUE) &&
+        environmentIsLocked(asNamespace("rlang"))) {
     switch(
       fn,
-      is_interactive = return(get("is_interactive", envir = ns))
+      is_interactive = return(rlang::is_interactive)
     )
 
     # Make sure rlang knows about "x" and "i" bullets
     if (utils::packageVersion("rlang") >= "0.4.2") {
       switch(
         fn,
-        abort = return(get("abort", envir = ns)),
-        warn = return(get("warn", envir = ns)),
-        inform = return(get("inform", envir = ns))
+        abort = return(rlang::abort),
+        warn = return((rlang::warn)),
+        inform = return(rlang::inform)
       )
     }
   }
