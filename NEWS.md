@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* The C API function `r_lgl_which()` is now faster for large inputs (#1487, @mgirlich).
+
 * Fixed an issue that caused a failure about a missing `is_character`
   function when rlang is installed alongside an old version of vctrs (#1482).
 
