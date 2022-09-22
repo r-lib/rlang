@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* rlang no longer stores errors and backtraces in a `org:r-lib`
+  environment on the search path.
+
 * The low-level function `error_call()` is now exported (#1474).
 
 * Fixed an issue that caused a failure about a missing `is_character`

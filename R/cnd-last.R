@@ -54,31 +54,14 @@ use_tree_display <- function() {
 }
 
 peek_last_error <- function(cnd) {
-  last_error_env()$.Last.error
+  the$last_error
 }
 poke_last_error <- function(cnd) {
-  env <- last_error_env()
-
-  env$.Last.error <- cnd
-  env$.Last.error.trace <- cnd$trace
-
-  invisible(cnd)
+  the$last_error <- cnd
 }
-last_error_env <- function() {
-  if (!is_attached("org:r-lib")) {
-    exec(
-      attach,
-      list(
-        .Last.error = NULL,
-        .Last.error.trace = NULL
-      ),
-      pos = length(search()),
-      name = "org:r-lib"
-    )
-  }
-
-  search_env("org:r-lib")
-}
+on_load(
+  the$last_error <- NULL
+)
 
 #' Display last warnings
 #'
