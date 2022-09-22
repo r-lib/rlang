@@ -334,3 +334,10 @@ test_that("check inputs in function accessors", {
     (expect_error(fn_env(1)))
   })
 })
+
+test_that("closure wrapper of seq.int() works (#1468)", {
+  seq_int <- as_closure(seq.int)
+  expect_equal(seq_int(1), 1)
+  expect_equal(seq_int(1, 2), 1:2)
+  expect_equal(seq_int(1, 2, 2), 1)
+})

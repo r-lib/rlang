@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `as_closure(seq.int)` now works (#1468).
+
 * rlang no longer stores errors and backtraces in a `org:r-lib`
   environment on the search path.
 

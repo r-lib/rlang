@@ -568,6 +568,7 @@ op_as_closure <- function(prim_nm) {
     },
 
     `c` = function(...) c(...),
+    seq.int = function(from = 1L, to = from, ...) seq.int(from, to, ...),
 
     # Unsupported primitives
     `break` = ,
