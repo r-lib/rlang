@@ -207,7 +207,7 @@ The \code{.data} pronoun can only be subsetted with single column names. It does
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% dplyr::summarise(.data[c("cyl", "am")])
 #> Error in `dplyr::summarise()`:
-#> ! Problem while computing `..1 = .data[c("cyl", "am")]`.
+#> ! Can't compute `..1 = .data[c("cyl", "am")]`.
 #> Caused by error in `.data[c("cyl", "am")]`:
 #> ! `[` is not supported by the `.data` pronoun, use `[[` or $ instead.
 }\if{html}{\out{</div>}}
