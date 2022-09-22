@@ -100,7 +100,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>rlang no longer stores errors and backtraces in a <code>org:r-lib</code> environment on the search path.</p></li>
+<ul><li><p><code>as_closure(seq.int)</code> now works (<a href="https://github.com/r-lib/rlang/issues/1468" class="external-link">#1468</a>).</p></li>
+<li><p>rlang no longer stores errors and backtraces in a <code>org:r-lib</code> environment on the search path.</p></li>
 <li><p>The low-level function <code><a href="../reference/format_error_call.html">error_call()</a></code> is now exported (<a href="https://github.com/r-lib/rlang/issues/1474" class="external-link">#1474</a>).</p></li>
 <li><p>Fixed an issue that caused a failure about a missing <code>is_character</code> function when rlang is installed alongside an old version of vctrs (<a href="https://github.com/r-lib/rlang/issues/1482" class="external-link">#1482</a>).</p></li>
 <li><p>Fixed an issue that caused multiline calls in backtraces.</p></li>
