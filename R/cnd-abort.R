@@ -1084,13 +1084,18 @@ caller_arg <- function(arg) {
 #'
 #' @description
 #'
-#' `format_error_call()` simplifies its input to a simple call (see
-#' section below) and formats the result as code (using cli if
-#' available). Use this function to generate the "in" part
-#' of an error message from a stack frame call.
+#' - `error_call()` takes either a frame environment or a call. If the
+#'   input is an environment, `error_call()` acts like [frame_call()]
+#'   with some additional logic, e.g. for S3 methods and for frames
+#'   with a [local_error_call()].
 #'
-#' If passed an environment, the corresponding `sys.call()` is taken
-#' as call, unless there is a local flag (see [local_error_call()]).
+#' - `format_error_call()` simplifies its input to a simple call (see
+#'   section below) and formats the result as code (using cli if
+#'   available). Use this function to generate the "in" part of an
+#'   error message from a stack frame call.
+#'
+#'   `format_error_call()` first passes its input to `error_call()` to
+#'   fetch calls from frame environments.
 #'
 #' @section Details of formatting:
 #'
@@ -1216,6 +1221,8 @@ error_call_deparse <- function(call) {
   out
 }
 
+#' @rdname format_error_call
+#' @export
 error_call <- function(call) {
   while (is_environment(call)) {
     flag <- env_get(call, ".__error_call__.", default = TRUE)

@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* The low-level function `error_call()` is now exported (#1474).
+
 * Fixed an issue that caused a failure about a missing `is_character`
   function when rlang is installed alongside an old version of vctrs (#1482).
 

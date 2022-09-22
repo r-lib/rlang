@@ -2,9 +2,12 @@
 % Please edit documentation in R/cnd-abort.R
 \name{format_error_call}
 \alias{format_error_call}
+\alias{error_call}
 \title{Validate and format a function call for use in error messages}
 \usage{
 format_error_call(call)
+
+error_call(call)
 }
 \arguments{
 \item{call}{The execution environment of a currently
@@ -17,13 +20,19 @@ Either a string formatted as code or \code{NULL} if a simple
 call could not be generated.
 }
 \description{
-\code{format_error_call()} simplifies its input to a simple call (see
+\itemize{
+\item \code{error_call()} takes either a frame environment or a call. If the
+input is an environment, \code{error_call()} acts like \code{\link[=frame_call]{frame_call()}}
+with some additional logic, e.g. for S3 methods and for frames
+with a \code{\link[=local_error_call]{local_error_call()}}.
+\item \code{format_error_call()} simplifies its input to a simple call (see
 section below) and formats the result as code (using cli if
-available). Use this function to generate the "in" part
-of an error message from a stack frame call.
+available). Use this function to generate the "in" part of an
+error message from a stack frame call.
 
-If passed an environment, the corresponding \code{sys.call()} is taken
-as call, unless there is a local flag (see \code{\link[=local_error_call]{local_error_call()}}).
+\code{format_error_call()} first passes its input to \code{error_call()} to
+fetch calls from frame environments.
+}
 }
 \section{Details of formatting}{
 
