@@ -180,7 +180,7 @@ inform <- function(message = NULL,
 }
 #' @rdname abort
 #' @export
-signal <- function(message,
+signal <- function(message = "",
                    class,
                    ...,
                    .subclass = deprecated()) {

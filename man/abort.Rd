@@ -51,7 +51,7 @@ inform(
   .subclass = deprecated()
 )
 
-signal(message, class, ..., .subclass = deprecated())
+signal(message = "", class, ..., .subclass = deprecated())
 
 reset_warning_verbosity(id)
 
