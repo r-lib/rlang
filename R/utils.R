@@ -346,3 +346,18 @@ vec_remove <- function(x, values) {
 str_nzchar <- function(x) {
   is_string(x) && nzchar(x)
 }
+
+pkg_url_bug <- function(pkg) {
+  # First check that package is installed, e.g. in case of
+  # runtime-only namespace created by pkgload
+  if (nzchar(system.file(package = pkg))) {
+    url <- utils::packageDescription(pkg)$BugReports
+
+    # `url` can be NULL if not part of the description
+    if (is_string(url) && grepl("^https://", url)) {
+      return(url)
+    }
+  }
+
+  NULL
+}
