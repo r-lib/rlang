@@ -678,8 +678,9 @@ footer_internal <- function(env) {
     url <- pkg_url_bug(pkg)
     if (!is_null(url)) {
       url_line <- sprintf(
-        "Please report it at %s with a reprex and a full backtrace.",
-        format_url(url)
+        "Please report it at %s with a %s and the full backtrace.",
+        format_url(url),
+        format_href("reprex", "https://reprex.tidyverse.org/")
       )
     }
   } else {

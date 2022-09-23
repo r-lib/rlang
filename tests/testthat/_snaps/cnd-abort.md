@@ -1131,7 +1131,7 @@
       ! foo
       x bar
       i This is an internal error that was detected in the rlang package.
-        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex and a full backtrace.
+        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://reprex.tidyverse.org/>) and the full backtrace.
     Code
       err(abort("foo", body = c(x = "bar"), .internal = TRUE))
     Output
@@ -1140,7 +1140,7 @@
       ! foo
       x bar
       i This is an internal error that was detected in the rlang package.
-        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex and a full backtrace.
+        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://reprex.tidyverse.org/>) and the full backtrace.
 
 # setting `.internal` adds footer bullet (fallback)
 
@@ -1152,7 +1152,7 @@
       ! foo
       x bar
       i This is an internal error that was detected in the rlang package.
-        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex and a full backtrace.
+        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://reprex.tidyverse.org/>) and the full backtrace.
     Code
       err(abort("foo", body = c(x = "bar"), .internal = TRUE))
     Output
@@ -1161,7 +1161,7 @@
       ! foo
       x bar
       i This is an internal error that was detected in the rlang package.
-        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex and a full backtrace.
+        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://reprex.tidyverse.org/>) and the full backtrace.
 
 # must pass character `body` when `message` is > 1
 
@@ -1248,7 +1248,7 @@
       Error in `f()`:
       ! foo
       i This is an internal error that was detected in the rlang package.
-        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex and a full backtrace.
+        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://reprex.tidyverse.org/>) and the full backtrace.
     Code
       err(abort("foo", footer = "bar", .internal = TRUE, call = quote(f())))
     Output

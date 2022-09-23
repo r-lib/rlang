@@ -12,6 +12,8 @@
 # * `format_` functions now use `cli::format_inline()` instead of
 #   `cli::format_message()`, resulting in simpler ANSI codes.
 #
+# * Added `format_run()` and `format_href()`.
+#
 #
 # 2022-08-16:
 #
@@ -227,6 +229,8 @@ format_url    <- function(x) .rlang_cli_format_inline(x, "url", "<%s>")
 format_var    <- function(x) .rlang_cli_format_inline(x, "var", "`%s`")
 format_envvar <- function(x) .rlang_cli_format_inline(x, "envvar", "`%s`")
 format_field  <- function(x) .rlang_cli_format_inline(x, "field", NULL)
+format_href   <- function(x, target = NULL) .rlang_cli_format_inline_link(x, target, "href", "<%s>")
+format_run    <- function(x, target = NULL) .rlang_cli_format_inline_link(x, target, "run", "`%s`")
 
 format_error_arg_highlight <- function(x, quote = TRUE) {
   if (is_true(peek_option("rlang:::trace_test_highlight"))) {
@@ -262,6 +266,18 @@ format_cls <- function(x) {
 .rlang_cli_format_inline <- function(x, span, fallback = "`%s`") {
   if (.rlang_cli_has_cli()) {
     cli::format_inline(paste0("{.", span, " {x}}"))
+  } else {
+    .rlang_cli_style_inline(x, span, fallback = fallback)
+  }
+}
+
+.rlang_cli_format_inline_link <- function(x, target, span, fallback = "`%s`") {
+  if (.rlang_cli_has_cli()) {
+    if (is_null(target)) {
+      cli::format_inline(paste0("{.", span, " {x}}"))
+    } else {
+      cli::format_inline(paste0("{.", span, " [{x}]({target})}"))
+    }
   } else {
     .rlang_cli_style_inline(x, span, fallback = fallback)
   }
