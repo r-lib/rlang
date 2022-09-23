@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 1.0.6
 
 * `as_closure(seq.int)` now works (#1468).
 
