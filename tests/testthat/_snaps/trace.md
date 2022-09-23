@@ -956,8 +956,8 @@
     Code
       print(err)
     Output
-      [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[1m[1m[94m`1 + ""`[39m[1m:[22m
+      [1m[34m<error/rlang_error>[39m[22m
+      [1m[33mError[39m in [1m[94m`1 + ""`[39m[1m:[22m
       [33m![39m non-numeric argument to binary operator
       ---
       [1mBacktrace:[22m
@@ -969,8 +969,8 @@
     Code
       summary(err)
     Output
-      [1m[1m[1m[34m<error/rlang_error>[39m[22m
-      [1m[33mError[39m in [1m[1m[1m[94m`1 + ""`[39m[1m:[22m
+      [1m[34m<error/rlang_error>[39m[22m
+      [1m[33mError[39m in [1m[94m`1 + ""`[39m[1m:[22m
       [33m![39m non-numeric argument to binary operator
       ---
       [1mBacktrace:[22m

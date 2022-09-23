@@ -7,6 +7,12 @@
 #
 # Changelog:
 #
+# 2022-09-23:
+#
+# * `format_` functions now use `cli::format_inline()` instead of
+#   `cli::format_message()`, resulting in simpler ANSI codes.
+#
+#
 # 2022-08-16:
 #
 # * Added `has_ansi()`. This checks that cli is installed and that
@@ -255,7 +261,7 @@ format_cls <- function(x) {
 }
 .rlang_cli_format_inline <- function(x, span, fallback = "`%s`") {
   if (.rlang_cli_has_cli()) {
-    cli::format_message(paste0("{.", span, " {x}}"))
+    cli::format_inline(paste0("{.", span, " {x}}"))
   } else {
     .rlang_cli_style_inline(x, span, fallback = fallback)
   }

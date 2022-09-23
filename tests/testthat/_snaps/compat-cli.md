@@ -228,75 +228,75 @@
     Code
       format_emph("foo")
     Output
-      [1] "\033[1m\033[22m\033[3mfoo\033[23m"
+      [1] "\033[3mfoo\033[23m"
     Code
       format_strong("foo")
     Output
-      [1] "\033[1m\033[22m\033[1mfoo\033[22m"
+      [1] "\033[1mfoo\033[22m"
     Code
       format_code("foo")
     Output
-      [1] "\033[1m\033[22m`foo`"
+      [1] "`foo`"
     Code
       format_q("foo")
     Output
-      [1] "\033[1m\033[22m\"foo\""
+      [1] "\"foo\""
     Code
       format_pkg("foo")
     Output
-      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
+      [1] "\033[34mfoo\033[39m"
     Code
       format_fn("foo")
     Output
-      [1] "\033[1m\033[22m`foo()`"
+      [1] "`foo()`"
     Code
       format_arg("foo")
     Output
-      [1] "\033[1m\033[22m`foo`"
+      [1] "`foo`"
     Code
       format_kbd("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m[foo]\033[39m"
+      [1] "\033[34m[foo]\033[39m"
     Code
       format_key("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m[foo]\033[39m"
+      [1] "\033[34m[foo]\033[39m"
     Code
       format_file("foo")
     Output
-      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
+      [1] "\033[34mfoo\033[39m"
     Code
       format_path("foo")
     Output
-      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
+      [1] "\033[34mfoo\033[39m"
     Code
       format_email("foo")
     Output
-      [1] "\033[1m\033[22m\033[34mfoo\033[39m"
+      [1] "\033[34mfoo\033[39m"
     Code
       format_url("foo")
     Output
-      [1] "\033[1m\033[22m\033[3m\033[34m<foo>\033[39m\033[23m"
+      [1] "\033[3m\033[34m<foo>\033[39m\033[23m"
     Code
       format_var("foo")
     Output
-      [1] "\033[1m\033[22m`foo`"
+      [1] "`foo`"
     Code
       format_envvar("foo")
     Output
-      [1] "\033[1m\033[22m`foo`"
+      [1] "`foo`"
     Code
       format_field("foo")
     Output
-      [1] "\033[1m\033[22m\033[32mfoo\033[39m"
+      [1] "\033[32mfoo\033[39m"
     Code
       format_cls("foo")
     Output
-      [1] "\033[1m\033[22m\033[34m<foo>\033[39m"
+      [1] "\033[34m<foo>\033[39m"
     Code
       format_cls(c("foo", "bar"))
     Output
-      [1] "\033[1m\033[22m\033[34m<foo/bar>\033[39m"
+      [1] "\033[34m<foo/bar>\033[39m"
 
 # styled strings may contain `{` syntax [plain]
 
