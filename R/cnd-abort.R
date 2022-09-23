@@ -669,7 +669,6 @@ footer_internal <- function(env) {
 
   if (is_namespace(top)) {
     pkg <- ns_env_name(top)
-    url <- pkg_url_bug(pkg)
     pkg_line <- sprintf(
       "This is an internal error that was detected in the %s package.",
       format_pkg(pkg)
