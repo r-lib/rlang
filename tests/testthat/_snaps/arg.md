@@ -123,9 +123,8 @@
       (expect_error(wrapper()))
     Output
       <error/rlang_error>
-      Error in `wrapper()`:
+      Error in `arg_match()`:
       ! `arg` must be a symbol, not a string.
-      i This is an internal error in the rlang package, please report it to the package authors.
 
 # can match multiple arguments
 

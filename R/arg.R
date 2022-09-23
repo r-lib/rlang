@@ -39,7 +39,7 @@ arg_match <- function(arg,
   arg_expr <- enexpr(arg)
   error_arg <- as_string(error_arg)
 
-  check_symbol(arg_expr, arg = "arg", call = caller_env(), .internal = TRUE)
+  check_symbol(arg_expr, arg = "arg")
   check_character(arg, arg = error_arg, call = error_call)
 
   if (is_null(values)) {
