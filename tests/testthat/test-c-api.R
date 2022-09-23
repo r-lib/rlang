@@ -1310,8 +1310,8 @@ test_that("r_stop_internal() mentions expected namespace", {
   }
 
   environment(fn) <- ns_env("base")
-  expect_error(fn(), "in the base package")
+  expect_error(fn(), "detected in the base package")
 
   environment(fn) <- ns_env("utils")
-  expect_error(fn(), "in the utils package")
+  expect_error(fn(), "detected in the utils package")
 })

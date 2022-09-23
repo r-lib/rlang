@@ -665,17 +665,28 @@ utils::globalVariables(".internal")
 
 footer_internal <- function(env) {
   top <- topenv(env)
-  if (is_namespace(top)) {
-    pkg <- sprintf(" in the %s package", ns_env_name(top))
-  } else {
-    pkg <- ""
-  }
-  footer <- sprintf(
-    "This is an internal error%s, please report it to the package authors.",
-    pkg
-  )
+  url_line <- NULL
 
-  c(i = footer)
+  if (is_namespace(top)) {
+    pkg <- ns_env_name(top)
+    pkg_line <- sprintf(
+      "This is an internal error that was detected in the %s package.",
+      format_pkg(pkg)
+    )
+
+    url <- pkg_url_bug(pkg)
+    if (!is_null(url)) {
+      url_line <- sprintf(
+        "Please report it at %s with a %s and the full backtrace.",
+        format_url(url),
+        format_href("reprex", "https://https://tidyverse.org/help/")
+      )
+    }
+  } else {
+    pkg_line <- "This is an internal error, please report it to the package authors."
+  }
+
+  c("i" = pkg_line, " " = url_line)
 }
 
 stop_multiple_body <- function(body, call) {
