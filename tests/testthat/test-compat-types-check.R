@@ -40,6 +40,9 @@ test_that("`check_number()` checks", {
   expect_null(check_number(na_dbl, allow_na = TRUE))
   expect_null(check_number(na_int, allow_na = TRUE))
   expect_null(check_number(NULL, allow_null = TRUE))
+  expect_null(check_number(10.5, allow_decimal = TRUE))
+  expect_null(check_number(Inf, allow_infinite = TRUE))
+  expect_null(check_number(-Inf, allow_infinite = TRUE))
 
   expect_snapshot({
     err(checker(, check_number))
@@ -50,6 +53,8 @@ test_that("`check_number()` checks", {
     err(checker(na_int, check_number))
     err(checker(10:11, check_number, allow_na = TRUE, allow_null = TRUE))
     err(checker(10.5, check_number))
+    err(checker(Inf, check_number, allow_decimal = TRUE))
+    err(checker(-Inf, check_number))
   })
 })
 

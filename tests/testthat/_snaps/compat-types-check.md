@@ -138,6 +138,18 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a round number, not a number.
+    Code
+      err(checker(Inf, check_number, allow_decimal = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a number, not a number.
+    Code
+      err(checker(-Inf, check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not a number.
 
 # `check_symbol()` checks
 
