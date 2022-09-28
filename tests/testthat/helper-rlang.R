@@ -121,8 +121,8 @@ err <- function(...) {
   (expect_error(...))
 }
 
-checker <- function(foo, check) {
-  check(foo)
+checker <- function(foo, check, ...) {
+  check(foo, ...)
 }
 
 import_or_skip <- function(ns, names, env = caller_env()) {

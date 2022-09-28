@@ -3,6 +3,9 @@
 # Changelog
 # =========
 #
+# 2022-09-28:
+# - Added `allow_na` and `allow_null` arguments.
+#
 # 2022-09-16:
 # - Unprefixed usage of rlang functions with `rlang::` to
 #   avoid onLoad issues when called from rlang (#1482).
@@ -207,6 +210,8 @@ obj_type_oo <- function(x) {
 stop_input_type <- function(x,
                             what,
                             ...,
+                            allow_na = FALSE,
+                            allow_null = FALSE,
                             arg = caller_arg(x),
                             call = caller_env()) {
   # From compat-cli.R
@@ -218,6 +223,16 @@ stop_input_type <- function(x,
   )
   if (!is.function(format_arg)) {
     format_arg <- function(x) sprintf("`%s`", x)
+  }
+
+  if (allow_na) {
+    what <- c(what, format_code("NA"))
+  }
+  if (allow_null) {
+    what <- c(what, format_code("NULL"))
+  }
+  if (length(what)) {
+    what <- chr_enumerate(what)
   }
 
   message <- sprintf(
