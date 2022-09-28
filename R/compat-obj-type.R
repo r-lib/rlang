@@ -65,7 +65,12 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         typeof(x),
         logical = "`NA`",
         integer = "an integer `NA`",
-        double = "a numeric `NA`",
+        double =
+          if (is.nan(x)) {
+            "`NaN`"
+          } else {
+            "a numeric `NA`"
+          },
         complex = "a complex `NA`",
         character = "a character `NA`",
         .rlang_stop_unexpected_typeof(x)
@@ -79,8 +84,6 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         double =
           if (is.infinite(x)) {
             "an infinite number"
-          } else if (is.nan(x)) {
-            "`NaN`"
           } else {
             "a number"
           },
