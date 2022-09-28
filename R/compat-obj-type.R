@@ -215,21 +215,18 @@ stop_input_type <- function(x,
                             arg = caller_arg(x),
                             call = caller_env()) {
   # From compat-cli.R
-  format_arg <- env_get(
-    nm = "format_arg",
+  cli <- env_get_list(
+    nms = c("format_arg", "format_code"),
     last = topenv(),
-    default = NULL,
+    default = function(x) sprintf("`%s`", x),
     inherit = TRUE
   )
-  if (!is.function(format_arg)) {
-    format_arg <- function(x) sprintf("`%s`", x)
-  }
 
   if (allow_na) {
-    what <- c(what, format_code("NA"))
+    what <- c(what, cli$format_code("NA"))
   }
   if (allow_null) {
-    what <- c(what, format_code("NULL"))
+    what <- c(what, cli$format_code("NULL"))
   }
   if (length(what)) {
     what <- chr_enumerate(what)
@@ -237,7 +234,7 @@ stop_input_type <- function(x,
 
   message <- sprintf(
     "%s must be %s, not %s.",
-    format_arg(arg),
+    cli$format_arg(arg),
     what,
     obj_type_friendly(x)
   )
