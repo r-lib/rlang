@@ -51,12 +51,15 @@ check_bool <- function(x,
 
 check_string <- function(x,
                          ...,
+                         allow_empty = TRUE,
                          allow_na = FALSE,
                          allow_null = FALSE,
                          arg = caller_arg(x),
                          call = caller_env()) {
   if (is_string(x)) {
-    return(invisible(NULL))
+    if (allow_empty || !is_string(x, "")) {
+      return(invisible(NULL))
+    }
   }
   if (allow_null && is_null(x)) {
     return(invisible(NULL))

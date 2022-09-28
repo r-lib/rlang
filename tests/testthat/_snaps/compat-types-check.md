@@ -34,6 +34,12 @@
 # `check_string()` checks
 
     Code
+      err(checker("", check_string, allow_empty = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a single string, not `""`.
+    Code
       err(checker(NA, check_string))
     Output
       <error/rlang_error>
