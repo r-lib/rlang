@@ -77,7 +77,7 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         logical = if (x) "`TRUE`" else "`FALSE`",
         integer = "an integer",
         double =
-          if (abs(x) == Inf) {
+          if (is.infinite(x)) {
             "an infinite number"
           } else if (is.nan(x)) {
             "`NaN`"

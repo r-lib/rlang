@@ -146,7 +146,7 @@ is_number <- function(x,
   if (!allow_decimal && !is_integerish(x)) {
     return(FALSE)
   }
-  if (!allow_infinite && abs(x) == Inf) {
+  if (!allow_infinite && is.infinite(x)) {
     return(FALSE)
   }
   TRUE
