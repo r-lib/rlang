@@ -44,13 +44,13 @@ current_env <- function() {
 #' @rdname stack
 #' @export
 caller_call <- function(n = 1) {
-  check_number(n)
+  check_number_whole(n)
   frame_call(caller_env(n + 1))
 }
 #' @rdname stack
 #' @export
 caller_fn <- function(n = 1) {
-  check_number(n)
+  check_number_whole(n)
   frame_fn(caller_env(n + 1))
 }
 #' @rdname stack

@@ -87,14 +87,51 @@ check_string <- function(x,
 
 }
 
-check_number <- function(x,
-                         ...,
-                         allow_decimal = FALSE,
-                         allow_infinite = FALSE,
-                         allow_na = FALSE,
-                         allow_null = FALSE,
-                         arg = caller_arg(x),
-                         call = caller_env()) {
+check_number_decimal <- function(x,
+                                 ...,
+                                 allow_infinite = TRUE,
+                                 allow_na = FALSE,
+                                 allow_null = FALSE,
+                                 arg = caller_arg(x),
+                                 call = caller_env()) {
+  .rlang_types_check_number(
+    x,
+    ...,
+    allow_decimal = TRUE,
+    allow_infinite = allow_infinite,
+    allow_na = allow_na,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_number_whole <- function(x,
+                               ...,
+                               allow_na = FALSE,
+                               allow_null = FALSE,
+                               arg = caller_arg(x),
+                               call = caller_env()) {
+  .rlang_types_check_number(
+    x,
+    ...,
+    allow_decimal = FALSE,
+    allow_infinite = FALSE,
+    allow_na = allow_na,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+.rlang_types_check_number <- function(x,
+                                      ...,
+                                      allow_decimal = FALSE,
+                                      allow_infinite = FALSE,
+                                      allow_na = FALSE,
+                                      allow_null = FALSE,
+                                      arg = caller_arg(x),
+                                      call = caller_env()) {
   if (!missing(x)) {
     is_number <- is_number(
       x,
