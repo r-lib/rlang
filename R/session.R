@@ -355,7 +355,7 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
     }))
   }
 
-  pkg_enum <- chr_enumerate(pkg_enum, final = "and")
+  pkg_enum <- oxford_comma(pkg_enum, final = "and")
 
   info <- pluralise(
     n,

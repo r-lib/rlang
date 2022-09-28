@@ -147,7 +147,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
 
 arg_match_invalid_msg <- function(val, values, error_arg) {
   msg <- paste0(format_arg(error_arg), " must be one of ")
-  msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
+  msg <- paste0(msg, oxford_comma(chr_quoted(values, "\"")))
 
   if (is_null(val)) {
     msg <- paste0(msg, ".")
@@ -258,7 +258,7 @@ check_exclusive <- function(...,
   if (n_present == 0) {
     if (.require) {
       args <- map(names(args), format_arg)
-      enum <- chr_enumerate(args)
+      enum <- oxford_comma(args)
       msg <- sprintf("One of %s must be supplied.", enum)
       abort(msg, call = .call)
     } else {
@@ -271,11 +271,11 @@ check_exclusive <- function(...,
   }
 
   args <- map_chr(names(args), format_arg)
-  enum <- chr_enumerate(args)
+  enum <- oxford_comma(args)
   msg <- sprintf("Exactly one of %s must be supplied.", enum)
 
   if (n_present != length(args)) {
-    enum <- chr_enumerate(args[present], final = "and")
+    enum <- oxford_comma(args[present], final = "and")
     msg <- c(msg, x = sprintf("%s were supplied together.", enum))
   }
 

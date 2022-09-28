@@ -255,7 +255,7 @@ dots_split <- function(...,
   }
 
   if (!is_null(.n_unnamed) && all(n != .n_unnamed)) {
-    ns <- chr_enumerate(.n_unnamed)
+    ns <- oxford_comma(.n_unnamed)
     abort(sprintf("Expected %s unnamed arguments in `...`", ns))
   }
 
@@ -470,7 +470,7 @@ abort_dots_homonyms <- function(dots, dups) {
 
 homonym_enum <- function(nm, dups, nms) {
   dups[nms != nm] <- FALSE
-  chr_enumerate(as.character(which(dups)), final = "and")
+  oxford_comma(as.character(which(dups)), final = "and")
 }
 
 

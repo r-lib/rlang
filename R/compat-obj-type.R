@@ -229,7 +229,7 @@ stop_input_type <- function(x,
     what <- c(what, cli$format_code("NULL"))
   }
   if (length(what)) {
-    what <- chr_enumerate(what)
+    what <- oxford_comma(what)
   }
 
   message <- sprintf(
@@ -242,7 +242,7 @@ stop_input_type <- function(x,
   abort(message, ..., call = call, arg = arg)
 }
 
-chr_enumerate <- function(chr, sep = ", ", final = "or") {
+oxford_comma <- function(chr, sep = ", ", final = "or") {
   n <- length(chr)
 
   if (n < 2) {
