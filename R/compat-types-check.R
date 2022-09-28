@@ -11,6 +11,7 @@
 # 2022-09-28:
 # - Removed `what` arguments.
 # - Added `allow_na` and `allow_null` arguments.
+# - Improved errors with absent arguments.
 #
 #
 # 2022-09-16:
@@ -28,14 +29,16 @@ check_bool <- function(x,
                        allow_null = FALSE,
                        arg = caller_arg(x),
                        call = caller_env()) {
-  if (is_bool(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_na && identical(x, NA)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_bool(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_na && identical(x, NA)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -56,17 +59,19 @@ check_string <- function(x,
                          allow_null = FALSE,
                          arg = caller_arg(x),
                          call = caller_env()) {
-  if (is_string(x)) {
-    if (allow_empty || !is_string(x, "")) {
+  if (!missing(x)) {
+    if (is_string(x)) {
+      if (allow_empty || !is_string(x, "")) {
+        return(invisible(NULL))
+      }
+    }
+    if (allow_null && is_null(x)) {
       return(invisible(NULL))
     }
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_na && (identical(x, NA) ||
-                   identical(x, na_chr))) {
-    return(invisible(NULL))
+    if (allow_na && (identical(x, NA) ||
+                     identical(x, na_chr))) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -87,16 +92,18 @@ check_number <- function(x,
                          allow_null = FALSE,
                          arg = caller_arg(x),
                          call = caller_env()) {
-  if (is_number(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_na && (identical(x, NA) ||
-                   identical(x, na_dbl) ||
-                   identical(x, na_int))) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_number(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_na && (identical(x, NA) ||
+                     identical(x, na_dbl) ||
+                     identical(x, na_int))) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -119,11 +126,13 @@ check_symbol <- function(x,
                          allow_null = FALSE,
                          arg = caller_arg(x),
                          call = caller_env()) {
-  if (is_symbol(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_symbol(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -141,11 +150,13 @@ check_arg <- function(x,
                       allow_null = FALSE,
                       arg = caller_arg(x),
                       call = caller_env()) {
-  if (is_symbol(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_symbol(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -163,11 +174,13 @@ check_call <- function(x,
                        allow_null = FALSE,
                        arg = caller_arg(x),
                        call = caller_env()) {
-  if (is_call(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_call(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -185,11 +198,13 @@ check_environment <- function(x,
                               allow_null = FALSE,
                               arg = caller_arg(x),
                               call = caller_env()) {
-  if (is_environment(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_environment(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -207,11 +222,13 @@ check_function <- function(x,
                            allow_null = FALSE,
                            arg = caller_arg(x),
                            call = caller_env()) {
-  if (is_function(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_function(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -229,11 +246,13 @@ check_closure <- function(x,
                           allow_null = FALSE,
                           arg = caller_arg(x),
                           call = caller_env()) {
-  if (is_closure(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_closure(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -251,11 +270,13 @@ check_formula <- function(x,
                           allow_null = FALSE,
                           arg = caller_arg(x),
                           call = caller_env()) {
-  if (is_formula(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_formula(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
@@ -276,11 +297,13 @@ check_character <- function(x,
                             allow_null = FALSE,
                             arg = caller_arg(x),
                             call = caller_env()) {
-  if (is_character(x)) {
-    return(invisible(NULL))
-  }
-  if (allow_null && is_null(x)) {
-    return(invisible(NULL))
+  if (!missing(x)) {
+    if (is_character(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
   }
 
   stop_input_type(
