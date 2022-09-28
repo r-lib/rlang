@@ -306,7 +306,7 @@ check_pkg_version <- function(pkg,
 check_action <- function(action, call = caller_env()) {
   # Take `pkg`, `version`, and `compare`?
   if (!is_null(action)) {
-    check_closure(action, what = "`NULL` or a function", call = call)
+    check_closure(action, call = call)
 
     if (!"..." %in% names(formals(action))) {
       msg <- sprintf(
