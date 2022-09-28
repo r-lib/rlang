@@ -109,12 +109,17 @@ s3_register <- function(generic, class, method = NULL) {
     register()
   })
 
+  # For compatibility with R < 4.1.0 where base isn't locked
+  is_sealed <- function(pkg) {
+    identical(pkg, "base") || environmentIsLocked(asNamespace(pkg))
+  }
+
   # Avoid registration failures during loading (pkgload or regular).
   # Check that environment is locked because the registering package
   # might be a dependency of the package that exports the generic. In
   # that case, the exports (and the generic) might not be populated
   # yet (#1225).
-  if (isNamespaceLoaded(package) && environmentIsLocked(asNamespace(package))) {
+  if (isNamespaceLoaded(package) && is_sealed(package)) {
     register()
   }
 
