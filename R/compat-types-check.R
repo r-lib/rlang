@@ -11,6 +11,7 @@
 # 2022-09-28:
 # - Removed `what` arguments.
 # - Added `allow_na` and `allow_null` arguments.
+# - Added `allow_decimal` and `allow_infinite` arguments.
 # - Improved errors with absent arguments.
 #
 #
@@ -86,14 +87,58 @@ check_string <- function(x,
 
 }
 
-check_number <- function(x,
-                         ...,
-                         allow_na = FALSE,
-                         allow_null = FALSE,
-                         arg = caller_arg(x),
-                         call = caller_env()) {
+check_number_decimal <- function(x,
+                                 ...,
+                                 allow_infinite = TRUE,
+                                 allow_na = FALSE,
+                                 allow_null = FALSE,
+                                 arg = caller_arg(x),
+                                 call = caller_env()) {
+  .rlang_types_check_number(
+    x,
+    ...,
+    allow_decimal = TRUE,
+    allow_infinite = allow_infinite,
+    allow_na = allow_na,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_number_whole <- function(x,
+                               ...,
+                               allow_na = FALSE,
+                               allow_null = FALSE,
+                               arg = caller_arg(x),
+                               call = caller_env()) {
+  .rlang_types_check_number(
+    x,
+    ...,
+    allow_decimal = FALSE,
+    allow_infinite = FALSE,
+    allow_na = allow_na,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+.rlang_types_check_number <- function(x,
+                                      ...,
+                                      allow_decimal = FALSE,
+                                      allow_infinite = FALSE,
+                                      allow_na = FALSE,
+                                      allow_null = FALSE,
+                                      arg = caller_arg(x),
+                                      call = caller_env()) {
   if (!missing(x)) {
-    if (is_number(x)) {
+    is_number <- is_number(
+      x,
+      allow_decimal = allow_decimal,
+      allow_infinite = allow_infinite
+    )
+    if (is_number) {
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {
@@ -106,9 +151,15 @@ check_number <- function(x,
     }
   }
 
+  if (allow_decimal) {
+    what <- "a number"
+  } else {
+    what <- "a whole number"
+  }
+
   stop_input_type(
     x,
-    "a round number",
+    what,
     ...,
     allow_na = allow_na,
     allow_null = allow_null,
@@ -117,8 +168,25 @@ check_number <- function(x,
   )
 }
 
-is_number <- function(x) {
-  is_integerish(x, n = 1, finite = TRUE)
+is_number <- function(x,
+                      allow_decimal = FALSE,
+                      allow_infinite = FALSE) {
+  if (!typeof(x) %in% c("integer", "double")) {
+    return(FALSE)
+  }
+  if (length(x) != 1) {
+    return(FALSE)
+  }
+  if (is.na(x)) {
+    return(FALSE)
+  }
+  if (!allow_decimal && !is_integerish(x)) {
+    return(FALSE)
+  }
+  if (!allow_infinite && is.infinite(x)) {
+    return(FALSE)
+  }
+  TRUE
 }
 
 check_symbol <- function(x,

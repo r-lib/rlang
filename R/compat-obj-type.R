@@ -6,6 +6,7 @@
 # 2022-10-03:
 # - Added `allow_na` and `allow_null` arguments.
 # - `NULL` is now backticked.
+# - Better friendly type for infinities and `NaN`.
 #
 # 2022-09-16:
 # - Unprefixed usage of rlang functions with `rlang::` to
@@ -64,7 +65,12 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         typeof(x),
         logical = "`NA`",
         integer = "an integer `NA`",
-        double = "a numeric `NA`",
+        double =
+          if (is.nan(x)) {
+            "`NaN`"
+          } else {
+            "a numeric `NA`"
+          },
         complex = "a complex `NA`",
         character = "a character `NA`",
         .rlang_stop_unexpected_typeof(x)
@@ -75,7 +81,16 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         typeof(x),
         logical = if (x) "`TRUE`" else "`FALSE`",
         integer = "an integer",
-        double = "a number",
+        double =
+          if (is.infinite(x)) {
+            if (x > 0) {
+              "`Inf`"
+            } else {
+              "`-Inf`"
+            }
+          } else {
+            "a number"
+          },
         complex = "a complex number",
         character = if (nzchar(x)) "a string" else "`\"\"`",
         raw = "a raw value",

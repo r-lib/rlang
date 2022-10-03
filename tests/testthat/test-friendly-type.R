@@ -58,3 +58,9 @@ test_that("obj_type_friendly() handles empty vectors", {
 test_that("obj_type_friendly() handles NULL", {
   expect_equal(obj_type_friendly(NULL), "`NULL`")
 })
+
+test_that("obj_type_friendly() handles NaN and infinities", {
+  expect_equal(obj_type_friendly(NaN), "`NaN`")
+  expect_equal(obj_type_friendly(Inf), "`Inf`")
+  expect_equal(obj_type_friendly(-Inf), "`-Inf`")
+})
