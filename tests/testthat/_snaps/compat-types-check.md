@@ -143,13 +143,13 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not an infinite number.
+      ! `foo` must be a round number, not `Inf`.
     Code
       err(checker(-Inf, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not an infinite number.
+      ! `foo` must be a round number, not `-Inf`.
 
 # `check_number_decimal()` checks
 
@@ -200,13 +200,13 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number, not an infinite number.
+      ! `foo` must be a number, not `Inf`.
     Code
       err(checker(-Inf, check_number_decimal, allow_infinite = FALSE))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number, not an infinite number.
+      ! `foo` must be a number, not `-Inf`.
 
 # `check_symbol()` checks
 

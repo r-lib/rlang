@@ -83,7 +83,11 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
         integer = "an integer",
         double =
           if (is.infinite(x)) {
-            "an infinite number"
+            if (x > 0) {
+              "`Inf`"
+            } else {
+              "`-Inf`"
+            }
           } else {
             "a number"
           },
