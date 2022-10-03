@@ -249,9 +249,8 @@ oxford_comma <- function(chr, sep = ", ", final = "or") {
     return(chr)
   }
 
-  n <- length(chr)
   head <- chr[seq_len(n - 1)]
-  last <- chr[length(chr)]
+  last <- chr[n]
 
   head <- paste(head, collapse = sep)
 
