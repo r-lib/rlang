@@ -54,3 +54,7 @@ test_that("obj_type_friendly() handles empty vectors", {
   expect_equal(obj_type_friendly(raw()), "an empty raw vector")
   expect_equal(obj_type_friendly(list()), "an empty list")
 })
+
+test_that("obj_type_friendly() handles NULL", {
+  expect_equal(obj_type_friendly(NULL), "`NULL`")
+})

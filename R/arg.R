@@ -147,7 +147,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
 
 arg_match_invalid_msg <- function(val, values, error_arg) {
   msg <- paste0(format_arg(error_arg), " must be one of ")
-  msg <- paste0(msg, chr_enumerate(chr_quoted(values, "\"")))
+  msg <- paste0(msg, oxford_comma(chr_quoted(values, "\"")))
 
   if (is_null(val)) {
     msg <- paste0(msg, ".")
@@ -195,26 +195,6 @@ check_required <- function(x,
 
 chr_quoted <- function(chr, type = "`") {
   paste0(type, chr, type)
-}
-chr_enumerate <- function(chr, sep = ", ", final = "or") {
-  n <- length(chr)
-
-  if (n < 2) {
-    return(chr)
-  }
-
-  n <- length(chr)
-  head <- chr[seq_len(n - 1)]
-  last <- chr[length(chr)]
-
-  head <- paste(head, collapse = sep)
-
-  # Write a or b. But a, b, or c.
-  if (n > 2) {
-    paste0(head, sep, final, " ", last)
-  } else {
-    paste0(head, " ", final, " ", last)
-  }
 }
 
 #' Check that arguments are mutually exclusive
@@ -278,7 +258,7 @@ check_exclusive <- function(...,
   if (n_present == 0) {
     if (.require) {
       args <- map(names(args), format_arg)
-      enum <- chr_enumerate(args)
+      enum <- oxford_comma(args)
       msg <- sprintf("One of %s must be supplied.", enum)
       abort(msg, call = .call)
     } else {
@@ -291,11 +271,11 @@ check_exclusive <- function(...,
   }
 
   args <- map_chr(names(args), format_arg)
-  enum <- chr_enumerate(args)
+  enum <- oxford_comma(args)
   msg <- sprintf("Exactly one of %s must be supplied.", enum)
 
   if (n_present != length(args)) {
-    enum <- chr_enumerate(args[present], final = "and")
+    enum <- oxford_comma(args[present], final = "and")
     msg <- c(msg, x = sprintf("%s were supplied together.", enum))
   }
 

@@ -306,7 +306,7 @@ check_pkg_version <- function(pkg,
 check_action <- function(action, call = caller_env()) {
   # Take `pkg`, `version`, and `compare`?
   if (!is_null(action)) {
-    check_closure(action, what = "`NULL` or a function", call = call)
+    check_closure(action, call = call, allow_null = TRUE)
 
     if (!"..." %in% names(formals(action))) {
       msg <- sprintf(
@@ -355,7 +355,7 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
     }))
   }
 
-  pkg_enum <- chr_enumerate(pkg_enum, final = "and")
+  pkg_enum <- oxford_comma(pkg_enum, final = "and")
 
   info <- pluralise(
     n,

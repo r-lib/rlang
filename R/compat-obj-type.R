@@ -3,6 +3,10 @@
 # Changelog
 # =========
 #
+# 2022-10-03:
+# - Added `allow_na` and `allow_null` arguments.
+# - `NULL` is now backticked.
+#
 # 2022-09-16:
 # - Unprefixed usage of rlang functions with `rlang::` to
 #   avoid onLoad issues when called from rlang (#1482).
@@ -141,7 +145,7 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
 
     list = "a list",
 
-    NULL = "NULL",
+    NULL = "`NULL`",
     environment = "an environment",
     externalptr = "a pointer",
     weakref = "a weak reference",
@@ -200,34 +204,65 @@ obj_type_oo <- function(x) {
 
 #' @param x The object type which does not conform to `what`. Its
 #'   `obj_type_friendly()` is taken and mentioned in the error message.
-#' @param what The friendly expected type.
+#' @param what The friendly expected type as a string. Can be a
+#'   character vector of expected types, in which case the error
+#'   message mentions all of them in an "or" enumeration.
 #' @param ... Arguments passed to [abort()].
 #' @inheritParams args_error_context
 #' @noRd
 stop_input_type <- function(x,
                             what,
                             ...,
+                            allow_na = FALSE,
+                            allow_null = FALSE,
                             arg = caller_arg(x),
                             call = caller_env()) {
   # From compat-cli.R
-  format_arg <- env_get(
-    nm = "format_arg",
+  cli <- env_get_list(
+    nms = c("format_arg", "format_code"),
     last = topenv(),
-    default = NULL,
+    default = function(x) sprintf("`%s`", x),
     inherit = TRUE
   )
-  if (!is.function(format_arg)) {
-    format_arg <- function(x) sprintf("`%s`", x)
+
+  if (allow_na) {
+    what <- c(what, cli$format_code("NA"))
+  }
+  if (allow_null) {
+    what <- c(what, cli$format_code("NULL"))
+  }
+  if (length(what)) {
+    what <- oxford_comma(what)
   }
 
   message <- sprintf(
     "%s must be %s, not %s.",
-    format_arg(arg),
+    cli$format_arg(arg),
     what,
     obj_type_friendly(x)
   )
 
   abort(message, ..., call = call, arg = arg)
+}
+
+oxford_comma <- function(chr, sep = ", ", final = "or") {
+  n <- length(chr)
+
+  if (n < 2) {
+    return(chr)
+  }
+
+  head <- chr[seq_len(n - 1)]
+  last <- chr[n]
+
+  head <- paste(head, collapse = sep)
+
+  # Write a or b. But a, b, or c.
+  if (n > 2) {
+    paste0(head, sep, final, " ", last)
+  } else {
+    paste0(head, " ", final, " ", last)
+  }
 }
 
 # nocov end
