@@ -95,61 +95,61 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not absent.
+      ! `foo` must be a whole number, not absent.
     Code
       err(checker(NA, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not `NA`.
+      ! `foo` must be a whole number, not `NA`.
     Code
       err(checker(NULL, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not `NULL`.
+      ! `foo` must be a whole number, not `NULL`.
     Code
       err(checker(int(), check_number_whole, allow_na = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number or `NA`, not an empty integer vector.
+      ! `foo` must be a whole number or `NA`, not an empty integer vector.
     Code
       err(checker(na_dbl, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not a numeric `NA`.
+      ! `foo` must be a whole number, not a numeric `NA`.
     Code
       err(checker(na_int, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not an integer `NA`.
+      ! `foo` must be a whole number, not an integer `NA`.
     Code
       err(checker(10:11, check_number_whole, allow_na = TRUE, allow_null = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, `NA`, or `NULL`, not an integer vector.
+      ! `foo` must be a whole number, `NA`, or `NULL`, not an integer vector.
     Code
       err(checker(10.5, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not a number.
+      ! `foo` must be a whole number, not a number.
     Code
       err(checker(Inf, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not `Inf`.
+      ! `foo` must be a whole number, not `Inf`.
     Code
       err(checker(-Inf, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not `-Inf`.
+      ! `foo` must be a whole number, not `-Inf`.
 
 # `check_number_decimal()` checks
 

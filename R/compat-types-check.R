@@ -154,7 +154,7 @@ check_number_whole <- function(x,
   if (allow_decimal) {
     what <- "a number"
   } else {
-    what <- "a round number"
+    what <- "a whole number"
   }
 
   stop_input_type(
