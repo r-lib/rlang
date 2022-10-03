@@ -1,6 +1,12 @@
 # `check_bool()` checks
 
     Code
+      err(checker(, check_bool))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be `TRUE` or `FALSE`, not absent.
+    Code
       err(checker(NA, check_bool))
     Output
       <error/rlang_error>
@@ -40,6 +46,12 @@
       Error in `checker()`:
       ! `foo` must be a single string, not `""`.
     Code
+      err(checker(, check_string))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a single string, not absent.
+    Code
       err(checker(NA, check_string))
     Output
       <error/rlang_error>
@@ -78,6 +90,12 @@
 
 # `check_number()` checks
 
+    Code
+      err(checker(, check_number))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a round number, not absent.
     Code
       err(checker(NA, check_number))
     Output
@@ -124,6 +142,12 @@
 # `check_symbol()` checks
 
     Code
+      err(checker(, check_symbol))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a symbol, not absent.
+    Code
       err(checker(NULL, check_symbol))
     Output
       <error/rlang_error>
@@ -157,6 +181,12 @@
 # `check_call()` checks
 
     Code
+      err(checker(, check_call))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a defused call, not absent.
+    Code
       err(checker(NULL, check_call))
     Output
       <error/rlang_error>
@@ -184,6 +214,12 @@
 # `check_environment()` checks
 
     Code
+      err(checker(, check_environment))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be an environment, not absent.
+    Code
       err(checker(NULL, check_environment))
     Output
       <error/rlang_error>
@@ -204,6 +240,12 @@
 
 # `check_character()` checks
 
+    Code
+      err(checker(, check_character))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a character vector, not absent.
     Code
       err(checker(NULL, check_character))
     Output
