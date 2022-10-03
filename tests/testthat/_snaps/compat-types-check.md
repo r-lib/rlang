@@ -11,7 +11,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be `TRUE` or `FALSE`, not NULL.
+      ! `foo` must be `TRUE` or `FALSE`, not `NULL`.
     Code
       err(checker(lgl(), check_bool, allow_na = TRUE))
     Output
@@ -50,7 +50,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not NULL.
+      ! `foo` must be a single string, not `NULL`.
     Code
       err(checker(chr(), check_string, allow_na = TRUE))
     Output
@@ -89,7 +89,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a round number, not NULL.
+      ! `foo` must be a round number, not `NULL`.
     Code
       err(checker(int(), check_number, allow_na = TRUE))
     Output
@@ -128,7 +128,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a symbol, not NULL.
+      ! `foo` must be a symbol, not `NULL`.
     Code
       err(checker(TRUE, check_symbol, allow_na = TRUE))
     Output
@@ -161,7 +161,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a defused call, not NULL.
+      ! `foo` must be a defused call, not `NULL`.
     Code
       err(checker(TRUE, check_call, allow_na = TRUE))
     Output
@@ -188,7 +188,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be an environment, not NULL.
+      ! `foo` must be an environment, not `NULL`.
     Code
       err(checker(FALSE, check_environment, allow_na = TRUE))
     Output
@@ -209,7 +209,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a character vector, not NULL.
+      ! `foo` must be a character vector, not `NULL`.
     Code
       err(checker(NA, check_character))
     Output

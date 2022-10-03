@@ -3,8 +3,9 @@
 # Changelog
 # =========
 #
-# 2022-09-28:
+# 2022-10-03:
 # - Added `allow_na` and `allow_null` arguments.
+# - `NULL` is now backticked.
 #
 # 2022-09-16:
 # - Unprefixed usage of rlang functions with `rlang::` to
@@ -144,7 +145,7 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
 
     list = "a list",
 
-    NULL = "NULL",
+    NULL = "`NULL`",
     environment = "an environment",
     externalptr = "a pointer",
     weakref = "a weak reference",
