@@ -203,7 +203,9 @@ obj_type_oo <- function(x) {
 
 #' @param x The object type which does not conform to `what`. Its
 #'   `obj_type_friendly()` is taken and mentioned in the error message.
-#' @param what The friendly expected type.
+#' @param what The friendly expected type as a string. Can be a
+#'   character vector of expected types, in which case the error
+#'   message mentions all of them in an "or" enumeration.
 #' @param ... Arguments passed to [abort()].
 #' @inheritParams args_error_context
 #' @noRd
