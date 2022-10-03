@@ -317,7 +317,7 @@ extensive changes to the display of error messages.
   and `check_dots_empty()` is deprecated in favour of the new `error`
   argument which takes an error handler.
 
-* Many functions deprecated deprecated in rlang 0.2.0 and 0.3.0 have
+* Many functions deprecated in rlang 0.2.0 and 0.3.0 have
   been removed from the package.
 
 
