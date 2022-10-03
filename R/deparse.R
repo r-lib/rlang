@@ -7,8 +7,8 @@ line_push <- function(line, text,
   if (!length(line)) {
     return(text)
   }
-  check_string(line, allow_empty = TRUE)
-  check_string(text, allow_empty = TRUE)
+  check_string(line)
+  check_string(text)
 
   width <- width %||% peek_option("width")
 

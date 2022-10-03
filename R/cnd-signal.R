@@ -327,7 +327,7 @@ needs_signal <- function(frequency,
       format_arg(".frequency")
     ))
   }
-  check_string(id, arg = ".frequency")
+  check_name(id, arg = ".frequency")
 
   sentinel <- env[[id]]
   if (is_null(sentinel)) {
@@ -368,7 +368,7 @@ reset_message_verbosity <- function(id) {
   reset_verbosity(id, "message")
 }
 reset_verbosity <- function(id, type = c("message", "warning")) {
-  check_string(id)
+  check_name(id)
   type <- arg_match(type)
 
   env <- switch(

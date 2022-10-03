@@ -16,13 +16,13 @@ test_that("`check_bool()` checks", {
 
 test_that("`check_string()` checks", {
   expect_null(check_string("foo"))
-  expect_null(check_string("", allow_empty = TRUE))
+  expect_null(check_string(""))
   expect_null(check_string(NA, allow_na = TRUE))
   expect_null(check_string(na_chr, allow_na = TRUE))
   expect_null(check_string(NULL, allow_null = TRUE))
 
   expect_snapshot({
-    err(checker("", check_string))
+    err(checker("", check_string, allow_empty = FALSE))
     err(checker(, check_string))
     err(checker(NA, check_string))
     err(checker(NULL, check_string))
@@ -30,6 +30,23 @@ test_that("`check_string()` checks", {
     err(checker(na_chr, check_string))
     err(checker(c("", ""), check_string, allow_na = TRUE, allow_null = TRUE))
     err(checker(1, check_string))
+  })
+})
+
+test_that("`check_name()` checks", {
+  expect_null(check_name("foo"))
+  expect_null(check_name(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker("", check_name))
+    err(checker(, check_name))
+    err(checker(NA, check_name))
+    err(checker(na_chr, check_name))
+    err(checker(NULL, check_name))
+    err(checker(chr(), check_name, allow_na = TRUE))
+    err(checker(na_chr, check_name))
+    err(checker(c("", ""), check_name, allow_na = TRUE, allow_null = TRUE))
+    err(checker(1, check_name))
   })
 })
 

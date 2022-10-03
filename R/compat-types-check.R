@@ -8,6 +8,10 @@
 # Changelog
 # =========
 #
+# 2022-10-04:
+# - Added `check_name()` that forbids the empty string.
+#   `check_string()` allows the empty string by default.
+#
 # 2022-09-28:
 # - Removed `what` arguments.
 # - Added `allow_na` and `allow_null` arguments.
@@ -55,7 +59,7 @@ check_bool <- function(x,
 
 check_string <- function(x,
                          ...,
-                         allow_empty = FALSE,
+                         allow_empty = TRUE,
                          allow_na = FALSE,
                          allow_null = FALSE,
                          arg = caller_arg(x),
@@ -84,7 +88,22 @@ check_string <- function(x,
     arg = arg,
     call = call
   )
+}
 
+check_name <- function(x,
+                       ...,
+                       allow_null = FALSE,
+                       arg = caller_arg(x),
+                       call = caller_env()) {
+  check_string(
+    x,
+    ...,
+    allow_empty = FALSE,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
 }
 
 check_number_decimal <- function(x,
