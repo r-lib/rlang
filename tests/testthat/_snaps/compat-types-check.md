@@ -34,7 +34,7 @@
 # `check_string()` checks
 
     Code
-      err(checker("", check_string, allow_empty = FALSE))
+      err(checker("", check_string))
     Output
       <error/rlang_error>
       Error in `checker()`:

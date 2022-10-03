@@ -51,7 +51,7 @@ check_bool <- function(x,
 
 check_string <- function(x,
                          ...,
-                         allow_empty = TRUE,
+                         allow_empty = FALSE,
                          allow_na = FALSE,
                          allow_null = FALSE,
                          arg = caller_arg(x),

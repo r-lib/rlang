@@ -14,14 +14,14 @@ test_that("`check_bool()` checks", {
 })
 
 test_that("`check_string()` checks", {
-  expect_null(check_string(""))
   expect_null(check_string("foo"))
+  expect_null(check_string("", allow_empty = TRUE))
   expect_null(check_string(NA, allow_na = TRUE))
   expect_null(check_string(na_chr, allow_na = TRUE))
   expect_null(check_string(NULL, allow_null = TRUE))
 
   expect_snapshot({
-    err(checker("", check_string, allow_empty = FALSE))
+    err(checker("", check_string))
     err(checker(NA, check_string))
     err(checker(NULL, check_string))
     err(checker(chr(), check_string, allow_na = TRUE))
