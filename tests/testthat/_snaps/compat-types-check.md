@@ -219,6 +219,12 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a whole number larger than 0, not -1.
+    Code
+      err(checker(10, min = 1, max = 5, check_number_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a whole number between 1 and 5, not 10.
 
 # `check_number_decimal()` checks
 

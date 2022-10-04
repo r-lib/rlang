@@ -215,6 +215,10 @@ check_number_whole <- function(x,
     )
 
     if (is_number) {
+      if (min > -Inf && max < Inf) {
+        what <- sprintf("%s between %s and %s", what, min, max)
+        .stop(x, what, ...)
+      }
       if (x < min) {
         what <- sprintf("%s larger than %s", what, min)
         .stop(x, what, ...)
@@ -236,7 +240,7 @@ check_number_whole <- function(x,
     }
   }
 
-  .stop(x, what, ..., value = FALSE)
+  .stop(x, what, ...)
 }
 
 is_number <- function(x,

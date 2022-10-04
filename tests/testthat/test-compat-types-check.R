@@ -74,6 +74,7 @@ test_that("`check_number_whole()` checks", {
     err(checker(-Inf, check_number_whole))
     err(checker(1, max = 0, check_number_whole))
     err(checker(-1, min = 0, check_number_whole))
+    err(checker(10, min = 1, max = 5, check_number_whole))
   })
 })
 
