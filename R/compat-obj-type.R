@@ -3,6 +3,12 @@
 # Changelog
 # =========
 #
+# 2022-10-04:
+# - `obj_type_friendly(value = TRUE)` now shows numeric scalars
+#   literally.
+# - `stop_friendly_type()` now takes `show_value`, passed to
+#   `obj_type_friendly()` as `value` argument.
+#
 # 2022-10-03:
 # - Added `allow_na` and `allow_null` arguments.
 # - `NULL` is now backticked.
@@ -77,20 +83,22 @@ obj_type_friendly <- function(x, value = TRUE, length = FALSE) {
       ))
     }
     if (length(x) == 1 && !is_list(x)) {
+      if (value && is.numeric(x)) {
+        if (is.infinite(x)) {
+          if (x > 0) {
+            return("`Inf`")
+          } else {
+            return("`-Inf`")
+          }
+        }
+
+        return(as.character(round(x, 2)))
+      }
       return(switch(
         typeof(x),
         logical = if (x) "`TRUE`" else "`FALSE`",
         integer = "an integer",
-        double =
-          if (is.infinite(x)) {
-            if (x > 0) {
-              "`Inf`"
-            } else {
-              "`-Inf`"
-            }
-          } else {
-            "a number"
-          },
+        double = "a number",
         complex = "a complex number",
         character = if (nzchar(x)) "a string" else "`\"\"`",
         raw = "a raw value",
@@ -222,6 +230,7 @@ obj_type_oo <- function(x) {
 #' @param what The friendly expected type as a string. Can be a
 #'   character vector of expected types, in which case the error
 #'   message mentions all of them in an "or" enumeration.
+#' @param show_value Passed to `value` argument of `obj_type_friendly()`.
 #' @param ... Arguments passed to [abort()].
 #' @inheritParams args_error_context
 #' @noRd
@@ -230,6 +239,7 @@ stop_input_type <- function(x,
                             ...,
                             allow_na = FALSE,
                             allow_null = FALSE,
+                            show_value = TRUE,
                             arg = caller_arg(x),
                             call = caller_env()) {
   # From compat-cli.R
@@ -254,7 +264,7 @@ stop_input_type <- function(x,
     "%s must be %s, not %s.",
     cli$format_arg(arg),
     what,
-    obj_type_friendly(x)
+    obj_type_friendly(x, value = show_value)
   )
 
   abort(message, ..., call = call, arg = arg)
