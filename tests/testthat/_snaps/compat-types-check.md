@@ -44,7 +44,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not `""`.
+      ! `foo` must be a single string, not "".
     Code
       err(checker(, check_string))
     Output
@@ -95,7 +95,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a valid name, not `""`.
+      ! `foo` must be a valid name, not "".
     Code
       err(checker(, check_name))
     Output
@@ -207,6 +207,18 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a whole number, not `-Inf`.
+    Code
+      err(checker(1, max = 0, check_number_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a whole number smaller than 0, not 1.
+    Code
+      err(checker(-1, min = 0, check_number_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a whole number larger than 0, not -1.
 
 # `check_number_decimal()` checks
 
@@ -296,7 +308,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a symbol, not a string.
+      ! `foo` must be a symbol, not "foo".
     Code
       err(checker(quote(foo()), check_symbol))
     Output

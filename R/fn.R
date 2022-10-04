@@ -670,6 +670,6 @@ as_predicate_friendly_type_of <- function(x) {
   if (is_na(x)) {
     "a missing value"
   } else {
-    obj_type_friendly(x, length = TRUE)
+    obj_type_friendly(x)
   }
 }

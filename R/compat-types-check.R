@@ -197,7 +197,7 @@ check_number_whole <- function(x,
     what <- "a whole number"
   }
 
-  .stop <- function(x, ...) stop_input_type(
+  .stop <- function(x, what, ...) stop_input_type(
     x,
     what,
     ...,
@@ -217,11 +217,11 @@ check_number_whole <- function(x,
     if (is_number) {
       if (x < min) {
         what <- sprintf("%s larger than %s", what, min)
-        .stop(x, ...)
+        .stop(x, what, ...)
       }
       if (x > max) {
         what <- sprintf("%s smaller than %s", what, max)
-        .stop(x, ...)
+        .stop(x, what, ...)
       }
       return(invisible(NULL))
     }
@@ -236,7 +236,7 @@ check_number_whole <- function(x,
     }
   }
 
-  .stop(x, ..., value = FALSE)
+  .stop(x, what, ..., value = FALSE)
 }
 
 is_number <- function(x,
