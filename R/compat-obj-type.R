@@ -7,7 +7,7 @@
 # - `obj_type_friendly(value = TRUE)` now shows numeric scalars
 #   literally.
 # - `stop_friendly_type()` now takes `show_value`, passed to
-#   `obj_type_friendly()` as `value` argument.
+#   `obj_type_friendly()` as the `value` argument.
 #
 # 2022-10-03:
 # - Added `allow_na` and `allow_null` arguments.
@@ -41,7 +41,7 @@
 #' Return English-friendly type
 #' @param x Any R object.
 #' @param value Whether to describe the value of `x`. Special values
-#'   like `NA` or `""` are always described
+#'   like `NA` or `""` are always described.
 #' @param length Whether to mention the length of vectors and lists.
 #' @return A string describing the type. Starts with an indefinite
 #'   article, e.g. "an integer vector".
