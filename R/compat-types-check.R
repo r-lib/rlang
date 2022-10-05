@@ -217,14 +217,15 @@ check_number_whole <- function(x,
     if (is_number) {
       if (min > -Inf && max < Inf) {
         what <- sprintf("a number between %s and %s", min, max)
-        .stop(x, what, ...)
+      } else {
+        what <- NULL
       }
       if (x < min) {
-        what <- sprintf("a number larger than %s", min)
+        what <- what %||% sprintf("a number larger than %s", min)
         .stop(x, what, ...)
       }
       if (x > max) {
-        what <- sprintf("a number smaller than %s", max)
+        what <- what %||% sprintf("a number smaller than %s", max)
         .stop(x, what, ...)
       }
       return(invisible(NULL))

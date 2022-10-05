@@ -60,6 +60,7 @@ test_that("`check_number_whole()` checks", {
 
   check_number_whole(0, max = 0)
   check_number_whole(0, min = 0)
+  check_number_whole(1, min = 0, max = 2)
 
   expect_snapshot({
     err(checker(, check_number_whole))
