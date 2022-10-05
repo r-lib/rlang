@@ -491,7 +491,7 @@ env_poke <- function(env = caller_env(),
 #' @export
 env_cache <- function(env, nm, default) {
   check_required(default)
-  check_string(nm)
+  check_name(nm)
 
   if (env_has(env, nm)) {
     env_get(env, nm)

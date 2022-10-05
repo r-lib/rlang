@@ -40,7 +40,7 @@
 # `check_string()` checks
 
     Code
-      err(checker("", check_string))
+      err(checker("", check_string, allow_empty = FALSE))
     Output
       <error/rlang_error>
       Error in `checker()`:
@@ -87,6 +87,63 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a single string, not a number.
+
+# `check_name()` checks
+
+    Code
+      err(checker("", check_name))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name, not `""`.
+    Code
+      err(checker(, check_name))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name, not absent.
+    Code
+      err(checker(NA, check_name))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name, not `NA`.
+    Code
+      err(checker(na_chr, check_name))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name, not a character `NA`.
+    Code
+      err(checker(NULL, check_name))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name, not `NULL`.
+    Code
+      err(checker(chr(), check_name, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name or `NULL`, not an empty character vector.
+    Code
+      err(checker(na_chr, check_name))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name, not a character `NA`.
+    Code
+      err(checker(c("", ""), check_name, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name or `NULL`, not a character vector.
+    Code
+      err(checker(1, check_name))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name, not a number.
 
 # `check_number_whole()` checks
 

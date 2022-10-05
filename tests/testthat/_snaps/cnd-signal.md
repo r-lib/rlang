@@ -47,7 +47,7 @@
     Output
       <error/rlang_error>
       Error in `warn()`:
-      ! `.frequency` must be a single string, not an integer.
+      ! `.frequency` must be a valid name, not an integer.
 
 # signal functions check inputs
 
