@@ -208,9 +208,6 @@ vec_type_friendly <- function(x, length = FALSE) {
   }
 }
 
-.rlang_as_friendly_vector_type <- function(type, n_dim) {
-}
-
 .rlang_as_friendly_type <- function(type) {
   switch(
     type,
