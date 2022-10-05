@@ -497,7 +497,7 @@
     Output
       <error/rlang_error>
       Error in `message_cnd()`:
-      ! `message` must be a character vector, not a number.
+      ! `message` must be a character vector, not the number 1.
 
 # picks up cli format flag
 

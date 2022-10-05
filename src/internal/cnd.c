@@ -202,12 +202,12 @@ r_obj* new_condition_names(r_obj* data) {
   return nms;
 }
 
-const char* rlang_obj_type_friendly_full(r_obj* x, bool value, bool length) {
-  r_obj* out_obj = KEEP(r_eval_with_xyz(obj_type_friendly_call,
-                                        x,
-                                        r_lgl(value),
-                                        r_lgl(length),
-                                        rlang_ns_env));
+// `length` is no longer a valid argument
+const char* rlang_obj_type_friendly_full(r_obj* x, bool value, bool _length) {
+  r_obj* out_obj = KEEP(r_eval_with_xy(obj_type_friendly_call,
+                                       x,
+                                       r_lgl(value),
+                                       rlang_ns_env));
 
   if (!r_is_string(out_obj)) {
     r_stop_unexpected_type(r_typeof(out_obj));
@@ -227,7 +227,7 @@ void rlang_init_cnd(r_obj* ns) {
   format_arg_call = r_parse("format_arg(x)");
   r_preserve(format_arg_call);
 
-  obj_type_friendly_call = r_parse("obj_type_friendly(x, y, z)");
+  obj_type_friendly_call = r_parse("obj_type_friendly(x, y)");
   r_preserve(obj_type_friendly_call);
 }
 

@@ -124,7 +124,7 @@
     Output
       <error/rlang_error>
       Error in `arg_match()`:
-      ! `arg` must be a symbol, not a string.
+      ! `arg` must be a symbol, not the string "foo".
 
 # can match multiple arguments
 
@@ -219,7 +219,7 @@
     Output
       <error/rlang_error>
       Error in `g()`:
-      ! `my_arg` must be a character vector, not a number.
+      ! `my_arg` must be a character vector, not the number 1.
 
 # arg_match() backtrace highlights call and arg
 

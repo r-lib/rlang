@@ -36,7 +36,7 @@
     Output
       <error/rlang_error>
       Error in `.data[[2]]`:
-      ! Must subset the data pronoun with a string, not a number.
+      ! Must subset the data pronoun with a string, not the number 2.
     Code
       g <- (function(data) h(.data["foo"], data = data))
       (expect_error(f(mtcars)))

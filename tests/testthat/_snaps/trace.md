@@ -1282,7 +1282,7 @@
     Output
       <error/rlang_error>
       Error in <<CALL `h()`>>:
-      ! `x` must be a single string, not a number.
+      ! `x` must be a single string, not the number 1.
       ---
       Backtrace:
            x
@@ -1304,7 +1304,7 @@
       Error in <<CALL `wrapper()`>>:
       ! Tilt.
       Caused by error in <<CALL `h()`>>:
-      ! `x` must be a single string, not a number.
+      ! `x` must be a single string, not the number 1.
       ---
       Backtrace:
            x
@@ -1404,7 +1404,7 @@
     Output
       <error/rlang_error>
       Error in <<CALL `rlang:::as_string()`>>:
-      ! Can't convert a number to a string.
+      ! Can't convert a double vector to a string.
       ---
       Backtrace:
            x

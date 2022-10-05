@@ -178,7 +178,7 @@
     Output
       <error/rlang_error>
       Error in `check_installed()`:
-      ! `action` must be an R function or `NULL`, not a string.
+      ! `action` must be an R function or `NULL`, not the string "identity".
     Code
       err(check_installed("foo", action = identity))
     Output

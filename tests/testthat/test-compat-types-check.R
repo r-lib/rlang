@@ -58,6 +58,10 @@ test_that("`check_number_whole()` checks", {
   expect_null(check_number_whole(na_int, allow_na = TRUE))
   expect_null(check_number_whole(NULL, allow_null = TRUE))
 
+  check_number_whole(0, max = 0)
+  check_number_whole(0, min = 0)
+  check_number_whole(1, min = 0, max = 2)
+
   expect_snapshot({
     err(checker(, check_number_whole))
     err(checker(NA, check_number_whole))
@@ -69,6 +73,9 @@ test_that("`check_number_whole()` checks", {
     err(checker(10.5, check_number_whole))
     err(checker(Inf, check_number_whole))
     err(checker(-Inf, check_number_whole))
+    err(checker(1, max = 0, check_number_whole))
+    err(checker(-1, min = 0, check_number_whole))
+    err(checker(10, min = 1, max = 5, check_number_whole))
   })
 })
 
