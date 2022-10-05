@@ -95,51 +95,55 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not `""`.
+      ! `foo` must be a valid name, not `""`.
     Code
       err(checker(, check_name))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not absent.
+      ! `foo` must be a valid name, not absent.
     Code
       err(checker(NA, check_name))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not `NA`.
+      ! `foo` must be a valid name, not `NA`.
     Code
       err(checker(na_chr, check_name))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not a character `NA`.
+      ! `foo` must be a valid name, not a character `NA`.
     Code
       err(checker(NULL, check_name))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not `NULL`.
+      ! `foo` must be a valid name, not `NULL`.
     Code
-      err(checker(chr(), check_name, allow_na = TRUE))
+      err(checker(chr(), check_name, allow_null = TRUE))
     Output
-      <simpleError in check_string(x, ..., allow_empty = FALSE, allow_na = FALSE, allow_null = allow_null,     arg = arg, call = call): formal argument "allow_na" matched by multiple actual arguments>
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name or `NULL`, not an empty character vector.
     Code
       err(checker(na_chr, check_name))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not a character `NA`.
+      ! `foo` must be a valid name, not a character `NA`.
     Code
-      err(checker(c("", ""), check_name, allow_na = TRUE, allow_null = TRUE))
+      err(checker(c("", ""), check_name, allow_null = TRUE))
     Output
-      <simpleError in check_string(x, ..., allow_empty = FALSE, allow_na = FALSE, allow_null = allow_null,     arg = arg, call = call): formal argument "allow_na" matched by multiple actual arguments>
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a valid name or `NULL`, not a character vector.
     Code
       err(checker(1, check_name))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not a number.
+      ! `foo` must be a valid name, not a number.
 
 # `check_number_whole()` checks
 
