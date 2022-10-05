@@ -94,14 +94,13 @@ obj_type_friendly <- function(x, value = TRUE) {
       }
 
       if (value) {
+        if (is.numeric(x) && is.infinite(x)) {
+          return(show_infinites(x))
+        }
         if (is.numeric(x) || is.complex(x)) {
-          if (is.infinite(x)) {
-            return(show_infinites(x))
-          } else {
-            number <- as.character(round(x, 2))
-            what <- if (is.complex(x)) "the complex number" else "the number"
-            return(paste(what, number))
-          }
+          number <- as.character(round(x, 2))
+          what <- if (is.complex(x)) "the complex number" else "the number"
+          return(paste(what, number))
         }
         return(switch(
           typeof(x),

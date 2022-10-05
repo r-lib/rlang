@@ -188,4 +188,10 @@ test_that("obj_type_friendly() handles NaN and infinities", {
     vector = "a double vector",
     vector_length = "a double vector of length 1"
   ))
+  expect_equal(friendly_types(Inf + 0i), c(
+    object = "the complex number Inf+0i",
+    object_no_value = "a complex number",
+    vector = "a complex vector",
+    vector_length = "a complex vector of length 1"
+  ))
 })
