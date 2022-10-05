@@ -71,19 +71,19 @@ test_that("obj_type_friendly() handles scalars", {
   ))
 
   expect_equal(friendly_types(1L), c(
-    object = "1",
+    object = "the number 1",
     object_no_value = "an integer",
     vector = "an integer vector",
     vector_length = "an integer vector of length 1"
   ))
   expect_equal(friendly_types(1.0), c(
-    object = "1",
+    object = "the number 1",
     object_no_value = "a number",
     vector = "a double vector",
     vector_length = "a double vector of length 1"
   ))
   expect_equal(friendly_types(1i), c(
-    object = "0+1i",
+    object = "the complex number 0+1i",
     object_no_value = "a complex number",
     vector = "a complex vector",
     vector_length = "a complex vector of length 1"

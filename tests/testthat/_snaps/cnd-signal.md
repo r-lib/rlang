@@ -47,7 +47,7 @@
     Output
       <error/rlang_error>
       Error in `warn()`:
-      ! `.frequency` must be a valid name, not 1.
+      ! `.frequency` must be a valid name, not the number 1.
 
 # signal functions check inputs
 

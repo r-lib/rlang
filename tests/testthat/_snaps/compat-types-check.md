@@ -35,7 +35,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be `TRUE` or `FALSE`, not 1.
+      ! `foo` must be `TRUE` or `FALSE`, not the number 1.
 
 # `check_string()` checks
 
@@ -86,7 +86,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not 1.
+      ! `foo` must be a single string, not the number 1.
 
 # `check_name()` checks
 
@@ -143,7 +143,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a valid name, not 1.
+      ! `foo` must be a valid name, not the number 1.
 
 # `check_number_whole()` checks
 
@@ -194,7 +194,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a whole number, not 10.5.
+      ! `foo` must be a whole number, not the number 10.5.
     Code
       err(checker(Inf, check_number_whole))
     Output
@@ -212,19 +212,19 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number smaller than 0, not 1.
+      ! `foo` must be a number smaller than 0, not the number 1.
     Code
       err(checker(-1, min = 0, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number larger than 0, not -1.
+      ! `foo` must be a number larger than 0, not the number -1.
     Code
       err(checker(10, min = 1, max = 5, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number between 1 and 5, not 10.
+      ! `foo` must be a number between 1 and 5, not the number 10.
 
 # `check_number_decimal()` checks
 
@@ -407,7 +407,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a character vector or `NA`, not 1.
+      ! `foo` must be a character vector or `NA`, not the number 1.
     Code
       err(checker(list("foo", "bar"), check_character, allow_na = TRUE, allow_null = TRUE))
     Output

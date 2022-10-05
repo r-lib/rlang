@@ -219,7 +219,7 @@
     Output
       <error/rlang_error>
       Error in `g()`:
-      ! `my_arg` must be a character vector, not 1.
+      ! `my_arg` must be a character vector, not the number 1.
 
 # arg_match() backtrace highlights call and arg
 

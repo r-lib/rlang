@@ -38,17 +38,17 @@
     Output
       <error/rlang_error>
       Error in `fn_fmls()`:
-      ! `fn` must be an R function, not 1.
+      ! `fn` must be an R function, not the number 1.
     Code
       (expect_error(fn_body(1)))
     Output
       <error/rlang_error>
       Error in `fn_body()`:
-      ! `fn` must be an R function, not 1.
+      ! `fn` must be an R function, not the number 1.
     Code
       (expect_error(fn_env(1)))
     Output
       <error/rlang_error>
       Error in `fn_env()`:
-      ! `fn` must be a function, not 1.
+      ! `fn` must be a function, not the number 1.
 

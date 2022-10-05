@@ -98,7 +98,9 @@ obj_type_friendly <- function(x, value = TRUE) {
           if (is.infinite(x)) {
             return(show_infinites(x))
           } else {
-            return(as.character(round(x, 2)))
+            number <- as.character(round(x, 2))
+            what <- if (is.complex(x)) "the complex number" else "the number"
+            return(paste(what, number))
           }
         }
         return(switch(

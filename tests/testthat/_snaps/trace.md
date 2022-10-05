@@ -1282,7 +1282,7 @@
     Output
       <error/rlang_error>
       Error in <<CALL `h()`>>:
-      ! `x` must be a single string, not 1.
+      ! `x` must be a single string, not the number 1.
       ---
       Backtrace:
            x
@@ -1304,7 +1304,7 @@
       Error in <<CALL `wrapper()`>>:
       ! Tilt.
       Caused by error in <<CALL `h()`>>:
-      ! `x` must be a single string, not 1.
+      ! `x` must be a single string, not the number 1.
       ---
       Backtrace:
            x
