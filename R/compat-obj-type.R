@@ -106,8 +106,11 @@ obj_type_friendly <- function(x, value = TRUE) {
         return(switch(
           typeof(x),
           logical = if (x) "`TRUE`" else "`FALSE`",
-          character = encodeString(x, quote = "\""),
-          raw = "a raw value",
+          character = {
+            what <- if (nzchar(x)) "the string" else "the empty string"
+            paste(what, encodeString(x, quote = "\""))
+          },
+          raw = paste("the raw value", as.character(x)),
           .rlang_stop_unexpected_typeof(x)
         ))
       } else {

@@ -44,7 +44,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a single string, not "".
+      ! `foo` must be a single string, not the empty string "".
     Code
       err(checker(, check_string))
     Output
@@ -95,7 +95,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a valid name, not "".
+      ! `foo` must be a valid name, not the empty string "".
     Code
       err(checker(, check_name))
     Output
@@ -314,7 +314,7 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a symbol, not "foo".
+      ! `foo` must be a symbol, not the string "foo".
     Code
       err(checker(quote(foo()), check_symbol))
     Output

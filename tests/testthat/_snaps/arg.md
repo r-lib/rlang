@@ -124,7 +124,7 @@
     Output
       <error/rlang_error>
       Error in `arg_match()`:
-      ! `arg` must be a symbol, not "foo".
+      ! `arg` must be a symbol, not the string "foo".
 
 # can match multiple arguments
 

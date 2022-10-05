@@ -89,20 +89,20 @@ test_that("obj_type_friendly() handles scalars", {
     vector_length = "a complex vector of length 1"
   ))
   expect_equal(friendly_types(as.raw(1)), c(
-    object = "a raw value",
+    object = "the raw value 01",
     object_no_value = "a raw value",
     vector = "a raw vector",
     vector_length = "a raw vector of length 1"
   ))
 
   expect_equal(friendly_types("foo"), c(
-    object = "\"foo\"",
+    object = "the string \"foo\"",
     object_no_value = "a string",
     vector = "a character vector",
     vector_length = "a character vector of length 1"
   ))
   expect_equal(friendly_types(""), c(
-    object = "\"\"",
+    object = "the empty string \"\"",
     object_no_value = "\"\"",
     vector = "a character vector",
     vector_length = "a character vector of length 1"
