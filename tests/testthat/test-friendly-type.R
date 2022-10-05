@@ -195,3 +195,10 @@ test_that("obj_type_friendly() handles NaN and infinities", {
     vector_length = "a complex vector of length 1"
   ))
 })
+
+test_that("long strings are truncated", {
+  expect_equal(
+    obj_type_friendly(strrep("abc", 12)),
+    "the string \"abcabcabcabcabcabcabcabcabc...\""
+  )
+})

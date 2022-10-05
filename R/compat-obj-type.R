@@ -92,38 +92,47 @@ obj_type_friendly <- function(x, value = TRUE) {
           "`-Inf`"
         }
       }
+      str_encode <- function(x, width = 30, ...) {
+        if (nchar(x) > width) {
+          x <- substr(x, 1, width - 3)
+          x <- paste0(x, "...")
+        }
+        encodeString(x, ...)
+      }
 
       if (value) {
         if (is.numeric(x) && is.infinite(x)) {
           return(show_infinites(x))
         }
+
         if (is.numeric(x) || is.complex(x)) {
           number <- as.character(round(x, 2))
           what <- if (is.complex(x)) "the complex number" else "the number"
           return(paste(what, number))
         }
+
         return(switch(
           typeof(x),
           logical = if (x) "`TRUE`" else "`FALSE`",
           character = {
             what <- if (nzchar(x)) "the string" else "the empty string"
-            paste(what, encodeString(x, quote = "\""))
+            paste(what, str_encode(x, quote = "\""))
           },
           raw = paste("the raw value", as.character(x)),
           .rlang_stop_unexpected_typeof(x)
         ))
-      } else {
-        return(switch(
-          typeof(x),
-          logical = "a logical value",
-          integer = "an integer",
-          double = if (is.infinite(x)) show_infinites(x) else "a number",
-          complex = "a complex number",
-          character = if (nzchar(x)) "a string" else "\"\"",
-          raw = "a raw value",
-          .rlang_stop_unexpected_typeof(x)
-        ))
       }
+
+      return(switch(
+        typeof(x),
+        logical = "a logical value",
+        integer = "an integer",
+        double = if (is.infinite(x)) show_infinites(x) else "a number",
+        complex = "a complex number",
+        character = if (nzchar(x)) "a string" else "\"\"",
+        raw = "a raw value",
+        .rlang_stop_unexpected_typeof(x)
+      ))
     }
 
     if (length(x) == 0) {
