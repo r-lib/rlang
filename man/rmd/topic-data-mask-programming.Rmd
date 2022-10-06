@@ -282,7 +282,7 @@ mtcars %>% my_pivot_longer(cyl, am = am * 100)
 
 ## Named inputs versus `...`
 
-In the case of a named argument, transformation is easy. We simply surround the embraced input it in R code. For instance, the `my_summarise()` function is not exactly useful compared to just calling `summarise()`:
+In the case of a named argument, transformation is easy. We simply surround the embraced input in R code. For instance, the `my_summarise()` function is not exactly useful compared to just calling `summarise()`:
 
 ```r
 my_summarise <- function(data, var) {
