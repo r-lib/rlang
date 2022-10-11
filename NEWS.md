@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* rlang is now compliant with `-Wstrict-prototypes` as requested by CRAN
+  (#1508).
+
 # rlang 1.0.6
 
 * `as_closure(seq.int)` now works (#1468).
