@@ -5,7 +5,7 @@
 
 struct r_test {
   const char* desc;
-  bool (*fn_ptr)();
+  bool (*fn_ptr)(void);
 };
 
 bool test_that_true_is_true(void) {
@@ -65,7 +65,7 @@ r_obj* ffi_run_c_test(r_obj* fn_ptr) {
     r_stop_unexpected_type(r_typeof(fn_ptr));
   }
 
-  bool (*p)() = (bool (*)()) r_fn_ptr_addr(fn_ptr);
+  bool (*p)(void) = (bool (*)(void)) r_fn_ptr_addr(fn_ptr);
   return r_lgl(p());
 }
 
