@@ -16,7 +16,7 @@ bool r_is_installed(const char* pkg) {
 
 static r_obj* has_colour_call = NULL;
 
-bool r_has_colour() {
+bool r_has_colour(void) {
   if (!r_is_installed("crayon")) {
     return false;
   }
@@ -25,7 +25,7 @@ bool r_has_colour() {
 }
 
 
-void r_init_library_session() {
+void r_init_library_session(void) {
   is_installed_call = r_parse("requireNamespace(x, quietly = TRUE)");
   r_preserve(is_installed_call);
 
@@ -39,7 +39,7 @@ void r_init_library_session() {
 # include    <windows.h>
 # include    <tlhelp32.h>
 
-r_obj* r_getppid() {
+r_obj* r_getppid(void) {
   DWORD pid = GetCurrentProcessId();
   HANDLE handle = NULL;
   PROCESSENTRY32W pe = { 0 };
@@ -70,7 +70,7 @@ r_obj* r_getppid() {
 
 # include <unistd.h>
 
-r_obj* r_getppid() {
+r_obj* r_getppid(void) {
   return r_int(getppid());
 }
 

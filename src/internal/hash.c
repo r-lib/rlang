@@ -90,7 +90,7 @@ struct hash_state_t {
 };
 
 static inline struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state);
-static inline int hash_version();
+static inline int hash_version(void);
 static inline r_obj* hash_value(XXH3_state_t* p_xx_state);
 static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n);
 static inline void hash_char(R_outpstream_t stream, int input);
@@ -161,7 +161,7 @@ struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state) {
 }
 
 static inline
-int hash_version() {
+int hash_version(void) {
 #if USE_VERSION_3
   return 3;
 #else
@@ -345,7 +345,7 @@ void hasher_finalizer(r_obj* x) {
   R_ClearExternalPtr(x);
 }
 
-r_obj* ffi_hasher_init() {
+r_obj* ffi_hasher_init(void) {
   XXH3_state_t* p_xx_state = XXH3_createState();
 
   XXH_errorcode err = XXH3_128bits_reset(p_xx_state);

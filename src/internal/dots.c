@@ -102,7 +102,7 @@ struct dots_capture_info init_capture_info(enum dots_collect type,
 
 static
 bool has_glue = false;
-r_obj* ffi_glue_is_here() {
+r_obj* ffi_glue_is_here(void) {
   has_glue = true;
   return r_null;
 }
@@ -209,7 +209,7 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   return lhs;
 }
 
-void signal_retired_splice() {
+void signal_retired_splice(void) {
   const char* msg =
     "Unquoting language objects with `!!!` is deprecated as of rlang 0.4.0.\n"
     "Please use `!!` instead.\n"

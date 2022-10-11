@@ -168,7 +168,7 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
 }
 
 
-void r_init_library_eval() {
+void r_init_library_eval(void) {
   r_lazy_missing_arg = (struct r_lazy) { .x = r_missing_arg, .env = r_null };
 }
 

@@ -4,10 +4,10 @@
 
 // Library initialisation defined below
 static r_obj* ffi_init_rlang(r_obj*);
-static r_obj* ffi_fini_rlang();
+static r_obj* ffi_fini_rlang(void);
 
 // From version.c
-extern r_obj* rlang_linked_version();
+extern r_obj* rlang_linked_version(void);
 
 static const R_CallMethodDef r_callables[] = {
   {"ffi_alloc_data_frame",             (DL_FUNC) &ffi_alloc_data_frame, 3},
@@ -322,6 +322,6 @@ r_obj* ffi_init_rlang(r_obj* ns) {
 }
 
 static
-r_obj* ffi_fini_rlang() {
+r_obj* ffi_fini_rlang(void) {
   return r_null;
 }

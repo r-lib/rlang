@@ -33,7 +33,7 @@ r_obj* rlang_as_function(r_obj* x, r_obj* env) {
   return r_eval_with_xy(as_function_call, x, env, rlang_ns_env);
 }
 
-void rlang_init_fn() {
+void rlang_init_fn(void) {
   as_function_call = r_parse("as_function(x, env = y)");
   r_preserve(as_function_call);
 }

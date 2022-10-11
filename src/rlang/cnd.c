@@ -87,13 +87,13 @@ void r_cnd_signal(r_obj* cnd) {
 
 #ifdef _WIN32
 #include <Rembedded.h>
-void r_interrupt() {
+void r_interrupt(void) {
   UserBreak = 1;
   R_CheckUserInterrupt();
 }
 #else
 #include <Rinterface.h>
-void r_interrupt() {
+void r_interrupt(void) {
   Rf_onintr();
 }
 #endif
@@ -134,7 +134,7 @@ enum r_cnd_type r_cnd_type(r_obj* cnd) {
 }
 
 
-void r_init_library_cnd() {
+void r_init_library_cnd(void) {
   msg_call = r_parse("message(x)");
   r_preserve(msg_call);
 

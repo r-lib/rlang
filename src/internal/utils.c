@@ -1,7 +1,7 @@
 #include <rlang.h>
 
 
-r_obj* new_preserved_empty_list() {
+r_obj* new_preserved_empty_list(void) {
   r_obj* empty_list = r_alloc_list(0);
   r_preserve(empty_list);
   r_mark_shared(empty_list);
@@ -256,7 +256,7 @@ r_obj* chr_detect_dups(r_obj* x) {
   return out;
 }
 
-r_obj* ffi_peek_srcref() {
+r_obj* ffi_peek_srcref(void) {
   if (R_Srcref) {
     return R_Srcref;
   } else {
@@ -264,7 +264,7 @@ r_obj* ffi_peek_srcref() {
   }
 }
 
-r_obj* ffi_has_local_precious_list() {
+r_obj* ffi_has_local_precious_list(void) {
   return r_lgl(_r_use_local_precious_list);
 }
 r_obj* ffi_use_local_precious_list(r_obj* x) {
@@ -273,12 +273,12 @@ r_obj* ffi_use_local_precious_list(r_obj* x) {
   return r_lgl(old);
 }
 
-r_obj* ffi_getppid() {
+r_obj* ffi_getppid(void) {
   return r_getppid();
 }
 
 
-void rlang_init_utils() {
+void rlang_init_utils(void) {
   warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
   r_preserve(warn_deprecated_call);
 

@@ -549,7 +549,7 @@ r_obj* ffi_eval_tidy(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
 }
 
 
-void rlang_init_eval_tidy() {
+void rlang_init_eval_tidy(void) {
   r_obj* rlang_ns_env = KEEP(r_ns_env("rlang"));
 
   tilde_fn = r_eval(r_sym("tilde_eval"), rlang_ns_env);

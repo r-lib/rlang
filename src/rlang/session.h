@@ -3,8 +3,8 @@
 
 
 bool r_is_installed(const char* pkg);
-bool r_has_colour();
-r_obj* r_getppid();
+bool r_has_colour(void);
+r_obj* r_getppid(void);
 
 
 #endif
