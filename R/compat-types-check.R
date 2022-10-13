@@ -8,6 +8,11 @@
 # Changelog
 # =========
 #
+# 2022-10-07:
+# - `check_number_whole()` and `_decimal()` no longer treat
+#   non-numeric types such as factors or dates as numbers.  Numeric
+#   types are detected with `is.numeric()`.
+#
 # 2022-10-04:
 # - Added `check_name()` that forbids the empty string.
 #   `check_string()` allows the empty string by default.
@@ -248,6 +253,9 @@ is_number <- function(x,
                       allow_decimal = FALSE,
                       allow_infinite = FALSE) {
   if (!typeof(x) %in% c("integer", "double")) {
+    return(FALSE)
+  }
+  if (!is.numeric(x)) {
     return(FALSE)
   }
   if (length(x) != 1) {

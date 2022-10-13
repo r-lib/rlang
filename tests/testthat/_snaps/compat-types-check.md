@@ -415,3 +415,18 @@
       Error in `checker()`:
       ! `foo` must be a character vector, `NA`, or `NULL`, not a list.
 
+# non-numeric types are not numbers
+
+    Code
+      (expect_error(check_number_whole(factor("a"))))
+    Output
+      <error/rlang_error>
+      Error:
+      ! `factor("a")` must be a whole number, not a <factor> object.
+    Code
+      (expect_error(check_number_decimal(as.Date("2000-01-01"))))
+    Output
+      <error/rlang_error>
+      Error:
+      ! `as.Date("2000-01-01")` must be a number, not a <Date> object.
+
