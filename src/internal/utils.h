@@ -2,7 +2,7 @@
 #define RLANG_INTERNAL_UTILS_H
 
 
-r_obj* new_preserved_empty_list();
+r_obj* new_preserved_empty_list(void);
 r_obj* rlang_ns_get(const char* name);
 r_obj* ffi_enquo(r_obj* sym, r_obj* frame);
 

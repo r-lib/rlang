@@ -25,7 +25,7 @@ r_obj* r_as_function(r_obj* x, const char* arg) {
   }
 }
 
-void r_init_library_fn() {
+void r_init_library_fn(void) {
   const char* formals_code = "formals(function(..., .x = ..1, .y = ..2, . = ..1) NULL)";
   rlang_formula_formals = r_parse_eval(formals_code, r_envs.base);
   r_preserve_global(rlang_formula_formals);

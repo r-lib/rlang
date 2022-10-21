@@ -55,7 +55,7 @@ void r_init_library_globals(r_obj* ns) {
   r_envs.ns = ns;
 }
 
-void r_init_library_globals_syms() {
+void r_init_library_globals_syms(void) {
   r_syms.abort = r_sym("abort");
   r_syms.arg = r_sym("arg");
   r_syms.brackets = R_BracketSymbol;

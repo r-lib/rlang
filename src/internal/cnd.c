@@ -141,7 +141,7 @@ void without_winch(void* payload) {
   r_poke_option("rlang_trace_use_winch", data->old_use_winch);
 }
 
-r_obj* ffi_test_stop_internal() {
+r_obj* ffi_test_stop_internal(void) {
   r_stop_internal("foo");
   return r_null;
 }

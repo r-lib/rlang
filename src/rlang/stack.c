@@ -16,7 +16,7 @@ void r_on_exit(r_obj* expr, r_obj* frame) {
 }
 
 
-r_obj* r_peek_frame() {
+r_obj* r_peek_frame(void) {
   return r_eval(peek_frame_call, r_envs.empty);
 }
 
@@ -74,7 +74,7 @@ static r_obj* generate_sys_call(const char* name, int** n_addr) {
   return sys_call;
 }
 
-void r_init_library_stack() {
+void r_init_library_stack(void) {
   r_obj* current_frame_body = KEEP(r_parse_eval("as.call(list(sys.frame, -1))", r_envs.base));
   r_obj* current_frame_fn = KEEP(r_new_function(r_null, current_frame_body, r_envs.empty));
   peek_frame_call = r_new_call(current_frame_fn, r_null);

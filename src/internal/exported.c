@@ -9,7 +9,7 @@ void r_vec_poke_range(r_obj* x, r_ssize offset,
                       r_obj* y, r_ssize from, r_ssize to);
 
 
-r_obj* ffi_compiled_by_gcc() {
+r_obj* ffi_compiled_by_gcc(void) {
 #if defined(__GNUC__) && !defined(__clang__)
   return r_true;
   #else
@@ -37,7 +37,7 @@ r_obj* ffi_cnd_type(r_obj* cnd) {
   }
 }
 
-r_obj* ffi_interrupt() {
+r_obj* ffi_interrupt(void) {
   r_interrupt();
   return r_null;
 }
@@ -490,7 +490,7 @@ r_obj* ffi_env_is_browsed(r_obj* env) {
   return r_lgl(RDEBUG(env));
 }
 
-r_obj* ffi_ns_registry_env() {
+r_obj* ffi_ns_registry_env(void) {
   return R_NamespaceRegistry;
 }
 
@@ -693,7 +693,7 @@ r_obj* ffi_is_reference(r_obj* x, r_obj* y) {
   return r_lgl(x == y);
 }
 
-r_obj* ffi_missing_arg() {
+r_obj* ffi_missing_arg(void) {
   return R_MissingArg;
 }
 
@@ -803,9 +803,9 @@ r_obj* ffi_chr_get(r_obj* x, r_obj* i) {
 }
 
 // Returns a copy
-r_obj* ffi_precious_dict() {
+r_obj* ffi_precious_dict(void) {
   // From rlang/sexp.c
-  struct r_dict* rlang__precious_dict();
+  struct r_dict* rlang__precious_dict(void);
 
   struct r_dict* p_dict = rlang__precious_dict();
   return wrap_dict(p_dict);

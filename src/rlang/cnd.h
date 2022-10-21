@@ -6,7 +6,7 @@
 
 void r_inform(const char* fmt, ...);
 void r_warn(const char* fmt, ...);
-void r_interrupt();
+void r_interrupt(void);
 void r_no_return r_abort(const char* fmt, ...);
 void r_no_return r_abort_n(const struct r_pair* args, int n);
 void r_no_return r_abort_call(r_obj* call, const char* fmt, ...);
@@ -36,7 +36,7 @@ void (*r_stop_internal)(const char* file,
                         const char* fmt,
                         ...);
 
-r_obj* r_peek_frame();
+r_obj* r_peek_frame(void);
 
 #define r_stop_internal(...)                            \
   (r_stop_internal)(__FILE__, __LINE__, r_peek_frame(), \

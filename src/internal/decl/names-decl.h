@@ -16,7 +16,7 @@ static
 void names_inform_repair(r_obj* old_names, r_obj* new_names);
 
 static
-void stop_large_name();
+void stop_large_name(void);
 
 static
 bool is_dotdotint(const char* name);

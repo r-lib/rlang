@@ -96,7 +96,7 @@ int pop_precious(r_obj* stack) {
 }
 
 // For unit tests
-struct r_dict* rlang__precious_dict() {
+struct r_dict* rlang__precious_dict(void) {
   return p_precious_dict;
 }
 

@@ -91,14 +91,14 @@ struct injection_info which_curly_op(r_obj* first, struct injection_info info) {
 
 // These functions are questioning and might be soft-deprecated in the
 // future
-void signal_uq_soft_deprecation() {
+void signal_uq_soft_deprecation(void) {
   return ;
   const char* msg =
     "`UQ()` is soft-deprecated as of rlang 0.2.0. "
     "Please use the prefix form of `!!` instead.";
   signal_soft_deprecated(msg, msg, r_envs.empty);
 }
-void signal_uqs_soft_deprecation() {
+void signal_uqs_soft_deprecation(void) {
   return ;
   const char* msg =
     "`UQS()` is soft-deprecated as of rlang 0.2.0. "
@@ -106,7 +106,7 @@ void signal_uqs_soft_deprecation() {
   signal_soft_deprecated(msg, msg, r_envs.empty);
 }
 
-void signal_namespaced_uq_deprecation() {
+void signal_namespaced_uq_deprecation(void) {
   warn_deprecated("namespaced rlang::UQ()",
     "Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!` instead.\n"
@@ -121,7 +121,7 @@ void signal_namespaced_uq_deprecation() {
     "  rlang::expr(mean(!!var * 100))\n"
   );
 }
-void signal_namespaced_uqs_deprecation() {
+void signal_namespaced_uqs_deprecation(void) {
   warn_deprecated("namespaced rlang::UQS()",
     "Prefixing `UQS()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
     "Please use the non-prefixed form or `!!!` instead.\n"
@@ -431,6 +431,6 @@ r_obj* ffi_interp(r_obj* x, r_obj* env) {
 }
 
 
-void rlang_init_expr_interp() {
+void rlang_init_expr_interp(void) {
   dot_data_sym = r_sym(".data");
 }

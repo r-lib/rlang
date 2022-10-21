@@ -5,13 +5,13 @@
 
 struct r_test {
   const char* desc;
-  bool (*fn_ptr)();
+  bool (*fn_ptr)(void);
 };
 
-bool test_that_true_is_true() {
+bool test_that_true_is_true(void) {
   if (true) return r_true; else return r_false;
 }
-bool test_that_false_is_false() {
+bool test_that_false_is_false(void) {
   if (false) return r_false; else return r_true;
 }
 
@@ -34,7 +34,7 @@ const enum r_type tests_df_types[TESTS_DF_SIZE] = {
 
 extern const struct r_test tests[];
 
-r_obj* ffi_c_tests() {
+r_obj* ffi_c_tests(void) {
   int n_rows = 0;
   while (tests[n_rows].desc) {
     ++n_rows;
@@ -65,7 +65,7 @@ r_obj* ffi_run_c_test(r_obj* fn_ptr) {
     r_stop_unexpected_type(r_typeof(fn_ptr));
   }
 
-  bool (*p)() = (bool (*)()) r_fn_ptr_addr(fn_ptr);
+  bool (*p)(void) = (bool (*)(void)) r_fn_ptr_addr(fn_ptr);
   return r_lgl(p());
 }
 
@@ -183,7 +183,7 @@ r_obj* ffi_test_nms_are_duplicated(r_obj* nms, r_obj* from_last) {
 }
 
 
-void rlang_init_tests() {
+void rlang_init_tests(void) {
   tests_df_names = r_chr_n(tests_df_names_c_strings, TESTS_DF_SIZE);
   r_preserve_global(tests_df_names);
 }

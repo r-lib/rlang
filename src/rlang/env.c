@@ -282,11 +282,11 @@ r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last) {
 }
 
 
-void r_init_rlang_ns_env() {
+void r_init_rlang_ns_env(void) {
   rlang_ns_env = r_ns_env("rlang");
 }
 
-void r_init_library_env() {
+void r_init_library_env(void) {
   new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_envs.base);
   r_preserve(new_env_call);
 

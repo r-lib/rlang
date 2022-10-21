@@ -62,6 +62,6 @@ r_obj* r_call_clone(r_obj* x) {
 }
 
 
-void r_init_library_call() {
+void r_init_library_call(void) {
   quote_prim = r_base_ns_get("quote");
 }
