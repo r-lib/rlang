@@ -75,6 +75,13 @@ static r_obj* generate_sys_call(const char* name, int** n_addr) {
 }
 
 void r_init_library_stack(void) {
+  // `sys.frame(sys.nframe())` doesn't work because `sys.nframe()`
+  // returns the number of the frame in which evaluation occurs. It
+  // doesn't return the number of frames on the stack. So we'd need
+  // to evaluate it in the last frame on the stack which is what we
+  // are looking for to begin with. We use instead this workaround:
+  // Call `sys.frame()` from a closure to push a new frame on the
+  // stack, and use negative indexing to get the previous frame.
   r_obj* current_frame_body = KEEP(r_parse("sys.frame(-1)"));
   r_obj* current_frame_fn = KEEP(r_new_function(r_null, current_frame_body, r_envs.base));
   peek_frame_call = r_new_call(current_frame_fn, r_null);
