@@ -150,8 +150,7 @@ r_obj* ffi_test_stop_internal(void) {
 // Probably should be implemented at R level
 r_obj* ffi_new_condition(r_obj* class,
                          r_obj* msg,
-                         r_obj* data,
-                         r_obj* error_call) {
+                         r_obj* data) {
   if (msg == r_null) {
     msg = r_chrs.empty_string;
   } else if (r_typeof(msg) != R_TYPE_character) {
