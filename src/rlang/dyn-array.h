@@ -73,36 +73,6 @@ const void* r_dyn_cend(struct r_dyn_array* p_arr) {
   return r_dyn_cpointer(p_arr, p_arr->count);
 }
 
-static inline
-void* const * r_dyn_pop_back(struct r_dyn_array* p_arr) {
-  void* const * out = (void* const *) r_dyn_clast(p_arr);
-  --p_arr->count;
-  return out;
-}
-
-static inline
-void r_dyn_lgl_push_back(struct r_dyn_array* p_vec, int elt) {
-  r_dyn_push_back(p_vec, &elt);
-}
-static inline
-void r_dyn_int_push_back(struct r_dyn_array* p_vec, int elt) {
-  r_dyn_push_back(p_vec, &elt);
-}
-static inline
-void r_dyn_dbl_push_back(struct r_dyn_array* p_vec, double elt) {
-  r_dyn_push_back(p_vec, &elt);
-}
-static inline
-void r_dyn_cpl_push_back(struct r_dyn_array* p_vec, r_complex elt) {
-  r_dyn_push_back(p_vec, &elt);
-}
-static inline
-void r_dyn_list_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
-  KEEP(elt);
-  r_dyn_push_back(p_vec, &elt);
-  FREE(1);
-}
-
 #define R_DYN_GET(TYPE, X, I) (*((TYPE*) r_dyn_pointer((X), (I))))
 #define R_DYN_POKE(TYPE, X, I, VAL) (*((TYPE*) r_dyn_pointer((X), (I))) = (VAL))
 
@@ -162,6 +132,53 @@ void r_dyn_chr_poke(struct r_dyn_array* p_vec, r_ssize i, r_obj* value) {
 static inline
 void r_dyn_list_poke(struct r_dyn_array* p_vec, r_ssize i, r_obj* value) {
   r_list_poke(p_vec->data, i, value);
+}
+
+static inline
+void* const * r_dyn_pop_back(struct r_dyn_array* p_arr) {
+  void* const * out = (void* const *) r_dyn_clast(p_arr);
+  --p_arr->count;
+  return out;
+}
+
+static inline
+r_ssize r__dyn_increment(struct r_dyn_array* p_arr) {
+  r_ssize loc = p_arr->count++;
+
+  if (p_arr->count > p_arr->capacity) {
+    r_ssize new_capacity = r_ssize_mult(p_arr->capacity, p_arr->growth_factor);
+    r_dyn_resize(p_arr, new_capacity);
+  }
+
+  return loc;
+}
+
+static inline
+void r_dyn_lgl_push_back(struct r_dyn_array* p_vec, int elt) {
+  r_ssize loc = r__dyn_increment(p_vec);
+  r_dyn_lgl_poke(p_vec, loc, elt);
+}
+static inline
+void r_dyn_int_push_back(struct r_dyn_array* p_vec, int elt) {
+  r_ssize loc = r__dyn_increment(p_vec);
+  r_dyn_int_poke(p_vec, loc, elt);
+}
+static inline
+void r_dyn_dbl_push_back(struct r_dyn_array* p_vec, double elt) {
+  r_ssize loc = r__dyn_increment(p_vec);
+  r_dyn_dbl_poke(p_vec, loc, elt);
+}
+static inline
+void r_dyn_cpl_push_back(struct r_dyn_array* p_vec, r_complex elt) {
+  r_ssize loc = r__dyn_increment(p_vec);
+  r_dyn_cpl_poke(p_vec, loc, elt);
+}
+static inline
+void r_dyn_list_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
+  KEEP(elt);
+  r_ssize loc = r__dyn_increment(p_vec);
+  r_dyn_list_poke(p_vec, loc, elt);
+  FREE(1);
 }
 
 #endif

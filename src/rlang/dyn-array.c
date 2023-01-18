@@ -70,20 +70,12 @@ struct r_dyn_array* r_new_dyn_array(r_ssize elt_byte_size,
 
 void r_dyn_push_back(struct r_dyn_array* p_arr,
                      const void* p_elt) {
-  r_ssize count = ++p_arr->count;
-  if (count > p_arr->capacity) {
-    r_ssize new_capacity = r_ssize_mult(p_arr->capacity,
-                                        p_arr->growth_factor);
-    r_dyn_resize(p_arr, new_capacity);
-  }
+  r_ssize loc = r__dyn_increment(p_arr);
 
   if (p_arr->barrier_set) {
     r_obj* value = *((r_obj* const *) p_elt);
-    p_arr->barrier_set(p_arr->data, count - 1, value);
-    return;
-  }
-
-  if (p_elt) {
+    p_arr->barrier_set(p_arr->data, loc, value);
+  } else if (p_elt) {
     memcpy(r_dyn_last(p_arr), p_elt, p_arr->elt_byte_size);
   } else {
     memset(r_dyn_last(p_arr), 0, p_arr->elt_byte_size);
