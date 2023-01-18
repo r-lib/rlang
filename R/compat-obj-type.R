@@ -1,7 +1,10 @@
-# nocov start --- r-lib/rlang compat-obj-type
+# ---
+# source: https://github.com/r-lib/rlang/blob/main/R/compat-obj-type.R
+# last-updated: 2022-10-04
+# license: https://unlicense.org
+# ---
 #
-# Changelog
-# =========
+# ## Changelog
 #
 # 2022-10-04:
 # - `obj_type_friendly(value = TRUE)` now shows numeric scalars
@@ -36,7 +39,8 @@
 # - Added support for matrices and arrays (#141).
 # - Added documentation.
 # - Added changelog.
-
+#
+# nocov start
 
 #' Return English-friendly type
 #' @param x Any R object.

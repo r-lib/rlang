@@ -1,11 +1,14 @@
-# nocov start - compat-cli.R
-# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-cli.R
-
+# ---
+# source: https://github.com/r-lib/rlang/blob/main/R/compat-types-check.R
+# last-updated: 2022-09-23
+# license: https://unlicense.org
+# ---
+#
 # Provides a minimal shim API to format message elements consistently
 # with cli in packages that can't depend on it. If available, cli is
 # used to format the elements. Otherwise a fallback format is used.
 #
-# Changelog:
+# ## Changelog
 #
 # 2022-09-23:
 #
@@ -73,7 +76,8 @@
 # 2021-05-11:
 #
 # * Initial version.
-
+#
+# nocov start
 
 #' Create unicode symbols
 #'

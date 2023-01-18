@@ -1,12 +1,10 @@
-# nocov start --- r-lib/rlang compat-types-check
+# ---
+# source: https://github.com/r-lib/rlang/blob/main/R/compat-types-check.R
+# last-updated: 2022-10-07
+# dependencies: compat-obj-type.R
+# ---
 #
-# Dependencies
-# ============
-#
-# - compat-obj-type.R
-#
-# Changelog
-# =========
+# ## Changelog
 #
 # 2022-10-07:
 # - `check_number_whole()` and `_decimal()` no longer treat
@@ -30,6 +28,8 @@
 #
 # 2022-08-11:
 # - Added changelog.
+#
+# nocov start
 
 # Scalars -----------------------------------------------------------------
 
