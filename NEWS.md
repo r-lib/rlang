@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* The C level `r_dyn_*_push_back()` utilities are now faster (#1542).
+
 * rlang is now compliant with `-Wstrict-prototypes` as requested by CRAN
   (#1508).
 
