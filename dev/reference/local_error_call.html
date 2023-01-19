@@ -237,7 +237,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(quote(foo()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(sys.call())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b6448cc5e8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55902d557f78&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Disable the context</span></span></span>
 <span class="r-in"><span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -246,7 +246,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(NULL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b6448cc5e8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55902d557f78&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use the caller's context</span></span></span>
 <span class="r-in"><span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -255,7 +255,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(caller_env())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b6448cc5e8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55902d557f78&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
