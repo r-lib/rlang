@@ -1,5 +1,11 @@
-# nocov start - compat-sizes.R
-# Latest version: https://github.com/r-lib/prettyunits/blob/main/R/sizes.R
+# ---
+# repo: r-lib/rlang
+# file: compat-sizes.R
+# last-updated: 2022-06-23
+# license: https://unlicense.org
+# ---
+#
+# nocov start
 
 format_bytes <- local({
 

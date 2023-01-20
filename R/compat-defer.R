@@ -1,10 +1,9 @@
-# ---------------------------------------------------------------------------------
-# Compatibility file inlined from https://github.com/r-lib/withr/blob/main/R/compat-defer.R
-# Do not edit by hand
-# ---------------------------------------------------------------------------------
-
+# Compatibility file: do not edit by hand
+# Source: <https://github.com/r-lib/withr/blob/main/R/compat-defer.R>
+#
 # ---
-# source: https://github.com/r-lib/withr/blob/main/R/compat-defer.R
+# repo: r-lib/with
+# source: compat-defer.R
 # last-updated: 2022-03-03
 # license: https://unlicense.org
 # ---

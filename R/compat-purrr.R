@@ -1,6 +1,8 @@
 # ---
-# source: https://github.com/r-lib/rlang/blob/main/R/compat-purrr.R
+# repo: r-lib/rlang
+# file: compat-purrr.R
 # last-updated: 2022-06-07
+# license: https://unlicense.org
 # ---
 #
 # This file provides a minimal shim to provide a purrr-like API on top of
@@ -26,6 +28,7 @@
 # * Used `.` prefix for helpers
 #
 # nocov start
+
 map <- function(.x, .f, ...) {
   .f <- as_function(.f, env = global_env())
   lapply(.x, .f, ...)

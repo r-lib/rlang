@@ -1,6 +1,8 @@
 # ---
-# source: https://github.com/r-lib/rlang/blob/main/R/compat-types-check.R
+# repo: r-lib/rlang
+# file: compat-types-check.R
 # last-updated: 2022-10-07
+# license: https://unlicense.org
 # dependencies: compat-obj-type.R
 # ---
 #
