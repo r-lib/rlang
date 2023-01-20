@@ -2,7 +2,7 @@
 # Source: <https://github.com/r-lib/withr/blob/main/R/compat-defer.R>
 #
 # ---
-# repo: r-lib/with
+# repo: r-lib/withr
 # source: compat-defer.R
 # last-updated: 2022-03-03
 # license: https://unlicense.org
