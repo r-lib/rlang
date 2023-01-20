@@ -180,7 +180,7 @@ r_obj* hash_value(XXH3_state_t* p_xx_state) {
   // 32 for hash, 1 for terminating null added by `sprintf()`
   char out[32 + 1];
 
-  sprintf(out, "%016" PRIx64 "%016" PRIx64, high, low);
+  snprintf(out, sizeof(out), "%016" PRIx64 "%016" PRIx64, high, low);
 
   return r_str(out);
 }
