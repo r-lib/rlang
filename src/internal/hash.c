@@ -177,7 +177,7 @@ r_obj* hash_value(XXH3_state_t* p_xx_state) {
   XXH64_hash_t high = hash.high64;
   XXH64_hash_t low = hash.low64;
 
-  // 32 for hash, 1 for terminating null added by `sprintf()`
+  // 32 for hash, 1 for terminating null added by `snprintf()`
   char out[32 + 1];
 
   snprintf(out, sizeof(out), "%016" PRIx64 "%016" PRIx64, high, low);
