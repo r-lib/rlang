@@ -1,6 +1,10 @@
-# This source code file is licensed under the unlicense license
-# https://unlicense.org
-
+# ---
+# repo: r-lib/rlang
+# file: compat-s3-register.R
+# last-updated: 2022-08-29
+# license: https://unlicense.org
+# ---
+#
 # nocov start
 
 #' Register a method for a suggested dependency

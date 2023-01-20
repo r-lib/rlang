@@ -1,14 +1,18 @@
-# nocov start - compat-downstream-deps.R
-# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-downstream-deps.R
-
+# ---
+# repo: r-lib/rlang
+# file: compat-downstream-deps.R
+# last-updated: 2022-01-19
+# license: https://unlicense.org
+# ---
+#
 # No dependencies but uses rlang and pak if available. In interactive
 # sessions the user is prompted to update outdated packages. If they
 # choose no, they are informed about the global option
 # `rlib_downstream_check` to turn off these prompts. In non
 # interactive sessions a warning is issued. This happens when the
 # outdated dep is being loaded.
-
-# Changelog:
+#
+# ## Changelog
 #
 # 2022-01-19:
 #
@@ -53,7 +57,8 @@
 #
 # * The requirement format is now "pkg (>= 0.0.0)", consistently with
 #   DESCRIPTION fields.
-
+#
+# nocov start
 
 check_downstream <- function(ver,
                              ...,

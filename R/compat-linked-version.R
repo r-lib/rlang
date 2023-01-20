@@ -1,4 +1,11 @@
-# nocov start --- compat-linked-version --- 2020-02-24 Mon 13:05 CET
+# ---
+# repo: r-lib/rlang
+# file: compat-linked-version.R
+# last-updated: 2022-05-26
+# license: https://unlicense.org
+# ---
+#
+# nocov start
 
 
 check_linked_version <- local({

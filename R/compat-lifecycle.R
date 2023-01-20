@@ -1,13 +1,16 @@
-# nocov start --- compat-lifecycle
-
+# ---
+# repo: r-lib/rlang
+# file: compat-lifecycle.R
+# last-updated: 2021-04-19
+# license: https://unlicense.org
+# ---
+#
 # This file serves as a reference for currently unexported rlang
-# lifecycle functions. Please find the most recent version in rlang's
-# repository. These functions require rlang in your `Imports`
+# lifecycle functions. These functions require rlang in your `Imports`
 # DESCRIPTION field but you don't need to import rlang in your
 # namespace.
-
-# Changelog
-# =========
+#
+# ## Changelog
 #
 # 2021-04-19
 #
@@ -24,6 +27,8 @@
 #   images in your package.
 #
 # - Soft-namespaced private objects.
+#
+# nocov start
 
 
 #' Signal deprecation

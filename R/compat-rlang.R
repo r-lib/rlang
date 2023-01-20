@@ -1,6 +1,10 @@
-# nocov start - compat-rlang.R
-# Latest version: https://github.com/r-lib/rlang/blob/main/R/compat-rlang.R
-
+# ---
+# repo: r-lib/rlang
+# file: compat-rlang.R
+# last-updated: 2022-09-16
+# license: https://unlicense.org
+# ---
+#
 # Changelog:
 #
 # 2022-09-16:
@@ -8,6 +12,8 @@
 #
 # 2020-05-26:
 # * Initial version.
+#
+# nocov start
 
 
 # These versions of `abort()`, `warn()` and `inform()` are only
