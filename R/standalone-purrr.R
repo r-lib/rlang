@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-purrr.R
+# file: standalone-purrr.R
 # last-updated: 2022-06-07
 # license: https://unlicense.org
 # ---

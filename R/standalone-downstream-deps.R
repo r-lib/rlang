@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-downstream-deps.R
+# file: standalone-downstream-deps.R
 # last-updated: 2022-01-19
 # license: https://unlicense.org
 # ---
@@ -253,7 +253,7 @@ check_downstream <- function(ver,
   TRUE
 }
 
-# Keep in sync with compat-linked-version.R
+# Keep in sync with standalone-linked-version.R
 .rlang_downstream_howto_reinstall_msg <- function(pkg) {
   os <- tolower(Sys.info()[["sysname"]])
 

@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-obj-type.R
+# file: standalone-obj-type.R
 # last-updated: 2022-10-04
 # license: https://unlicense.org
 # ---
@@ -293,7 +293,7 @@ stop_input_type <- function(x,
                             show_value = TRUE,
                             arg = caller_arg(x),
                             call = caller_env()) {
-  # From compat-cli.R
+  # From standalone-cli.R
   cli <- env_get_list(
     nms = c("format_arg", "format_code"),
     last = topenv(),

@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-vctrs.R
+# file: standalone-vctrs.R
 # last-updated: 2021-08-27
 # license: https://unlicense.org
 # ---

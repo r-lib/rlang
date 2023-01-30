@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-zeallot.R
+# file: standalone-zeallot.R
 # last-updated: 2020-11-24
 # license: https://unlicense.org
 # ---

@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-lifecycle.R
+# file: standalone-lifecycle.R
 # last-updated: 2021-04-19
 # license: https://unlicense.org
 # ---
