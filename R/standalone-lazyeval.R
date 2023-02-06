@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-lazyeval.R
+# file: standalone-lazyeval.R
 # last-updated: 2018-09-18
 # license: https://unlicense.org
 # ---

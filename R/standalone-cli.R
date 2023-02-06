@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-cli.R
+# file: standalone-cli.R
 # last-updated: 2022-09-23
 # license: https://unlicense.org
 # ---

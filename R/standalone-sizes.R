@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-sizes.R
+# file: standalone-sizes.R
 # last-updated: 2022-06-23
 # license: https://unlicense.org
 # ---

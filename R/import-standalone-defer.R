@@ -1,9 +1,9 @@
 # Compatibility file: do not edit by hand
-# Source: <https://github.com/r-lib/withr/blob/main/R/compat-defer.R>
+# Source: <https://github.com/r-lib/withr/blob/main/R/standalone-defer.R>
 #
 # ---
 # repo: r-lib/withr
-# source: compat-defer.R
+# source: standalone-defer.R
 # last-updated: 2022-03-03
 # license: https://unlicense.org
 # ---

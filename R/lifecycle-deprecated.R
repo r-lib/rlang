@@ -230,7 +230,7 @@ coerce_class <- function(.x, .to, ...) {
 #' `r lifecycle::badge("deprecated")`
 #'
 #' `friendly_type()` is deprecated. Please use the
-#' `compat-friendly-type.R` file instead.
+#' `standalone-friendly-type.R` file instead.
 #'
 #' @param type A type as returned by [typeof()].
 #' @return A string of the prettified type, qualified with an

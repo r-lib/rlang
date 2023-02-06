@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-s3-register.R
+# file: standalone-s3-register.R
 # last-updated: 2022-08-29
 # license: https://unlicense.org
 # ---
@@ -31,7 +31,7 @@
 #'
 #' @section Usage in other packages:
 #' To avoid taking a dependency on vctrs, you copy the source of
-#' [`s3_register()`](https://github.com/r-lib/rlang/blob/main/R/compat-register.R)
+#' [`s3_register()`](https://github.com/r-lib/rlang/blob/main/R/standalone-s3-register.R)
 #' into your own package. It is licensed under the permissive
 #' [unlicense](https://choosealicense.com/licenses/unlicense/) to make it
 #' crystal clear that we're happy for you to do this. There's no need to include

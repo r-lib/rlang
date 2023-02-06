@@ -1,6 +1,6 @@
 # ---
 # repo: r-lib/rlang
-# file: compat-linked-version.R
+# file: standalone-linked-version.R
 # last-updated: 2022-05-26
 # license: https://unlicense.org
 # ---
@@ -10,7 +10,7 @@
 
 check_linked_version <- local({
 
-  # Keep in sync with compat-downstream-deps.R
+  # Keep in sync with standalone-downstream-deps.R
   howto_reinstall_msg <- function(pkg) {
     os <- tolower(Sys.info()[["sysname"]])
 
