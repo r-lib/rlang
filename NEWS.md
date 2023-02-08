@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `new_data_mask()` is now slightly faster due to a smaller initial mask size
+  and usage of the C level function `R_NewEnv()` on R >=4.1.0 (#1553).
+
 * The C level `r_dyn_*_push_back()` utilities are now faster (#1542).
 
 * rlang is now compliant with `-Wstrict-prototypes` as requested by CRAN
