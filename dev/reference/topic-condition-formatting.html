@@ -53,13 +53,16 @@ Transitioning from abort() to cli_abort()
 If you plan to mass-rename calls from abort() to cli::cli_abort(), be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly unexpected behaviour.
 user_input &amp;lt;- &quot;{base::stop('Wrong message.', call. = FALSE)}&quot;
 cli::cli_abort(sprintf(&quot;Can't handle input `%s`.&quot;, user_input))
-#&amp;gt; Error: Wrong message.
+#&amp;gt; Error in &quot;fun(..., .envir = .envir)&quot;: ! Could not evaluate cli `{}` expression: `base::stop('Wrong...`.
+#&amp;gt; Caused by error:  at inline.R:311:7
+#&amp;gt; ! Wrong message.
 
 To avoid this, protect your error messages by using cli to assemble the pieces:
 user_input &amp;lt;- &quot;{base::stop('Wrong message.', call. = FALSE)}&quot;
 cli::cli_abort(&quot;Can't handle input {.code {user_input}}.&quot;)
 #&amp;gt; Error:
-#&amp;gt; ! Can't handle input `{base::stop('Wrong message.', call. = FALSE)}`.
+#&amp;gt; ! Can't handle input `{base::stop('Wrong message.', call. =
+#&amp;gt;   FALSE)}`.
 
 
 
@@ -131,13 +134,16 @@ Transitioning from abort() to cli_abort()
 If you plan to mass-rename calls from abort() to cli::cli_abort(), be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly unexpected behaviour.
 user_input &amp;lt;- &quot;{base::stop('Wrong message.', call. = FALSE)}&quot;
 cli::cli_abort(sprintf(&quot;Can't handle input `%s`.&quot;, user_input))
-#&amp;gt; Error: Wrong message.
+#&amp;gt; Error in &quot;fun(..., .envir = .envir)&quot;: ! Could not evaluate cli `{}` expression: `base::stop('Wrong...`.
+#&amp;gt; Caused by error:  at inline.R:311:7
+#&amp;gt; ! Wrong message.
 
 To avoid this, protect your error messages by using cli to assemble the pieces:
 user_input &amp;lt;- &quot;{base::stop('Wrong message.', call. = FALSE)}&quot;
 cli::cli_abort(&quot;Can't handle input {.code {user_input}}.&quot;)
 #&amp;gt; Error:
-#&amp;gt; ! Can't handle input `{base::stop('Wrong message.', call. = FALSE)}`.
+#&amp;gt; ! Can't handle input `{base::stop('Wrong message.', call. =
+#&amp;gt;   FALSE)}`.
 
 
 
@@ -304,12 +310,15 @@ Creating error conditions with error_cnd(). These condition messages will be aut
 <p>If you plan to mass-rename calls from <code><a href="abort.html">abort()</a></code> to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code>, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly <a href="https://xkcd.com/327/" class="external-link">unexpected behaviour</a>.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">user_input</span> <span class="op">&lt;-</span> <span class="st">"{base::stop('Wrong message.', call. = FALSE)}"</span></span>
 <span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Can't handle input `%s`."</span>, <span class="va">user_input</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error: Wrong message.</span></span></code></pre><p></p></div>
+<span><span class="co">#&gt; Error in "fun(..., .envir = .envir)": ! Could not evaluate cli `{}` expression: `base::stop('Wrong...`.</span></span>
+<span><span class="co">#&gt; Caused by error:  at inline.R:311:7</span></span>
+<span><span class="co">#&gt; ! Wrong message.</span></span></code></pre><p></p></div>
 <p>To avoid this, protect your error messages by using cli to assemble the pieces:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">user_input</span> <span class="op">&lt;-</span> <span class="st">"{base::stop('Wrong message.', call. = FALSE)}"</span></span>
 <span><span class="fu">cli</span><span class="fu">::</span><span class="fu"><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli_abort</a></span><span class="op">(</span><span class="st">"Can't handle input {.code {user_input}}."</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error:</span></span>
-<span><span class="co">#&gt; ! Can't handle input `{base::stop('Wrong message.', call. = FALSE)}`.</span></span></code></pre><p></p></div>
+<span><span class="co">#&gt; ! Can't handle input `{base::stop('Wrong message.', call. =</span></span>
+<span><span class="co">#&gt;   FALSE)}`.</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
