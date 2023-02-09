@@ -81,6 +81,15 @@ r_obj* r_base_ns_get(const char* name);
 
 r_obj* r_alloc_environment(r_ssize size, r_obj* parent);
 
+static inline
+r_obj* r_alloc_empty_environment(r_obj* parent) {
+  // Non-hashed environment.
+  // Very fast and useful when you aren't getting/setting from the result.
+  r_obj* env = Rf_allocSExp(R_TYPE_environment);
+  r_env_poke_parent(env, parent);
+  return env;
+}
+
 r_obj* r_env_as_list(r_obj* x);
 r_obj* r_list_as_environment(r_obj* x, r_obj* parent);
 r_obj* r_env_clone(r_obj* env, r_obj* parent);
