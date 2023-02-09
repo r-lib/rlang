@@ -100,7 +100,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>The C level <code>r_dyn_*_push_back()</code> utilities are now faster (<a href="https://github.com/r-lib/rlang/issues/1542" class="external-link">#1542</a>).</p></li>
+<ul><li><p><code><a href="../reference/as_data_mask.html">new_data_mask()</a></code> is now slightly faster due to a smaller initial mask size and usage of the C level function <code>R_NewEnv()</code> on R &gt;=4.1.0 (<a href="https://github.com/r-lib/rlang/issues/1553" class="external-link">#1553</a>).</p></li>
+<li><p>The C level <code>r_dyn_*_push_back()</code> utilities are now faster (<a href="https://github.com/r-lib/rlang/issues/1542" class="external-link">#1542</a>).</p></li>
 <li><p>rlang is now compliant with <code>-Wstrict-prototypes</code> as requested by CRAN (<a href="https://github.com/r-lib/rlang/issues/1508" class="external-link">#1508</a>).</p></li>
 </ul></div>
     <div class="section level2">
