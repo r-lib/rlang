@@ -874,3 +874,10 @@ test_that("can supply header method via `message`", {
     "must take"
   )
 })
+
+test_that("newlines are preserved by cli (#1535)", {
+  expect_snapshot(error = TRUE, {
+    abort("foo\nbar", use_cli_format = TRUE)
+    abort("foo\fbar", use_cli_format = TRUE)
+  })
+})

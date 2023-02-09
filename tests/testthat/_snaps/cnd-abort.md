@@ -1337,3 +1337,15 @@
     Error <rlang_error>
       foo
 
+# newlines are preserved by cli (#1535)
+
+    Code
+      abort("foo\nbar", use_cli_format = TRUE)
+    Error <rlang_error>
+      foo bar
+    Code
+      abort("foo\fbar", use_cli_format = TRUE)
+    Error <rlang_error>
+      foo
+      bar
+
