@@ -8,7 +8,7 @@ Turning a list of inputs into distinct arguments. This is
 especially useful with functions that take data in ..., such as
 base::rbind().
 dfs &amp;lt;- list(mtcars, mtcars)
-inject(rbind(!!!mtcars))
+inject(rbind(!!!dfs))
 
 Injecting defused expressions like
 symbolised column names.
@@ -24,7 +24,7 @@ Turning a list of inputs into distinct arguments. This is
 especially useful with functions that take data in ..., such as
 base::rbind().
 dfs &amp;lt;- list(mtcars, mtcars)
-inject(rbind(!!!mtcars))
+inject(rbind(!!!dfs))
 
 Injecting defused expressions like
 symbolised column names.
@@ -140,7 +140,7 @@ functionality as <code><a href="https://rdrr.io/r/base/do.call.html" class="exte
 especially useful with functions that take data in <code>...</code>, such as
 <code><a href="https://rdrr.io/r/base/cbind.html" class="external-link">base::rbind()</a></code>.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">dfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">mtcars</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div></li>
+<span><span class="fu"><a href="../reference/inject.html">inject</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">dfs</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div></li>
 <li><p>Injecting <a href="topic-defuse.html">defused expressions</a> like
 <a href="sym.html">symbolised</a> column names.</p>
 <p>For tidyverse APIs, this second case is no longer as useful
