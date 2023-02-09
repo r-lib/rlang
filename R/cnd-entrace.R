@@ -158,11 +158,21 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
     return(entrace_handle_top(trace))
   }
 
-  # Log warnings and messages
+  # Log warnings
   if (is_warning(cnd)) {
-    push_warning(as_rlang_warning(cnd, trace))
-    return()
+    wrn <- as_rlang_warning(cnd, trace)
+    push_warning(wrn)
+
+    # Resignal enriched warning
+    if (!is_null(findRestart("muffleWarning"))) {
+      cnd_signal(wrn)
+      invokeRestart("muffleWarning")
+    } else {
+      return()
+    }
   }
+
+  # Log messages
   if (is_message(cnd)) {
     push_message(as_rlang_message(cnd, trace))
     return()

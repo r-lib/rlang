@@ -323,3 +323,15 @@ test_that("only the first n warnings are entraced (#1473)", {
     )
   })
 })
+
+test_that("warnings are resignalled", {
+  expect_no_warning(
+    cnd <- catch_cnd(withCallingHandlers(
+      warning = entrace,
+      warning("foo")
+    ))
+  )
+
+  expect_s3_class(cnd, "rlang_warning")
+  expect_true(!is_null(cnd$trace))
+})
