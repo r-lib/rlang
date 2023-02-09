@@ -36,7 +36,8 @@ Call \code{global_entrace()} inside an RMarkdown document to cause
 errors and warnings to be promoted to rlang conditions that include
 a backtrace.
 
-This is useful in conjunction with \code{\link{rlang_backtrace_on_error}}.
+This is useful in conjunction with \code{\link{rlang_backtrace_on_error}} and
+\code{\link{rlang_backtrace_on_warning}}.
 }
 
 \section{Under the hood}{

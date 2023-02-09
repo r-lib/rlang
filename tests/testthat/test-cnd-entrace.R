@@ -335,3 +335,15 @@ test_that("warnings are resignalled", {
   expect_s3_class(cnd, "rlang_warning")
   expect_true(!is_null(cnd$trace))
 })
+
+test_that("can call `global_entrace()` in knitted documents", {
+  skip_if_not_installed("knitr")
+  skip_if_not_installed("rmarkdown")
+  skip_if(!rmarkdown::pandoc_available())
+
+  entrace_lines <- render_md("test-entrace.Rmd", env = current_env())
+
+  expect_snapshot({
+    cat_line(entrace_lines)
+  })
+})

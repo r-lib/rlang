@@ -3,6 +3,7 @@
 \name{rlang_backtrace_on_error}
 \alias{rlang_backtrace_on_error}
 \alias{add_backtrace}
+\alias{rlang_backtrace_on_error_report}
 \title{Display backtrace on error}
 \description{
 rlang errors carry a backtrace that can be inspected by calling
@@ -73,4 +74,7 @@ backtraces. If needed, you can override this by setting the
 #   error = rlang::entrace
 # )
 # stop("foo")
+}
+\seealso{
+rlang_backtrace_on_warning
 }

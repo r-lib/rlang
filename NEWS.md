@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* New `rlang_backtrace_on_warning_report` global option. This is
+  useful in conjunction with `global_entrace()` to get backtraces on
+  warnings inside RMarkdown documents.
+
 * `global_entrace()` now supports knitr documents.
 
 * `abort()`, `warn()`, and `inform()` gain an `.inherit` parameter.

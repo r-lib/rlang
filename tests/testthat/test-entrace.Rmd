@@ -19,3 +19,17 @@ rlang::global_entrace()
 ```{r, error = TRUE}
 f()
 ```
+
+```{r}
+f(warning)
+```
+
+```{r}
+options(
+  rlang_backtrace_on_warning_report = "full"
+)
+```
+
+```{r}
+f(warning)
+```

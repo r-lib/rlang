@@ -1362,7 +1362,8 @@ call_restore <- function(x, to) {
 #' `rlang_trace_top_env` global option.
 #'
 #' @name rlang_backtrace_on_error
-#' @aliases add_backtrace
+#' @seealso rlang_backtrace_on_warning
+#' @aliases add_backtrace rlang_backtrace_on_error_report
 #'
 #' @examples
 #' # Display a simplified backtrace on error for both base and rlang
@@ -1373,6 +1374,30 @@ call_restore <- function(x, to) {
 #' #   error = rlang::entrace
 #' # )
 #' # stop("foo")
+NULL
+
+#' Display backtrace on warning
+#'
+#' @description
+#' Similarly to [`rlang_backtrace_on_error_report`], you can set
+#' [`rlang_backtrace_on_warning_report`] inside RMarkdown documents to
+#' tweak the display of warnings. This is useful in conjunction with
+#' [global_entrace()].
+#'
+#' ````
+#' ```{r setup}
+#' rlang::global_entrace()
+#' options(rlang_backtrace_on_warning_report = "full")
+#' ```
+#' ````
+#'
+#' Because of technical limitations, there is currently no
+#' corresponding `rlang_backtrace_on_warning` option for normal R
+#' sessions.
+#'
+#' @name rlang_backtrace_on_warning
+#' @seealso rlang_backtrace_on_error
+#' @aliases rlang_backtrace_on_warning_report
 NULL
 
 backtrace_on_error_opts <- c("none", "reminder", "branch", "full")
@@ -1452,6 +1477,9 @@ peek_backtrace_on_error <- function() {
 # by knitr
 peek_backtrace_on_error_report <- function() {
   peek_backtrace_on_error_opt("rlang_backtrace_on_error_report") %||% "none"
+}
+peek_backtrace_on_warning_report <- function() {
+  peek_backtrace_on_error_opt("rlang_backtrace_on_warning_report") %||% "none"
 }
 
 peek_backtrace_on_error_opt <- function(name) {
