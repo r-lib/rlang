@@ -9,8 +9,9 @@ test_that("matches arg", {
 })
 
 test_that("gives an error with more than one arg", {
-  expect_snapshot_error(
-    arg_match0_wrapper(c("bar", "fun"), c("bar", "baz"))
+  # Interpolates `values` in the error message (#1545)
+  expect_snapshot(
+    (expect_error(arg_match0_wrapper(c("bar", "fun"), c("bar", "baz"))))
   )
 })
 

@@ -99,6 +99,10 @@ arg_match0 <- function(arg,
   .External(ffi_arg_match0, arg, values, environment())
 }
 
+chr_interpolate <- function(x) {
+  paste0(deparse(x), collapse = "")
+}
+
 stop_arg_match <- function(arg, values, error_arg, error_call) {
   if (length(arg) > 1) {
     sorted_arg <- sort(unique(arg))
@@ -107,9 +111,9 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
       msg <- sprintf(
         "%s must be length 1 or a permutation of %s.",
         format_arg("arg"),
-        format_arg("values")
+        format_code(chr_interpolate(values))
       )
-      abort(msg, call = quote(arg_match()), arg = "arg")
+      abort(msg, call = error_call, arg = "arg")
     }
   }
 

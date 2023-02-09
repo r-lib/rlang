@@ -4,7 +4,12 @@
 
 # gives an error with more than one arg
 
-    `arg` must be length 1 or a permutation of `values`.
+    Code
+      (expect_error(arg_match0_wrapper(c("bar", "fun"), c("bar", "baz"))))
+    Output
+      <error/rlang_error>
+      Error in `arg_match0_wrapper()`:
+      ! `arg` must be length 1 or a permutation of `c("bar", "baz")`.
 
 # gives error with different than rearranged arg vs value
 
@@ -12,7 +17,7 @@
 
 ---
 
-    `arg` must be length 1 or a permutation of `values`.
+    `arg` must be length 1 or a permutation of `c("foo", "bar")`.
 
 # `arg_match()` has informative error messages
 

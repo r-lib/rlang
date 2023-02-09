@@ -287,7 +287,7 @@ r_obj* ffi_arg_match0(r_obj* args) {
 
 
 void rlang_init_arg(r_obj* ns) {
-  stop_arg_match_call = r_parse("stop_arg_match(w, x, y, z)");
+  stop_arg_match_call = r_parse("stop_arg_match(w, values = x, error_arg = y, error_call = z)");
   r_preserve(stop_arg_match_call);
 }
 
