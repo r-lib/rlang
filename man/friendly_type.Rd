@@ -17,6 +17,6 @@ indefinite article.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 \code{friendly_type()} is deprecated. Please use the
-\code{compat-friendly-type.R} file instead.
+\code{standalone-friendly-type.R} file instead.
 }
 \keyword{internal}

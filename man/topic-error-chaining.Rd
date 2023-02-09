@@ -19,7 +19,7 @@ mtcars |>
   dplyr::group_by(cyl) |>
   dplyr::mutate(new = add(disp, "foo"))
 #> Error in `dplyr::mutate()`:
-#> ! Can't compute `new = add(disp, "foo")`.
+#> i In argument: `new = add(disp, "foo")`.
 #> i In group 1: `cyl = 4`.
 #> Caused by error in `x + y`:
 #> ! non-numeric argument to binary operator

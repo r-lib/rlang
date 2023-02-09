@@ -62,7 +62,9 @@ If you plan to mass-rename calls from \code{abort()} to \code{cli::cli_abort()},
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
 cli::cli_abort(sprintf("Can't handle input `\%s`.", user_input))
-#> Error: Wrong message.
+#> Error in "fun(..., .envir = .envir)": ! Could not evaluate cli `\{\}` expression: `base::stop('Wrong...`.
+#> Caused by error:  at inline.R:311:7
+#> ! Wrong message.
 }\if{html}{\out{</div>}}
 
 To avoid this, protect your error messages by using cli to assemble the pieces:
@@ -70,7 +72,8 @@ To avoid this, protect your error messages by using cli to assemble the pieces:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
 cli::cli_abort("Can't handle input \{.code \{user_input\}\}.")
 #> Error:
-#> ! Can't handle input `\{base::stop('Wrong message.', call. = FALSE)\}`.
+#> ! Can't handle input `\{base::stop('Wrong message.', call. =
+#>   FALSE)\}`.
 }\if{html}{\out{</div>}}
 }
 
