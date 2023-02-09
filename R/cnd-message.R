@@ -91,7 +91,7 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
   backtrace_on_error <- cnd_backtrace_on_error(orig) %||% "none"
   trace_footer <- format_onerror_backtrace(orig, opt = backtrace_on_error)
 
-  c(msg, trace_footer)
+  paste_line(msg, trace_footer)
 }
 cnd_message_lines <- function(cnd, ...) {
   c(

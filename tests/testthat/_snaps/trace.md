@@ -931,7 +931,6 @@
       
           ## Error in `h()`:
           ## ! foo
-      
           ## Backtrace:
           ##     x
           ##  1. \-global f()
@@ -962,7 +961,6 @@
       
           ## Error in `h()`:
           ## ! foo
-      
           ## Backtrace:
           ##     x
           ##  1. \-rlang (local) f()
