@@ -148,7 +148,7 @@ NULL
 #'
 #'     ```r
 #'     dfs <- list(mtcars, mtcars)
-#'     inject(rbind(!!!mtcars))
+#'     inject(rbind(!!!dfs))
 #'     ```
 #'
 #' -   Injecting [defused expressions][topic-defuse] like

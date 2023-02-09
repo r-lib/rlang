@@ -17,7 +17,7 @@ especially useful with functions that take data in \code{...}, such as
 \code{\link[base:cbind]{base::rbind()}}.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(mtcars, mtcars)
-inject(rbind(!!!mtcars))
+inject(rbind(!!!dfs))
 }\if{html}{\out{</div>}}
 \item Injecting \link[=topic-defuse]{defused expressions} like
 \link[=sym]{symbolised} column names.
