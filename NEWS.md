@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `global_entrace()` now supports knitr documents.
+
 * `abort()`, `warn()`, and `inform()` gain an `.inherit` parameter.
   This controls whether `parent` is inherited. If `FALSE`,
   `cnd_inherits()` and `try_fetch()` do not match chained conditions

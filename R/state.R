@@ -147,7 +147,7 @@ with_interactive <- function(expr, value = TRUE) {
 }
 
 report_in_progress <- function() {
-  if (is_true(peek_option("knitr.in.progress"))) {
+  if (knitr_in_progress()) {
     return(TRUE)
   }
 
@@ -156,6 +156,9 @@ report_in_progress <- function() {
   }
 
   FALSE
+}
+knitr_in_progress <- function() {
+  is_true(peek_option("knitr.in.progress"))
 }
 
 peek_srcref <- function() {

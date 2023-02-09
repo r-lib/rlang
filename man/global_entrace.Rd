@@ -29,6 +29,16 @@ Set global entracing in your RProfile with:
 \if{html}{\out{<div class="sourceCode">}}\preformatted{rlang::global_entrace()
 }\if{html}{\out{</div>}}
 }
+\section{Inside RMarkdown documents}{
+
+
+Call \code{global_entrace()} inside an RMarkdown document to cause
+errors and warnings to be promoted to rlang conditions that include
+a backtrace.
+
+This is useful in conjunction with \code{\link{rlang_backtrace_on_error}}.
+}
+
 \section{Under the hood}{
 
 On R 4.0 and newer, \code{global_entrace()} installs a global handler

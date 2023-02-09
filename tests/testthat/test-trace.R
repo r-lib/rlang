@@ -463,9 +463,21 @@ test_that("caught error does not display backtrace in knitted files", {
   lines <- render_md("test-trace.Rmd")
   error_line <- lines[[length(lines)]]
   expect_match(error_line, "foo$")
-  
+
   expect_snapshot({
     cat_line(render_md("test-trace-full.Rmd"))
+  })
+})
+
+test_that("can call `global_entrace()` in knitted documents", {
+  skip_if_not_installed("knitr")
+  skip_if_not_installed("rmarkdown")
+  skip_if(!rmarkdown::pandoc_available())
+
+  entrace_lines <- render_md("test-entrace.Rmd", env = current_env())
+
+  expect_snapshot({
+    cat_line(entrace_lines)
   })
 })
 

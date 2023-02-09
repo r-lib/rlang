@@ -356,11 +356,20 @@ if (getRversion() < "4.0") {
 poke_global_handlers <- function(enable, ...) {
   check_bool(enable)
   handlers <- list2(...)
+  in_knitr <- knitr_in_progress()
 
-  if (enable) {
-    inject(globalCallingHandlers(!!!handlers))
+  if (in_knitr) {
+    if (enable) {
+      knitr::opts_chunk$set(calling.handlers = handlers)
+    } else {
+      abort("Can't remove calling handlers in knitted documents")
+    }
   } else {
-    inject(drop_global_handlers(!!!handlers))
+    if (enable) {
+      inject(globalCallingHandlers(!!!handlers))
+    } else {
+      inject(drop_global_handlers(!!!handlers))
+    }
   }
 }
 

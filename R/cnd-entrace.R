@@ -22,6 +22,14 @@
 #' @param class A character vector of one or several classes of
 #'   conditions to be entraced.
 #'
+#' @section Inside RMarkdown documents:
+#'
+#' Call `global_entrace()` inside an RMarkdown document to cause
+#' errors and warnings to be promoted to rlang conditions that include
+#' a backtrace.
+#'
+#' This is useful in conjunction with [`rlang_backtrace_on_error`].
+#'
 #' @section Under the hood:
 #' On R 4.0 and newer, `global_entrace()` installs a global handler
 #' with `globalCallingHandlers()`. On older R versions, `entrace()` is
@@ -36,7 +44,7 @@ global_entrace <- function(enable = TRUE,
   check_bool(enable)
   class <- arg_match(class, multiple = TRUE)
 
-  if (getRversion() < "4.0") {
+  if (getRversion() < "4.0" && !knitr_in_progress()) {
     return(global_entrace_fallback(enable, class))
   }
 
