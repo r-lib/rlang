@@ -160,14 +160,14 @@ r_obj* ffi_new_data_mask(r_obj* bottom, r_obj* top) {
   r_obj* data_mask;
 
   if (bottom == r_null) {
-    bottom = KEEP(r_alloc_environment(100, r_envs.empty));
+    bottom = KEEP(r_alloc_environment(10, r_envs.empty));
     data_mask = bottom;
   } else {
     check_data_mask_input(bottom, "bottom");
     // Create a child because we don't know what might be in `bottom`
     // and we need to clear its contents without deleting any object
     // created in the data mask environment
-    data_mask = KEEP(r_alloc_environment(100, bottom));
+    data_mask = KEEP(r_alloc_environment(10, bottom));
   }
 
   if (top == r_null) {

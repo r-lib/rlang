@@ -41,6 +41,7 @@ r_obj* rlang_ns_get(const char* name) {
 
 
 r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
+#if R_VERSION < R_Version(4, 1, 0)
   parent = parent ? parent : r_envs.empty;
   r_node_poke_car(new_env__parent_node, parent);
 
@@ -53,6 +54,10 @@ r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
   r_node_poke_car(new_env__parent_node, r_null);
 
   return env;
+#else
+  const int hash = 1;
+  return R_NewEnv(parent, hash, size);
+#endif
 }
 
 
@@ -287,11 +292,13 @@ void r_init_rlang_ns_env(void) {
 }
 
 void r_init_library_env(void) {
+#if R_VERSION < R_Version(4, 1, 0)
   new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_envs.base);
   r_preserve(new_env_call);
 
   new_env__parent_node = r_node_cddr(new_env_call);
   new_env__size_node = r_node_cdr(new_env__parent_node);
+#endif
 
   env2list_call = r_parse("as.list.environment(x, all.names = TRUE)");
   r_preserve(env2list_call);
@@ -316,6 +323,7 @@ void r_init_library_env(void) {
 r_obj* rlang_ns_env = NULL;
 r_obj* r_methods_ns_env = NULL;
 
+#if R_VERSION < R_Version(4, 1, 0)
 static
 r_obj* new_env_call = NULL;
 
@@ -324,6 +332,7 @@ r_obj* new_env__parent_node = NULL;
 
 static
 r_obj* new_env__size_node = NULL;
+#endif
 
 static
 r_obj* exists_call = NULL;
