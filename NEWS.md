@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* New `check_logical()` in `standalone-types-check.R` (#1560).
+
 * `quo_squash()` now squashes quosures in function position (#1509).
 
 * `is_expression()` now recognises quoted functions (#1499).
