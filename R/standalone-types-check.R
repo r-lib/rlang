@@ -11,6 +11,9 @@
 # 2023-02-13:
 # - `check_bool()` is now implemented in C.
 #
+# 2023-02-10:
+# - Added `check_logical()`.
+#
 # 2022-10-07:
 # - `check_number_whole()` and `_decimal()` no longer treat
 #   non-numeric types such as factors or dates as numbers.  Numeric
@@ -458,6 +461,30 @@ check_character <- function(x,
   stop_input_type(
     x,
     "a character vector",
+    ...,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_logical <- function(x,
+                          ...,
+                          allow_null = FALSE,
+                          arg = caller_arg(x),
+                          call = caller_env()) {
+  if (!missing(x)) {
+    if (is_logical(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a logical vector",
     ...,
     allow_null = allow_null,
     arg = arg,

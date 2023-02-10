@@ -159,6 +159,23 @@ test_that("`check_character()` checks", {
   })
 })
 
+test_that("`check_logical()` checks", {
+  expect_null(check_logical(TRUE))
+  expect_null(check_logical(FALSE))
+  expect_null(check_logical(na_lgl))
+  expect_null(check_logical(lgl()))
+  expect_null(check_logical(c(TRUE, FALSE, NA)))
+  expect_null(check_logical(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker(, check_logical))
+    err(checker(NULL, check_logical))
+    err(checker(NA_integer_, check_logical))
+    err(checker(1, check_logical))
+    err(checker(list("foo", "bar"), check_logical, allow_null = TRUE))
+  })
+})
+
 test_that("non-numeric types are not numbers", {
   expect_false(is_number(factor("a")))
   expect_false(is_number(as.Date("2000-01-01")))
