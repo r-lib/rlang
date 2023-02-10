@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `last_warnings()` and `last_messages()` now work inside RMarkdown
+  documents more accurately.
+
 * New `rlang_backtrace_on_warning_report` global option. This is
   useful in conjunction with `global_entrace()` to get backtraces on
   warnings inside RMarkdown documents.

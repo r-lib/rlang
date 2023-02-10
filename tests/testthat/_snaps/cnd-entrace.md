@@ -222,6 +222,39 @@
           ##  1. \-rlang (local) f(warning)
           ##  2.   \-rlang (local) g(do)
           ##  3.     \-rlang (local) h(do)
+      
+          rlang::last_warnings()
+      
+          ## [[1]]
+          ## <warning/rlang_warning>
+          ## Warning in `h()`:
+          ## foo
+          ## ---
+          ## Backtrace:
+          ##  1. rlang (local) f(warning)
+          ##  2. rlang (local) g(do)
+          ##  3. rlang (local) h(do)
+          ## 
+          ## [[2]]
+          ## <warning/rlang_warning>
+          ## Warning in `h()`:
+          ## foo
+          ## ---
+          ## Backtrace:
+          ##  1. rlang (local) f(warning)
+          ##  2. rlang (local) g(do)
+          ##  3. rlang (local) h(do)
+      
+          message("foo")
+      
+          ## foo
+      
+          rlang::last_messages()
+      
+          ## [[1]]
+          ## <message/rlang_message>
+          ## Message in `message()`:
+          ## foo
 
 # can't set backtrace-on-warning to reminder
 
