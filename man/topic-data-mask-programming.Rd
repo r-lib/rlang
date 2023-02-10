@@ -209,8 +209,7 @@ The \code{.data} pronoun can only be subsetted with single column names. It does
 #> Error in `dplyr::summarise()`:
 #> i In argument: `.data[c("cyl", "am")]`.
 #> Caused by error in `.data[c("cyl", "am")]`:
-#> ! `[` is not supported by the `.data` pronoun, use `[[` or $
-#>   instead.
+#> ! `[` is not supported by the `.data` pronoun, use `[[` or $ instead.
 }\if{html}{\out{</div>}}
 
 There is no plural variant of \code{.data} built in tidy eval. Instead, we'll used the \code{all_of()} operator available in tidy selections to supply character vectors. This is straightforward in functions that take tidy selections, like \code{tidyr::pivot_longer()}:
