@@ -51,7 +51,7 @@ static r_obj* rlang_new_data_pronoun(r_obj* mask) {
   return pronoun;
 }
 static r_obj* rlang_new_ctxt_pronoun(r_obj* top) {
-  r_obj* pronoun = KEEP(r_alloc_environment(0, r_env_parent(top)));
+  r_obj* pronoun = KEEP(r_alloc_empty_environment(r_env_parent(top)));
 
   r_attrib_poke(pronoun, r_syms.class_, ctxt_pronoun_class);
 
