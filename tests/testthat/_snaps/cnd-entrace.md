@@ -223,3 +223,13 @@
           ##  2.   \-rlang (local) g(do)
           ##  3.     \-rlang (local) h(do)
 
+# can't set backtrace-on-warning to reminder
+
+    Code
+      peek_backtrace_on_warning_report()
+    Warning <rlang_warning>
+      `rlang_backtrace_on_warning_report` must be one of `c("none", "branch", "full")`.
+      i The option was reset to "none".
+    Output
+      [1] "none"
+

@@ -337,6 +337,10 @@ test_that("warnings are resignalled", {
 })
 
 test_that("can call `global_entrace()` in knitted documents", {
+  local_options(
+    rlang_backtrace_on_error_report = peek_option("rlang_backtrace_on_error_report"),
+    rlang_backtrace_on_warning_report = peek_option("rlang_backtrace_on_warning_report")
+  )
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
   skip_if(!rmarkdown::pandoc_available())
@@ -346,4 +350,17 @@ test_that("can call `global_entrace()` in knitted documents", {
   expect_snapshot({
     cat_line(entrace_lines)
   })
+})
+
+test_that("can't set backtrace-on-warning to reminder", {
+  local_options(rlang_backtrace_on_warning_report = "reminder")
+
+  expect_snapshot({
+    peek_backtrace_on_warning_report()
+  })
+
+  expect_equal(
+    peek_option("rlang_backtrace_on_warning_report"),
+    "none"
+  )
 })

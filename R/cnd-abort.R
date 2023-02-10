@@ -1478,8 +1478,21 @@ peek_backtrace_on_error <- function() {
 peek_backtrace_on_error_report <- function() {
   peek_backtrace_on_error_opt("rlang_backtrace_on_error_report") %||% "none"
 }
+
 peek_backtrace_on_warning_report <- function() {
-  peek_backtrace_on_error_opt("rlang_backtrace_on_warning_report") %||% "none"
+  opt <- peek_backtrace_on_error_opt("rlang_backtrace_on_warning_report") %||% "none"
+
+  if (is_string(opt, "reminder")) {
+    options(rlang_backtrace_on_warning_report = "none")
+    warn(c(
+      "`rlang_backtrace_on_warning_report` must be one of `c(\"none\", \"branch\", \"full\")`.",
+      i = "The option was reset to \"none\"."
+    ))
+
+    opt <- "none"
+  }
+
+  opt
 }
 
 peek_backtrace_on_error_opt <- function(name) {
