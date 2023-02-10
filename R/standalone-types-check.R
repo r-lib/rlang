@@ -41,16 +41,8 @@ check_bool <- function(x,
                        allow_null = FALSE,
                        arg = caller_arg(x),
                        call = caller_env()) {
-  if (!missing(x)) {
-    if (is_bool(x)) {
-      return(invisible(NULL))
-    }
-    if (allow_null && is_null(x)) {
-      return(invisible(NULL))
-    }
-    if (allow_na && identical(x, NA)) {
-      return(invisible(NULL))
-    }
+  if (!missing(x) && .Call(ffi_standalone_check_is_bool, x, allow_na, allow_null)) {
+    return(invisible(NULL))
   }
 
   stop_input_type(

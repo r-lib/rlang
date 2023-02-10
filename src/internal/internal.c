@@ -27,6 +27,7 @@
 #include "quo.c"
 #include "replace-na.c"
 #include "squash.c"
+#include "standalone-types-check.c"
 #include "sym-unescape.c"
 #include "tests.c"
 #include "utils.c"
