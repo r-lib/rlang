@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2022-10-07
+# last-updated: 2023-02-10
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # ---
