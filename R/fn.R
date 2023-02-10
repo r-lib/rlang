@@ -386,7 +386,6 @@ as_function <- function(x,
                         arg = caller_arg(x),
                         call = caller_env()) {
   check_dots_empty0(...)
-  local_error_call(call)
 
   if (is_function(x)) {
     return(x)
@@ -404,13 +403,14 @@ as_function <- function(x,
         x,
         x_type = "a two-sided formula",
         to_type = "a function",
-        arg = arg
+        arg = arg,
+        call = call
       )
     }
 
     env <- f_env(x)
     if (!is_environment(env)) {
-      abort("Formula must carry an environment.")
+      abort("Formula must carry an environment.", arg = arg, call = call)
     }
 
     args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
@@ -423,7 +423,7 @@ as_function <- function(x,
     return(get(x, envir = env, mode = "function"))
   }
 
-  abort_coercion(x, "a function", arg = arg)
+  abort_coercion(x, "a function", arg = arg, call = call)
 }
 #' @export
 print.rlang_lambda_function <- function(x, ...) {
