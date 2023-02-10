@@ -899,7 +899,7 @@ as_label <- function(x) {
       if (is_data_pronoun(x)) {
         return(data_pronoun_name(x) %||% "<unknown>")
       }
-      if (infix_overflows(x)) {
+      if (use_as_label_infix() && infix_overflows(x)) {
         return(as_label_infix(x))
       }
 
@@ -915,6 +915,13 @@ as_label <- function(x) {
       paste0("<", rlang_type_sum(x), ">")
     }
   )
+}
+
+# Work around a slowdown caused by `infix_overflows()`
+# https://github.com/tidyverse/dplyr/issues/6674
+# https://github.com/tidyverse/dplyr/issues/6681
+use_as_label_infix <- function() {
+  !is_false(peek_option("rlang:::use_as_label_infix"))
 }
 
 infix_overflows <- function(x) {
