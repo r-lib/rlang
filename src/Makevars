@@ -65,6 +65,7 @@ internal-files = \
         internal/quo.c \
         internal/replace-na.c \
         internal/squash.c \
+        internal/standalone-types-check.c \
         internal/sym-unescape.c \
         internal/tests.c \
         internal/utils.c \

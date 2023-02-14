@@ -8,6 +8,9 @@
 #
 # ## Changelog
 #
+# 2023-02-13:
+# - `check_bool()` is now implemented in C.
+#
 # 2022-10-07:
 # - `check_number_whole()` and `_decimal()` no longer treat
 #   non-numeric types such as factors or dates as numbers.  Numeric
@@ -41,16 +44,8 @@ check_bool <- function(x,
                        allow_null = FALSE,
                        arg = caller_arg(x),
                        call = caller_env()) {
-  if (!missing(x)) {
-    if (is_bool(x)) {
-      return(invisible(NULL))
-    }
-    if (allow_null && is_null(x)) {
-      return(invisible(NULL))
-    }
-    if (allow_na && identical(x, NA)) {
-      return(invisible(NULL))
-    }
+  if (!missing(x) && .Call(ffi_standalone_is_bool_1.0.7, x, allow_na, allow_null)) {
+    return(invisible(NULL))
   }
 
   stop_input_type(
