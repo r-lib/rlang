@@ -41,7 +41,7 @@ check_bool <- function(x,
                        allow_null = FALSE,
                        arg = caller_arg(x),
                        call = caller_env()) {
-  if (!missing(x) && .Call(ffi_standalone_check_is_bool, x, allow_na, allow_null)) {
+  if (!missing(x) && .Call(ffi_standalone_check_is_bool_1.0.7, x, allow_na, allow_null)) {
     return(invisible(NULL))
   }
 

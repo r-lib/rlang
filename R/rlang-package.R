@@ -12,6 +12,7 @@ compiled_by_gcc <- function() {
 
 #' Internal API for standalone-types-check
 #' @name ffi_standalone_types_check
+#' @aliases ffi_standalone_check_is_bool_1.0.7
 #' @keywords internal
-#' @rawNamespace export(ffi_standalone_check_is_bool)
+#' @rawNamespace export(ffi_standalone_check_is_bool_1.0.7)
 NULL

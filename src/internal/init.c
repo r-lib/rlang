@@ -195,7 +195,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_set_names",                    (DL_FUNC) &ffi_set_names, 4},
   {"ffi_sexp_iterate",                 (DL_FUNC) &ffi_sexp_iterate, 2},
   {"ffi_squash",                       (DL_FUNC) &ffi_squash, 4},
-  {"ffi_standalone_check_is_bool",     (DL_FUNC) &ffi_standalone_check_is_bool, 3},
+  {"ffi_standalone_check_is_bool_1.0.7", (DL_FUNC) &ffi_standalone_check_is_bool, 3},
   {"ffi_sym_as_character",             (DL_FUNC) &ffi_sym_as_character, 1},
   {"ffi_symbol",                       (DL_FUNC) &ffi_symbol, 1},
   {"ffi_test_Rf_error",                (DL_FUNC) &ffi_test_Rf_error, 1},
