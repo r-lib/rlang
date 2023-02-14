@@ -72,7 +72,8 @@ To avoid this, protect your error messages by using cli to assemble the pieces:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
 cli::cli_abort("Can't handle input \{.code \{user_input\}\}.")
 #> Error:
-#> ! Can't handle input `\{base::stop('Wrong message.', call. = FALSE)\}`.
+#> ! Can't handle input `\{base::stop('Wrong message.', call. =
+#>   FALSE)\}`.
 }\if{html}{\out{</div>}}
 }
 

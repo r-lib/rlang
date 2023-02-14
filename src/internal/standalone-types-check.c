@@ -1,8 +1,8 @@
 #include <rlang.h>
 
-r_obj* ffi_standalone_check_is_bool(r_obj* x,
-                                    r_obj* allow_na,
-                                    r_obj* allow_null) {
+r_obj* ffi_standalone_check_bool(r_obj* x,
+                                 r_obj* allow_na,
+                                 r_obj* allow_null) {
   if (x == r_null) {
     return r_lgl(r_as_bool(allow_null));
   }
