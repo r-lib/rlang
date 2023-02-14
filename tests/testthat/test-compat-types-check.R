@@ -177,9 +177,6 @@ test_that("`check_logical()` checks", {
 })
 
 test_that("non-numeric types are not numbers", {
-  expect_false(is_number(factor("a")))
-  expect_false(is_number(as.Date("2000-01-01")))
-
   expect_snapshot({
     (expect_error(check_number_whole(factor("a"))))
     (expect_error(check_number_decimal(as.Date("2000-01-01"))))
