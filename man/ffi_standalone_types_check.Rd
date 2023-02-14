@@ -2,7 +2,7 @@
 % Please edit documentation in R/rlang-package.R
 \name{ffi_standalone_types_check}
 \alias{ffi_standalone_types_check}
-\alias{ffi_standalone_check_bool_1.0.7}
+\alias{ffi_standalone_is_bool_1.0.7}
 \title{Internal API for standalone-types-check}
 \description{
 Internal API for standalone-types-check
