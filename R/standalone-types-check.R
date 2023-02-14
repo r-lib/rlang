@@ -8,6 +8,9 @@
 #
 # ## Changelog
 #
+# 2023-02-13:
+# - `check_bool()` is now implemented in C.
+#
 # 2022-10-07:
 # - `check_number_whole()` and `_decimal()` no longer treat
 #   non-numeric types such as factors or dates as numbers.  Numeric
