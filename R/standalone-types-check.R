@@ -14,6 +14,11 @@
 # - `check_bool()`, `check_number_whole()`, and
 #   `check_number_decimal()` are now implemented in C.
 #
+# - For efficiency, `check_number_whole()` and
+#   `check_number_decimal()` now take a `NULL` default for `min` and
+#   `max`. This makes it possible to bypass unnecessary type-checking
+#   and comparisons in the default case of no bounds checks.
+#
 # 2022-10-07:
 # - `check_number_whole()` and `_decimal()` no longer treat
 #   non-numeric types such as factors or dates as numbers.  Numeric
@@ -147,8 +152,8 @@ IS_NUMBER_oob <- 2
 
 check_number_decimal <- function(x,
                                  ...,
-                                 min = -Inf,
-                                 max = Inf,
+                                 min = NULL,
+                                 max = NULL,
                                  allow_infinite = TRUE,
                                  allow_na = FALSE,
                                  allow_null = FALSE,
@@ -185,8 +190,8 @@ check_number_decimal <- function(x,
 
 check_number_whole <- function(x,
                                ...,
-                               min = -Inf,
-                               max = Inf,
+                               min = NULL,
+                               max = NULL,
                                allow_na = FALSE,
                                allow_null = FALSE,
                                arg = caller_arg(x),
@@ -231,6 +236,9 @@ check_number_whole <- function(x,
                              arg,
                              call) {
   if (exit_code == IS_NUMBER_oob) {
+    min <- min %||% -Inf
+    max <- max %||% Inf
+
     if (min > -Inf && max < Inf) {
       what <- sprintf("a number between %s and %s", min, max)
     } else if (x < min) {
