@@ -13,10 +13,10 @@
 #'   vector). All functions also support R connections.
 #'
 #' * `parse_quo()` and `parse_quos()` are variants that create a
-#'   [quosure][quo] that inherits from the global environment by
-#'   default. This is appropriate when you're parsing external user
-#'   input to be evaluated in user context (rather than the private
-#'   contexts of your functions).
+#'   [quosure][quo]. Supply `env = current_env()` if you're parsing
+#'   code to be evaluated in your current context. Supply `env =
+#'   global_env()` when you're parsing external user input to be
+#'   evaluated in user context.
 #'
 #'   Unlike quosures created with [enquo()], [enquos()], or `{{`, a
 #'   parsed quosure never contains injected quosures. It is thus safe
@@ -106,18 +106,14 @@ chr_parse_exprs <- function(x) {
 #'   evaluate the R code in an isolated context (perhaps a child of
 #'   the global environment or of the [base environment][base_env]).
 #' @export
-parse_quo <- function(x, env = global_env()) {
-  if (missing(env)) {
-    abort("The quosure environment must be supplied as `env`.")
-  }
+parse_quo <- function(x, env) {
+  check_required(env)
   new_quosure(parse_expr(x), as_environment(env))
 }
 #' @rdname parse_expr
 #' @export
-parse_quos <- function(x, env = global_env()) {
-  if (missing(env)) {
-    abort("The quosure environment must be supplied as `env`.")
-  }
+parse_quos <- function(x, env) {
+  check_required(env)
   out <- map(parse_exprs(x), new_quosure, env = as_environment(env))
   new_quosures(out)
 }

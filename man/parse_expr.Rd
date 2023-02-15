@@ -11,9 +11,9 @@ parse_expr(x)
 
 parse_exprs(x)
 
-parse_quo(x, env = global_env())
+parse_quo(x, env)
 
-parse_quos(x, env = global_env())
+parse_quos(x, env)
 }
 \arguments{
 \item{x}{Text containing expressions to parse_expr for
@@ -47,10 +47,9 @@ multiple expressions. It always returns a list of expressions
 (compare to \code{\link[base:parse]{base::parse()}} which returns a base::expression
 vector). All functions also support R connections.
 \item \code{parse_quo()} and \code{parse_quos()} are variants that create a
-\link[=quo]{quosure} that inherits from the global environment by
-default. This is appropriate when you're parsing external user
-input to be evaluated in user context (rather than the private
-contexts of your functions).
+\link[=quo]{quosure}. Supply \code{env = current_env()} if you're parsing
+code to be evaluated in your current context. Supply \code{env = global_env()} when you're parsing external user input to be
+evaluated in user context.
 
 Unlike quosures created with \code{\link[=enquo]{enquo()}}, \code{\link[=enquos]{enquos()}}, or \verb{\{\{}, a
 parsed quosure never contains injected quosures. It is thus safe
