@@ -355,7 +355,7 @@ mtcars %&gt;% my_group_by(starts_with("c"), vs:gear)
 <h3 id="named-inputs-versus-">Named inputs versus <code>...</code><a class="anchor" aria-label="anchor" href="#named-inputs-versus-"></a></h3>
 
 
-<p>In the case of a named argument, transformation is easy. We simply surround the embraced input it in R code. For instance, the <code>my_summarise()</code> function is not exactly useful compared to just calling <code>summarise()</code>:</p>
+<p>In the case of a named argument, transformation is easy. We simply surround the embraced input in R code. For instance, the <code>my_summarise()</code> function is not exactly useful compared to just calling <code>summarise()</code>:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">my_summarise</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">var</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">{</span><span class="op">{</span> <span class="va">var</span> <span class="op">}</span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre><p></p></div>
