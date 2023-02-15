@@ -39,6 +39,18 @@
 #'
 #' try(f(x = 1, y = 2, 3, 4, 5))
 #'
+#' # Use an `error` handler to handle the error differently.
+#' # For instance to demote the error to a warning:
+#' fn <- function(...) {
+#'   check_dots_empty(
+#'     error = function(cnd) {
+#'       warning(cnd)
+#'     }
+#'   )
+#'   "out"
+#' }
+#' fn()
+#'
 #' @export
 check_dots_used <- function(env = caller_env(),
                             call = caller_env(),
