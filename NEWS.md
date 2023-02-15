@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `quo_squash()` now squashes quosures in function position (#1509).
+
 * `is_expression()` now recognises quoted functions (#1499).
 
 * `obj_adrress()` now supports the missing argument (#1521).

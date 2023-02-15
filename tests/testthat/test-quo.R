@@ -300,6 +300,11 @@ test_that("quo_squash() supports nested missing args", {
   expect_equal(quo_squash(quo()), missing_arg())
 })
 
+test_that("quo_squash() handles quosures in function positions", {
+  expr <- call2(quo(`==`), 1, 2)
+  expect_equal(quo_squash(expr), quote(1 == 2))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
