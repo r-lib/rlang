@@ -225,6 +225,24 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number between 1 and 5, not the number 10.
+    Code
+      err(checker(10, min = NA, check_number_whole))
+    Output
+      <error/rlang_error>
+      Error in `check()`:
+      ! `min` must be a single double value.
+    Code
+      err(checker(10, min = NaN, check_number_whole))
+    Output
+      <error/rlang_error>
+      Error in `check()`:
+      ! `min` must be a number, not missing.
+    Code
+      err(checker(10, max = NaN, check_number_whole))
+    Output
+      <error/rlang_error>
+      Error in `check()`:
+      ! `max` must be a number, not missing.
 
 # `check_number_decimal()` checks
 
@@ -282,6 +300,24 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not `-Inf`.
+    Code
+      err(checker(10, min = NA, check_number_decimal))
+    Output
+      <error/rlang_error>
+      Error in `check()`:
+      ! `min` must be a single double value.
+    Code
+      err(checker(10, min = NaN, check_number_decimal))
+    Output
+      <error/rlang_error>
+      Error in `check()`:
+      ! `min` must be a number, not missing.
+    Code
+      err(checker(10, max = NaN, check_number_decimal))
+    Output
+      <error/rlang_error>
+      Error in `check()`:
+      ! `max` must be a number, not missing.
 
 # `check_symbol()` checks
 

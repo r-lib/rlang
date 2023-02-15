@@ -363,7 +363,7 @@ int r_as_int(r_obj* x) {
 static inline
 double r_arg_as_double(r_obj* x, const char* arg) {
   // TODO: Coercion of int and lgl values
-  if (!_r_is_double(x, 1, 1)) {
+  if (!_r_is_double(x, 1, -1)) {
     r_abort("`%s` must be a single double value.", arg);
   }
   return r_dbl_get(x, 0);
