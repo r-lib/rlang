@@ -76,6 +76,9 @@ test_that("`check_number_whole()` checks", {
     err(checker(1, max = 0, check_number_whole))
     err(checker(-1, min = 0, check_number_whole))
     err(checker(10, min = 1, max = 5, check_number_whole))
+    err(checker(10, min = NA, check_number_whole))
+    err(checker(10, min = NaN, check_number_whole))
+    err(checker(10, max = NaN, check_number_whole))
   })
 })
 
@@ -100,6 +103,9 @@ test_that("`check_number_decimal()` checks", {
     err(checker(10:11, check_number_decimal, allow_na = TRUE, allow_null = TRUE))
     err(checker(Inf, check_number_decimal, allow_infinite = FALSE))
     err(checker(-Inf, check_number_decimal, allow_infinite = FALSE))
+    err(checker(10, min = NA, check_number_decimal))
+    err(checker(10, min = NaN, check_number_decimal))
+    err(checker(10, max = NaN, check_number_decimal))
   })
 })
 

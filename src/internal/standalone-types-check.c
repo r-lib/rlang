@@ -88,6 +88,17 @@ bool is_numeric(r_obj* x) {
   return out;
 }
 
+static inline
+double as_min_or_max(r_obj* ffi_x, const char* arg) {
+  double out = r_arg_as_double(ffi_x, arg);
+
+  if (isnan(out)) {
+    r_abort("`%s` must be a number, not missing.", arg);
+  }
+
+  return out;
+}
+
 static
 enum is_number int_standalone_check_number(r_obj* x,
                                            r_obj* ffi_min,
@@ -107,8 +118,8 @@ enum is_number int_standalone_check_number(r_obj* x,
     return r_as_bool(allow_na) ? IS_NUMBER_true : IS_NUMBER_false;
   }
 
-  double min = r_arg_as_double(ffi_min, "min");
-  double max = r_arg_as_double(ffi_max, "max");
+  double min = as_min_or_max(ffi_min, "min");
+  double max = as_min_or_max(ffi_max, "max");
 
   if (value < min || value > max) {
     return IS_NUMBER_oob;
@@ -148,8 +159,8 @@ enum is_number dbl_standalone_check_number(r_obj* x,
     return IS_NUMBER_false;
   }
 
-  double min = r_arg_as_double(ffi_min, "min");
-  double max = r_arg_as_double(ffi_max, "max");
+  double min = as_min_or_max(ffi_min, "min");
+  double max = as_min_or_max(ffi_max, "max");
 
   if (value < min || value > max) {
     return IS_NUMBER_oob;
