@@ -52,6 +52,13 @@ arg_match <- function(arg,
     return(arg_match_multi(arg, values, error_arg, error_call))
   }
 
+  if (!length(arg)) {
+    msg <- sprintf(
+      "%s must be length 1, not length 0",
+      format_arg(error_arg)
+    )
+    abort(msg, call = error_call, arg = error_arg)
+  }
   if (length(arg) > 1 && !setequal(arg, values)) {
     msg <- arg_match_invalid_msg(arg, values, error_arg)
     abort(msg, call = error_call, arg = error_arg)

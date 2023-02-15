@@ -329,5 +329,6 @@ test_that("arg_match() supports `NA` (#1519)", {
   expect_snapshot({
     (expect_error(f(NA)))
     (expect_error(f(na_chr)))
+    (expect_error(f(chr())))
   })
 })

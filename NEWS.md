@@ -1,7 +1,7 @@
 # rlang (development version)
 
 * `arg_match()` now throws correct error when supplied a missing value
-  (#1519).
+  or an empty vector (#1519).
 
 * `is_integerish()` now handles negative doubles more consistently
   with positive ones (@sorhawell, #1530).

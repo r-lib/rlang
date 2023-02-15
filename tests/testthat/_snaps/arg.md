@@ -264,4 +264,10 @@
       <error/rlang_error>
       Error in `f()`:
       ! `x` must be a single string, not a character `NA`.
+    Code
+      (expect_error(f(chr())))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! `x` must be length 1, not length 0
 
