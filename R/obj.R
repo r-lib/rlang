@@ -23,7 +23,7 @@ duplicate <- function(x, shallow = FALSE) {
 #' @keywords internal
 #' @export
 obj_address <- function(x) {
-  .Call(ffi_obj_address, x)
+  .Call(ffi_obj_address, maybe_missing(x))
 }
 
 # Imported from lifecycle

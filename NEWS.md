@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `obj_adrress()` now supports the missing argument (#1521).
+
 * Fixed a `check_installed()` issue with packages removed during the
   current R session (#1561).
 
