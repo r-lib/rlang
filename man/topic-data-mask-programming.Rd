@@ -298,7 +298,7 @@ mtcars \%>\% my_pivot_longer(cyl, am = am * 100)
 \section{Transformation patterns}{
 \subsection{Named inputs versus \code{...}}{
 
-In the case of a named argument, transformation is easy. We simply surround the embraced input it in R code. For instance, the \code{my_summarise()} function is not exactly useful compared to just calling \code{summarise()}:
+In the case of a named argument, transformation is easy. We simply surround the embraced input in R code. For instance, the \code{my_summarise()} function is not exactly useful compared to just calling \code{summarise()}:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_summarise <- function(data, var) \{
   data \%>\% dplyr::summarise(\{\{ var \}\})
