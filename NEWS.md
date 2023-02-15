@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `is_integerish()` now handles negative doubles more consistently
+  with positive ones (@sorhawell, #1530).
+
 * New `check_logical()` in `standalone-types-check.R` (#1560).
 
 * `quo_squash()` now squashes quosures in function position (#1509).

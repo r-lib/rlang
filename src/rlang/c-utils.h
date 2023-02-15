@@ -26,10 +26,11 @@ void* r_shelter_deref(r_obj* x);
 // Allow integers up to 2^52, same as R_XLEN_T_MAX when long vector
 // support is enabled
 #define RLANG_MAX_DOUBLE_INT 4503599627370496
+#define RLANG_MIN_DOUBLE_INT -4503599627370496
 
 static inline
 bool r_dbl_is_decimal(double x) {
-  if (x > RLANG_MAX_DOUBLE_INT) {
+  if (x > RLANG_MAX_DOUBLE_INT || x < RLANG_MIN_DOUBLE_INT) {
     return false;
   }
 
