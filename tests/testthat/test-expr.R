@@ -91,3 +91,7 @@ test_that("is_expression() supports missing arguments", {
   expect_false(is_expression(missing_arg()))
   expect_false(is_expression(quote(foo(, ))))
 })
+
+test_that("is_expression() supports quoted functions (#1499)", {
+  expect_true(is_expression(parse_expr("function() NULL")))
+})

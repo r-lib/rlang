@@ -96,6 +96,17 @@ is_expression <- function(x) {
   stack <- new_stack()
   stack$push(x)
 
+  call_elts <- function(x) {
+    out <- as.list(x)
+
+    # Remove srcrefs
+    if (is_call(x, "function")) {
+      out <- out[-4]
+    }
+
+    out
+  }
+
   while (!is_exhausted(elt <- stack$pop())) {
     if (is_missing(elt)) {
       return(FALSE)
@@ -103,7 +114,7 @@ is_expression <- function(x) {
 
     switch(
       typeof(elt),
-      language = stack$push(!!!as.list(elt)),
+      language = stack$push(!!!call_elts(elt)),
       if (!is_symbol(elt) && !is_syntactic_literal(elt)) {
         return(FALSE)
       }
