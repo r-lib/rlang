@@ -250,3 +250,18 @@
        10.   \-rlang (local) g(x)
        11.     \-rlang (local) <<CALL h(>><<ARG my_arg = x>><<CALL )>>
 
+# arg_match() supports `NA` (#1519)
+
+    Code
+      (expect_error(f(NA)))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! `x` must be a character vector, not `NA`.
+    Code
+      (expect_error(f(na_chr)))
+    Output
+      <error/rlang_error>
+      Error in `f()`:
+      ! `x` must be a single string, not a character `NA`.
+

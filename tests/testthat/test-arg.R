@@ -322,3 +322,12 @@ test_that("arg_match() backtrace highlights call and arg", {
     print_highlighted_trace(err)
   })
 })
+
+test_that("arg_match() supports `NA` (#1519)", {
+  f <- function(x = c("a", "b")) arg_match(x)
+
+  expect_snapshot({
+    (expect_error(f(NA)))
+    (expect_error(f(na_chr)))
+  })
+})
