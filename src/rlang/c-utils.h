@@ -23,6 +23,25 @@
 void* r_shelter_deref(r_obj* x);
 
 
+// Allow integers up to 2^52, same as R_XLEN_T_MAX when long vector
+// support is enabled
+#define RLANG_MAX_DOUBLE_INT 4503599627370496
+
+static inline
+bool r_dbl_is_decimal(double x) {
+  if (x > RLANG_MAX_DOUBLE_INT) {
+    return false;
+  }
+
+  // C99 guarantees existence of the int_least_N_t types, even on
+  // machines that don't support arithmetic on width N:
+  if (x != (int_least64_t) x) {
+    return false;
+  }
+
+  return true;
+}
+
 // Adapted from CERT C coding standards
 static inline
 intmax_t r__intmax_add(intmax_t x, intmax_t y) {

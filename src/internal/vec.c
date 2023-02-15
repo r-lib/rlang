@@ -51,10 +51,6 @@ bool r_is_complex(r_obj* x, r_ssize n, int finite) {
   return _r_is_complex(x, n, finite);
 }
 
-// Allow integers up to 2^52, same as R_XLEN_T_MAX when long vector
-// support is enabled
-#define RLANG_MAX_DOUBLE_INT 4503599627370496
-
 bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
   if (r_typeof(x) == R_TYPE_integer) {
     return r_is_integer(x, n, finite);
@@ -75,13 +71,7 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
       continue;
     }
 
-    if (elt > RLANG_MAX_DOUBLE_INT) {
-      return false;
-    }
-
-    // C99 guarantees existence of the int_least_N_t types, even on
-    // machines that don't support arithmetic on width N:
-    if (elt != (int_least64_t) elt) {
+    if (!r_dbl_is_decimal(elt)) {
       return false;
     }
   }
@@ -92,8 +82,6 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
 
   return true;
 }
-
-#undef RLANG_MAX_DOUBLE_INT
 
 bool is_character(r_obj* x,
                   r_ssize n,
