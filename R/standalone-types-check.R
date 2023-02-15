@@ -1,18 +1,18 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-02-10
+# last-updated: 2023-02-15
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # ---
 #
 # ## Changelog
 #
+# 2023-02-15:
+# - Added `check_logical()`.
+#
 # 2023-02-13:
 # - `check_bool()` is now implemented in C.
-#
-# 2023-02-10:
-# - Added `check_logical()`.
 #
 # 2022-10-07:
 # - `check_number_whole()` and `_decimal()` no longer treat
