@@ -93,6 +93,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_getppid",                      (DL_FUNC) &ffi_getppid, 0},
   {"ffi_glue_is_here",                 (DL_FUNC) &ffi_glue_is_here, 0},
   {"ffi_has_local_precious_list",      (DL_FUNC) &ffi_has_local_precious_list, 0},
+  {"ffi_has_size_one_bool",            (DL_FUNC) &ffi_has_size_one_bool, 0},
   {"ffi_hash",                         (DL_FUNC) &ffi_hash, 1},
   {"ffi_hash_file",                    (DL_FUNC) &ffi_hash_file, 1},
   {"ffi_hasher_init",                  (DL_FUNC) &ffi_hasher_init, 0},

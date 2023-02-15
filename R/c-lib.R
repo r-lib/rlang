@@ -296,6 +296,11 @@ dyn_list_poke <- function(x, i, value) {
   invisible(.Call(ffi_dyn_list_poke, x, i, value))
 }
 
+# https://github.com/r-lib/rlang/issues/1556
+has_size_one_bool <- function() {
+  .Call(ffi_has_size_one_bool)
+}
+
 #' @export
 print.rlang_dyn_array <- function(x, ...) {
   writeLines(sprintf("<rlang/dyn_array: %s>", obj_address(x)))

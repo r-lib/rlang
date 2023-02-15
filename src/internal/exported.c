@@ -324,6 +324,11 @@ r_obj* ffi_dyn_list_poke(r_obj* x, r_obj* i, r_obj* value) {
   return r_null;
 }
 
+// [[ register() ]]
+r_obj* ffi_has_size_one_bool() {
+  return r_lgl(sizeof(bool) == 1);
+}
+
 
 // dyn-list-of.c
 

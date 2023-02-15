@@ -1,3 +1,6 @@
+# https://github.com/r-lib/rlang/issues/1556
+skip_if_not(has_size_one_bool())
+
 r_string <- function(str) {
   stopifnot(is_string(str))
   .Call(ffi_r_string, str)
