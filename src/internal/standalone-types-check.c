@@ -75,7 +75,7 @@ r_obj* ffi_standalone_check_number(r_obj* x,
 
 static
 bool is_numeric(r_obj* x) {
-  if (r_attrib_get(x, r_syms.class_) == r_null) {
+  if (!r_is_object(x)) {
     return true;
   }
 
