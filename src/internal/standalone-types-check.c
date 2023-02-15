@@ -134,13 +134,10 @@ enum is_number dbl_standalone_check_number(r_obj* x,
 
   double value = r_dbl_get(x, 0);
 
-  // `value == r_globals.na_dbl` is always false since it involves NaN
-  if (memcmp(&value, &r_globals.na_dbl, sizeof(double)) == 0) {
-    return r_as_bool(allow_na) ? IS_NUMBER_true : IS_NUMBER_false;
-  }
-
   if (!isfinite(value)) {
-    if (isnan(value)) {
+    if (R_IsNA(value)) {
+      return r_as_bool(allow_na) ? IS_NUMBER_true : IS_NUMBER_false;
+    } else if (isnan(value)) {
       return IS_NUMBER_false;
     } else {
       return r_as_bool(allow_infinite) ? IS_NUMBER_true : IS_NUMBER_false;
