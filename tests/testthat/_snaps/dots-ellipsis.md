@@ -8,6 +8,7 @@
       ! Arguments in `...` must be used.
       x Problematic argument:
       * c = 3
+      i Did you misspell an argument name?
 
 # error if dots named
 

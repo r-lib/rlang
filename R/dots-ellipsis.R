@@ -64,6 +64,7 @@ check_dots <- function(env = caller_env(), error, action, call) {
     error = error,
     action = action,
     message = "Arguments in `...` must be used.",
+    note = c("i" = "Did you misspell an argument name?"),
     dots_i = unused,
     class = "rlib_error_dots_unused",
     call = call,
