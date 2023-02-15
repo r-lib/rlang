@@ -176,6 +176,12 @@ This ensures assignments are explicit.</p></dd>
 
 <p>A list containing the <code>...</code> inputs.</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>For historical reasons, <code>dots_list()</code> creates a named list by
+default. By comparison <code>list2()</code> implements the preferred behaviour
+of only creating a names vector when a name is supplied.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -225,24 +231,36 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Empty trailing arguments are allowed:</span></span></span>
+<span class="r-in"><span><span class="fu">list2</span><span class="op">(</span><span class="fl">1</span>, <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Empty arguments trigger an error by default:</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fn</span><span class="op">(</span>, <span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-in"><span><span class="co"># But non-trailing empty arguments cause an error:</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">list2</span><span class="op">(</span><span class="fl">1</span>, , <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in list2(1, , ) : Argument 2 is empty</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># You can choose to preserve empty arguments instead:</span></span></span>
+<span class="r-in"><span><span class="co"># Use the more configurable `dots_list()` function to preserve all</span></span></span>
+<span class="r-in"><span><span class="co"># empty arguments:</span></span></span>
 <span class="r-in"><span><span class="va">list3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="fu">dots_list</span><span class="op">(</span><span class="va">...</span>, .preserve_empty <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Note how the last empty argument is still ignored because</span></span></span>
 <span class="r-in"><span><span class="co"># `.ignore_empty` defaults to "trailing":</span></span></span>
-<span class="r-in"><span><span class="fu">list3</span><span class="op">(</span>, <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">list3</span><span class="op">(</span><span class="fl">1</span>, , <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The list with preserved empty arguments is equivalent to:</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="missing_arg.html">missing_arg</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="missing_arg.html">missing_arg</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
