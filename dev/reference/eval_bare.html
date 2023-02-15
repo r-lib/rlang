@@ -214,19 +214,19 @@ support.</p></div>
 <span class="r-in"><span><span class="co"># With eval_bare(), we do get the expected environment:</span></span></span>
 <span class="r-in"><span><span class="fu">fn</span><span class="op">(</span><span class="fu">rlang</span><span class="fu">::</span><span class="va">eval_bare</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returned_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55bea2be84f8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dd8301ce88&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $actual_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55bea2be84f8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dd8301ce88&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># But that's not the case with base::eval():</span></span></span>
 <span class="r-in"><span><span class="fu">fn</span><span class="op">(</span><span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $returned_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55bea38e4980&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dd81b4bd98&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $actual_env</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55bea38e4e88&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55dd81b4c310&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
