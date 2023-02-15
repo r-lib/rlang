@@ -8,7 +8,7 @@
       ! Location 0 does not exist.
       i In file 'rlang/dyn-list-of.c' at line 167.
       i This is an internal error that was detected in the rlang package.
-        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://https://tidyverse.org/help/>) and the full backtrace.
+        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://tidyverse.org/help/>) and the full backtrace.
     Code
       err(lof_arr_push_back(lof, 10, 42L), "Location 10 does not exist")
     Output
@@ -17,7 +17,7 @@
       ! Location 10 does not exist.
       i In file 'rlang/dyn-list-of.c' at line 167.
       i This is an internal error that was detected in the rlang package.
-        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://https://tidyverse.org/help/>) and the full backtrace.
+        Please report it at <https://github.com/r-lib/rlang/issues> with a reprex (<https://tidyverse.org/help/>) and the full backtrace.
 
 # re-encoding fails purposefully with any bytes
 
