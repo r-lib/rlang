@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed a `check_installed()` issue with packages removed during the
+  current R session (#1561).
+
 * `new_data_mask()` is now slightly faster due to a smaller initial mask size
   and usage of the C level function `R_NewEnv()` on R >=4.1.0 (#1553).
 

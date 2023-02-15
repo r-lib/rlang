@@ -79,9 +79,13 @@ detect_installed <- function(info) {
       # older R versions
       is_fully_loaded <- TRUE
     } else {
+      # Check that package is on disk in case it's been removed (#1561)
+      is_fully_loaded <- is_on_disk(pkg)
+
       # Check for sealed namespaces to protect against `is_installed()`
       # being called from user hooks of `pkg` (#1378)
       is_fully_loaded <-
+        is_fully_loaded &&
         requireNamespace(pkg, quietly = TRUE) &&
         env_is_locked(ns_env(pkg))
     }
@@ -92,6 +96,13 @@ detect_installed <- function(info) {
       FALSE
     }
   }))
+}
+
+is_on_disk <- function(pkg) {
+  # A warning is emitted if the package was removed from disk
+  suppressWarnings(
+    nzchar(system.file(package = pkg))
+  )
 }
 
 pkg_version_info <- function(pkg,
