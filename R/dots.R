@@ -81,6 +81,11 @@ NULL
 #'   [dynamic][dyn-dots].
 #' @return A list containing the `...` inputs.
 #'
+#' @details
+#' For historical reasons, `dots_list()` creates a named list by
+#' default. By comparison `list2()` implements the preferred behaviour
+#' of only creating a names vector when a name is supplied.
+#'
 #' @export
 list2 <- function(...) {
   .Call(
@@ -171,19 +176,22 @@ list3 <- function(...) {
 #' fn("wrong!", dat = letters)   # partial matching of `data`
 #' fn(some_data, !!!list(data = letters))  # no matching
 #'
+#' # Empty trailing arguments are allowed:
+#' list2(1, )
 #'
-#' # Empty arguments trigger an error by default:
-#' try(fn(, ))
+#' # But non-trailing empty arguments cause an error:
+#' try(list2(1, , ))
 #'
-#' # You can choose to preserve empty arguments instead:
+#' # Use the more configurable `dots_list()` function to preserve all
+#' # empty arguments:
 #' list3 <- function(...) dots_list(..., .preserve_empty = TRUE)
 #'
 #' # Note how the last empty argument is still ignored because
 #' # `.ignore_empty` defaults to "trailing":
-#' list3(, )
+#' list3(1, , )
 #'
 #' # The list with preserved empty arguments is equivalent to:
-#' list(missing_arg())
+#' list(1, missing_arg())
 #'
 #'
 #' # Arguments with duplicated names are kept by default:
