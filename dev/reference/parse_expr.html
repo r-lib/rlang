@@ -9,10 +9,9 @@ multiple expressions. It always returns a list of expressions
 (compare to base::parse() which returns a base::expression
 vector). All functions also support R connections.
 parse_quo() and parse_quos() are variants that create a
-quosure that inherits from the global environment by
-default. This is appropriate when you're parsing external user
-input to be evaluated in user context (rather than the private
-contexts of your functions).
+quosure. Supply env = current_env() if you're parsing
+code to be evaluated in your current context. Supply env = global_env() when you're parsing external user input to be
+evaluated in user context.
 Unlike quosures created with enquo(), enquos(), or {{, a
 parsed quosure never contains injected quosures. It is thus safe
 to evaluate them with eval() instead of eval_tidy(), though
@@ -29,10 +28,9 @@ multiple expressions. It always returns a list of expressions
 (compare to base::parse() which returns a base::expression
 vector). All functions also support R connections.
 parse_quo() and parse_quos() are variants that create a
-quosure that inherits from the global environment by
-default. This is appropriate when you're parsing external user
-input to be evaluated in user context (rather than the private
-contexts of your functions).
+quosure. Supply env = current_env() if you're parsing
+code to be evaluated in your current context. Supply env = global_env() when you're parsing external user input to be
+evaluated in user context.
 Unlike quosures created with enquo(), enquos(), or {{, a
 parsed quosure never contains injected quosures. It is thus safe
 to evaluate them with eval() instead of eval_tidy(), though
@@ -149,10 +147,9 @@ multiple expressions. It always returns a list of expressions
 (compare to <code><a href="https://rdrr.io/r/base/parse.html" class="external-link">base::parse()</a></code> which returns a base::expression
 vector). All functions also support R connections.</p></li>
 <li><p><code>parse_quo()</code> and <code>parse_quos()</code> are variants that create a
-<a href="defusing-advanced.html">quosure</a> that inherits from the global environment by
-default. This is appropriate when you're parsing external user
-input to be evaluated in user context (rather than the private
-contexts of your functions).</p>
+<a href="defusing-advanced.html">quosure</a>. Supply <code>env = current_env()</code> if you're parsing
+code to be evaluated in your current context. Supply <code>env = global_env()</code> when you're parsing external user input to be
+evaluated in user context.</p>
 <p>Unlike quosures created with <code><a href="enquo.html">enquo()</a></code>, <code><a href="enquo.html">enquos()</a></code>, or <code>{{</code>, a
 parsed quosure never contains injected quosures. It is thus safe
 to evaluate them with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> instead of <code><a href="eval_tidy.html">eval_tidy()</a></code>, though
@@ -166,9 +163,9 @@ and <code>env</code>.</p></li>
 <span></span>
 <span><span class="fu">parse_exprs</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">parse_quo</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">parse_quo</span><span class="op">(</span><span class="va">x</span>, <span class="va">env</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">parse_quos</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">parse_quos</span><span class="op">(</span><span class="va">x</span>, <span class="va">env</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
