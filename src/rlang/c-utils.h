@@ -29,7 +29,7 @@ void* r_shelter_deref(r_obj* x);
 #define RLANG_MIN_DOUBLE_INT -4503599627370496
 
 static inline
-bool r_dbl_is_decimal(double x) {
+bool r_dbl_is_whole(double x) {
   if (x > RLANG_MAX_DOUBLE_INT || x < RLANG_MIN_DOUBLE_INT) {
     return false;
   }

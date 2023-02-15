@@ -147,7 +147,7 @@ enum is_number dbl_standalone_check_number(r_obj* x,
     }
   }
 
-  if (!r_as_bool(allow_decimal) && !r_dbl_is_decimal(value)) {
+  if (!r_as_bool(allow_decimal) && !r_dbl_is_whole(value)) {
     return IS_NUMBER_false;
   }
 

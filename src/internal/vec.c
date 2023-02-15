@@ -71,7 +71,7 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
       continue;
     }
 
-    if (!r_dbl_is_decimal(elt)) {
+    if (!r_dbl_is_whole(elt)) {
       return false;
     }
   }
