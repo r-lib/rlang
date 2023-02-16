@@ -23,7 +23,7 @@
 * `is_expression()` now recognises quoted functions (#1499).
   It now also recognises non-parsable attributes (#1475).
 
-* `obj_adrress()` now supports the missing argument (#1521).
+* `obj_address()` now supports the missing argument (#1521).
 
 * Fixed a `check_installed()` issue with packages removed during the
   current R session (#1561).
@@ -35,6 +35,7 @@
 
 * rlang is now compliant with `-Wstrict-prototypes` as requested by CRAN
   (#1508).
+
 
 # rlang 1.0.6
 
