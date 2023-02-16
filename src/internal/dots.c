@@ -150,10 +150,8 @@ void require_glue() {
 }
 
 static
-r_obj* glue_unquote(r_obj* lhs, r_obj* env) {
-  if (r_typeof(lhs) != R_TYPE_character ||
-      r_length(lhs) != 1 ||
-      !has_curly(r_chr_get_c_string(lhs, 0))) {
+r_obj* glue_embrace(r_obj* lhs, r_obj* env) {
+  if (!r_is_string(lhs) || !has_curly(r_chr_get_c_string(lhs, 0))) {
     return lhs;
   }
 
@@ -161,8 +159,8 @@ r_obj* glue_unquote(r_obj* lhs, r_obj* env) {
     require_glue();
   }
 
-  r_obj* glue_unquote_call = KEEP(r_call2(glue_unquote_fn, lhs));
-  lhs = r_eval(glue_unquote_call, env);
+  r_obj* glue_embrace_call = KEEP(r_call2(glue_embrace_fn, lhs));
+  lhs = r_eval(glue_embrace_call, env);
   FREE(1);
   return lhs;
 }
@@ -176,7 +174,7 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
 
   switch (info.op) {
   case INJECTION_OP_none:
-    lhs = KEEP_N(glue_unquote(lhs, env), &n_kept);
+    lhs = KEEP_N(glue_embrace(lhs, env), &n_kept);
     break;
   case INJECTION_OP_uq:
     lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
@@ -1064,7 +1062,7 @@ r_obj* ffi_dots_pairlist(r_obj* frame_env,
 }
 
 void rlang_init_dots(r_obj* ns) {
-  glue_unquote_fn = r_eval(r_sym("glue_unquote"), ns);
+  glue_embrace_fn = r_eval(r_sym("glue_embrace"), ns);
 
   auto_name_call = r_parse("rlang:::quos_auto_name(x)");
   r_preserve(auto_name_call);
@@ -1118,7 +1116,7 @@ void rlang_init_dots(r_obj* ns) {
 
 static r_obj* auto_name_call = NULL;
 static r_obj* empty_spliced_arg = NULL;
-static r_obj* glue_unquote_fn = NULL;
+static r_obj* glue_embrace_fn = NULL;
 static r_obj* dots_homonyms_values = NULL;
 static r_obj* dots_ignore_empty_values = NULL;
 static r_obj* quosures_attrib = NULL;
