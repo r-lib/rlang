@@ -218,10 +218,9 @@ static
 r_obj* call_zap_srcref(r_obj* x) {
   x = KEEP(r_clone(x));
 
-  r_obj* head = r_node_car(x);
-  if (head == r_syms.brace) {
-    attrib_zap_srcref(x);
-  } else if (head == r_syms.function) {
+  attrib_zap_srcref(x);
+
+  if (r_node_car(x) == r_syms.function) {
     r_node_poke_cdr(r_node_cddr(x), r_null);
   }
 

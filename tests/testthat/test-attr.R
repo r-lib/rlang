@@ -173,3 +173,16 @@ test_that("zap_srcref() supports expression vectors", {
   expect_true("srcref" %in% names(attributes(xs)))
   expect_true("srcref" %in% names(attributes(xs[[1]])))
 })
+
+test_that("zap_srcref() works on calls", {
+  # E.g. srcrefs attached to the call stack
+
+  with_srcref("{
+    f <- function() g()
+    g <- function() sys.call()
+  }")
+  call <- f()
+
+  expect_null(attributes(zap_srcref(call)))
+  expect_true("srcref" %in% names(attributes(call)))
+})
