@@ -84,4 +84,10 @@ Note that \code{...} automatically provides indirection, so you can use it as is
 }\if{html}{\out{</div>}}
 }
 
+\seealso{
+\itemize{
+\item \ifelse{html}{\link[=topic-data-mask]{What is data-masking and why do I need \{\{?}}{\link[=topic-data-mask]{What is data-masking and why do I need curly-curly?}}.
+\item \ifelse{html}{\link[=topic-data-mask-programming]{Data mask programming patterns}}{\link[=topic-data-mask-programming]{Data mask programming patterns}}.
+}
+}
 \keyword{internal}

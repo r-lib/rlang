@@ -93,6 +93,10 @@
 #' }
 #' ```
 #'
+#' @seealso
+#' - `r link("topic_data_mask")`.
+#' - `r link("topic_data_mask_programming")`.
+#'
 #' @keywords internal
 #' @name args_data_masking
 NULL
