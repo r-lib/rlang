@@ -162,3 +162,14 @@ test_that("is_named2() always returns `TRUE` for empty vectors (#191)", {
   expect_true(is_named2(chr()))
   expect_false(is_named2("a"))
 })
+
+test_that("zap_srcref() supports expression vectors", {
+  xs <- parse(text = "{ foo }; bar", keep.source = TRUE)
+  zapped <- zap_srcref(xs)
+
+  expect_null(attributes(zapped))
+  expect_null(attributes(zapped[[1]]))
+
+  expect_true("srcref" %in% names(attributes(xs)))
+  expect_true("srcref" %in% names(attributes(xs[[1]])))
+})

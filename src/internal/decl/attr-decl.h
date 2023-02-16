@@ -31,4 +31,7 @@ static
 r_obj* call_zap_srcref(r_obj* x);
 
 static
+r_obj* expr_vec_zap_srcref(r_obj* x);
+
+static
 void attrib_zap_srcref(r_obj* x);

@@ -196,8 +196,9 @@ r_ssize length_dispatch(r_obj* x, r_obj* env) {
 
 r_obj* zap_srcref(r_obj* x) {
   switch (r_typeof(x)) {
-  case R_TYPE_closure: return fn_zap_srcref(x);
   case R_TYPE_call: return call_zap_srcref(x);
+  case R_TYPE_closure: return fn_zap_srcref(x);
+  case R_TYPE_expression: return expr_vec_zap_srcref(x);
   default: return x;
   }
 }
@@ -226,6 +227,21 @@ r_obj* call_zap_srcref(r_obj* x) {
 
   for (r_obj* node = x; node != r_null; node = r_node_cdr(node)) {
     r_node_poke_car(node, zap_srcref(r_node_car(node)));
+  }
+
+  FREE(1);
+  return x;
+}
+
+static
+r_obj* expr_vec_zap_srcref(r_obj* x) {
+  x = KEEP(r_clone(x));
+
+  attrib_zap_srcref(x);
+
+  r_ssize n = r_length(x);
+  for (r_ssize i = 0; i < n; ++i) {
+    r_list_poke(x, i, zap_srcref(r_list_get(x, i)));
   }
 
   FREE(1);

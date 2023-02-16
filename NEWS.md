@@ -5,6 +5,8 @@
   arbitrary calls, only for those added by the parser (e.g. calls to
   `{` and calls to `function`).
 
+* `zap_srcref()` now supports expression vectors.
+
 * The non-error path of `check_dots_unnamed()` has been rewritten in C
   for efficiency (#1528).
 
