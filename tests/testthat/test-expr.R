@@ -95,3 +95,11 @@ test_that("is_expression() supports missing arguments", {
 test_that("is_expression() supports quoted functions (#1499)", {
   expect_true(is_expression(parse_expr("function() NULL")))
 })
+
+test_that("is_expression() detects attributes (#1475)", {
+  x <- structure(quote(foo()), attr = TRUE)
+  expect_false(is_expression(x))
+  expect_false(is_expression(expr(call(!!x))))
+  expect_true(is_expression(quote({ NULL })))
+  expect_true(is_expression(quote(function() { NULL })))
+})

@@ -101,6 +101,10 @@ is_expression <- function(x) {
       return(FALSE)
     }
 
+    if (!is_null(attributes(elt))) {
+      return(FALSE)
+    }
+
     switch(
       typeof(elt),
       language = stack$push(!!!as.list(elt)),
