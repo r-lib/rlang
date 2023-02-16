@@ -100,6 +100,15 @@ test_that("zap_srcref() handles nested functions (r-lib/testthat#1228)", {
     zap_srcref(fn),
     fn
   )
+
+  # Check that `factory` hasn't been modified by reference
+  expect_true("srcref" %in% names(attributes(factory)))
+
+  curly <- body(factory)
+  expect_true("srcref" %in% names(attributes(curly)))
+
+  fn_call <- curly[[2]]
+  expect_length(fn_call, 4)
 })
 
 test_that("zap_srcref() works with quosures", {

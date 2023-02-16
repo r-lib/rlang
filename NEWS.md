@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `zap_srcref()` has been rewritten in C for efficiency (#1513).  As
+  part of this change, it no longer removes srcref attributes from
+  arbitrary calls, only for those added by the parser (e.g. calls to
+  `{` and calls to `function`).
+
 * The non-error path of `check_dots_unnamed()` has been rewritten in C
   for efficiency (#1528).
 

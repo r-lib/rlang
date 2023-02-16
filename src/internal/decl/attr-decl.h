@@ -23,3 +23,12 @@ r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env);
 
 static inline
 r_ssize length_dispatch(r_obj* x, r_obj* env);
+
+static
+r_obj* fn_zap_srcref(r_obj* x);
+
+static
+r_obj* call_zap_srcref(r_obj* x);
+
+static
+void attrib_zap_srcref(r_obj* x);

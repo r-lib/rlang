@@ -234,6 +234,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_which_operator",               (DL_FUNC) &ffi_which_operator, 1},
   {"ffi_wref_key",                     (DL_FUNC) &ffi_wref_key, 1},
   {"ffi_wref_value",                   (DL_FUNC) &ffi_wref_value, 1},
+  {"ffi_zap_srcref",                   (DL_FUNC) &zap_srcref, 1},
   {"rlang_linked_version",             (DL_FUNC) &rlang_linked_version, 0},
   {NULL, NULL, 0}
 };
