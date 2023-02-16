@@ -377,8 +377,7 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' @keywords internal
 #' @description
-#'
-#' `r lifecycle::badge("questioning")`
+#' `r lifecycle::badge("superseded")`
 #'
 #' **Note:** You should now use [as_label()] or [as_name()] instead
 #' of `quo_name()`. See life cycle section below.
@@ -405,7 +404,7 @@ quo_squash <- function(quo, warn = FALSE) {
 #'
 #' @section Life cycle:
 #'
-#' These functions are in the questioning life cycle stage.
+#' These functions are superseded.
 #'
 #' * [as_label()] and [as_name()] should be used instead of
 #'   `quo_name()`. `as_label()` transforms any R object to a string
