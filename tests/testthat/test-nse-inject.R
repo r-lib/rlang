@@ -637,6 +637,11 @@ test_that("unquoted strings are not interpolated with glue", {
   )
 })
 
+test_that("englue() returns a bare string", {
+  fn <- function(x) englue("{{ x }}")
+  expect_null(attributes(fn(foo)), "foo")
+})
+
 test_that("englue() has good error messages (#1531)", {
   expect_snapshot({
     fn <- function(x) englue(c("a", "b"))

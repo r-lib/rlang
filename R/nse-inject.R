@@ -425,7 +425,7 @@ glue_embrace <- function(text,
     env = env,
     error_call = error_call
   )
-  glue::glue(out, .envir = env)
+  unstructure(glue::glue(out, .envir = env))
 }
 
 glue_first_pass <- function(text,
