@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Improved error messages in `englue()` (#1531) and in glue strings in
+  the LHS of `:=` (#1526).
+
 * `arg_match()` now throws correct error when supplied a missing value
   or an empty vector (#1519).
 

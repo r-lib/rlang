@@ -408,28 +408,49 @@ englue <- function(x) {
     ))
   }
 
-  expr <- call(":=", x, NULL)
-  res <- inject(rlang::list2(!!expr), caller_env())
-  names(res)
+  glue_embrace(
+    x,
+    env = caller_env(),
+    error_call = caller_env()
+  )
 }
 
-glue_embrace <- function(text, env = caller_env()) {
-  out <- glue_first_pass(text, env = env)
+glue_embrace <- function(text,
+                         env = caller_env(),
+                         error_call = caller_env()) {
+  out <- glue_first_pass(
+    text,
+    env = env,
+    error_call = error_call
+  )
   glue::glue(out, .envir = env)
 }
 
-glue_first_pass <- function(text, env = caller_env()) {
+glue_first_pass <- function(text,
+                            env = caller_env(),
+                            error_call = caller_env()) {
   glue::glue(
     text,
     .open = "{{",
     .close = "}}",
-    .transformer = glue_first_pass_eval,
+    .transformer = function(...) {
+      glue_first_pass_eval(..., error_call = error_call)
+    },
     .envir = env
   )
 }
-glue_first_pass_eval <- function(text, env) {
+glue_first_pass_eval <- function(text, env, error_call) {
   text_expr <- parse_expr(text)
   defused_expr <- eval_bare(call2(enexpr, text_expr), env)
+
+  if (is_symbol(text_expr)) {
+    check_required(
+      defused_expr,
+      arg = as_string(text_expr),
+      call = error_call
+    )
+  }
+
   as_label(defused_expr)
 }
 

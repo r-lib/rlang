@@ -637,6 +637,19 @@ test_that("unquoted strings are not interpolated with glue", {
   )
 })
 
+test_that("englue() has good error messages (#1531)", {
+  expect_snapshot({
+    fn <- function(x) glue_embrace("{{ x }}_foo")
+    (expect_error(fn()))
+
+    fn <- function(x) englue("{{ x }}_foo")
+    (expect_error(fn()))
+
+    fn <- function(x) list2("{{ x }}_foo" := NULL)
+    (expect_error(fn()))
+  })
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
