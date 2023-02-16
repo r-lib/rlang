@@ -368,6 +368,9 @@ NULL
 #' string using the default name operation.
 #'
 #' @param x A string to interpolate with glue operators.
+#' @param env User environment where the interpolation data lives in
+#'   case you're wrapping `englue()` in another function.
+#' @inheritParams args_error_context
 #'
 #' @details
 #' `englue("{{ var }}")` is equivalent to `as_label(enquo(var))`. It
@@ -385,6 +388,34 @@ NULL
 #' usethis::use_package("glue", "Imports")
 #' ```
 #'
+#' @section Wrapping `englue()`:
+#'
+#' You can provide englue semantics to a string by supplying `env` and
+#' `error_call`. In this example we create a variant of `englue()`
+#' that supports a special `.qux` pronoun:
+#'
+#' ```{r}
+#' my_englue <- function(text) {
+#'   # Create an environment that inherits from the user env, where
+#'   # their data lives:
+#'   caller <- caller_env()
+#'   env <- env(caller, .qux = "QUX")
+#'
+#'   # Override `error_call` by passing the caller frame. It normally
+#'   # defaults to `env` but here that wouldn't be appropriate because
+#'   # it is not an execution enviromment of a running function.
+#'   englue(text, env = env, error_call = caller)
+#' }
+#'
+#' # Users can then use your wrapper as they would use `englue()`:
+#' fn <- function(x) {
+#'   foo <- "FOO"
+#'   my_englue("{{ x }}_{.qux}_{foo}")
+#' }
+#'
+#' fn(bar)
+#' ```
+#'
 #' @seealso
 #' - `r link("topic_inject")`
 #'
@@ -400,7 +431,7 @@ NULL
 #' as_label(letters)
 #'
 #' @export
-englue <- function(x) {
+englue <- function(x, env = caller_env(), error_call = env) {
   check_string(x)
 
   if (!grepl("{{", x, fixed = TRUE)) {
@@ -412,8 +443,8 @@ englue <- function(x) {
 
   glue_embrace(
     x,
-    env = caller_env(),
-    error_call = caller_env()
+    env = env,
+    error_call = error_call
   )
 }
 

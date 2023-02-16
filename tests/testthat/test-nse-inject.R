@@ -661,6 +661,21 @@ test_that("englue() has good error messages (#1531)", {
   })
 })
 
+test_that("can wrap englue() (#1565)", {
+  my_englue <- function(text) {
+    caller <- caller_env()
+    env <- env(caller, .qux = "QUX")
+    englue(text, env = env, error_call = caller)
+  }
+
+  fn <- function(x) {
+    foo <- "FOO"
+    my_englue("{{ x }}_{.qux}_{foo}")
+  }
+
+  expect_equal(fn(bar), "bar_QUX_FOO")
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

@@ -4,10 +4,18 @@
 \alias{englue}
 \title{Defuse function arguments with glue}
 \usage{
-englue(x)
+englue(x, env = caller_env(), error_call = env)
 }
 \arguments{
 \item{x}{A string to interpolate with glue operators.}
+
+\item{env}{User environment where the interpolation data lives in
+case you're wrapping \code{englue()} in another function.}
+
+\item{error_call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
 \description{
 \code{englue()} creates a string with the \link[=glue-operators]{glue operators} \verb{\{} and \verb{\{\{}. These operators are
@@ -33,6 +41,36 @@ installed by adding it to your \verb{Imports:} section.
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{usethis::use_package("glue", "Imports")
 }\if{html}{\out{</div>}}
 }
+\section{Wrapping \code{englue()}}{
+
+
+You can provide englue semantics to a string by supplying \code{env} and
+\code{error_call}. In this example we create a variant of \code{englue()}
+that supports a special \code{.qux} pronoun:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_englue <- function(text) \{
+  # Create an environment that inherits from the user env, where
+  # their data lives:
+  caller <- caller_env()
+  env <- env(caller, .qux = "QUX")
+
+  # Override `error_call` by passing the caller frame. It normally
+  # defaults to `env` but here that wouldn't be appropriate because
+  # it is not an execution enviromment of a running function.
+  englue(text, env = env, error_call = caller)
+\}
+
+# Users can then use your wrapper as they would use `englue()`:
+fn <- function(x) \{
+  foo <- "FOO"
+  my_englue("\{\{ x \}\}_\{.qux\}_\{foo\}")
+\}
+
+fn(bar)
+#> [1] "bar_QUX_FOO"
+}\if{html}{\out{</div>}}
+}
+
 \examples{
 g <- function(var) englue("{{ var }}")
 g(cyl)
