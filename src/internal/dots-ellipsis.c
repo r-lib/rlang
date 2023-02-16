@@ -82,3 +82,25 @@ r_obj* ffi_ellipsis_dots_used(r_obj* env) {
   FREE(1);
   return r_true;
 }
+
+r_obj* ffi_has_dots_unnamed(r_obj* env) {
+  r_obj* dots = ffi_ellipsis_find_dots(env);
+
+  if (dots == r_syms.missing) {
+    return r_true;
+  }
+
+  KEEP(dots);
+
+  while (dots != r_null) {
+    if (r_node_tag(dots) != r_null) {
+      FREE(1);
+      return r_false;
+    }
+
+    dots = r_node_cdr(dots);
+  }
+
+  FREE(1);
+  return r_true;
+}

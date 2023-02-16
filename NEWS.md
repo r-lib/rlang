@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The non-error path of `check_dots_unnamed()` has been rewritten in C
+  for efficiency (#1528).
+
 * `global_entrace()` and `entrace()` now stop entracing warnings and
   messages after 20 times. This is to avoid a large overhead when 100s
   or 1000s of warnings are signalled in a loop (#1473).

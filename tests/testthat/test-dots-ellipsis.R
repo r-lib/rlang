@@ -29,6 +29,8 @@ test_that("error if dots named", {
     check_dots_unnamed()
   }
 
+  expect_null(f(1))
+
   expect_error(f(xyz = 1), NA)
   expect_error(f(1, 2, 3), NA)
   expect_error(f(1, 2, 3, xyz = 4), NA)

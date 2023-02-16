@@ -106,12 +106,13 @@ check_dots_unnamed <- function(env = caller_env(),
                                error = NULL,
                                call = caller_env(),
                                action = abort) {
-  proms <- ellipsis_dots(env)
-  if (length(proms) == 0) {
+  if (.Call(ffi_has_dots_unnamed, env)) {
     return()
   }
 
+  proms <- ellipsis_dots(env)
   unnamed <- names2(proms) == ""
+
   if (all(unnamed)) {
     return(invisible())
   }
