@@ -191,25 +191,23 @@ on_load({
 # on the stack, then we'll wrongly keep collecting warnings instead of
 # starting anew.
 push_warning <- function(cnd) {
-  top <- obj_address(sys.frame(1))
-
-  if (identical(the$last_top_frame, top)) {
-    the$last_warnings <- c(the$last_warnings, list(cnd))
-  } else {
-    the$last_top_frame <- top
-    the$last_warnings <- list(cnd)
-  }
+  push_condition(cnd, "last_warnings")
 }
 push_message <- function(cnd) {
+  push_condition(cnd, "last_messages")
+}
+
+push_condition <- function(cnd, last) {
   top <- obj_address(sys.frame(1))
 
   if (identical(the$last_top_frame, top)) {
-    the$last_messages <- c(the$last_messages, list(cnd))
+    the[[last]] <- c(the[[last]], list(cnd))
   } else {
     the$last_top_frame <- top
-    the$last_messages <- list(cnd)
+    the[[last]] <- list(cnd)
   }
 }
+
 
 # Transform foreign warnings to rlang warnings or messages. Preserve
 # existing backtraces.
