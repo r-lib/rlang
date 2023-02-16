@@ -425,7 +425,17 @@ glue_embrace <- function(text,
     env = env,
     error_call = error_call
   )
-  unstructure(glue::glue(out, .envir = env))
+  out <- unstructure(glue::glue(out, .envir = env))
+
+  if (length(out) != 1) {
+    msg <- sprintf(
+      "The glue string must be size 1, not %s.",
+      length(out)
+    )
+    abort(msg, call = quote(englue()))
+  }
+
+  out
 }
 
 glue_first_pass <- function(text,

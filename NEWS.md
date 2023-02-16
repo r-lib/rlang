@@ -10,6 +10,10 @@
 * Improved error messages in `englue()` (#1531) and in glue strings in
   the LHS of `:=` (#1526).
 
+* `englue()` now requires size 1 outputs (#1492). This prevents
+  surprising errors or inconsistencies when an interpolated input of
+  size != 1 makes its way into the glue string.
+
 * `arg_match()` now throws correct error when supplied a missing value
   or an empty vector (#1519).
 

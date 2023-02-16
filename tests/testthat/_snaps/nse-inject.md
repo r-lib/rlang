@@ -46,3 +46,20 @@
       ! Must use `{{`.
       i Use `glue::glue()` for interpolation with `{`.
 
+# englue() checks for the size of its result (#1492)
+
+    Code
+      fn <- (function(x) englue("{{ x }} {NULL}"))
+      (expect_error(fn(foo)))
+    Output
+      <error/rlang_error>
+      Error in `englue()`:
+      ! The glue string must be size 1, not 0.
+    Code
+      fn <- (function(x) list2("{{ x }} {NULL}" := NULL))
+      (expect_error(fn(foo)))
+    Output
+      <error/rlang_error>
+      Error in `englue()`:
+      ! The glue string must be size 1, not 0.
+

@@ -792,3 +792,13 @@ test_that("englue() works", {
 
   expect_snapshot(err(englue("{'foo'}"), "Must use"))
 })
+
+test_that("englue() checks for the size of its result (#1492)", {
+  expect_snapshot({
+    fn <- function(x) englue("{{ x }} {NULL}")
+    (expect_error(fn(foo)))
+
+    fn <- function(x) list2("{{ x }} {NULL}" := NULL)
+    (expect_error(fn(foo)))
+  })
+})
