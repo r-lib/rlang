@@ -139,7 +139,11 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
     bottom <- sys.frame(info[[2]])
   }
 
-  trace <- trace_back(top = top, bottom = bottom)
+  if (!has_new_cmd_frame() && the$n_conditions >= max_entracing()) {
+    trace <- NULL
+  } else {
+    trace <- trace_back(top = top, bottom = bottom)
+  }
 
   # `options(error = )` case
   if (missing(cnd)) {
@@ -174,6 +178,10 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 
   # Ignore other condition types
   NULL
+}
+
+max_entracing <- function() {
+  peek_option("rlang:::max_entracing") %||% 20
 }
 
 has_recover <- function() {

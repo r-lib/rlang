@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `global_entrace()` and `entrace()` now stop entracing warnings and
+  messages after 20 times. This is to avoid a large overhead when 100s
+  or 1000s of warnings are signalled in a loop (#1473).
+
 * Improved error messages in `englue()` (#1531) and in glue strings in
   the LHS of `:=` (#1526).
 

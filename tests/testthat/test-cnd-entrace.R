@@ -299,3 +299,26 @@ test_that("errors are saved by `entrace()`", {
 
   expect_equal(err, out)
 })
+
+test_that("only the first n warnings are entraced (#1473)", {
+  suppressWarnings({
+    local_options(
+      "rlang:::cnd_frame" = current_env(),
+      "rlang:::max_entracing" = 3L
+    )
+
+    f <- function() g()
+    g <- function() h()
+    h <- function() warning("foo")
+
+    try_fetch(
+      warning = function(cnd) { entrace(cnd); zap() },
+      for (i in 1:5) f()
+    )
+
+    expect_equal(
+      map_lgl(last_warnings(), function(x) is_null(x$trace)),
+      c(FALSE, FALSE, FALSE, TRUE, TRUE)
+    )
+  })
+})

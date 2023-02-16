@@ -177,6 +177,7 @@ last_messages <- function(n = NULL) {
 }
 
 on_load({
+  the$n_conditions <- 0L
   the$last_top_frame <- NULL
   the$last_warnings <- list()
   the$last_messages <- list()
@@ -197,14 +198,27 @@ push_message <- function(cnd) {
   push_condition(cnd, "last_messages")
 }
 
-push_condition <- function(cnd, last) {
-  top <- obj_address(sys.frame(1))
+cmd_frame <- function() {
+  getOption("rlang:::cnd_frame", sys.frame(1))
+}
 
-  if (identical(the$last_top_frame, top)) {
-    the[[last]] <- c(the[[last]], list(cnd))
-  } else {
+has_new_cmd_frame <- function(top = obj_address(cmd_frame())) {
+  !identical(the$last_top_frame, top)
+}
+
+push_condition <- function(cnd, last) {
+  top <- obj_address(cmd_frame())
+
+  if (has_new_cmd_frame(top)) {
     the$last_top_frame <- top
     the[[last]] <- list(cnd)
+    the$n_conditions <- 1L
+  } else {
+    the[[last]] <- c(the[[last]], list(cnd))
+
+    # Count the number of pushed conditions to avoid entracing too many
+    # times (#1473)
+    the$n_conditions <- the$n_conditions + 1L
   }
 }
 
