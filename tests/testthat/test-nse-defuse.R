@@ -92,7 +92,10 @@ test_that("corner cases are handled when interpolating dot names", {
     expect_identical(names(quos(!!var := NULL)), "NA")
 
     var <- NULL
-    expect_error(quos(!!var := NULL), "must be a string or a symbol")
+    expect_snapshot({
+      (expect_error(quos(!!var := NULL)))
+      (expect_error(list2(!!c("a", "b") := NULL)))
+    })
 })
 
 test_that("dots are forwarded to named arguments", {

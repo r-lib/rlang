@@ -1,3 +1,18 @@
+# corner cases are handled when interpolating dot names
+
+    Code
+      (expect_error(quos(!!var := NULL)))
+    Output
+      <error/rlang_error>
+      Error in `quos()`:
+      ! The LHS of `:=` must be a string, not `NULL`.
+    Code
+      (expect_error(list2(!!c("a", "b") := NULL)))
+    Output
+      <error/rlang_error>
+      Error in `list2()`:
+      ! The LHS of `:=` must be a string, not a character vector.
+
 # ensyms() captures multiple symbols
 
     Code

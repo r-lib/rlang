@@ -200,13 +200,14 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   }
 
   int err = 0;
-  lhs = r_new_symbol(lhs, &err);
+  r_obj* out = r_new_symbol(lhs, &err);
   if (err) {
-    r_abort("The LHS of `:=` must be a string or a symbol");
+    r_abort("The LHS of `:=` must be a string, not %s.",
+            r_obj_type_friendly(lhs));
   }
 
   FREE(n_kept);
-  return lhs;
+  return out;
 }
 
 void signal_retired_splice(void) {
