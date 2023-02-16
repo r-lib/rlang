@@ -4,7 +4,7 @@
 \alias{englue}
 \title{Defuse function arguments with glue}
 \usage{
-englue(x, env = caller_env(), error_call = env)
+englue(x, env = caller_env(), error_call = current_env(), error_arg = "x")
 }
 \arguments{
 \item{x}{A string to interpolate with glue operators.}
@@ -16,6 +16,10 @@ case you're wrapping \code{englue()} in another function.}
 running function, e.g. \code{caller_env()}. The function will be
 mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
+
+\item{error_arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
 }
 \description{
 \code{englue()} creates a string with the \link[=glue-operators]{glue operators} \verb{\{} and \verb{\{\{}. These operators are
@@ -44,20 +48,29 @@ installed by adding it to your \verb{Imports:} section.
 \section{Wrapping \code{englue()}}{
 
 
-You can provide englue semantics to a string by supplying \code{env} and
-\code{error_call}. In this example we create a variant of \code{englue()}
-that supports a special \code{.qux} pronoun:
+You can provide englue semantics to a string by supplying \code{env}.
+In this example we create a variant of \code{englue()} that supports a
+special \code{.qux} pronoun by:
+\itemize{
+\item Creating an environment \code{masked_env} that inherits from the user
+env, the one where their data lives.
+\item Overriding the \code{error_arg} and \code{error_call} arguments to point to
+our own argument name and call environment. This pattern is
+slightly different from usual error context passing because
+\code{englue()} is a backend function that uses its own error context
+by default (and not a checking function that uses \emph{your} error
+context by default).
+}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_englue <- function(text) \{
-  # Create an environment that inherits from the user env, where
-  # their data lives:
-  caller <- caller_env()
-  env <- env(caller, .qux = "QUX")
+  masked_env <- env(caller_env(), .qux = "QUX")
 
-  # Override `error_call` by passing the caller frame. It normally
-  # defaults to `env` but here that wouldn't be appropriate because
-  # it is not an execution enviromment of a running function.
-  englue(text, env = env, error_call = caller)
+  englue(
+    text,
+    env = masked_env,
+    error_arg = "text",
+    error_call = current_env()
+  )
 \}
 
 # Users can then use your wrapper as they would use `englue()`:
