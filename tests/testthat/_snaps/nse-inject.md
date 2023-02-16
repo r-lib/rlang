@@ -1,6 +1,20 @@
 # englue() has good error messages (#1531)
 
     Code
+      fn <- (function(x) englue(c("a", "b")))
+      (expect_error(fn()))
+    Output
+      <error/rlang_error>
+      Error in `englue()`:
+      ! `x` must be a single string, not a character vector.
+    Code
+      fn <- (function(x) englue(env()))
+      (expect_error(fn()))
+    Output
+      <error/rlang_error>
+      Error in `englue()`:
+      ! `x` must be a single string, not an environment.
+    Code
       fn <- (function(x) glue_embrace("{{ x }}_foo"))
       (expect_error(fn()))
     Output

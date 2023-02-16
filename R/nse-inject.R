@@ -401,6 +401,8 @@ NULL
 #'
 #' @export
 englue <- function(x) {
+  check_string(x)
+
   if (!grepl("{{", x, fixed = TRUE)) {
     abort(c(
       "Must use `{{`.",
