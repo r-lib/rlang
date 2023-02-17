@@ -239,8 +239,10 @@ r_obj* expr_vec_zap_srcref(r_obj* x) {
   attrib_zap_srcref(x);
 
   r_ssize n = r_length(x);
+  r_obj* const * v_x = r_list_cbegin(x);
+
   for (r_ssize i = 0; i < n; ++i) {
-    r_list_poke(x, i, zap_srcref(r_list_get(x, i)));
+    r_list_poke(x, i, zap_srcref(v_x[i]));
   }
 
   FREE(1);
