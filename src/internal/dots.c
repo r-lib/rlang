@@ -390,8 +390,7 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
     r_obj* env = dot_get_env(elt);
 
     // Unquoting rearranges expressions
-    // FIXME: Only duplicate the call tree, not the leaves
-    expr = KEEP(r_copy(expr));
+    expr = KEEP(r_node_tree_clone(expr));
 
     if (unquote_names && r_is_call(expr, ":=")) {
       if (r_node_tag(node) != r_null) {

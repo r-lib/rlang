@@ -83,3 +83,10 @@
     Code
       expect_equal(out, as.list(x))
 
+# list2(...) doesn't copy forced promises (#1491)
+
+    Code
+      fn(x, x, x, x, x, x)
+    Output
+      [1] 0 B
+

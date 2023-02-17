@@ -352,6 +352,19 @@ test_that("`list2(!!!x)` returns `x` without duplication", {
   })
 })
 
+test_that("list2(...) doesn't copy forced promises (#1491)", {
+  fn <- function(...) {
+    list(...)
+    with_memory_prof(list2(...))
+  }
+
+  x <- seq_len(1e4) + 0
+
+  expect_snapshot({
+    fn(x, x, x, x, x, x)
+  })
+})
+
 test_that("names are not mutated after splice box early exit", {
   xs <- list(1)
 
