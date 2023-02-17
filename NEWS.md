@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Embraced empty arguments are now properly detected and trimmed by
+  `quos()` (#1421).
+
 * `enquos()` and friends gain a `.ignore_null` argument (#1450).
 
 * Fixed an edge case that caused `enquos(.named = NULL)` to return a

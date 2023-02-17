@@ -60,8 +60,10 @@ test_that("dots_values() handles forced dots", {
 })
 
 test_that("empty arguments trigger meaningful error", {
-  expect_error(list2(1, , 3), "Argument 2 is empty")
-  expect_error(dots_list(1, , 3), "Argument 2 is empty")
+  expect_snapshot({
+    (expect_error(list2(1, , 3), "empty"))
+    (expect_error(dots_list(1, , 3), "empty"))
+  })
 })
 
 test_that("cleans empty arguments", {
@@ -72,7 +74,7 @@ test_that("cleans empty arguments", {
 })
 
 test_that("doesn't clean named empty argument arguments", {
-  expect_error(dots_list(1, a = ), "Argument 2 is empty")
+  expect_error(dots_list(1, a = ), "empty")
   expect_identical(exprs(1, a = ), alist(1, a = ))
   expect_identical(exprs(1, a = , b = , , .ignore_empty = "all"), alist(1, a = , b = ))
 })

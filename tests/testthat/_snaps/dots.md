@@ -1,3 +1,18 @@
+# empty arguments trigger meaningful error
+
+    Code
+      (expect_error(list2(1, , 3), "empty"))
+    Output
+      <error/rlang_error>
+      Error in `list2()`:
+      ! Argument 2 can't be empty.
+    Code
+      (expect_error(dots_list(1, , 3), "empty"))
+    Output
+      <error/rlang_error>
+      Error in `dots_list()`:
+      ! Argument 2 can't be empty.
+
 # `.homonyms` = 'error' fails with homonyms
 
     Code

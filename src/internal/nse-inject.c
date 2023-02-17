@@ -369,8 +369,7 @@ r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info) {
     r_abort("Internal error: Deep `:=` unquoting.");
   }
 
-  // Silence noreturn warning on GCC
-  r_abort("Never reached.");
+  r_stop_unreachable();
 }
 
 // Make (!!"foo")() and "foo"() equivalent
