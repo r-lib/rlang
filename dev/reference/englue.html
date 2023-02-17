@@ -120,13 +120,31 @@ string using the default name operation.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">englue</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">englue</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, error_call <span class="op">=</span> <span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span>, error_arg <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>A string to interpolate with glue operators.</p></dd>
+
+
+<dt>env</dt>
+<dd><p>User environment where the interpolation data lives in
+case you're wrapping <code>englue()</code> in another function.</p></dd>
+
+
+<dt>error_call</dt>
+<dd><p>The execution environment of a currently
+running function, e.g. <code><a href="stack.html">caller_env()</a></code>. The function will be
+mentioned in error messages as the source of the error. See the
+<code>call</code> argument of <code><a href="abort.html">abort()</a></code> for more information.</p></dd>
+
+
+<dt>error_arg</dt>
+<dd><p>An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -140,6 +158,44 @@ interpolation.</p>
 <p>Before using <code>englue()</code> in a package, first ensure that glue is
 installed by adding it to your <code>Imports:</code> section.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_package.html" class="external-link">use_package</a></span><span class="op">(</span><span class="st">"glue"</span>, <span class="st">"Imports"</span><span class="op">)</span></span></code></pre><p></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="wrapping-englue-">Wrapping <code>englue()</code><a class="anchor" aria-label="anchor" href="#wrapping-englue-"></a></h2>
+    
+
+
+<p>You can provide englue semantics to a user provided string by supplying <code>env</code>.
+In this example we create a variant of <code>englue()</code> that supports a
+special <code>.qux</code> pronoun by:</p><ul><li><p>Creating an environment <code>masked_env</code> that inherits from the user
+env, the one where their data lives.</p></li>
+<li><p>Overriding the <code>error_arg</code> and <code>error_call</code> arguments to point to
+our own argument name and call environment. This pattern is
+slightly different from usual error context passing because
+<code>englue()</code> is a backend function that uses its own error context
+by default (and not a checking function that uses <em>your</em> error
+context by default).</p></li>
+</ul><p></p><div class="sourceCode r"><pre><code><span><span class="va">my_englue</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">text</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">masked_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/env.html">env</a></span><span class="op">(</span><span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span>, .qux <span class="op">=</span> <span class="st">"QUX"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="fu"><a href="../reference/englue.html">englue</a></span><span class="op">(</span></span>
+<span>    <span class="va">text</span>,</span>
+<span>    env <span class="op">=</span> <span class="va">masked_env</span>,</span>
+<span>    error_arg <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>    error_call <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Users can then use your wrapper as they would use `englue()`:</span></span>
+<span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">foo</span> <span class="op">&lt;-</span> <span class="st">"FOO"</span></span>
+<span>  <span class="fu">my_englue</span><span class="op">(</span><span class="st">"{{ x }}_{.qux}_{foo}"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">fn</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "bar_QUX_FOO"</span></span></code></pre><p></p></div>
+<p>If you are creating a low level package on top of englue(), you
+should also consider exposing <code>env</code>, <code>error_arg</code> and <code>error_call</code>
+in your <code>englue()</code> wrapper so users can wrap your wrapper.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
