@@ -117,6 +117,8 @@ expr <- function(expr) {
 #'   of `"trailing"`, `"none"`, `"all"`. If `"trailing"`, only the
 #'   last argument is ignored if it is empty. Named arguments are not
 #'   considered empty.
+#' @param .ignore_null Whether to ignore unnamed null arguments. Can be
+#'   `"none"` or `"all"`.
 #' @param .unquote_names Whether to treat `:=` as `=`. Unlike `=`, the
 #'   `:=` syntax supports [names injection][glue-operators].
 #' @return `enquo()` returns a [quosure][topic-quosure] and `enquos()`
@@ -186,6 +188,7 @@ enquo <- function(arg) {
 enquos <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
+                   .ignore_null = c("none", "all"),
                    .unquote_names = TRUE,
                    .homonyms = c("keep", "first", "last", "error"),
                    .check_assign = FALSE) {
@@ -196,6 +199,7 @@ enquos <- function(...,
     capture_dots = ffi_quos_interp,
     named = .named,
     ignore_empty = .ignore_empty,
+    ignore_null = .ignore_null,
     unquote_names = .unquote_names,
     homonyms = .homonyms,
     check_assign = .check_assign
@@ -328,6 +332,7 @@ exprs <- function(...,
 enexprs <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
+                   .ignore_null = c("none", "all"),
                    .unquote_names = TRUE,
                    .homonyms = c("keep", "first", "last", "error"),
                    .check_assign = FALSE) {
@@ -338,6 +343,7 @@ enexprs <- function(...,
     capture_dots = ffi_exprs_interp,
     named = .named,
     ignore_empty = .ignore_empty,
+    ignore_null = .ignore_null,
     unquote_names = .unquote_names,
     homonyms = .homonyms,
     check_assign = .check_assign
@@ -354,6 +360,7 @@ ensym <- function(arg) {
 ensyms <- function(...,
                    .named = FALSE,
                    .ignore_empty = c("trailing", "none", "all"),
+                   .ignore_null = c("none", "all"),
                    .unquote_names = TRUE,
                    .homonyms = c("keep", "first", "last", "error"),
                    .check_assign = FALSE) {
@@ -364,6 +371,7 @@ ensyms <- function(...,
     capture_dots = ffi_exprs_interp,
     named = .named,
     ignore_empty = .ignore_empty,
+    ignore_null = .ignore_null,
     unquote_names = .unquote_names,
     homonyms = .homonyms,
     check_assign = .check_assign
@@ -415,6 +423,7 @@ enquos0 <- function(...) {
 capture_args <- c(
   ".named",
   ".ignore_empty",
+  ".ignore_null",
   ".unquote_names",
   ".homonyms",
   ".check_assign"
@@ -426,11 +435,22 @@ endots <- function(call,
                    capture_dots,
                    named,
                    ignore_empty,
+                   ignore_null,
                    unquote_names,
                    homonyms,
                    check_assign,
                    error_call = caller_env()) {
-  ignore_empty <- arg_match0(ignore_empty, c("trailing", "none", "all"))
+  ignore_empty <- arg_match0(
+    ignore_empty,
+    c("trailing", "none", "all"),
+    error_call = error_call
+  )
+  ignore_null <- arg_match0(
+    ignore_null,
+    c("none", "all"),
+    error_call = error_call
+  )
+
   syms <- as.list(node_cdr(call))
 
   if (!is_null(names(syms))) {
@@ -456,7 +476,8 @@ endots <- function(call,
     }
     if (identical(sym, dots_sym)) {
       splice_dots <<- TRUE
-      splice(dot_call(capture_dots,
+      splice(dot_call(
+        capture_dots,
         frame_env = frame_env,
         named = named,
         ignore_empty = ignore_empty,
@@ -481,15 +502,32 @@ endots <- function(call,
     }
 
     is_missing <- map_lgl(dots, dot_is_missing)
+
+    # Keep named arguments unless these names come from the `enquos()`
+    # call, e.g. `enquos(foo)`
     is_named <- detect_named(dots)
     is_dev_supplied <- is_named & names2(dots) %in% names(syms)
-
-    # Named missing arguments supplied by the developer are considered
-    # empty. Named missing arguments supplied by the user through
-    # `...` are not considered empty, consistently with `quos()`.
     is_empty <- is_missing & (is_dev_supplied | !is_named)
 
     dots <- discard(dots, is_empty)
+  }
+
+  if (ignore_null == "all") {
+    if (identical(capture_arg, ffi_enquo)) {
+      dot_is_null <- quo_is_null
+    } else {
+      dot_is_null <- is_null
+    }
+
+    is_null <- map_lgl(dots, dot_is_null)
+
+    # Keep named arguments unless these names come from the `enquos()`
+    # call, e.g. `enquos(foo)`
+    is_named <- detect_named(dots)
+    is_dev_supplied <- is_named & names2(dots) %in% names(syms)
+    is_null <- is_null & (is_dev_supplied | !is_named)
+
+    dots <- discard(dots, is_null)
   }
 
   if (is_true(named)) {

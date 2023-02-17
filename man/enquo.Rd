@@ -11,6 +11,7 @@ enquos(
   ...,
   .named = FALSE,
   .ignore_empty = c("trailing", "none", "all"),
+  .ignore_null = c("none", "all"),
   .unquote_names = TRUE,
   .homonyms = c("keep", "first", "last", "error"),
   .check_assign = FALSE
@@ -33,6 +34,9 @@ left with \code{NULL} names.}
 of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
 last argument is ignored if it is empty. Named arguments are not
 considered empty.}
+
+\item{.ignore_null}{Whether to ignore unnamed null arguments. Can be
+\code{"none"} or \code{"all"}.}
 
 \item{.unquote_names}{Whether to treat \verb{:=} as \code{=}. Unlike \code{=}, the
 \verb{:=} syntax supports \link[=glue-operators]{names injection}.}
