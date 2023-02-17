@@ -49,7 +49,8 @@ const struct r_op_precedence r_ops_precedence[R_OP_MAX] = {
   [R_OP_PARENTHESES]    = { .power = 190,  .assoc =  0,  .unary =  true,  .delimited =  true },
   [R_OP_BRACKETS1]      = { .power = 190,  .assoc = -1,  .unary = false,  .delimited = false },
   [R_OP_BRACKETS2]      = { .power = 190,  .assoc = -1,  .unary = false,  .delimited = false },
-  [R_OP_BRACES]         = { .power = 200,  .assoc =  0,  .unary = false,  .delimited =  true }
+  [R_OP_BRACES]         = { .power = 200,  .assoc =  0,  .unary = false,  .delimited =  true },
+  [R_OP_EMBRACE]        = { .power = 200,  .assoc =  0,  .unary = false,  .delimited =  true }
 };
 
 enum r_operator r_which_operator(r_obj* call) {
@@ -338,7 +339,16 @@ enum r_operator r_which_operator(r_obj* call) {
 
   case '{':
     if (len == 1) {
-      return R_OP_BRACES;
+      r_obj* cadr = r_node_cadr(call);
+
+      if (r_length(call) == 2 &&
+          r_is_call(cadr, "{") &&
+          r_length(cadr) == 2 &&
+          r_typeof(r_node_cadr(cadr)) == R_TYPE_symbol) {
+        return R_OP_EMBRACE;
+      } else {
+        return R_OP_BRACES;
+      }
     } else {
       goto none;
     }
@@ -398,6 +408,7 @@ const char* r_op_as_c_string(enum r_operator op) {
   case R_OP_BRACKETS1:      return "[";
   case R_OP_BRACKETS2:      return "[[";
   case R_OP_BRACES:         return "{";
+  case R_OP_EMBRACE:        return "{{";
   case R_OP_MAX:            r_abort("Unexpected `enum r_operator` value");
   }
 

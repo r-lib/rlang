@@ -723,3 +723,15 @@ test_that("call_deparse_highlight() handles multi-line arguments (#1456)", {
     "fn(...)"
   )
 })
+
+test_that("embrace operator is deparsed (#1511)", {
+  expect_equal_(
+    expr_deparse(quote({{ a }})),
+    "{{ a }}"
+  )
+
+  expect_equal_(
+    expr_deparse(quote(foo({{ a }}))),
+    "foo({{ a }})"
+  )
+})

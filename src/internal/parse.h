@@ -52,6 +52,7 @@ enum r_operator {
   R_OP_BRACKETS1,
   R_OP_BRACKETS2,
   R_OP_BRACES,
+  R_OP_EMBRACE,
   R_OP_MAX
 };
 

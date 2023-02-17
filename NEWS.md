@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `expr_deparse()` now deparses the embrace operator `{{` on a single
+  line (#1511).
+
 * The data-masking documentation for arguments has been imported from
   dplyr. You can link to it by starting an argument documentation with
   this button:
