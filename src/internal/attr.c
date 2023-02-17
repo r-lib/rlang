@@ -221,6 +221,8 @@ r_obj* call_zap_srcref(r_obj* x) {
   attrib_zap_srcref(x);
 
   if (r_node_car(x) == r_syms.function) {
+    // Remove `call[[4]]` where the parser stores srcref information
+    // for calls to `function`
     r_node_poke_cdr(r_node_cddr(x), r_null);
   }
 
