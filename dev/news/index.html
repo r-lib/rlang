@@ -100,7 +100,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>The non-error path of <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code> has been rewritten in C for efficiency (<a href="https://github.com/r-lib/rlang/issues/1528" class="external-link">#1528</a>).</p></li>
+<ul><li><p><code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> has been rewritten in C for efficiency (<a href="https://github.com/r-lib/rlang/issues/1513" class="external-link">#1513</a>).</p></li>
+<li><p><code><a href="../reference/zap_srcref.html">zap_srcref()</a></code> now supports expression vectors.</p></li>
+<li><p>The non-error path of <code><a href="../reference/check_dots_unnamed.html">check_dots_unnamed()</a></code> has been rewritten in C for efficiency (<a href="https://github.com/r-lib/rlang/issues/1528" class="external-link">#1528</a>).</p></li>
 <li><p><code><a href="../reference/global_entrace.html">global_entrace()</a></code> and <code><a href="../reference/entrace.html">entrace()</a></code> now stop entracing warnings and messages after 20 times. This is to avoid a large overhead when 100s or 1000s of warnings are signalled in a loop (<a href="https://github.com/r-lib/rlang/issues/1473" class="external-link">#1473</a>).</p></li>
 <li><p>Improved error messages in <code><a href="../reference/englue.html">englue()</a></code> (<a href="https://github.com/r-lib/rlang/issues/1531" class="external-link">#1531</a>) and in glue strings in the LHS of <code>:=</code> (<a href="https://github.com/r-lib/rlang/issues/1526" class="external-link">#1526</a>).</p></li>
 <li><p><code><a href="../reference/englue.html">englue()</a></code> now requires size 1 outputs (<a href="https://github.com/r-lib/rlang/issues/1492" class="external-link">#1492</a>). This prevents surprising errors or inconsistencies when an interpolated input of size != 1 makes its way into the glue string.</p></li>
