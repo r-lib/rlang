@@ -28,12 +28,11 @@ r_obj* r_new_pairlist(const struct r_pair* args,
 }
 
 
-// Shallow copy of a node tree
+// Shallow copy of a node tree. Other objects are not cloned.
 r_obj* r_node_tree_clone(r_obj* x) {
   enum r_type type = r_typeof(x);
-
   if (type != R_TYPE_pairlist && type != R_TYPE_call) {
-    r_abort("Internal error: Expected node tree for shallow copy");
+    return x;
   }
 
   x = KEEP(r_clone(x));

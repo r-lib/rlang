@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed a memory issue that caused excessive duplication in `list2()`
+  and friends (#1491).
+
 * Embraced empty arguments are now properly detected and trimmed by
   `quos()` (#1421).
 
