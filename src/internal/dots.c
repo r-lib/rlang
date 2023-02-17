@@ -440,24 +440,18 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
       expr = call_interp_impl(expr, env, info);
       capture_info->count += 1;
       break;
-    case DOTS_OP_expr_uqs:
-      expr = dots_big_bang(capture_info, info.operand, env, false);
-      break;
+
     case DOTS_OP_quo_none:
     case DOTS_OP_quo_uq:
     case DOTS_OP_quo_fixup:
     case DOTS_OP_quo_dot_data:
-    case DOTS_OP_quo_curly: {
+    case DOTS_OP_quo_curly:
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
       FREE(1);
       capture_info->count += 1;
       break;
-    }
-    case DOTS_OP_quo_uqs: {
-      expr = dots_big_bang(capture_info, info.operand, env, true);
-      break;
-    }
+
     case DOTS_OP_value_none:
     case DOTS_OP_value_fixup:
     case DOTS_OP_value_dot_data: {
@@ -495,19 +489,26 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
       break;
     }
     case DOTS_OP_value_uq:
-      r_abort("Can't use `!!` in a non-quoting function");
-    case DOTS_OP_value_uqs: {
-      expr = dots_big_bang(capture_info, info.operand, env, false);
-      break;
-    }
+      r_abort("Can't use `!!` in a non-quoting function.");
     case DOTS_OP_value_curly:
-      r_abort("Can't use `{{` in a non-quoting function");
+      r_abort("Can't use `{{` in a non-quoting function.");
     case DOTS_OP_expr_uqn:
     case DOTS_OP_quo_uqn:
     case DOTS_OP_value_uqn:
-      r_abort("`:=` can't be chained");
+      r_abort("`:=` can't be chained.");
+
+    case DOTS_OP_expr_uqs:
+      expr = dots_big_bang(capture_info, info.operand, env, false);
+      break;
+    case DOTS_OP_quo_uqs:
+      expr = dots_big_bang(capture_info, info.operand, env, true);
+      break;
+    case DOTS_OP_value_uqs:
+      expr = dots_big_bang(capture_info, info.operand, env, false);
+      break;
+
     case DOTS_OP_MAX:
-      r_abort("Internal error: `DOTS_OP_MAX`");
+      r_stop_unreachable();
     }
 
     r_node_poke_car(node, expr);
