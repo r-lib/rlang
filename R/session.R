@@ -354,7 +354,8 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
   reason <- cnd$reason
   n <- length(pkg)
 
-  pkg_enum <- chr_quoted(cnd$pkg)
+  # Quote with `"` to make it easier to copy/paste (#1447)
+  pkg_enum <- chr_quoted(cnd$pkg, type = "\"")
 
   if (!is_null(version)) {
     pkg_enum <- flatten_chr(pmap(list(pkg_enum, compare, version), function(p, o, v) {
