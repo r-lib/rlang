@@ -26,6 +26,7 @@ enexprs(
   ...,
   .named = FALSE,
   .ignore_empty = c("trailing", "none", "all"),
+  .ignore_null = c("none", "all"),
   .unquote_names = TRUE,
   .homonyms = c("keep", "first", "last", "error"),
   .check_assign = FALSE
@@ -37,6 +38,7 @@ ensyms(
   ...,
   .named = FALSE,
   .ignore_empty = c("trailing", "none", "all"),
+  .ignore_null = c("none", "all"),
   .unquote_names = TRUE,
   .homonyms = c("keep", "first", "last", "error"),
   .check_assign = FALSE
@@ -77,6 +79,9 @@ considered empty.}
 
 \item{.unquote_names}{Whether to treat \verb{:=} as \code{=}. Unlike \code{=}, the
 \verb{:=} syntax supports \link[=glue-operators]{names injection}.}
+
+\item{.ignore_null}{Whether to ignore unnamed null arguments. Can be
+\code{"none"} or \code{"all"}.}
 
 \item{.homonyms}{How to treat arguments with the same name. The
 default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to

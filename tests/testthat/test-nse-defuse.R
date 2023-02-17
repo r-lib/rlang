@@ -388,6 +388,27 @@ test_that("endots() supports `.ignore_empty`", {
   expect_identical(fn(foo, ), exprs(foo))
 })
 
+test_that("endots() supports `.ignore_null` (#1450)", {
+  # enquos()
+  fn <- function(...) enquos(..., .ignore_null = "all")
+  expect_identical(fn(NULL, NULL), quos())
+  expect_identical(fn(foo = NULL, NULL), quos(foo = NULL))
+  expect_identical(fn(!!!list(foo = NULL), NULL), quos(foo = NULL))
+
+  fn <- function(foo, ...) enquos(foo, ..., .ignore_null = "all")
+  expect_identical(fn(NULL, NULL), quos())
+
+  fn <- function(...) enquos(...)
+  expect_identical(fn(NULL, NULL), quos(NULL, NULL))
+
+  # enexprs()
+  fn <- function(...) enexprs(..., .ignore_null = "all")
+  expect_identical(fn(NULL, NULL), exprs())
+
+  fn <- function(...) enexprs(...)
+  expect_identical(fn(NULL, NULL), exprs(NULL, NULL))
+})
+
 test_that("ensyms() captures multiple symbols", {
   fn <- function(arg, ...) ensyms(arg, ...)
   expect_identical(fn(foo, bar, baz), exprs(foo, bar, baz))

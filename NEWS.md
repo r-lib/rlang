@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `enquos()` and friends gain a `.ignore_null` argument (#1450).
+
 * Fixed an edge case that caused `enquos(.named = NULL)` to return a
   named list (#1505).
 
