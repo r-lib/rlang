@@ -390,7 +390,7 @@ NULL
 #'
 #' @section Wrapping `englue()`:
 #'
-#' You can provide englue semantics to a string by supplying `env`.
+#' You can provide englue semantics to a user provided string by supplying `env`.
 #' In this example we create a variant of `englue()` that supports a
 #' special `.qux` pronoun by:
 #'
@@ -424,6 +424,10 @@ NULL
 #'
 #' fn(bar)
 #' ```
+#'
+#' If you are creating a low level package on top of englue(), you
+#' should also consider exposing `env`, `error_arg` and `error_call`
+#' in your `englue()` wrapper so users can wrap your wrapper.
 #'
 #' @seealso
 #' - `r link("topic_inject")`

@@ -48,7 +48,7 @@ installed by adding it to your \verb{Imports:} section.
 \section{Wrapping \code{englue()}}{
 
 
-You can provide englue semantics to a string by supplying \code{env}.
+You can provide englue semantics to a user provided string by supplying \code{env}.
 In this example we create a variant of \code{englue()} that supports a
 special \code{.qux} pronoun by:
 \itemize{
@@ -82,6 +82,10 @@ fn <- function(x) \{
 fn(bar)
 #> [1] "bar_QUX_FOO"
 }\if{html}{\out{</div>}}
+
+If you are creating a low level package on top of englue(), you
+should also consider exposing \code{env}, \code{error_arg} and \code{error_call}
+in your \code{englue()} wrapper so users can wrap your wrapper.
 }
 
 \examples{
