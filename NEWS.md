@@ -1,5 +1,13 @@
 # rlang (development version)
 
+* The data-masking documentation for arguments has been imported from
+  dplyr. You can link to it by starting an argument documentation with
+  this button:
+
+  ```
+  <[`data-masking`][rlang::args_data_masking]>
+  ```
+
 * `englue()` gained `env`, `error_arg`, and `error_call` arguments to
   support being wrapped in another function (#1565).
 
