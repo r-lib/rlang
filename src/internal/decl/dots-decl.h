@@ -20,3 +20,13 @@ enum dots_homonyms arg_match_homonyms(r_obj* homonyms);
 
 static
 enum arg_named arg_match_named(r_obj* named);
+
+static inline
+bool should_ignore(struct dots_capture_info* p_capture_info,
+                   r_obj* expr,
+                   r_obj* name,
+                   bool last);
+
+static inline
+void ignore(struct dots_capture_info* p_capture_info,
+            r_obj* node);

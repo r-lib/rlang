@@ -27,13 +27,26 @@ enum dots_ignore_empty {
   DOTS_IGNORE_EMPTY_SIZE,
 };
 
+struct dots_capture_info {
+  enum dots_collect type;
+  r_ssize count;
+  enum arg_named named;
+  bool needs_expansion;
+  enum dots_ignore_empty ignore_empty;
+  bool preserve_empty;
+  bool unquote_names;
+  enum dots_homonyms homonyms;
+  bool check_assign;
+  r_obj* (*big_bang_coerce)(r_obj*);
+  bool splice;
+};
+
 static
 const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
   [DOTS_IGNORE_EMPTY_trailing] = "trailing",
   [DOTS_IGNORE_EMPTY_none] = "none",
   [DOTS_IGNORE_EMPTY_all] = "all"
 };
-
 
 #include "decl/dots-decl.h"
 
@@ -58,20 +71,6 @@ r_obj* rlang_unbox(r_obj* x) {
   }
   return r_list_get(x, 0);
 }
-
-struct dots_capture_info {
-  enum dots_collect type;
-  r_ssize count;
-  enum arg_named named;
-  bool needs_expansion;
-  enum dots_ignore_empty ignore_empty;
-  bool preserve_empty;
-  bool unquote_names;
-  enum dots_homonyms homonyms;
-  bool check_assign;
-  r_obj* (*big_bang_coerce)(r_obj*);
-  bool splice;
-};
 
 struct dots_capture_info init_capture_info(enum dots_collect type,
                                            r_obj* named,
@@ -362,16 +361,6 @@ r_obj* dots_big_bang(struct dots_capture_info* capture_info,
 }
 
 static inline
-bool should_ignore(enum dots_ignore_empty ignore_empty,
-                   r_ssize i,
-                   r_ssize n) {
-  switch (ignore_empty) {
-  case DOTS_IGNORE_EMPTY_all: return true;
-  case DOTS_IGNORE_EMPTY_trailing: return i == n - 1;
-  default: return false;
-  }
-}
-static inline
 r_obj* dot_get_expr(r_obj* dot) {
   return r_list_get(dot, 0);
 }
@@ -395,6 +384,8 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
   r_obj* node = dots;
   for (r_ssize i = 0; node != r_null; ++i, node = r_node_cdr(node)) {
     r_obj* elt = r_node_car(node);
+    r_obj* name = r_node_tag(node);
+
     r_obj* expr = dot_get_expr(elt);
     r_obj* env = dot_get_env(elt);
 
@@ -433,14 +424,9 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
     struct injection_info info = which_expansion_op(expr, unquote_names);
     enum dots_op dots_op = info.op + (INJECTION_OP_MAX * capture_info->type);
 
-    r_obj* name = r_node_tag(node);
-
     // Ignore empty arguments
-    if (expr == r_syms.missing
-        && (name == r_null || name == r_strs.empty)
-        && should_ignore(capture_info->ignore_empty, i, n)) {
-      capture_info->needs_expansion = true;
-      r_node_poke_car(node, empty_spliced_arg);
+    if (should_ignore(capture_info, expr, name, i == n - 1)) {
+      ignore(capture_info, node);
       FREE(1);
       continue;
     }
@@ -530,6 +516,30 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
 
   return dots;
 }
+
+static inline
+bool should_ignore(struct dots_capture_info* p_capture_info,
+                   r_obj* expr,
+                   r_obj* name,
+                   bool last) {
+  if (expr != r_syms.missing ||
+      (name != r_null && name != r_strs.empty)) {
+    return false;
+  }
+
+  switch (p_capture_info->ignore_empty) {
+  case DOTS_IGNORE_EMPTY_all: return true;
+  case DOTS_IGNORE_EMPTY_trailing: return last;
+  default: return false;
+  }
+}
+static inline
+void ignore(struct dots_capture_info* p_capture_info,
+            r_obj* node) {
+  p_capture_info->needs_expansion = true;
+  r_node_poke_car(node, empty_spliced_arg);
+}
+
 
 static
 enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty) {
