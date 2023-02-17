@@ -144,6 +144,7 @@ in most applications.</p>
 <span>  <span class="va">...</span>,</span>
 <span>  .named <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
+<span>  .ignore_null <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
 <span>  .unquote_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
 <span>  .check_assign <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -175,6 +176,11 @@ left with <code>NULL</code> names.</p></dd>
 of <code>"trailing"</code>, <code>"none"</code>, <code>"all"</code>. If <code>"trailing"</code>, only the
 last argument is ignored if it is empty. Named arguments are not
 considered empty.</p></dd>
+
+
+<dt>.ignore_null</dt>
+<dd><p>Whether to ignore unnamed null arguments. Can be
+<code>"none"</code> or <code>"all"</code>.</p></dd>
 
 
 <dt>.unquote_names</dt>
@@ -244,7 +250,7 @@ of a defused expression.</p></li>
 <span class="r-in"><span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^1 + 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb1131e940</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c41d5fa9a8</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `enquos()` works with arguments and dots. It returns a list of</span></span></span>
 <span class="r-in"><span><span class="co"># expressions</span></span></span>
@@ -258,12 +264,12 @@ of a defused expression.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^1 + 1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb1131e940</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c41d5fa9a8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^2 * 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb1131e940</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c41d5fa9a8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -278,7 +284,7 @@ of a defused expression.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^(</span>^100<span style="color: #0000BB;">) * 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb105175c0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c41da399f8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">column</span> <span class="op">&lt;-</span> <span class="fu"><a href="sym.html">sym</a></span><span class="op">(</span><span class="st">"cyl"</span><span class="op">)</span></span></span>
@@ -288,7 +294,7 @@ of a defused expression.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^(</span><span style="color: #00BB00;">^cyl</span><span style="color: #0000BB;">) * 2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb10a89140</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c41d015db0</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -228,6 +228,7 @@ arguments are not automatically trimmed.</p></li>
 <span>  <span class="va">...</span>,</span>
 <span>  .named <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
+<span>  .ignore_null <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
 <span>  .unquote_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
 <span>  .check_assign <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -239,6 +240,7 @@ arguments are not automatically trimmed.</p></li>
 <span>  <span class="va">...</span>,</span>
 <span>  .named <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .ignore_empty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"trailing"</span>, <span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
+<span>  .ignore_null <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
 <span>  .unquote_names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .homonyms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"keep"</span>, <span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"error"</span><span class="op">)</span>,</span>
 <span>  .check_assign <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -292,6 +294,11 @@ considered empty.</p></dd>
 <code>:=</code> syntax supports <a href="glue-operators.html">names injection</a>.</p></dd>
 
 
+<dt>.ignore_null</dt>
+<dd><p>Whether to ignore unnamed null arguments. Can be
+<code>"none"</code> or <code>"all"</code>.</p></dd>
+
+
 <dt>.homonyms</dt>
 <dd><p>How to treat arguments with the same name. The
 default, <code>"keep"</code>, preserves these arguments. Set <code>.homonyms</code> to
@@ -330,19 +337,19 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-in"><span><span class="fu">quo</span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb0b6908c0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c4192ce2a8</span></span>
 <span class="r-in"><span><span class="fu">quos</span><span class="op">(</span><span class="va">foo</span>, <span class="va">bar</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;list_of&lt;quosure&gt;&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb0b6908c0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c4192ce2a8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^bar</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb0b6908c0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c4192ce2a8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `enexpr()` and `enexprs()` are the naked variants of `enquo()` and `enquos()`</span></span></span>
@@ -388,17 +395,17 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-in"><span><span class="fu">automatic_injection</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo(1L, 2L, 3L)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb0b6908c0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c4192ce2a8</span></span>
 <span class="r-in"><span><span class="fu">no_injection</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo(!!!1:3)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb0b6908c0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c4192ce2a8</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Injection can still be done explicitly</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="inject.html">inject</a></span><span class="op">(</span><span class="fu">no_injection</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo(1L, 2L, 3L)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55fb0b6908c0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55c4192ce2a8</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
