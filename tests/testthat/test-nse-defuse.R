@@ -625,3 +625,15 @@ test_that("`enexprs()` and variants support `.named = NULL` (#1223)", {
   expect_equal(fn(1), unname(quos(1)))
   expect_equal(fn(x = 1), quos(x = 1))
 })
+
+test_that("`.named = NULL` yields `NULL` names (#1505)", {
+  fn <- function() enquos(.named = NULL)
+  expect_null(names(fn()))
+
+  fn <- function(...) enquos(..., .named = NULL)
+  expect_null(names(fn()))
+  expect_null(names(fn(foo)))
+
+  expect_null(names(quos(.named = NULL)))
+  expect_null(names(quos(foo, .named = NULL)))
+})

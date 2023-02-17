@@ -438,6 +438,11 @@ endots <- function(call,
     syms <- syms[!is_arg]
   }
 
+  # Prevent names from propagating to output (#1505)
+  if (!length(syms)) {
+    names(syms) <- NULL
+  }
+
   # Avoid note about registration problems
   dot_call <- .Call
 

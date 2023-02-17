@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed an edge case that caused `enquos(.named = NULL)` to return a
+  named list (#1505).
+
 * `expr_deparse()` now deparses the embrace operator `{{` on a single
   line (#1511).
 
