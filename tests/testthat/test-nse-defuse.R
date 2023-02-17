@@ -435,7 +435,7 @@ test_that("closures are captured with their calling environment", {
 
 test_that("the missing argument is captured", {
   expect_equal_(
-    quos(!!missing_arg()),
+    quos(!!missing_arg(), .ignore_empty = "none"),
     quos(, ),
     ignore_formula_env = TRUE
   )
@@ -657,4 +657,26 @@ test_that("`.named = NULL` yields `NULL` names (#1505)", {
 
   expect_null(names(quos(.named = NULL)))
   expect_null(names(quos(foo, .named = NULL)))
+})
+
+test_that("embraced empty arg are detected consistently (#1421)", {
+  fn_quos <- function(cond, ...) {
+    quos_it({{cond}}, ...)
+  }
+  fn_enquos <- function(cond, ...) {
+    enquos_it({{cond}}, ...)
+  }
+
+  quos_it <- function(..., .ignore_empty = "all") {
+    quos(..., .ignore_empty = .ignore_empty)
+  }
+  enquos_it <- function(..., .ignore_empty = "all") {
+    enquos(..., .ignore_empty = .ignore_empty)
+  }
+
+  expect_equal(fn_quos(), quos())
+  expect_equal(fn_enquos(), quos())
+
+  expect_equal(fn_quos(.ignore_empty = "trailing"), quos())
+  expect_equal(fn_enquos(.ignore_empty = "trailing"), quos())
 })

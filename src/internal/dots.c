@@ -424,11 +424,13 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
     struct injection_info info = which_expansion_op(expr, unquote_names);
     enum dots_op dots_op = info.op + (INJECTION_OP_MAX * capture_info->type);
 
-    // Ignore empty arguments
-    if (should_ignore(capture_info, expr, name, i == n - 1)) {
-      ignore(capture_info, node);
-      FREE(1);
-      continue;
+    bool last = i == n - 1;
+
+#define SKIP_MISSING(EXPR, NPROT)                               \
+    if (should_ignore(capture_info, EXPR, name, last)) {        \
+      ignore(capture_info, node);                               \
+      FREE(NPROT);                                              \
+      continue;                                                 \
     }
 
     switch (dots_op) {
@@ -438,6 +440,7 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
     case DOTS_OP_expr_dot_data:
     case DOTS_OP_expr_curly:
       expr = call_interp_impl(expr, env, info);
+      SKIP_MISSING(expr, 1)
       capture_info->count += 1;
       break;
 
@@ -448,6 +451,8 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
     case DOTS_OP_quo_curly:
       expr = KEEP(call_interp_impl(expr, env, info));
       expr = forward_quosure(expr, env);
+      SKIP_MISSING(quo_get_expr(expr), 2)
+
       FREE(1);
       capture_info->count += 1;
       break;
@@ -455,11 +460,13 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
     case DOTS_OP_value_none:
     case DOTS_OP_value_fixup:
     case DOTS_OP_value_dot_data: {
+      SKIP_MISSING(expr, 1)
+
       r_obj* orig = expr;
 
       if (expr == r_syms.missing) {
         if (!capture_info->preserve_empty) {
-          r_abort("Argument %d is empty", i + 1);
+          r_abort("Argument %d can't be empty.", i + 1);
         }
       } else if (env != r_envs.empty) {
         // Don't evaluate when `env` is the empty environment. This
