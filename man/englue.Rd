@@ -4,10 +4,22 @@
 \alias{englue}
 \title{Defuse function arguments with glue}
 \usage{
-englue(x)
+englue(x, env = caller_env(), error_call = current_env(), error_arg = "x")
 }
 \arguments{
 \item{x}{A string to interpolate with glue operators.}
+
+\item{env}{User environment where the interpolation data lives in
+case you're wrapping \code{englue()} in another function.}
+
+\item{error_call}{The execution environment of a currently
+running function, e.g. \code{caller_env()}. The function will be
+mentioned in error messages as the source of the error. See the
+\code{call} argument of \code{\link[=abort]{abort()}} for more information.}
+
+\item{error_arg}{An argument name as a string. This argument
+will be mentioned in error messages as the input that is at the
+origin of a problem.}
 }
 \description{
 \code{englue()} creates a string with the \link[=glue-operators]{glue operators} \verb{\{} and \verb{\{\{}. These operators are
@@ -33,6 +45,49 @@ installed by adding it to your \verb{Imports:} section.
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{usethis::use_package("glue", "Imports")
 }\if{html}{\out{</div>}}
 }
+\section{Wrapping \code{englue()}}{
+
+
+You can provide englue semantics to a user provided string by supplying \code{env}.
+In this example we create a variant of \code{englue()} that supports a
+special \code{.qux} pronoun by:
+\itemize{
+\item Creating an environment \code{masked_env} that inherits from the user
+env, the one where their data lives.
+\item Overriding the \code{error_arg} and \code{error_call} arguments to point to
+our own argument name and call environment. This pattern is
+slightly different from usual error context passing because
+\code{englue()} is a backend function that uses its own error context
+by default (and not a checking function that uses \emph{your} error
+context by default).
+}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_englue <- function(text) \{
+  masked_env <- env(caller_env(), .qux = "QUX")
+
+  englue(
+    text,
+    env = masked_env,
+    error_arg = "text",
+    error_call = current_env()
+  )
+\}
+
+# Users can then use your wrapper as they would use `englue()`:
+fn <- function(x) \{
+  foo <- "FOO"
+  my_englue("\{\{ x \}\}_\{.qux\}_\{foo\}")
+\}
+
+fn(bar)
+#> [1] "bar_QUX_FOO"
+}\if{html}{\out{</div>}}
+
+If you are creating a low level package on top of englue(), you
+should also consider exposing \code{env}, \code{error_arg} and \code{error_call}
+in your \code{englue()} wrapper so users can wrap your wrapper.
+}
+
 \examples{
 g <- function(var) englue("{{ var }}")
 g(cyl)

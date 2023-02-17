@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `englue()` gained `env`, `error_arg`, and `error_call` arguments to
+  support being wrapped in another function (#1565).
+
 * `zap_srcref()` has been rewritten in C for efficiency (#1513).
 
 * `zap_srcref()` now supports expression vectors.

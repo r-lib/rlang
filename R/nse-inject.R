@@ -368,6 +368,9 @@ NULL
 #' string using the default name operation.
 #'
 #' @param x A string to interpolate with glue operators.
+#' @param env User environment where the interpolation data lives in
+#'   case you're wrapping `englue()` in another function.
+#' @inheritParams args_error_context
 #'
 #' @details
 #' `englue("{{ var }}")` is equivalent to `as_label(enquo(var))`. It
@@ -385,6 +388,47 @@ NULL
 #' usethis::use_package("glue", "Imports")
 #' ```
 #'
+#' @section Wrapping `englue()`:
+#'
+#' You can provide englue semantics to a user provided string by supplying `env`.
+#' In this example we create a variant of `englue()` that supports a
+#' special `.qux` pronoun by:
+#'
+#' - Creating an environment `masked_env` that inherits from the user
+#'   env, the one where their data lives.
+#'
+#' - Overriding the `error_arg` and `error_call` arguments to point to
+#'   our own argument name and call environment. This pattern is
+#'   slightly different from usual error context passing because
+#'   `englue()` is a backend function that uses its own error context
+#'   by default (and not a checking function that uses _your_ error
+#'   context by default).
+#'
+#' ```{r}
+#' my_englue <- function(text) {
+#'   masked_env <- env(caller_env(), .qux = "QUX")
+#'
+#'   englue(
+#'     text,
+#'     env = masked_env,
+#'     error_arg = "text",
+#'     error_call = current_env()
+#'   )
+#' }
+#'
+#' # Users can then use your wrapper as they would use `englue()`:
+#' fn <- function(x) {
+#'   foo <- "FOO"
+#'   my_englue("{{ x }}_{.qux}_{foo}")
+#' }
+#'
+#' fn(bar)
+#' ```
+#'
+#' If you are creating a low level package on top of englue(), you
+#' should also consider exposing `env`, `error_arg` and `error_call`
+#' in your `englue()` wrapper so users can wrap your wrapper.
+#'
 #' @seealso
 #' - `r link("topic_inject")`
 #'
@@ -400,31 +444,28 @@ NULL
 #' as_label(letters)
 #'
 #' @export
-englue <- function(x) {
-  check_string(x)
+englue <- function(x,
+                   env = caller_env(),
+                   error_call = current_env(),
+                   error_arg = "x") {
+  check_string(x, arg = error_arg, call = error_call)
 
   if (!grepl("{{", x, fixed = TRUE)) {
-    abort(c(
-      "Must use `{{`.",
-      i = "Use `glue::glue()` for interpolation with `{`."
-    ))
+    abort(
+      c(
+        "Must use `{{`.",
+        i = "Use `glue::glue()` for interpolation with `{`."
+      ),
+      arg = error_arg,
+      call = error_call
+    )
   }
 
-  glue_embrace(
-    x,
-    env = caller_env(),
-    error_call = caller_env()
-  )
+  glue_embrace(x, env = env)
 }
 
-glue_embrace <- function(text,
-                         env = caller_env(),
-                         error_call = caller_env()) {
-  out <- glue_first_pass(
-    text,
-    env = env,
-    error_call = error_call
-  )
+glue_embrace <- function(text, env = caller_env()) {
+  out <- glue_first_pass(text, env = env)
   out <- unstructure(glue::glue(out, .envir = env))
 
   if (length(out) != 1) {
@@ -438,27 +479,37 @@ glue_embrace <- function(text,
   out
 }
 
-glue_first_pass <- function(text,
-                            env = caller_env(),
-                            error_call = caller_env()) {
+glue_first_pass <- function(text, env = caller_env()) {
   glue::glue(
     text,
     .open = "{{",
     .close = "}}",
-    .transformer = function(...) {
-      glue_first_pass_eval(..., error_call = error_call)
-    },
+    .transformer = function(...) glue_first_pass_eval(...),
     .envir = env
   )
 }
-glue_first_pass_eval <- function(text, env, error_call) {
+glue_first_pass_eval <- function(text, env) {
   text_expr <- parse_expr(text)
   defused_expr <- eval_bare(call2(enexpr, text_expr), env)
 
-  if (is_symbol(text_expr)) {
+  if (is_symbol(text_expr) && is_missing(defused_expr)) {
+    error_arg <- as_string(text_expr)
+    error_call <- NULL
+
+    # Find the relevant error frame. There are edge cases where this
+    # will not be correct but passing the user error call makes things
+    # too complex in the wrapping case.
+    while (!identical(env, empty_env())) {
+      if (env_has(env, error_arg)) {
+        error_call <- env
+        break
+      }
+      env <- env_parent(env)
+    }
+
     check_required(
       defused_expr,
-      arg = as_string(text_expr),
+      arg = error_arg,
       call = error_call
     )
   }
