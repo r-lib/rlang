@@ -298,39 +298,5 @@ poke_attributes <- function(x, attrs) {
 #'
 #' @export
 zap_srcref <- function(x) {
-  if (is_closure(x)) {
-    # `body<-` zaps attributes
-    old <- attributes(x)
-
-    body(x) <- zap_srcref(body(x))
-    attributes(x) <- old[names(old) != "srcref"]
-
-    return(x)
-  }
-
-  if (!is_call(x)) {
-    return(x)
-  }
-
-  x <- duplicate(x, shallow = TRUE)
-
-  if (!is_null(obj_attrib(x))) {
-    attr(x, "srcref") <- NULL
-    attr(x, "wholeSrcref") <- NULL
-    attr(x, "srcfile") <- NULL
-  }
-  if (is_call(x, "function")) {
-    node <- node_get(x, 3)
-    if (!is_null(node)) {
-      node_poke_cdr(node, NULL)
-    }
-  }
-
-  node <- x
-  while (!is_null(node)) {
-    node_poke_car(node, zap_srcref(node_car(node)))
-    node <- node_cdr(node)
-  }
-
-  x
+  .Call(ffi_zap_srcref, x)
 }

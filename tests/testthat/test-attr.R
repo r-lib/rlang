@@ -100,6 +100,15 @@ test_that("zap_srcref() handles nested functions (r-lib/testthat#1228)", {
     zap_srcref(fn),
     fn
   )
+
+  # Check that `factory` hasn't been modified by reference
+  expect_true("srcref" %in% names(attributes(factory)))
+
+  curly <- body(factory)
+  expect_true("srcref" %in% names(attributes(curly)))
+
+  fn_call <- curly[[2]]
+  expect_length(fn_call, 4)
 })
 
 test_that("zap_srcref() works with quosures", {
@@ -152,4 +161,28 @@ test_that("is_named2() always returns `TRUE` for empty vectors (#191)", {
 
   expect_true(is_named2(chr()))
   expect_false(is_named2("a"))
+})
+
+test_that("zap_srcref() supports expression vectors", {
+  xs <- parse(text = "{ foo }; bar", keep.source = TRUE)
+  zapped <- zap_srcref(xs)
+
+  expect_null(attributes(zapped))
+  expect_null(attributes(zapped[[1]]))
+
+  expect_true("srcref" %in% names(attributes(xs)))
+  expect_true("srcref" %in% names(attributes(xs[[1]])))
+})
+
+test_that("zap_srcref() works on calls", {
+  # E.g. srcrefs attached to the call stack
+
+  with_srcref("{
+    f <- function() g()
+    g <- function() sys.call()
+  }")
+  call <- f()
+
+  expect_null(attributes(zap_srcref(call)))
+  expect_true("srcref" %in% names(attributes(call)))
 })

@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `zap_srcref()` has been rewritten in C for efficiency (#1513).
+
+* `zap_srcref()` now supports expression vectors.
+
 * The non-error path of `check_dots_unnamed()` has been rewritten in C
   for efficiency (#1528).
 

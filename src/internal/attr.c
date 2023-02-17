@@ -194,6 +194,70 @@ r_ssize length_dispatch(r_obj* x, r_obj* env) {
   return out;
 }
 
+r_obj* zap_srcref(r_obj* x) {
+  switch (r_typeof(x)) {
+  case R_TYPE_call: return call_zap_srcref(x);
+  case R_TYPE_closure: return fn_zap_srcref(x);
+  case R_TYPE_expression: return expr_vec_zap_srcref(x);
+  default: return x;
+  }
+}
+
+static
+r_obj* fn_zap_srcref(r_obj* x) {
+  x = KEEP(r_clone(x));
+
+  r_fn_poke_body(x, zap_srcref(r_fn_body(x)));
+  r_attrib_poke(x, r_syms.srcref, r_null);
+
+  FREE(1);
+  return x;
+}
+
+static
+r_obj* call_zap_srcref(r_obj* x) {
+  x = KEEP(r_clone(x));
+
+  attrib_zap_srcref(x);
+
+  if (r_node_car(x) == r_syms.function) {
+    // Remove `call[[4]]` where the parser stores srcref information
+    // for calls to `function`
+    r_node_poke_cdr(r_node_cddr(x), r_null);
+  }
+
+  for (r_obj* node = x; node != r_null; node = r_node_cdr(node)) {
+    r_node_poke_car(node, zap_srcref(r_node_car(node)));
+  }
+
+  FREE(1);
+  return x;
+}
+
+static
+r_obj* expr_vec_zap_srcref(r_obj* x) {
+  x = KEEP(r_clone(x));
+
+  attrib_zap_srcref(x);
+
+  r_ssize n = r_length(x);
+  r_obj* const * v_x = r_list_cbegin(x);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    r_list_poke(x, i, zap_srcref(v_x[i]));
+  }
+
+  FREE(1);
+  return x;
+}
+
+static
+void attrib_zap_srcref(r_obj* x) {
+  r_attrib_poke(x, r_syms.srcfile, r_null);
+  r_attrib_poke(x, r_syms.srcref, r_null);
+  r_attrib_poke(x, r_syms.wholeSrcref, r_null);
+}
+
 
 void rlang_init_attr(r_obj* ns) {
   c_fn = r_eval(r_sym("c"), r_envs.base);

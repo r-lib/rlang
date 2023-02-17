@@ -58,6 +58,7 @@ void r_init_library_globals(r_obj* ns) {
 void r_init_library_globals_syms(void) {
   r_syms.abort = r_sym("abort");
   r_syms.arg = r_sym("arg");
+  r_syms.brace = R_BraceSymbol;
   r_syms.brackets = R_BracketSymbol;
   r_syms.brackets2 = R_Bracket2Symbol;
   r_syms.call = r_sym("call");
@@ -88,9 +89,11 @@ void r_init_library_globals_syms(void) {
   r_syms.dot_x = r_sym(".x");
   r_syms.dot_y = r_sym(".y");
   r_syms.function = r_sym("function");
+  r_syms.srcfile = r_sym("srcfile");
   r_syms.srcref = r_sym("srcref");
   r_syms.tilde = r_sym("~");
   r_syms.w = r_sym("w");
+  r_syms.wholeSrcref = r_sym("wholeSrcref");
   r_syms.x = r_sym("x");
   r_syms.y = r_sym("y");
   r_syms.z = r_sym("z");

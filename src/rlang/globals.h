@@ -42,6 +42,7 @@ struct r_globals_strs {
 struct r_globals_syms {
   r_obj* abort;
   r_obj* arg;
+  r_obj* brace;
   r_obj* brackets;
   r_obj* brackets2;
   r_obj* call;
@@ -67,6 +68,7 @@ struct r_globals_syms {
   r_obj* options;
   r_obj* colon2;
   r_obj* colon3;
+  r_obj* srcfile;
   r_obj* srcref;
   r_obj* dim;
   r_obj* dim_names;
@@ -76,6 +78,7 @@ struct r_globals_syms {
   r_obj* unbound;
   r_obj* w;
   r_obj* warning;
+  r_obj* wholeSrcref;
   r_obj* x;
   r_obj* y;
   r_obj* z;

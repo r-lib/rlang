@@ -30,7 +30,9 @@ r_obj* r_new_pairlist(const struct r_pair* args,
 
 // Shallow copy of a node tree
 r_obj* r_node_tree_clone(r_obj* x) {
-  if (r_typeof(x) != R_TYPE_pairlist) {
+  enum r_type type = r_typeof(x);
+
+  if (type != R_TYPE_pairlist && type != R_TYPE_call) {
     r_abort("Internal error: Expected node tree for shallow copy");
   }
 
@@ -39,7 +41,9 @@ r_obj* r_node_tree_clone(r_obj* x) {
   r_obj* rest = x;
   while (rest != r_null) {
     r_obj* head = r_node_car(rest);
-    if (r_typeof(head) == R_TYPE_pairlist) {
+    enum r_type head_type = r_typeof(head);
+
+    if (head_type == R_TYPE_pairlist || head_type == R_TYPE_call) {
       r_node_poke_car(rest, r_node_tree_clone(head));
     }
     rest = r_node_cdr(rest);
