@@ -8,6 +8,15 @@ error is issued. On the other hand parse_exprs() can handle
 multiple expressions. It always returns a list of expressions
 (compare to base::parse() which returns a base::expression
 vector). All functions also support R connections.
+parse_expr() concatenates x with \\n separators prior to
+parsing in order to support the roundtrip
+parse_expr(expr_deparse(x)) (deparsed expressions might be
+multiline). On the other hand, parse_exprs() doesn't do any
+concatenation because it's designed to support named inputs. The
+names are matched to the expressions in the output, which is
+useful when a single named string creates multiple expressions.
+In other words, parse_expr() supports vector of lines whereas
+parse_exprs() expects vectors of complete deparsed expressions.
 parse_quo() and parse_quos() are variants that create a
 quosure. Supply env = current_env() if you're parsing
 code to be evaluated in your current context. Supply env = global_env() when you're parsing external user input to be
@@ -27,6 +36,15 @@ error is issued. On the other hand parse_exprs() can handle
 multiple expressions. It always returns a list of expressions
 (compare to base::parse() which returns a base::expression
 vector). All functions also support R connections.
+parse_expr() concatenates x with \\n separators prior to
+parsing in order to support the roundtrip
+parse_expr(expr_deparse(x)) (deparsed expressions might be
+multiline). On the other hand, parse_exprs() doesn't do any
+concatenation because it's designed to support named inputs. The
+names are matched to the expressions in the output, which is
+useful when a single named string creates multiple expressions.
+In other words, parse_expr() supports vector of lines whereas
+parse_exprs() expects vectors of complete deparsed expressions.
 parse_quo() and parse_quos() are variants that create a
 quosure. Supply env = current_env() if you're parsing
 code to be evaluated in your current context. Supply env = global_env() when you're parsing external user input to be
@@ -146,6 +164,15 @@ error is issued. On the other hand <code>parse_exprs()</code> can handle
 multiple expressions. It always returns a list of expressions
 (compare to <code><a href="https://rdrr.io/r/base/parse.html" class="external-link">base::parse()</a></code> which returns a base::expression
 vector). All functions also support R connections.</p></li>
+<li><p><code>parse_expr()</code> concatenates <code>x</code> with <code>\\n</code> separators prior to
+parsing in order to support the roundtrip
+<code>parse_expr(expr_deparse(x))</code> (deparsed expressions might be
+multiline). On the other hand, <code>parse_exprs()</code> doesn't do any
+concatenation because it's designed to support named inputs. The
+names are matched to the expressions in the output, which is
+useful when a single named string creates multiple expressions.</p>
+<p>In other words, <code>parse_expr()</code> supports vector of lines whereas
+<code>parse_exprs()</code> expects vectors of complete deparsed expressions.</p></li>
 <li><p><code>parse_quo()</code> and <code>parse_quos()</code> are variants that create a
 <a href="defusing-advanced.html">quosure</a>. Supply <code>env = current_env()</code> if you're parsing
 code to be evaluated in your current context. Supply <code>env = global_env()</code> when you're parsing external user input to be
