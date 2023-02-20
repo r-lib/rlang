@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_QUO_H
 #define RLANG_INTERNAL_QUO_H
 
+#include <rlang.h>
+
 
 r_obj* ffi_new_quosure(r_obj* expr, r_obj* env);
 bool is_quosure(r_obj* x);

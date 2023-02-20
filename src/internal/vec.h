@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_VEC_H
 #define RLANG_INTERNAL_VEC_H
 
+#include <rlang.h>
+
 
 enum option_bool {
   OPTION_BOOL_false = -1,

@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_NSE_INJECT_H
 #define RLANG_INTERNAL_NSE_INJECT_H
 
+#include <rlang.h>
+
 #include "quo.h"
 #include "utils.h"
 

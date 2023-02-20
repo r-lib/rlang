@@ -1,6 +1,7 @@
 #ifndef RLANG_INTERNAL_ENV_H
 #define RLANG_INTERNAL_ENV_H
 
+#include <rlang.h>
 
 void r_env_unbind_anywhere(r_obj* env, r_obj* sym);
 

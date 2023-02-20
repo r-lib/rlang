@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_INTERNAL_H
 #define RLANG_INTERNAL_INTERNAL_H
 
+#include <rlang.h>
+
 #include "arg.h"
 #include "call.h"
 #include "globals.h"

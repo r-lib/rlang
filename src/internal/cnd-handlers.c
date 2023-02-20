@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "internal.h"
 
 #include "decl/cnd-handlers-decl.h"
 

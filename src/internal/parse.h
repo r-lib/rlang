@@ -1,6 +1,8 @@
 #ifndef RLANG_INTERNAL_PARSE_H
 #define RLANG_INTERNAL_PARSE_H
 
+#include <rlang.h>
+
 
 // This only includes operators that actually appear in the AST.
 // Examples of silent operators are `else` and `in`.

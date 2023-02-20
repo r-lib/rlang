@@ -1,6 +1,7 @@
 #ifndef RLANG_INTERNAL_AST_ROTATE_H
 #define RLANG_INTERNAL_AST_ROTATE_H
 
+#include <rlang.h>
 #include "parse.h"
 
 
