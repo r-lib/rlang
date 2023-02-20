@@ -133,3 +133,15 @@ test_that("stackOverflowError are caught", {
   )
   expect_equal(handled, c(1, 2))
 })
+
+test_that("tryFetch() looks across chained errors (#1534)", {
+  cnd <- error_cnd("foo", message = "ok")
+  parent <- error_cnd(message = "bad", parent = cnd)
+
+  out <- try_fetch(
+    cnd_signal(parent),
+    foo = function(x) x$message
+  )
+
+  expect_equal(out, "ok")
+})

@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `try_fetch()` now looks up condition classes across chained errors
+  (#1534). This makes `try_fetch()` insensitive to changes of
+  implementation or context of evaluation that cause a classed error
+  to suddenly get chained to a contextual error.
+
 * `parse_expr()` now supports vectors of lines (#1540).
 
 * Fixed a memory issue that caused excessive duplication in `list2()`

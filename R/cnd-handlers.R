@@ -126,6 +126,13 @@ environment(hnd_prompt_install) <- baseenv()
 #' for the debuggability of your functions. See the comparison with
 #' `tryCatch()` section below.
 #'
+#' Another difference between `try_fetch()` and the base equivalent is
+#' that errors are matched across chains, see the `parent` argument of
+#' [abort()]. This is a useful property that makes `try_fetch()`
+#' insensitive to changes of implementation or context of evaluation
+#' that cause a classed error to suddenly get chained to a contextual
+#' error.
+#'
 #' @param expr An R expression.
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition
 #'   handlers. The names specify the condition class for which a
@@ -200,8 +207,13 @@ handler_call <- quote(function(cnd) {
     .__handler_frame__. <- TRUE
     .__setup_frame__. <- frame
   }
-  out <- handlers[[i]](cnd)
-  if (!inherits(out, "rlang_zap")) throw(out)
+  while (!is_null(cnd)) {
+    if (inherits(cnd, CLASS)) {
+      out <- handlers[[I]](cnd)
+      if (!inherits(out, "rlang_zap")) throw(out)
+    }
+    cnd <- .subset2(cnd, "parent")
+  }
 })
 
 

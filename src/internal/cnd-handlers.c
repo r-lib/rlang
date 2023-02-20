@@ -2,6 +2,7 @@
 #include "internal.h"
 
 #include "decl/cnd-handlers-decl.h"
+#include "vec-chr.h"
 
 r_obj* ffi_try_fetch(r_obj* try_fetch_args) {
   r_obj* env = r_node_cadr(try_fetch_args);
@@ -47,11 +48,15 @@ r_obj* ffi_try_fetch(r_obj* try_fetch_args) {
 
     r_obj* hnd = KEEP(r_copy(hnd_call));
 
-    // Equivalent to hnd[[3]][[3]][[3]][[1]][3]
-    r_obj* subscript_node = r_node_cddr(r_node_caar(r_node_cddr(r_node_cadr(r_node_cdar(r_node_cddr(hnd))))));
+    // Picks up `I`
+    r_obj* subscript_node = r_node_cddr(r_node_caar(r_node_cddr(r_node_cadr(r_node_cadr(r_node_cdar(r_node_cdar(r_node_cddr(r_node_cadr(r_node_cdar(r_node_cddr(hnd)))))))))));
     r_node_poke_car(subscript_node, r_int(i + 1));
 
-    args = r_new_node3(hnd, args, r_str_as_symbol(cls));
+    // Picks up `CLASS`
+    r_obj* class_node = r_node_cdr(r_node_cdar(r_node_cdar(r_node_cdar(r_node_cddr(r_node_cadr(r_node_cdar(r_node_cddr(hnd))))))));
+    r_node_poke_car(class_node, r_str_as_character(cls));
+
+    args = r_new_node3(hnd, args, r_syms.condition);
 
     KEEP_AT(args, shelter);
     FREE(1);
