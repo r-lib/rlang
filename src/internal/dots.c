@@ -149,43 +149,19 @@ void require_glue() {
 }
 
 static
-r_obj* glue_embrace(r_obj* x, r_obj* env, const char* v_x) {
-  if (!has_curly(v_x)) {
-    return x;
+r_obj* glue_embrace(r_obj* lhs, r_obj* env) {
+  if (!r_is_string(lhs) || !has_curly(r_chr_get_c_string(lhs, 0))) {
+    return lhs;
   }
 
   if (!has_glue) {
     require_glue();
   }
 
-  r_obj* glue_embrace_call = KEEP(r_call2(glue_embrace_fn, x));
-  r_obj* out = r_eval(glue_embrace_call, env);
+  r_obj* glue_embrace_call = KEEP(r_call2(glue_embrace_fn, lhs));
+  lhs = r_eval(glue_embrace_call, env);
   FREE(1);
-  return out;
-}
-
-static
-r_obj* chr_glue_embrace(r_obj* x, r_obj* env) {
-  return glue_embrace(x, env, r_chr_get_c_string(x, 0));
-}
-
-static
-r_obj* str_glue_embrace(r_obj* x, r_obj* env) {
-  r_obj* chr = KEEP(r_str_as_character(x));
-  r_obj* out = glue_embrace(chr, env, r_str_c_string(x));
-
-  FREE(1);
-  return r_chr_get(out, 0);
-}
-
-static
-r_obj* sym_glue_embrace(r_obj* x, r_obj* env) {
-  r_obj* str = r_sym_string(x);
-  r_obj* out = KEEP(str_glue_embrace(str, env));
-  out = r_str_as_symbol(out);
-
-  FREE(1);
-  return out;
+  return lhs;
 }
 
 static
@@ -197,9 +173,7 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
 
   switch (info.op) {
   case INJECTION_OP_none:
-    if (r_is_string(lhs)) {
-      lhs = KEEP_N(chr_glue_embrace(lhs, env), &n_kept);
-    }
+    lhs = KEEP_N(glue_embrace(lhs, env), &n_kept);
     break;
   case INJECTION_OP_uq:
     lhs = KEEP_N(r_eval(info.operand, env), &n_kept);
@@ -418,21 +392,14 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
     // Unquoting rearranges expressions
     expr = KEEP(r_node_tree_clone(expr));
 
-    if (unquote_names) {
-      r_obj* tag = r_node_tag(node);
-
-      if (r_is_call(expr, ":=")) {
-        if (tag != r_null) {
-          r_abort("Can't supply both `=` and `:=`");
-        }
-
-        r_obj* nm = def_unquote_name(expr, env);
-        r_node_poke_tag(node, nm);
-        expr = r_node_cadr(r_node_cdr(expr));
-      } else if (tag != r_null) {
-        r_obj* nm = sym_glue_embrace(tag, env);
-        r_node_poke_tag(node, nm);
+    if (unquote_names && r_is_call(expr, ":=")) {
+      if (r_node_tag(node) != r_null) {
+        r_abort("Can't supply both `=` and `:=`");
       }
+
+      r_obj* nm = def_unquote_name(expr, env);
+      r_node_poke_tag(node, nm);
+      expr = r_node_cadr(r_node_cdr(expr));
     }
 
     if (capture_info->check_assign

@@ -74,13 +74,11 @@ numeric(1, 2, 3)
 # The main difference with list(...) is that list2(...) enables
 # the `!!!` syntax to splice lists:
 x <- list(2, 3)
-numeric(1, !!!x, 4)
+numeric(1, !!! x, 4)
 
-# As well as name interpolation with glue:
-if (is_installed("glue")) {
-  nm <- "yup!"
-  numeric("{nm}" = 1)
-}
+# As well as unquoting of names:
+nm <- "yup!"
+numeric(!!nm := 1)
 
 
 # One useful application of splicing is to work around exact and

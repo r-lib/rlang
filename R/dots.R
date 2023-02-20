@@ -17,7 +17,7 @@
 #'    operator [`!!!`][splice-operator].
 #'
 #' 2. You can __inject__ names with [glue syntax][glue-operators] on
-#'    the left-hand side of `=`.
+#'    the left-hand side of `:=`.
 #'
 #' 3. Trailing commas are ignored, making it easier to copy and paste
 #'    lines of arguments.
@@ -57,8 +57,8 @@
 #' # Inject a name using glue syntax
 #' if (is_installed("glue")) {
 #'   nm <- "key"
-#'   f("{nm}" = "value")
-#'   f("prefix_{nm}" = "value")
+#'   f("{nm}" := "value")
+#'   f("prefix_{nm}" := "value")
 #' }
 NULL
 
@@ -155,13 +155,11 @@ list3 <- function(...) {
 #' # The main difference with list(...) is that list2(...) enables
 #' # the `!!!` syntax to splice lists:
 #' x <- list(2, 3)
-#' numeric(1, !!!x, 4)
+#' numeric(1, !!! x, 4)
 #'
-#' # As well as name interpolation with glue:
-#' if (is_installed("glue")) {
-#'   nm <- "yup!"
-#'   numeric("{nm}" = 1)
-#' }
+#' # As well as unquoting of names:
+#' nm <- "yup!"
+#' numeric(!!nm := 1)
 #'
 #'
 #' # One useful application of splicing is to work around exact and

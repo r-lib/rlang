@@ -96,8 +96,8 @@ The defused input is now evaluated only once because it is injected only once:
       var = \{\{ var \}\},
     ) \%>\%
     dplyr::summarise(
-      "mean_\{\{ var \}\}" = mean(var),
-      "sd_\{\{ var \}\}" = sd(var)
+      "mean_\{\{ var \}\}" := mean(var),
+      "sd_\{\{ var \}\}" := sd(var)
     )
 \}
 

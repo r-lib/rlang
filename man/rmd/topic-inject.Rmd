@@ -57,9 +57,9 @@ A related problem comes up when an argument name is stored in a variable. With d
 ```{r, comment = "#>", collapse = TRUE}
 name <- "foo"
 
-rbind2("{name}" = 1:2, bar = 3:4)
+rbind2("{name}" := 1:2, bar = 3:4)
 
-rbind2("prefix_{name}" = 1:2, bar = 3:4)
+rbind2("prefix_{name}" := 1:2, bar = 3:4)
 ```
 
 

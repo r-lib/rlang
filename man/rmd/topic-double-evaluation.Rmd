@@ -80,8 +80,8 @@ summarise_stats <- function(data, var) {
       var = {{ var }},
     ) %>%
     dplyr::summarise(
-      "mean_{{ var }}" = mean(var),
-      "sd_{{ var }}" = sd(var)
+      "mean_{{ var }}" := mean(var),
+      "sd_{{ var }}" := sd(var)
     )
 }
 

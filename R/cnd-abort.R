@@ -1448,13 +1448,13 @@ peek_backtrace_on_error_opt <- function(name) {
 
   if (!is_null(opt)) {
     if (is_string(opt, "collapse")) {
-      options(list2("{name}" = "none"))
+      options(list2("{name}" := "none"))
       deprecate_collapse()
       return("none")
     }
 
     if (!is_string(opt, backtrace_on_error_opts)) {
-      options(list2("{name}" = NULL))
+      options(list2("{name}" := NULL))
       warn(c(
         sprintf("Invalid %s option.", format_arg(name)),
         i = "The option was just reset to `NULL`."

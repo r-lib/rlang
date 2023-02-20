@@ -66,12 +66,12 @@ A related problem comes up when an argument name is stored in a variable. With d
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{name <- "foo"
 
-rbind2("\{name\}" = 1:2, bar = 3:4)
+rbind2("\{name\}" := 1:2, bar = 3:4)
 #>     [,1] [,2]
 #> foo    1    2
 #> bar    3    4
 
-rbind2("prefix_\{name\}" = 1:2, bar = 3:4)
+rbind2("prefix_\{name\}" := 1:2, bar = 3:4)
 #>            [,1] [,2]
 #> prefix_foo    1    2
 #> bar           3    4
