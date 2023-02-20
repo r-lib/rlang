@@ -50,3 +50,11 @@ test_that("parse_exprs() preserves names (#808)", {
     alist(a = 1 + 2, a = 3, c = 4)
   )
 })
+
+test_that("parse_expr() supports vectors of lines (#1540)", {
+  lines <- c("{", "  a", "  b", "}")
+  expect_equal(parse_expr(lines), quote({ a; b }))
+
+  lines <- c("a", "b")
+  expect_error(parse_expr(lines), "exactly 1 expression")
+})

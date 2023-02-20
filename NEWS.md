@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `parse_expr()` now supports vectors of lines (#1540).
+
 * Fixed a memory issue that caused excessive duplication in `list2()`
   and friends (#1491).
 

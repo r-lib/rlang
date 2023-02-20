@@ -12,6 +12,17 @@
 #'   (compare to [base::parse()] which returns a base::expression
 #'   vector). All functions also support R connections.
 #'
+#' * `parse_expr()` concatenates `x` with `\\n` separators prior to
+#'   parsing in order to support the roundtrip
+#'   `parse_expr(expr_deparse(x))` (deparsed expressions might be
+#'   multiline). On the other hand, `parse_exprs()` doesn't do any
+#'   concatenation because it's designed to support named inputs. The
+#'   names are matched to the expressions in the output, which is
+#'   useful when a single named string creates multiple expressions.
+#'
+#'   In other words, `parse_expr()` supports vector of lines whereas
+#'   `parse_exprs()` expects vectors of complete deparsed expressions.
+#'
 #' * `parse_quo()` and `parse_quos()` are variants that create a
 #'   [quosure][quo]. Supply `env = current_env()` if you're parsing
 #'   code to be evaluated in your current context. Supply `env =
@@ -55,7 +66,11 @@
 #' # We can now parse it by supplying a connection:
 #' parse_exprs(file(path))
 parse_expr <- function(x) {
-  exprs <- parse_exprs(x)
+  if (is_character(x)) {
+    exprs <- parse(text = paste_line(x))
+  } else {
+    exprs <- parse_exprs(x)
+  }
 
   n <- length(exprs)
   if (n != 1) {
