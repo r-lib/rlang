@@ -737,3 +737,19 @@ median.quosure <- function(x, na.rm = TRUE, ...) {
 quantile.quosure <- function(x, na.rm = TRUE, ...) {
   abort_quosure_op("Summary", "quantile")
 }
+
+#' @export
+c.quosure <- function(..., recursive = FALSE) {
+  inputs <- list(...)
+  if (some(inputs, \(x) function(x) !is_quosure(x) || !is.list(x))) {
+    abort("Can't concatenate quosures with incompatible objects.")
+  }
+
+  out <- NextMethod()
+  if (!every(out, is_quosure)) {
+    abort("Can't concatenate quosures with incompatible objects.")
+  }
+
+  new_quosures(out)
+}
+

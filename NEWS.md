@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Quosures can now be consistently concatenated to lists of quosures (#1446).
+
 * `try_fetch()` now looks up condition classes across chained errors
   (#1534). This makes `try_fetch()` insensitive to changes of
   implementation or context of evaluation that cause a classed error

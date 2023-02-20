@@ -305,6 +305,18 @@ test_that("quo_squash() handles quosures in function positions", {
   expect_equal(quo_squash(expr), quote(1 == 2))
 })
 
+test_that("quosures can be concatenated with lists of quosures (#1446)", {
+  expect_equal(
+    c(quo(1), quos(2)),
+    quos(1, 2)
+  )
+
+  expect_equal(
+    c(quos(1), quo(2)),
+    quos(1, 2)
+  )
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
