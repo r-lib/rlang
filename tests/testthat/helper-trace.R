@@ -12,7 +12,6 @@ expect_snapshot_trace <- function(trace,
 }
 print_focused_trace <- function(trace, ...) {
   with_options(
-    "rlang:::trace_display_tree_override" = TRUE,
     "rlang:::trace_deemph" = function(x) sprintf("<<%s>>", x),
     print(trace, ..., simplify = "none", drop = TRUE)
   )

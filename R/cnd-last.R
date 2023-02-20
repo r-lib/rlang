@@ -38,19 +38,12 @@ last_trace <- function(drop = NULL) {
 
   # Drop by default with new tree display, don't drop with legacy
   # behaviour
-  drop <- drop %||% use_tree_display()
+  drop <- drop %||% TRUE
 
   err$rlang$internal$trace_simplify <- "none"
   err$rlang$internal$trace_drop <- drop
 
   err
-}
-
-use_tree_display <- function() {
-  if (is_true(peek_option("rlang:::trace_display_tree_override"))) {
-    return(TRUE)
-  }
-  is_true(peek_option("rlang:::trace_display_tree")) && !is_testing()
 }
 
 peek_last_error <- function(cnd) {

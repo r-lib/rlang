@@ -5,16 +5,16 @@
     Output
       Error in h() : foo
       Calls: f -> g -> h
-      Run `rlang::last_error()` to see where the error occurred.
+      Run `rlang::last_trace()` to see where the error occurred.
       <error/rlang_error>
       Error:
       ! foo
       ---
       Backtrace:
-       1. global f()
-       2. global g()
-       3. global h()
-      Run `rlang::last_trace()` to see the full context.
+          x
+       1. \-global f()
+       2.   \-global g()
+       3.     \-global h()
       <error/rlang_error>
       Error:
       ! foo
@@ -29,16 +29,7 @@
     Output
       Error in `h()`:
       ! foo
-      Run `rlang::last_error()` to see where the error occurred.
-      <error/rlang_error>
-      Error in `h()`:
-      ! foo
-      ---
-      Backtrace:
-       1. global f()
-       2. global g()
-       3. global h()
-      Run `rlang::last_trace()` to see the full context.
+      Run `rlang::last_trace()` to see where the error occurred.
       <error/rlang_error>
       Error in `h()`:
       ! foo
@@ -48,7 +39,17 @@
        1. \-global f()
        2.   \-global g()
        3.     \-global h()
-       4.       \-rlang::abort("foo")
+      Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
+      <error/rlang_error>
+      Error in `h()`:
+      ! foo
+      ---
+      Backtrace:
+          x
+       1. \-global f()
+       2.   \-global g()
+       3.     \-global h()
+      Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
 
 # can supply handler environment as `bottom`
 
@@ -60,11 +61,19 @@
       ! non-numeric argument to binary operator
       ---
       Backtrace:
-        1. rlang::catch_cnd(...)
-        9. rlang (local) f()
-       10. rlang (local) g()
-       11. rlang (local) h()
-       12. base::identity(1 + "")
+           x
+        1. +-rlang::catch_cnd(...)
+        2. | +-rlang::eval_bare(...)
+        3. | +-base::tryCatch(...)
+        4. | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        5. | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        6. | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        7. | \-base::force(expr)
+        8. +-base::withCallingHandlers(...)
+        9. \-rlang (local) f()
+       10.   \-rlang (local) g()
+       11.     \-rlang (local) h()
+       12.       \-base::identity(1 + "")
 
 # can set `entrace()` as a global handler
 

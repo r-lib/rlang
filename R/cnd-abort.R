@@ -1395,11 +1395,7 @@ format_onerror_backtrace <- function(cnd, opt = peek_backtrace_on_error()) {
   # reminder when there is no trace to display
   if (opt == "reminder") {
     if (is_interactive()) {
-      if (use_tree_display()) {
-        last_error <- style_rlang_run("last_trace()")
-      } else {
-        last_error <- style_rlang_run("last_error()")
-      }
+      last_error <- style_rlang_run("last_trace()")
       reminder <- col_silver(paste0("Run `", last_error, "` to see where the error occurred."))
     } else {
       reminder <- NULL

@@ -6,10 +6,17 @@
       <error/rlang_error_foobar>
       ---
       Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang (local) f()
-        9. rlang (local) g()
-       10. rlang (local) h()
+           x
+        1. +-rlang::catch_cnd(f())
+        2. | +-rlang::eval_bare(...)
+        3. | +-base::tryCatch(...)
+        4. | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        5. | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        6. | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        7. | \-base::force(expr)
+        8. \-rlang (local) f()
+        9.   \-rlang (local) g()
+       10.     \-rlang (local) h()
 
 # `inform()` and `warn()` with recurrent footer handle newlines correctly
 

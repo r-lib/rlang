@@ -5,7 +5,7 @@
     Output
       Error in `h()`:
       ! dispatched!
-      Run `rlang::last_error()` to see where the error occurred.
+      Run `rlang::last_trace()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
@@ -30,10 +30,18 @@
       ! Low-level message
       ---
       Backtrace:
-        1. rlang:::catch_error(f())
-        9. rlang (local) f()
-       10. rlang (local) g()
-       11. rlang (local) h()
+           x
+        1. +-rlang:::catch_error(f())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) f()
+       10.   \-rlang (local) g()
+       11.     \-rlang (local) h()
 
 # Overlapping backtraces are printed separately
 
@@ -47,13 +55,25 @@
       ! Low-level message
       ---
       Backtrace:
-        1. rlang:::catch_error(a())
-        9. rlang (local) a()
-       10. rlang (local) b()
-       11. rlang (local) c()
-       16. rlang (local) f()
-       17. rlang (local) g()
-       18. rlang (local) h()
+           x
+        1. +-rlang:::catch_error(a())
+        2. | \-rlang::catch_cnd(expr, "error")
+        3. |   +-rlang::eval_bare(...)
+        4. |   +-base::tryCatch(...)
+        5. |   | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+        6. |   |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+        7. |   |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+        8. |   \-base::force(expr)
+        9. \-rlang (local) a()
+       10.   \-rlang (local) b()
+       11.     \-rlang (local) c()
+       12.       +-base::tryCatch(...)
+       13.       | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       14.       |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       15.       |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+       16.       \-rlang (local) f()
+       17.         \-rlang (local) g()
+       18.           \-rlang (local) h()
 
 ---
 
@@ -86,7 +106,6 @@
        16.       \-rlang (local) f()
        17.         \-rlang (local) g()
        18.           \-rlang (local) h()
-       19.             \-rlang::abort("", "foobar", foobar_msg = "Low-level message")
 
 ---
 
@@ -120,7 +139,6 @@
        16.       \-rlang (local) f()
        17.         \-rlang (local) g()
        18.           \-rlang (local) h()
-       19.             \-rlang::abort("", "foobar", foobar_msg = "Low-level message")
     Code
       # Focused
       print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
@@ -215,7 +233,6 @@
        17.         | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
        18.         \-rlang (local) g()
        19.           \-rlang (local) h()
-       20.             \-rlang::abort("The low-level error message", foo = "foo")
 
 # don't print message or backtrace fields if empty
 
@@ -275,8 +292,9 @@
       ! Low-level message
       ---
       Backtrace:
-       1. quux()
-       2. foofy()
+          x
+       1. \-quux()
+       2.   \-foofy()
     Code
       summary(err)
     Output
@@ -322,7 +340,6 @@
        15.       \-rlang (local) f()
        16.         \-rlang (local) g()
        17.           \-rlang (local) h()
-       18.             \-rlang::abort("foo")
     Code
       # Focused
       print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
@@ -413,8 +430,9 @@
     i Bullet.
     ---
     Backtrace:
-     1. foo()
-     2. bar()
+        x
+     1. \-foo()
+     2.   \-bar()
 
 ---
 
@@ -427,8 +445,9 @@
     i Bullet.
     ---
     Backtrace:
-     1. foo()
-     2. bar()
+        x
+     1. \-foo()
+     2.   \-bar()
 
 ---
 
@@ -438,8 +457,9 @@
     i Bullet.
     ---
     Backtrace:
-     1. foo()
-     2. bar()
+        x
+     1. \-foo()
+     2.   \-bar()
 
 # warnings and messages have `summary()` methods
 
@@ -534,41 +554,4 @@
     Message <rlang_message>
       foo
       bar
-
-# tree display option is picked up when printing errors
-
-    Code
-      print(cnd)
-    Output
-      <error/rlang_error>
-      Error in `h()`:
-      ! foo
-      ---
-      Backtrace:
-        1. rlang::catch_cnd(f())
-        8. rlang (local) f()
-        9. rlang (local) g()
-       10. rlang (local) h()
-    Code
-      local({
-        local_options(`rlang:::trace_display_tree_override` = TRUE)
-        print(cnd)
-      })
-    Output
-      <error/rlang_error>
-      Error in `h()`:
-      ! foo
-      ---
-      Backtrace:
-           x
-        1. +-rlang::catch_cnd(f())
-        2. | +-rlang::eval_bare(...)
-        3. | +-base::tryCatch(...)
-        4. | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
-        5. | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
-        6. | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
-        7. | \-base::force(expr)
-        8. \-rlang (local) f()
-        9.   \-rlang (local) g()
-       10.     \-rlang (local) h()
 
