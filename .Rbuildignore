@@ -20,3 +20,6 @@
 ^CODE_OF_CONDUCT\.md$
 ^src/.clang_complete$
 ^CRAN-SUBMISSION$
+^\.cache$
+^\.vscode$
+^compile_commands\.json$
