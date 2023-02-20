@@ -406,7 +406,7 @@ format.rlang_error <- function(x,
   # Recommend printing the full backtrace if called from `last_error()`
   from_last_error <- is_true(x$rlang$internal$from_last_error)
   if (from_last_error && !is_null(x$trace)) {
-    if (use_tree_display() && drop && !all(x$trace$visible)) {
+    if (drop && !all(x$trace$visible)) {
       n_hidden <- sum(!x$trace$visible)
       hidden <- ngettext(
         n_hidden,

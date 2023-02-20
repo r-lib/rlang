@@ -900,10 +900,11 @@
           ## ! foo
           ## ---
           ## Backtrace:
-          ##  1. global f()
-          ##  2. global g()
-          ##  3. global h()
-          ## Run `rlang::last_trace()` to see the full context.
+          ##     x
+          ##  1. \-global f()
+          ##  2.   \-global g()
+          ##  3.     \-global h()
+          ## Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
       
           last_trace()
       
@@ -916,7 +917,7 @@
           ##  1. \-global f()
           ##  2.   \-global g()
           ##  3.     \-global h()
-          ##  4.       \-rlang::abort("foo")
+          ## Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
       
           options(rlang_backtrace_on_error_report = "reminder")
           f()
@@ -924,7 +925,7 @@
           ## Error in `h()`:
           ## ! foo
       
-          ## Run `rlang::last_error()` to see where the error occurred.
+          ## Run `rlang::last_trace()` to see where the error occurred.
       
           options(rlang_backtrace_on_error_report = "full")
           f()
@@ -961,11 +962,19 @@
       [33m![39m non-numeric argument to binary operator
       ---
       [1mBacktrace:[22m
-      [90m  1. [39m[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
-      [90m  9. [39mrlang (local) f()
-      [90m 10. [39mrlang (local) g()
-      [90m 11. [39mrlang (local) h()
-      [90m 12. [39m[1mbase[22m::identity(1 + "")
+      [90m     [39mx
+      [90m  1. [39m+-[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
+      [90m  2. [39m| [90m+-rlang::eval_bare(...)[39m
+      [90m  3. [39m| [90m+-[1mbase[22m::tryCatch(...)[39m
+      [90m  4. [39m| [90m| \-base (local) tryCatchList(expr, classes, parentenv, handlers)[39m
+      [90m  5. [39m| [90m|   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])[39m
+      [90m  6. [39m| [90m|     \-base (local) doTryCatch(return(expr), name, parentenv, handler)[39m
+      [90m  7. [39m| [90m\-base::force(expr)[39m
+      [90m  8. [39m+-base::withCallingHandlers(f(), error = entrace)
+      [90m  9. [39m\-[1mrlang[22m (local) f()
+      [90m 10. [39m  \-rlang (local) g()
+      [90m 11. [39m    \-rlang (local) h()
+      [90m 12. [39m      \-[1mbase[22m::identity(1 + "")
     Code
       summary(err)
     Output
@@ -976,12 +985,12 @@
       [1mBacktrace:[22m
       [90m     [39mx
       [90m  1. [39m+-[1mrlang[22m::catch_cnd(withCallingHandlers(f(), error = entrace), "error")
-      [90m  2. [39m| +-rlang::eval_bare(...)
-      [90m  3. [39m| +-[1mbase[22m::tryCatch(...)
-      [90m  4. [39m| | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
-      [90m  5. [39m| |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      [90m  6. [39m| |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
-      [90m  7. [39m| \-base::force(expr)
+      [90m  2. [39m| [90m+-rlang::eval_bare(...)[39m
+      [90m  3. [39m| [90m+-[1mbase[22m::tryCatch(...)[39m
+      [90m  4. [39m| [90m| \-base (local) tryCatchList(expr, classes, parentenv, handlers)[39m
+      [90m  5. [39m| [90m|   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])[39m
+      [90m  6. [39m| [90m|     \-base (local) doTryCatch(return(expr), name, parentenv, handler)[39m
+      [90m  7. [39m| [90m\-base::force(expr)[39m
       [90m  8. [39m+-base::withCallingHandlers(f(), error = entrace)
       [90m  9. [39m\-[1mrlang[22m (local) f()
       [90m 10. [39m  \-rlang (local) g()
@@ -1081,7 +1090,6 @@
        16.   | +-base::identity(identity(x))
        17.   | \-base::identity(x)
        18.   \-rlang (local) h()
-       19.     \-rlang::abort("foo")
     Code
       # Focused
       print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
@@ -1149,7 +1157,6 @@
        12. \-rlang (local) f(0)
        13.   \-rlang (local) g(n)
        14.     \-rlang (local) h(n)
-       15.       \-rlang::abort("foo")
     Code
       # Focused
       print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
@@ -1223,7 +1230,6 @@
        21.         \-rlang (local) f(n - 1)
        22.           \-rlang (local) g(n)
        23.             \-rlang (local) h(n)
-       24.               \-rlang::abort("foo")
     Code
       # Focused
       print_focused_trace(trace, dir = dir, srcrefs = srcrefs)

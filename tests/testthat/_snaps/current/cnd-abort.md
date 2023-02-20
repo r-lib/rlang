@@ -11,13 +11,21 @@
       ! Low-level message
       ---
       Backtrace:
-        1. testthat::expect_error(high1())
-        7. rlang (local) high1()
-        8. rlang (local) high2()
-        9. rlang (local) high3()
-       12. rlang (local) low1()
-       13. rlang (local) low2()
-       14. rlang (local) low3()
+           x
+        1. +-testthat::expect_error(high1())
+        2. | \-testthat:::expect_condition_matching(...)
+        3. |   \-testthat:::quasi_capture(...)
+        4. |     +-testthat (local) .capture(...)
+        5. |     | \-base::withCallingHandlers(...)
+        6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        7. \-rlang (local) high1()
+        8.   \-rlang (local) high2()
+        9.     \-rlang (local) high3()
+       10.       +-rlang (local) wch(low1(), error = function(err) handler1(err))
+       11.       | \-base::withCallingHandlers(expr, ...)
+       12.       \-rlang (local) low1()
+       13.         \-rlang (local) low2()
+       14.           \-rlang (local) low3()
     Code
       summary(err)
     Output
@@ -43,7 +51,6 @@
        12.       \-rlang (local) low1()
        13.         \-rlang (local) low2()
        14.           \-rlang (local) low3()
-       15.             \-rlang::abort("Low-level message")
 
 ---
 
@@ -58,14 +65,22 @@
       ! Low-level message
       ---
       Backtrace:
-        1. testthat::expect_error(high1())
-        7. rlang (local) high1()
-        8. rlang (local) high2()
-        9. rlang (local) high3()
-       12. rlang (local) low1()
-       13. rlang (local) low2()
-       14. rlang (local) low3()
-       15. rlang (local) fail(NULL, "Low-level message")
+           x
+        1. +-testthat::expect_error(high1())
+        2. | \-testthat:::expect_condition_matching(...)
+        3. |   \-testthat:::quasi_capture(...)
+        4. |     +-testthat (local) .capture(...)
+        5. |     | \-base::withCallingHandlers(...)
+        6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        7. \-rlang (local) high1()
+        8.   \-rlang (local) high2()
+        9.     \-rlang (local) high3()
+       10.       +-rlang (local) wch(low1(), error = function(err) handler1(err))
+       11.       | \-base::withCallingHandlers(expr, ...)
+       12.       \-rlang (local) low1()
+       13.         \-rlang (local) low2()
+       14.           \-rlang (local) low3()
+       15.             \-rlang (local) fail(NULL, "Low-level message")
     Code
       summary(err)
     Output
@@ -83,20 +98,15 @@
         4. |     +-testthat (local) .capture(...)
         5. |     | \-base::withCallingHandlers(...)
         6. |     \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
-        7. +-rlang (local) high1()
-        8. | \-rlang (local) high2()
-        9. |   \-rlang (local) high3()
-       10. |     +-rlang (local) wch(low1(), error = function(err) handler1(err))
-       11. |     | \-base::withCallingHandlers(expr, ...)
-       12. |     \-rlang (local) low1()
-       13. |       \-rlang (local) low2()
-       14. |         \-rlang (local) low3()
-       15. |           \-rlang (local) fail(NULL, "Low-level message")
-       16. \-base::.handleSimpleError(`<fn>`, "Low-level message", base::quote(NULL))
-       17.   \-rlang (local) h(simpleError(msg, call))
-       18.     \-rlang (local) handler1(err)
-       19.       \-rlang (local) handler2(err, call = call)
-       20.         \-rlang::abort("High-level message", parent = err, call = call)
+        7. \-rlang (local) high1()
+        8.   \-rlang (local) high2()
+        9.     \-rlang (local) high3()
+       10.       +-rlang (local) wch(low1(), error = function(err) handler1(err))
+       11.       | \-base::withCallingHandlers(expr, ...)
+       12.       \-rlang (local) low1()
+       13.         \-rlang (local) low2()
+       14.           \-rlang (local) low3()
+       15.             \-rlang (local) fail(NULL, "Low-level message")
 
 # `parent = NA` signals a non-chained rethrow
 
@@ -114,9 +124,25 @@
       ! bar
       ---
       Backtrace:
-        1. base::print(err(ff()))
-       17. base::.handleSimpleError(`<fn>`, "bar", base::quote(baz()))
-       18. rlang (local) h(simpleError(msg, call))
+           x
+        1. +-base::print(err(ff()))
+        2. +-rlang:::err(ff())
+        3. | \-testthat::expect_error(...)
+        4. |   \-testthat:::expect_condition_matching(...)
+        5. |     \-testthat:::quasi_capture(...)
+        6. |       +-testthat (local) .capture(...)
+        7. |       | \-base::withCallingHandlers(...)
+        8. |       \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        9. +-rlang (local) ff()
+       10. | \-rlang (local) gg()
+       11. |   \-rlang (local) hh()
+       12. |     +-base::withCallingHandlers(...)
+       13. |     \-rlang (local) foo()
+       14. |       \-rlang (local) bar()
+       15. |         \-rlang (local) baz()
+       16. |           \-base::stop("bar")
+       17. \-base::.handleSimpleError(`<fn>`, "bar", base::quote(baz()))
+       18.   \-rlang (local) h(simpleError(msg, call))
     Code
       # Missing parent allows correct trace bottom
       hh <- (function() {
@@ -131,14 +157,23 @@
       ! bar
       ---
       Backtrace:
-        1. base::print(err(ff()))
-        9. rlang (local) ff()
-       10. rlang (local) gg()
-       11. rlang (local) hh()
-       13. rlang (local) foo()
-       14. rlang (local) bar()
-       15. rlang (local) baz()
-       16. base::stop("bar")
+           x
+        1. +-base::print(err(ff()))
+        2. +-rlang:::err(ff())
+        3. | \-testthat::expect_error(...)
+        4. |   \-testthat:::expect_condition_matching(...)
+        5. |     \-testthat:::quasi_capture(...)
+        6. |       +-testthat (local) .capture(...)
+        7. |       | \-base::withCallingHandlers(...)
+        8. |       \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        9. \-rlang (local) ff()
+       10.   \-rlang (local) gg()
+       11.     \-rlang (local) hh()
+       12.       +-base::withCallingHandlers(...)
+       13.       \-rlang (local) foo()
+       14.         \-rlang (local) bar()
+       15.           \-rlang (local) baz()
+       16.             \-base::stop("bar")
     Code
       # Wrapped handler
       handler1 <- (function(cnd, call = caller_env()) handler2(cnd, call))
@@ -153,14 +188,23 @@
       ! bar
       ---
       Backtrace:
-        1. base::print(err(ff()))
-        9. rlang (local) ff()
-       10. rlang (local) gg()
-       11. rlang (local) hh()
-       13. rlang (local) foo()
-       14. rlang (local) bar()
-       15. rlang (local) baz()
-       16. base::stop("bar")
+           x
+        1. +-base::print(err(ff()))
+        2. +-rlang:::err(ff())
+        3. | \-testthat::expect_error(...)
+        4. |   \-testthat:::expect_condition_matching(...)
+        5. |     \-testthat:::quasi_capture(...)
+        6. |       +-testthat (local) .capture(...)
+        7. |       | \-base::withCallingHandlers(...)
+        8. |       \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        9. \-rlang (local) ff()
+       10.   \-rlang (local) gg()
+       11.     \-rlang (local) hh()
+       12.       +-base::withCallingHandlers(foo(), error = function(cnd) handler1(cnd))
+       13.       \-rlang (local) foo()
+       14.         \-rlang (local) bar()
+       15.           \-rlang (local) baz()
+       16.             \-base::stop("bar")
     Code
       # Wrapped handler, `try_fetch()`
       hh <- (function() {
@@ -173,14 +217,28 @@
       ! bar
       ---
       Backtrace:
-        1. base::print(err(ff()))
-        9. rlang (local) ff()
-       10. rlang (local) gg()
-       11. rlang (local) hh()
-       18. rlang (local) foo()
-       19. rlang (local) bar()
-       20. rlang (local) baz()
-       21. base::stop("bar")
+           x
+        1. +-base::print(err(ff()))
+        2. +-rlang:::err(ff())
+        3. | \-testthat::expect_error(...)
+        4. |   \-testthat:::expect_condition_matching(...)
+        5. |     \-testthat:::quasi_capture(...)
+        6. |       +-testthat (local) .capture(...)
+        7. |       | \-base::withCallingHandlers(...)
+        8. |       \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        9. \-rlang (local) ff()
+       10.   \-rlang (local) gg()
+       11.     \-rlang (local) hh()
+       12.       +-rlang::try_fetch(foo(), error = function(cnd) handler1(cnd))
+       13.       | +-base::tryCatch(...)
+       14.       | | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
+       15.       | |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       16.       | |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
+       17.       | \-base::withCallingHandlers(...)
+       18.       \-rlang (local) foo()
+       19.         \-rlang (local) bar()
+       20.           \-rlang (local) baz()
+       21.             \-base::stop("bar")
     Code
       # Wrapped handler, incorrect `call`
       hh <- (function() {
@@ -193,12 +251,21 @@
       ! bar
       ---
       Backtrace:
-        1. base::print(err(ff()))
-        9. rlang (local) ff()
-       10. rlang (local) gg()
-       11. rlang (local) hh()
-       13. rlang (local) foo()
-       14. rlang (local) bar()
-       15. rlang (local) baz()
-       16. base::stop("bar")
+           x
+        1. +-base::print(err(ff()))
+        2. +-rlang:::err(ff())
+        3. | \-testthat::expect_error(...)
+        4. |   \-testthat:::expect_condition_matching(...)
+        5. |     \-testthat:::quasi_capture(...)
+        6. |       +-testthat (local) .capture(...)
+        7. |       | \-base::withCallingHandlers(...)
+        8. |       \-rlang::eval_bare(quo_get_expr(.quo), quo_get_env(.quo))
+        9. \-rlang (local) ff()
+       10.   \-rlang (local) gg()
+       11.     \-rlang (local) hh()
+       12.       +-base::withCallingHandlers(foo(), error = handler1)
+       13.       \-rlang (local) foo()
+       14.         \-rlang (local) bar()
+       15.           \-rlang (local) baz()
+       16.             \-base::stop("bar")
 

@@ -1,5 +1,12 @@
 # rlang (development version)
 
+* `last_error()` and `options(rlang_backtrace_on_error = "full")` now
+  print the full backtrace tree by default (except for some hidden
+  frames). The simplified backtraces tended to hide important context
+  too often. Now we show intervening frames in a lighter colour so
+  that they don't distract from the important parts of the backtraces
+  but are still easily inspectable.
+
 * `child_env()` is deprecated in favour of `env()` which has supported
   creating child environments for several years now.
 
