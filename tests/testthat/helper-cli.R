@@ -11,7 +11,7 @@ rlang_cli_local_support <- function(version,
   local_bindings(
     .env = cache,
     .frame = frame,
-    "{version}" := value
+    "{version}" = value
   )
 }
 

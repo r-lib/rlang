@@ -13,7 +13,7 @@
 #> 1     1
 
 foo <- "name"
-tibble::tibble("\{foo\}" := 1)
+tibble::tibble("\{foo\}" = 1)
 #> # A tibble: 1 x 1
 #>    name
 #>   <dbl>
@@ -23,7 +23,7 @@ tibble::tibble("\{foo\}" := 1)
 Inside functions, embracing an argument with \ifelse{html}{\code{\link[=embrace-operator]{\{\{}}}{\verb{\{\{}} inserts the expression supplied as argument in the string. This gives an indication on the variable or computation supplied as argument:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{tib <- function(x) \{
-  tibble::tibble("var: \{\{ x \}\}" := x)
+  tibble::tibble("var: \{\{ x \}\}" = x)
 \}
 
 tib(1 + 1)
@@ -51,7 +51,7 @@ While \code{glue::glue()} only supports \verb{"\{"}, dynamic dots support both \
 In the following example, the embrace operator is used in a glue string to name the result with a default name that represents the expression supplied as argument:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var) \{
-  data \%>\% dplyr::summarise("\{\{ var \}\}" := mean(\{\{ var \}\}))
+  data \%>\% dplyr::summarise("\{\{ var \}\}" = mean(\{\{ var \}\}))
 \}
 
 mtcars \%>\% my_mean(cyl)
@@ -70,7 +70,7 @@ mtcars \%>\% my_mean(cyl * am)
 \verb{"\{\{"} is only meant for inserting an expression supplied as argument to a function. The result of the expression is not inspected or used. To interpolate a string stored in a variable, use the regular glue operator \verb{"\{"} instead:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = "mean") \{
-  data \%>\% dplyr::summarise("\{name\}" := mean(\{\{ var \}\}))
+  data \%>\% dplyr::summarise("\{name\}" = mean(\{\{ var \}\}))
 \}
 
 mtcars \%>\% my_mean(cyl)
@@ -90,11 +90,11 @@ Using the wrong operator causes unexpected results:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- "name"
 
-list2("\{\{ x \}\}" := 1)
+list2("\{\{ x \}\}" = 1)
 #> $`"name"`
 #> [1] 1
 
-list2("\{x\}" := 1)
+list2("\{x\}" = 1)
 #> $name
 #> [1] 1
 }\if{html}{\out{</div>}}
@@ -109,7 +109,7 @@ The implementation of \code{my_mean()} in the previous section forces a default 
 This is where \code{\link[=englue]{englue()}} becomes useful. We can pull out the default name creation in another user-facing argument like this:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_mean <- function(data, var, name = englue("\{\{ var \}\}")) \{
-  data \%>\% dplyr::summarise("\{name\}" := mean(\{\{ var \}\}))
+  data \%>\% dplyr::summarise("\{name\}" = mean(\{\{ var \}\}))
 \}
 }\if{html}{\out{</div>}}
 
@@ -127,21 +127,6 @@ mtcars \%>\% my_mean(cyl * am, name = "mean_cyl_am")
 #>         <dbl>
 #> 1        2.06
 }\if{html}{\out{</div>}}
-}
-
-\subsection{What's the deal with \verb{:=}?}{
-
-Name injection in dynamic dots was originally implemented with \verb{:=} instead of \code{=} to allow complex expressions on the LHS:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{x <- "name"
-list2(!!x := 1)
-#> $name
-#> [1] 1
-}\if{html}{\out{</div>}}
-
-Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of \code{=}.
-
-As we are now moving away from \code{\link[=injection-operator]{!!}} for common tasks, we are considering enabling glue strings with \code{=} and superseding \verb{:=} usage. Track the progress of this change in \href{https://github.com/r-lib/rlang/issues/1296}{issue 1296}.
 }
 
 \subsection{Using glue syntax in packages}{

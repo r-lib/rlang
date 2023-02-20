@@ -21,7 +21,7 @@ Dynamic dots offer a few additional features,
 \item You can \strong{splice} arguments saved in a list with the splice
 operator \code{\link[=splice-operator]{!!!}}.
 \item You can \strong{inject} names with \link[=glue-operators]{glue syntax} on
-the left-hand side of \verb{:=}.
+the left-hand side of \code{=}.
 \item Trailing commas are ignored, making it easier to copy and paste
 lines of arguments.
 }
@@ -58,7 +58,7 @@ f(!!!x)
 # Inject a name using glue syntax
 if (is_installed("glue")) {
   nm <- "key"
-  f("{nm}" := "value")
-  f("prefix_{nm}" := "value")
+  f("{nm}" = "value")
+  f("prefix_{nm}" = "value")
 }
 }

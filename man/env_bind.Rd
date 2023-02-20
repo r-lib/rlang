@@ -110,11 +110,12 @@ env_bind(my_env, !!!vals, c = 30)
 my_env$b
 my_env$c
 
-# You can also unquote a variable referring to a symbol or a string
-# as binding name:
-var <- "baz"
-env_bind(my_env, !!var := "BAZ")
-my_env$baz
+# You can also interpolate a variable using the glue syntax:
+if (is_installed("glue")) {
+  var <- "baz"
+  env_bind(my_env, "{var}" = "BAZ")
+  my_env$baz
+}
 
 
 # The old values of the bindings are returned invisibly:

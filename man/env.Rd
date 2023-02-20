@@ -91,10 +91,12 @@ objs <- list(b = "foo", c = "bar")
 env <- env(a = 1, !!! objs)
 env$c
 
-# You can also unquote names with the definition operator `:=`
-var <- "a"
-env <- env(!!var := "A")
-env$a
+# You can also interpolate names with the glue syntax:
+if (is_installed("glue")) {
+  var <- "a"
+  env <- env("{var}" = "A")
+  env$a
+}
 
 
 # Use new_environment() to create containers with the empty

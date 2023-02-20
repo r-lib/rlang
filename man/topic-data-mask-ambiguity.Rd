@@ -65,7 +65,7 @@ df \%>\% dplyr::mutate(y = .data$y / .env$x)
 This is especially useful in functions because the data frame is not known in advance and potentially contain masking columns for any of the env-variables in scope in the function:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_rescale <- function(data, var, factor = 10) \{
-  data \%>\% dplyr::mutate("\{\{ var \}\}" := \{\{ var \}\} / factor)
+  data \%>\% dplyr::mutate("\{\{ var \}\}" = \{\{ var \}\} / factor)
 \}
 
 # This works
@@ -82,7 +82,7 @@ data.frame(factor = 0, value = 1) \%>\% my_rescale(value)
 Subsetting function arguments with \code{.env} ensures we never hit a masking column:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_rescale <- function(data, var, factor = 10) \{
-  data \%>\% dplyr::mutate("\{\{ var \}\}" := \{\{ var \}\} / .env$factor)
+  data \%>\% dplyr::mutate("\{\{ var \}\}" = \{\{ var \}\} / .env$factor)
 \}
 
 # Yay!

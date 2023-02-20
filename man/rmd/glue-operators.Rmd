@@ -7,14 +7,14 @@
 tibble::tibble(foo = 1)
 
 foo <- "name"
-tibble::tibble("{foo}" := 1)
+tibble::tibble("{foo}" = 1)
 ```
 
 Inside functions, embracing an argument with `r link("{{")` inserts the expression supplied as argument in the string. This gives an indication on the variable or computation supplied as argument:
 
 ```{r, comment = "#>", collapse = TRUE}
 tib <- function(x) {
-  tibble::tibble("var: {{ x }}" := x)
+  tibble::tibble("var: {{ x }}" = x)
 }
 
 tib(1 + 1)
@@ -41,7 +41,7 @@ In the following example, the embrace operator is used in a glue string to name 
 
 ```{r, comment = "#>", collapse = TRUE}
 my_mean <- function(data, var) {
-  data %>% dplyr::summarise("{{ var }}" := mean({{ var }}))
+  data %>% dplyr::summarise("{{ var }}" = mean({{ var }}))
 }
 
 mtcars %>% my_mean(cyl)
@@ -53,7 +53,7 @@ mtcars %>% my_mean(cyl * am)
 
 ```{r, comment = "#>", collapse = TRUE}
 my_mean <- function(data, var, name = "mean") {
-  data %>% dplyr::summarise("{name}" := mean({{ var }}))
+  data %>% dplyr::summarise("{name}" = mean({{ var }}))
 }
 
 mtcars %>% my_mean(cyl)
@@ -66,9 +66,9 @@ Using the wrong operator causes unexpected results:
 ```{r, comment = "#>", collapse = TRUE}
 x <- "name"
 
-list2("{{ x }}" := 1)
+list2("{{ x }}" = 1)
 
-list2("{x}" := 1)
+list2("{x}" = 1)
 ```
 
 Ideally, using `{{` on regular objects would be an error. However for technical reasons it is not possible to make a distinction between function arguments and ordinary variables. See `r link("topic_embrace_non_args")` for more information about this limitation.
@@ -82,7 +82,7 @@ This is where [englue()] becomes useful. We can pull out the default name creati
 
 ```{r, comment = "#>", collapse = TRUE}
 my_mean <- function(data, var, name = englue("{{ var }}")) {
-  data %>% dplyr::summarise("{name}" := mean({{ var }}))
+  data %>% dplyr::summarise("{name}" = mean({{ var }}))
 }
 ```
 
@@ -93,20 +93,6 @@ mtcars %>% my_mean(cyl * am)
 
 mtcars %>% my_mean(cyl * am, name = "mean_cyl_am")
 ```
-
-
-## What's the deal with `:=`?
-
-Name injection in dynamic dots was originally implemented with `:=` instead of `=` to allow complex expressions on the LHS:
-
-```{r, comment = "#>", collapse = TRUE}
-x <- "name"
-list2(!!x := 1)
-```
-
-Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of `=`.
-
-As we are now moving away from [`!!`][injection-operator] for common tasks, we are considering enabling glue strings with `=` and superseding `:=` usage. Track the progress of this change in [issue 1296](https://github.com/r-lib/rlang/issues/1296).
 
 
 ## Using glue syntax in packages

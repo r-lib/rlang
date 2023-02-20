@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* The glue operators `"{{"` and `"{"` can now be used on the LHS of
+  `=`, it is no longer necessary to use `:=` for simple interpolation.
+  The old walrus-operator syntax will remain supported forever but it
+  is no longer recommended.
+
 * `last_error()` and `options(rlang_backtrace_on_error = "full")` now
   print the full backtrace tree by default (except for some hidden
   frames). The simplified backtraces tended to hide important context

@@ -377,3 +377,18 @@ test_that("names are not mutated after splice box early exit", {
   dots_list(!!!xs, .named = NULL)
   expect_equal(names(xs), NULL)
 })
+
+test_that("can use glue syntax in normal names", {
+  expect_equal(
+    list2("{'foo'}" = NULL),
+    list(foo = NULL)
+  )
+
+  # Only literal argument names are interpolated
+  exp <- list("{'foo'}" = NULL)
+  expect_equal_(list2(!!"{'foo'}" := NULL), exp)
+  expect_equal_(list2(!!!list("{'foo'}" = NULL)), exp)
+
+  qux <- "QUX"
+  expect_equal(list2("{qux}" = NULL), list(QUX = NULL))
+})
