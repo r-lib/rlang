@@ -741,7 +741,7 @@ quantile.quosure <- function(x, na.rm = TRUE, ...) {
 #' @export
 c.quosure <- function(..., recursive = FALSE) {
   inputs <- list(...)
-  if (some(inputs, \(x) function(x) !is_quosure(x) || !is.list(x))) {
+  if (some(inputs, function(x) !is_quosure(x) && !is.list(x))) {
     abort("Can't concatenate quosures with incompatible objects.")
   }
 
