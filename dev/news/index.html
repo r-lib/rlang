@@ -832,7 +832,7 @@ Caused by error in `their_function()`:
 </ul></div>
 <div class="section level3">
 <h3 id="environments-0-3-0">Environments<a class="anchor" aria-label="anchor" href="#environments-0-3-0"></a></h3>
-<ul><li><p><code><a href="../reference/env.html">env()</a></code> now treats a single unnamed argument as the parent of the new environment. Consequently, <code><a href="../reference/env.html">child_env()</a></code> is now superfluous and is now in questioning life cycle.</p></li>
+<ul><li><p><code><a href="../reference/env.html">env()</a></code> now treats a single unnamed argument as the parent of the new environment. Consequently, <code><a href="../reference/child_env.html">child_env()</a></code> is now superfluous and is now in questioning life cycle.</p></li>
 <li><p>New <code><a href="../reference/stack.html">current_env()</a></code> and <code><a href="../reference/stack.html">current_fn()</a></code> functions to retrieve the current environment or the function being evaluated. They are equivalent to <code><a href="https://rdrr.io/r/base/environment.html" class="external-link">base::environment()</a></code> and <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">base::sys.function()</a></code> called without argument.</p></li>
 <li><p><code><a href="../reference/env_get.html">env_get()</a></code> and <code><a href="../reference/env_get.html">env_get_list()</a></code> gain a <code>default</code> argument to provide a default value for non-existing bindings.</p></li>
 <li><p><code><a href="../reference/env_poke.html">env_poke()</a></code> now returns the old value invisibly rather than the input environment.</p></li>
@@ -1120,7 +1120,7 @@ Caused by error in `their_function()`:
 <li><p><code><a href="../reference/enquo.html">enquo()</a></code> now works properly within compiled functions. Before this release, constants optimised by the bytecode compiler couldn’t be enquoted.</p></li>
 </ul><div class="section level3">
 <h3 id="new-functions-0-1-1">New functions:<a class="anchor" aria-label="anchor" href="#new-functions-0-1-1"></a></h3>
-<ul><li><p>The <code><a href="../reference/env.html">new_environment()</a></code> constructor creates a child of the empty environment and takes an optional named list of data to populate it. Compared to <code><a href="../reference/env.html">env()</a></code> and <code><a href="../reference/env.html">child_env()</a></code>, it is meant to create environments as data structures rather than as part of a scope hierarchy.</p></li>
+<ul><li><p>The <code><a href="../reference/env.html">new_environment()</a></code> constructor creates a child of the empty environment and takes an optional named list of data to populate it. Compared to <code><a href="../reference/env.html">env()</a></code> and <code><a href="../reference/child_env.html">child_env()</a></code>, it is meant to create environments as data structures rather than as part of a scope hierarchy.</p></li>
 <li><p>The <code><a href="../reference/new_call.html">new_call()</a></code> constructor creates calls out of a callable object (a function or an expression) and a pairlist of arguments. It is useful to avoid costly internal coercions between lists and pairlists of arguments.</p></li>
 </ul></div>
 <div class="section level3">

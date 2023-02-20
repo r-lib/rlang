@@ -155,7 +155,7 @@ an object with a <code><a href="get_env.html">get_env()</a></code> method.</p></
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># with_env() is handy to create formulas with a given environment:</span></span></span>
-<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">child_env</a></span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="child_env.html">child_env</a></span><span class="op">(</span><span class="st">"rlang"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">with_env</span><span class="op">(</span><span class="va">env</span>, <span class="op">~</span><span class="fu"><a href="new_formula.html">new_formula</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="f_rhs.html">f_env</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, <span class="va">env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>

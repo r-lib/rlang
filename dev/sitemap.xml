@@ -127,6 +127,9 @@
     <loc>https://rlang.r-lib.org/dev/reference/check_required.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/dev/reference/child_env.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/dev/reference/chr_unserialise_unicode.html</loc>
   </url>
   <url>
