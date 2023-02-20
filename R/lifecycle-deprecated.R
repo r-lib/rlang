@@ -998,3 +998,22 @@ scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
 }
 # rlang 0.4.2: Silent deprecation.
 # rlang 1.0.0: Soft deprecation.
+
+
+#  Deprecated in rlang 1.1.0
+
+#' Create a child environment
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' [env()] now supports creating child environments, please use it
+#' instead.
+#'
+#' @keywords internal
+#' @export
+child_env <- function(.parent, ...) {
+  env <- new.env(parent = as_environment(.parent))
+  env_bind0(env, list2(...))
+  env
+}

@@ -2,13 +2,10 @@
 % Please edit documentation in R/env.R
 \name{env}
 \alias{env}
-\alias{child_env}
 \alias{new_environment}
 \title{Create a new environment}
 \usage{
 env(...)
-
-child_env(.parent, ...)
 
 new_environment(data = list(), parent = empty_env())
 }
@@ -17,7 +14,7 @@ new_environment(data = list(), parent = empty_env())
 supply one unnamed to specify a custom parent, otherwise it
 defaults to the current environment.}
 
-\item{.parent, parent}{A parent environment.}
+\item{parent}{A parent environment.}
 }
 \description{
 These functions create new environments.
@@ -77,62 +74,16 @@ as argument to a function), modifying the bindings of one of those
 references changes all other references as well.
 }
 
-\section{Life cycle}{
-
-\itemize{
-\item \code{child_env()} is in the questioning stage. It is redundant now
-that \code{env()} accepts parent environments.
-}
-}
-
 \examples{
-# env() creates a new environment which has the current environment
-# as parent
+# env() creates a new environment that inherits from the current
+# environment by default
 env <- env(a = 1, b = "foo")
 env$b
 identical(env_parent(env), current_env())
 
-# Supply one unnamed argument to override the default:
+# Supply one unnamed argument to inherit from another environment:
 env <- env(base_env(), a = 1, b = "foo")
 identical(env_parent(env), base_env())
-
-
-# child_env() lets you specify a parent:
-child <- child_env(env, c = "bar")
-identical(env_parent(child), env)
-
-# This child environment owns `c` but inherits `a` and `b` from `env`:
-env_has(child, c("a", "b", "c", "d"))
-env_has(child, c("a", "b", "c", "d"), inherit = TRUE)
-
-# `parent` is passed to as_environment() to provide handy
-# shortcuts. Pass a string to create a child of a package
-# environment:
-child_env("rlang")
-env_parent(child_env("rlang"))
-
-# Or `NULL` to create a child of the empty environment:
-child_env(NULL)
-env_parent(child_env(NULL))
-
-# The base package environment is often a good default choice for a
-# parent environment because it contains all standard base
-# functions. Also note that it will never inherit from other loaded
-# package environments since R keeps the base package at the tail
-# of the search path:
-base_child <- child_env("base")
-env_has(base_child, c("lapply", "("), inherit = TRUE)
-
-# On the other hand, a child of the empty environment doesn't even
-# see a definition for `(`
-empty_child <- child_env(NULL)
-env_has(empty_child, c("lapply", "("), inherit = TRUE)
-
-# Note that all other package environments inherit from base_env()
-# as well:
-rlang_child <- child_env("rlang")
-env_has(rlang_child, "env", inherit = TRUE)     # rlang function
-env_has(rlang_child, "lapply", inherit = TRUE)  # base function
 
 
 # Both env() and child_env() support tidy dots features:

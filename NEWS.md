@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `child_env()` is deprecated in favour of `env()` which has supported
+  creating child environments for several years now.
+
 * Quosures can now be consistently concatenated to lists of quosures (#1446).
 
 * `try_fetch()` now looks up condition classes across chained errors
