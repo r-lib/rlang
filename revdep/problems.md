@@ -43,94 +43,6 @@ Run `revdepcheck::cloud_details(, "dplyr")` for more info
       Note: found 4 marked UTF-8 strings
     ```
 
-# ggpackets
-
-<details>
-
-* Version: 0.2.1
-* GitHub: https://github.com/dgkf/ggpackets
-* Source code: https://github.com/cran/ggpackets
-* Date/Publication: 2022-10-10 23:30:02 UTC
-* Number of recursive dependencies: 76
-
-Run `revdepcheck::cloud_details(, "ggpackets")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ggpackets-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: ggpackets-package
-    > ### Title: ggpackets: Package Plot Layers for Easier Portability and
-    > ###   Modularization
-    > ### Aliases: ggpackets ggpackets-package
-    > 
-    > ### ** Examples
-    > 
-    ...
-     11.                   └─ggpackets:::handle_reset_mapping(do.call(ggplot2::aes, m1))
-     12.                     ├─...[]
-     13.                     ├─ggplot2:::`[.uneval`(...)
-     14.                     │ └─ggplot2:::new_aes(NextMethod())
-     15.                     ├─base::NextMethod()
-     16.                     └─base::vapply(...)
-     17.                       └─ggpackets (local) FUN(X[[i]], ...)
-     18.                         └─rlang:::Ops.quosure(rlang::quo_squash(ai), quote(..reset..))
-     19.                           └─rlang::abort(...)
-    Execution halted
-    ```
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-       10.           └─base::Reduce(...)
-       11.             └─ggpackets (local) f(init, x[[i]])
-       12.               └─ggpackets:::handle_reset_mapping(do.call(ggplot2::aes, m1))
-       13.                 ├─...[]
-       14.                 ├─ggplot2:::`[.uneval`(...)
-       15.                 │ └─ggplot2:::new_aes(NextMethod())
-       16.                 ├─base::NextMethod()
-       17.                 └─base::vapply(...)
-       18.                   └─ggpackets (local) FUN(X[[i]], ...)
-       19.                     └─rlang:::Ops.quosure(rlang::quo_squash(ai), quote(..reset..))
-       20.                       └─rlang::abort(...)
-      
-      [ FAIL 1 | WARN 1 | SKIP 0 | PASS 41 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘composing-functions.Rmd’ using rmarkdown
-    --- finished re-building ‘composing-functions.Rmd’
-    
-    --- re-building ‘ggpackets.Rmd’ using rmarkdown
-    --- finished re-building ‘ggpackets.Rmd’
-    
-    --- re-building ‘miscellaneous-examples.Rmd’ using rmarkdown
-    Quitting from lines 98-107 (miscellaneous-examples.Rmd) 
-    ...
-    # Bad: myquosure == rhs
-    
-    # Good: !!myquosure == rhs
-    --- failed re-building ‘miscellaneous-examples.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘miscellaneous-examples.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # htmltools
 
 <details>
@@ -176,126 +88,79 @@ Run `revdepcheck::cloud_details(, "htmltools")` for more info
     Package which this enhances but not available for checking: ‘knitr’
     ```
 
-# linne
+# portalr
 
 <details>
 
-* Version: 0.0.2
-* GitHub: https://github.com/JohnCoene/linne
-* Source code: https://github.com/cran/linne
-* Date/Publication: 2020-10-26 09:20:10 UTC
-* Number of recursive dependencies: 67
+* Version: 0.3.11
+* GitHub: https://github.com/weecology/portalr
+* Source code: https://github.com/cran/portalr
+* Date/Publication: 2022-12-01 17:40:02 UTC
+* Number of recursive dependencies: 106
 
-Run `revdepcheck::cloud_details(, "linne")` for more info
+Run `revdepcheck::cloud_details(, "portalr")` for more info
 
 </details>
 
 ## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘linne-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: Linne
-    > ### Title: Linne
-    > ### Aliases: Linne
-    > 
-    > ### ** Examples
-    > 
-    > 
-    ...
-     11. │             ├─purrr:::with_indexed_errors(...)
-     12. │             │ └─base::withCallingHandlers(...)
-     13. │             ├─purrr:::call_with_cleanup(...)
-     14. │             └─linne (local) .f(.x[[i]], ...)
-     15. │               └─base::stop(...)
-     16. └─base::.handleSimpleError(...)
-     17.   └─purrr (local) h(simpleError(msg, call))
-     18.     └─cli::cli_abort(...)
-     19.       └─rlang::abort(...)
-    Execution halted
-    ```
 
 *   checking tests ... ERROR
     ```
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 29 ]
+      Backtrace:
+          ▆
+       1. ├─portalr::bait_presence_absence(path = portal_data_path, level = "plot") at test-10-summarize_ants.R:49:2
+       2. │ ├─compute_presence(bait, level) %>% as.data.frame()
+       3. │ └─portalr:::compute_presence(bait, level)
+       4. │   └─... %>% ...
+       5. ├─base::as.data.frame(.)
+       6. ├─tidyr::complete(., !!!grouping, fill = list(presence = 0))
+       7. ├─dplyr::mutate(., presence = 1)
+       8. ├─dplyr::distinct(.)
+       9. └─dplyr::select(., !!!grouping)
       
+      [ FAIL 12 | WARN 43 | SKIP 42 | PASS 17 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+# rapbase
+
+<details>
+
+* Version: 1.23.0
+* GitHub: https://github.com/Rapporteket/rapbase
+* Source code: https://github.com/cran/rapbase
+* Date/Publication: 2022-08-17 14:20:02 UTC
+* Number of recursive dependencies: 110
+
+Run `revdepcheck::cloud_details(, "rapbase")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
       ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Error ('test-class.R:8'): Generated CSS ─────────────────────────────────────
-      <purrr_error_indexed/rlang_error/error/condition>
-      Error in `purrr::map(private$.rules, chg2css, private$.definitions)`: ℹ In index: 1.
-      Caused by error in `purrr::map()`:
-      ℹ In index: 1.
-      ℹ With name: fontSize.
-      Caused by error:
-      ! Cannot find `~size`, did you `define` it?
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 29 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘R6’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
-# plotly
-
-<details>
-
-* Version: 4.10.1
-* GitHub: https://github.com/plotly/plotly.R
-* Source code: https://github.com/cran/plotly
-* Date/Publication: 2022-11-07 07:30:03 UTC
-* Number of recursive dependencies: 166
-
-Run `revdepcheck::cloud_details(, "plotly")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ── Failure ('test-ggplot-ggplotly.R:13'): can filter data returned by ggplotly ──
-      `dat` not equivalent to subset(p$data, city == "Houston").
-      Length mismatch: comparison on first 9 components
-      ── Failure ('test-ggplot-ggplotly.R:14'): can filter data returned by ggplotly ──
-      as.character(dplyr::groups(dat)) not equivalent to "city".
+      ── Failure ('test-github.R:6'): contributors are provided ──────────────────────
+      class(getGithub("contributors", "rapbase")) not equal to "character".
       1/1 mismatches
-      x[1]: "`~city`"
-      y[1]: "city"
+      x[1]: "NULL"
+      y[1]: "character"
+      ── Failure ('test-github.R:10'): key can be provided ───────────────────────────
+      grepl("ssh-rsa", getGithub("keys", "areedv")) is not TRUE
       
-      [ FAIL 4 | WARN 15 | SKIP 71 | PASS 1407 ]
-      Deleting unused snapshots:
-      • ggplot-contour/contour.svg
-      • ggplot-heatmap/heatmap.svg
+      `actual`:       
+      `expected`: TRUE
+      
+      [ FAIL 2 | WARN 0 | SKIP 25 | PASS 190 ]
       Error: Test failures
       Execution halted
-    ```
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.2Mb
-      sub-directories of 1Mb or more:
-        htmlwidgets   4.0Mb
     ```
 

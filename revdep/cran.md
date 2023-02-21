@@ -1,9 +1,9 @@
 ## revdepcheck results
 
-We checked 46 reverse dependencies (33 from CRAN + 13 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 6565 reverse dependencies (6518 from CRAN + 47 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 5 new problems
- * We failed to check 11 packages
+ * We saw 4 new problems
+ * We failed to check 35 packages
 
 Issues with CRAN packages are summarised below.
 
@@ -13,31 +13,49 @@ Issues with CRAN packages are summarised below.
 * dplyr
   checking tests ... ERROR
 
-* ggpackets
-  checking examples ... ERROR
-  checking tests ... ERROR
-  checking re-building of vignette outputs ... WARNING
-
 * htmltools
   checking tests ... ERROR
 
-* linne
-  checking examples ... ERROR
+* portalr
   checking tests ... ERROR
 
-* plotly
+* rapbase
   checking tests ... ERROR
 
 ### Failed to check
 
-* beadplexr     (NA)
-* genekitr      (NA)
-* ggPMX         (NA)
-* grandR        (NA)
-* immcp         (NA)
-* loon.ggplot   (NA)
-* OlinkAnalyze  (NA)
-* Platypus      (NA)
-* RVA           (NA)
-* SCpubr        (NA)
-* xpose.nlmixr2 (NA)
+* beadplexr       (NA)
+* CensMFM         (NA)
+* cinaR           (NA)
+* ckanr           (NA)
+* ctsem           (NA)
+* FAMetA          (NA)
+* genekitr        (NA)
+* ggPMX           (NA)
+* grandR          (NA)
+* immcp           (NA)
+* ImputeRobust    (NA)
+* loon.ggplot     (NA)
+* loon.shiny      (NA)
+* MARVEL          (NA)
+* nlmixr2         (NA)
+* nlmixr2extra    (NA)
+* nlmixr2plot     (NA)
+* nlmixr2rpt      (NA)
+* numbat          (NA)
+* OlinkAnalyze    (NA)
+* OpenMx          (NA)
+* pathwayTMB      (NA)
+* Platypus        (NA)
+* PredPsych       (NA)
+* RcppCensSpatial (NA)
+* rPBK            (NA)
+* rstan           (NA)
+* RVA             (NA)
+* SCpubr          (NA)
+* SSVS            (NA)
+* tidySEM         (NA)
+* tinyarray       (NA)
+* valse           (NA)
+* vivid           (NA)
+* xpose.nlmixr2   (NA)
