@@ -317,6 +317,12 @@ test_that("quosures can be concatenated with lists of quosures (#1446)", {
   )
 })
 
+test_that("quo_squash() handles nested quosured quosures", {
+  q <- new_quosure(quo(1))
+  expect_equal(quo_squash(q), 1)
+  expect_equal(quo_squash(quo(foo(!!q))), quote(foo(1)))
+})
+
 
 # Lifecycle ----------------------------------------------------------
 

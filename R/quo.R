@@ -474,7 +474,7 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
 
   node_squash <- function(x) {
     while (!is_null(x)) {
-      quo_squash_impl(node_car(x), x, warn = warn)
+      quo_squash_impl(node_car(x), parent = x, warn = warn)
       x <- node_cdr(x)
     }
   }
@@ -483,7 +483,7 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
     x,
     language = {
       if (is_quosure(x)) {
-        quo_squash_do(x)
+        x <- quo_squash_do(x)
       } else {
         node_squash(x)
       }
