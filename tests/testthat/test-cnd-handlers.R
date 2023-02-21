@@ -145,3 +145,58 @@ test_that("tryFetch() looks across chained errors (#1534)", {
 
   expect_equal(out, "ok")
 })
+
+test_that("try_fetch() doesn't match downgraded conditions", {
+  out <- NULL
+  try_fetch(
+    error = function(cnd) abort("Wrongly caught error"),
+    warning = function(cnd) out <<- cnd,
+    try_fetch(
+      error = function(cnd) warn("Downgraded error", parent = cnd),
+      abort("Parent error")
+    )
+  )
+
+  expect_s3_class(out, "warning")
+  expect_equal(cnd_header(out), "Downgraded error")
+
+  out <- NULL
+  try_fetch(
+    error = function(cnd) abort("Wrongly caught error"),
+    warning = function(cnd) abort("Wrongly caught warning"),
+    message = function(cnd) out <<- cnd,
+    try_fetch(
+      error = function(cnd) inform("Downgraded error", parent = cnd),
+      abort("Parent error")
+    )
+  )
+
+  expect_s3_class(out, "message")
+  expect_equal(cnd_header(out), "Downgraded error")
+})
+
+test_that("try_fetch() matches upgraded conditions", {
+  out <- NULL
+  try_fetch(
+    message = function(cnd) out <<- cnd,
+    try_fetch(
+      message = function(cnd) warn("Upgraded message", parent = cnd),
+      inform("Parent message")
+    )
+  )
+
+  expect_s3_class(out, "message")
+  expect_equal(cnd_header(out), "Parent message")
+
+  out <- NULL
+  try_fetch(
+    warning = function(cnd) out <<- cnd,
+    try_fetch(
+      warning = function(cnd) abort("Upgraded warning", parent = cnd),
+      warn("Parent warning")
+    )
+  )
+
+  expect_s3_class(out, "warning")
+  expect_equal(cnd_header(out), "Parent warning")
+})
