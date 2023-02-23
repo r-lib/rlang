@@ -99,6 +99,9 @@
 
 * The C level `r_dyn_*_push_back()` utilities are now faster (#1542).
 
+* The C level `r_lgl_sum()` and `r_lgl_which()` helpers are now faster
+  (#1577, with contributions from @mgirlich).
+
 * rlang is now compliant with `-Wstrict-prototypes` as requested by CRAN
   (#1508).
 
