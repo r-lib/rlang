@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `flatten()`, `squash()`, and their variants are deprecated in favour
+  of `purrr::list_flatten()` and `purrr::list_c()`.
+
 * The lifecycle standalone file has been updated to match the modern
   lifecycle tools.
 

@@ -136,10 +136,11 @@ their_function()
 #> ! Can't do this
 #> ---
 #> Backtrace:
-#>  1. rlang (local) their_function()
-#>  2. rlang (local) error_helper1()
-#>  3. rlang (local) error_helper2(call = call)
-#> Run `rlang::last_trace()` to see the full context.
+#>     x
+#>  1. \\-rlang (local) their_function()
+#>  2.   \\-rlang (local) error_helper1()
+#>  3.     \\-rlang (local) error_helper2(call = call)
+#> Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
 }\if{html}{\out{</div>}}
 
 With the correct \code{call}, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:
@@ -156,8 +157,9 @@ their_function()
 #> ! Can't do this
 #> ---
 #> Backtrace:
-#>  1. rlang (local) their_function()
-#> Run `rlang::last_trace()` to see the full context.
+#>     x
+#>  1. \\-rlang (local) their_function()
+#> Run rlang::last_trace(drop = FALSE) to see 3 hidden frames.
 }\if{html}{\out{</div>}}
 }
 

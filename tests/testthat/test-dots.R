@@ -18,12 +18,14 @@ test_that("dots are always named", {
 })
 
 test_that("dots can be spliced", {
-  spliced_dots <- dots_values(!!! list(letters))
+  spliced_dots <- dots_values(!!!list(letters))
   expect_identical(spliced_dots, list(splice(list(letters))))
-  expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
-  expect_identical(list2(!!! list(letters)), list(letters))
+  expect_identical(list2(!!!list(letters)), list(letters))
   wrapper <- function(...) list2(...)
-  expect_identical(wrapper(!!! list(letters)), list(letters))
+  expect_identical(wrapper(!!!list(letters)), list(letters))
+
+  local_lifecycle_silence()
+  expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
 })
 
 test_that("interpolation by value does not guard formulas", {

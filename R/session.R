@@ -73,7 +73,7 @@ detect_installed <- function(info) {
     return(all(hook(info$pkg, info$ver, info$cmp)))
   }
 
-  flatten_lgl(pmap(info, function(pkg, cmp, ver) {
+  list_c(pmap(info, function(pkg, cmp, ver) {
     if (is_string(pkg, "base")) {
       # Special-case the base package because it is not locked on
       # older R versions
@@ -176,7 +176,7 @@ as_version_info <- function(pkg, call = caller_env()) {
   }
 
   info <- set_names(transpose(ver), c("cmp", "ver"))
-  info <- map(info, flatten_chr)
+  info <- map(info, list_c)
 
   pkg <- sub(version_regex, "\\1", pkg)
   info <- c(list(pkg = pkg), info)
@@ -358,7 +358,7 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
   pkg_enum <- chr_quoted(cnd$pkg, type = "\"")
 
   if (!is_null(version)) {
-    pkg_enum <- flatten_chr(pmap(list(pkg_enum, compare, version), function(p, o, v) {
+    pkg_enum <- list_c(pmap(list(pkg_enum, compare, version), function(p, o, v) {
       if (is_na(v)) {
         p
       } else {
