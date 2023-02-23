@@ -221,10 +221,11 @@ This works well when abort() is called directly within the failing function. How
 <span><span class="co">#&gt; ! Can't do this</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Backtrace:</span></span>
-<span><span class="co">#&gt;  1. rlang (local) their_function()</span></span>
-<span><span class="co">#&gt;  2. rlang (local) error_helper1()</span></span>
-<span><span class="co">#&gt;  3. rlang (local) error_helper2(call = call)</span></span>
-<span><span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></span></code></pre><p></p></div>
+<span><span class="co">#&gt;     x</span></span>
+<span><span class="co">#&gt;  1. \-rlang (local) their_function()</span></span>
+<span><span class="co">#&gt;  2.   \-rlang (local) error_helper1()</span></span>
+<span><span class="co">#&gt;  3.     \-rlang (local) error_helper2(call = call)</span></span>
+<span><span class="co">#&gt; Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.</span></span></code></pre><p></p></div>
 <p>With the correct <code>call</code>, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
 <span><span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
@@ -236,8 +237,9 @@ This works well when abort() is called directly within the failing function. How
 <span><span class="co">#&gt; ! Can't do this</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Backtrace:</span></span>
-<span><span class="co">#&gt;  1. rlang (local) their_function()</span></span>
-<span><span class="co">#&gt; Run `rlang::last_trace()` to see the full context.</span></span></code></pre><p></p></div>
+<span><span class="co">#&gt;     x</span></span>
+<span><span class="co">#&gt;  1. \-rlang (local) their_function()</span></span>
+<span><span class="co">#&gt; Run rlang::last_trace(drop = FALSE) to see 3 hidden frames.</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="testthat-workflow">testthat workflow<a class="anchor" aria-label="anchor" href="#testthat-workflow"></a></h2>

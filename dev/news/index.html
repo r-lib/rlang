@@ -100,7 +100,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>The lifecycle standalone file has been updated to match the modern lifecycle tools.</p></li>
+<ul><li><p><code><a href="../reference/flatten.html">flatten()</a></code>, <code><a href="../reference/flatten.html">squash()</a></code>, and their variants are deprecated in favour of <code><a href="https://purrr.tidyverse.org/reference/list_flatten.html" class="external-link">purrr::list_flatten()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/list_c.html" class="external-link">purrr::list_c()</a></code>.</p></li>
+<li><p>The lifecycle standalone file has been updated to match the modern lifecycle tools.</p></li>
 <li><p>New <code><a href="../reference/env_is_direct.html">env_is_direct()</a></code> function to determine if an evaluation frame corresponds to a direct (global environment or package being tested) or indirect usage (through a third party function).</p></li>
 <li><p><code><a href="../reference/last_error.html">last_error()</a></code> and <code>options(rlang_backtrace_on_error = "full")</code> now print the full backtrace tree by default (except for some hidden frames). The simplified backtraces tended to hide important context too often. Now we show intervening frames in a lighter colour so that they don’t distract from the important parts of the backtraces but are still easily inspectable.</p></li>
 <li><p><code><a href="../reference/child_env.html">child_env()</a></code> is deprecated in favour of <code><a href="../reference/env.html">env()</a></code> which has supported creating child environments for several years now.</p></li>
