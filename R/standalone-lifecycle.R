@@ -88,14 +88,9 @@ NULL
 deprecate_soft <- function(msg,
                            id = msg,
                            user_env = rlang::caller_env(2)) {
-  msg <- .rlang_lifecycle_validate_message(msg)
-  stopifnot(
-    rlang::is_string(id),
-    rlang::is_environment(user_env)
-  )
-
   .rlang_lifecycle_signal_stage(msg, "deprecated")
 
+  id <- paste(id, collapse = "\n")
   verbosity <- .rlang_lifecycle_verbosity()
 
   invisible(switch(
@@ -121,14 +116,9 @@ deprecate_warn <- function(msg,
                            id = msg,
                            always = FALSE,
                            user_env = rlang::caller_env(2)) {
-  msg <- .rlang_lifecycle_validate_message(msg)
-  stopifnot(
-    rlang::is_string(id),
-    rlang::is_environment(user_env)
-  )
-
   .rlang_lifecycle_signal_stage(msg, "deprecated")
 
+  id <- paste(id, collapse = "\n")
   verbosity <- .rlang_lifecycle_verbosity()
 
   invisible(switch(
@@ -160,9 +150,6 @@ deprecate_warn <- function(msg,
                                              trace = NULL,
                                              always = FALSE,
                                              call = rlang::caller_env()) {
-  msg <- .rlang_lifecycle_validate_message(msg)
-  stopifnot(rlang::is_string(id))
-
   if (always) {
     freq <- "always"
   } else {
@@ -178,8 +165,7 @@ deprecate_warn <- function(msg,
 }
 
 deprecate_stop <- function(msg) {
-  msg <- .rlang_lifecycle_validate_message(msg)
-
+  msg <- cli::format_error(msg)
   .rlang_lifecycle_signal_stage(msg, "deprecated")
 
   stop(rlang::cnd(
@@ -241,11 +227,6 @@ local_lifecycle_errors <- function(frame = rlang::caller_env()) {
 with_lifecycle_errors <- function(expr) {
   local_lifecycle_errors()
   expr
-}
-
-.rlang_lifecycle_validate_message <- function(msg) {
-  stopifnot(rlang::is_character(msg))
-  paste0(msg, collapse = "\n")
 }
 
 .rlang_lifecycle_verbosity <- function() {

@@ -101,13 +101,6 @@ test_that("once-per-session note is not displayed on repeated warnings", {
   expect_true(grepl("once every", conditionMessage(wrn)))
 })
 
-test_that("inputs are type checked", {
-  expect_error(deprecate_soft(1), "is_character")
-  expect_error(deprecate_soft("foo", "bar", 1), "is_environment")
-  expect_error(deprecate_warn(1), "is_character")
-  expect_error(deprecate_stop(1), "is_character")
-})
-
 test_that("lifecycle signallers support character vectors", {
   local_lifecycle_errors()
   expect_defunct(deprecate_soft(c("foo", "bar")), "foo\nbar")
@@ -117,4 +110,10 @@ test_that("lifecycle signallers support character vectors", {
 
 test_that("the topenv of the empty env is not the global env", {
   expect_silent(deprecate_soft("topenv empty env", user_env = empty_env()))
+})
+
+test_that("can supply bullets", {
+  expect_snapshot({
+    deprecate_warn(c("foo", "i" = "bar"))
+  })
 })
