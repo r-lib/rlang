@@ -287,6 +287,9 @@ cnd_type <- function(cnd) {
 #' object is a particular kind of error or has been caused by such an
 #' error.
 #'
+#' Some chained conditions carry parents that are not inherited. See
+#' the `inherit` argument of [abort()], [warn()], and [inform()].
+#'
 #'
 #' # Capture an error with `cnd_inherits()`
 #'
@@ -345,6 +348,19 @@ cnd_type <- function(cnd) {
 #' class(cnd$parent)
 #' ```
 #'
+#' Note that `try_fetch()` uses `cnd_inherits()` internally. This
+#' makes it very easy to match a parent condition:
+#'
+#' ```{r, comment = "#>", collapse = TRUE}
+#' cnd <- try_fetch(
+#'   f(),
+#'   bar = function(x) x
+#' )
+#'
+#' # This is the parent
+#' class(cnd)
+#' ```
+#'
 #' @param cnd A condition to test.
 #' @param class A class passed to [inherits()].
 #'
@@ -354,9 +370,15 @@ cnd_inherits <- function(cnd, class) {
 }
 
 cnd_some <- function(cnd, fn, ...) {
+  inherit <- .subset2(.subset2(cnd, "rlang"), "inherit")
+
   while (is_condition(cnd)) {
     if (fn(cnd, ...)) {
       return(TRUE)
+    }
+
+    if (is_false(inherit)) {
+      return(FALSE)
     }
 
     cnd <- cnd[["parent"]]

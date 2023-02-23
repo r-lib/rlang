@@ -296,6 +296,7 @@ test_that("errors are saved by `entrace()`", {
   # Remove internal data stored by `last_error()`
   err <- last_error()
   err$rlang <- NULL
+  out$rlang <- NULL
 
   expect_equal(err, out)
 })
