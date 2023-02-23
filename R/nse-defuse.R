@@ -491,7 +491,10 @@ endots <- function(call,
   })
 
   if (splice_dots) {
-    dots <- flatten_if(dots, is_spliced)
+    with_options(
+      lifecycle_verbosity = "quiet",
+      dots <- flatten_if(dots, is_spliced)
+    )
   }
 
   if (ignore_empty == "all") {
