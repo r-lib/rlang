@@ -267,6 +267,7 @@ reference:
       - as_environment
       - caller_env
       - env_browse
+      - env_is_direct
 
   - subtitle: Stack
     contents:
