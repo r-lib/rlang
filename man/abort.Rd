@@ -19,6 +19,7 @@ abort(
   trace = NULL,
   parent = NULL,
   use_cli_format = NULL,
+  .inherit = TRUE,
   .internal = FALSE,
   .file = NULL,
   .frame = caller_env(),

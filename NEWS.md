@@ -2,7 +2,8 @@
 
 * `abort()`, `warn()`, and `inform()` gain a `.inherit` parameter.
   This controls whether `parent` is inherited. If `FALSE`
-  `cnd_inherits()` doesn't match chained conditions across parents.
+  `cnd_inherits()` and `try_fetch()` do not match chained conditions
+  across parents.
 
   It's normally `TRUE` by default, but if a warning is chained to an
   error or a message is chained to a warning or error (downgraded
