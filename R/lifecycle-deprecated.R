@@ -1017,6 +1017,7 @@ child_env <- function(.parent, ...) {
   env_bind0(env, list2(...))
   env
 }
+# rlang 1.1.0: Soft deprecation.
 
 #' Flatten or squash a list of lists into a simpler vector
 #'
@@ -1030,14 +1031,6 @@ child_env <- function(.parent, ...) {
 #' `squash()` removes all levels. These functions are similar to
 #' [unlist()] but they are type-stable so you always know what the
 #' type of the output is.
-#'
-#'
-#' @section Life cycle:
-#'
-#' These functions are in the questioning stage. They have slightly
-#' different semantics than the flattening functions in purrr and we
-#' are currently rethinking our approach to flattening with the new
-#' typing facilities of the vctrs package.
 #'
 #' @param x A list to flatten or squash. The contents of the list can
 #'   be anything for unsuffixed functions `flatten()` and `squash()`
@@ -1093,6 +1086,8 @@ flatten <- function(x) {
   ))
   .Call(ffi_squash, x, "list", is_spliced_bare, 1L)
 }
+# rlang 1.1.0: Soft deprecation.
+
 #' @rdname flatten
 #' @export
 flatten_lgl <- function(x) {

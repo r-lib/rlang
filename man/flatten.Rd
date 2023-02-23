@@ -77,15 +77,6 @@ These functions are deprecated in favour of \code{purrr::list_c()} and
 \code{\link[=unlist]{unlist()}} but they are type-stable so you always know what the
 type of the output is.
 }
-\section{Life cycle}{
-
-
-These functions are in the questioning stage. They have slightly
-different semantics than the flattening functions in purrr and we
-are currently rethinking our approach to flattening with the new
-typing facilities of the vctrs package.
-}
-
 \examples{
 x <- replicate(2, sample(4), simplify = FALSE)
 x
