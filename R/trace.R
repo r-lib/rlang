@@ -553,7 +553,7 @@ style_locs <- function(locs) {
   chr(map_if(locs, nzchar, col_grey))
 }
 zip_chr <- function(xs, ys) {
-  flatten_chr(map2(xs, ys, function(x, y) {
+  list_c(map2(xs, ys, function(x, y) {
     if (nzchar(y)) {
       c(x, y)
     } else {

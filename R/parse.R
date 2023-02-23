@@ -107,9 +107,11 @@ chr_parse_exprs <- function(x) {
   parsed <- unname(parsed)
 
   if (!is_null(nms)) {
-    nms <- flatten_chr(map2(parsed, nms, rep_along))
+    nms <- list_c(map2(parsed, nms, rep_along))
   }
-  parsed <- flatten(parsed)
+  if (length(parsed)) {
+    parsed <- list_c(parsed)
+  }
 
   set_names(parsed, nms)
 }

@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-purrr.R
-# last-updated: 2022-06-07
+# last-updated: 2023-02-23
 # license: https://unlicense.org
 # ---
 #
@@ -10,6 +10,9 @@
 # of programming.
 #
 # ## Changelog
+#
+# 2023-02-23:
+# * Added `list_c()`
 #
 # 2022-06-07:
 # * `transpose()` is now more consistent with purrr when inner names
@@ -223,6 +226,10 @@ detect_index <- function(.x, .f, ..., .right = FALSE, .p = is_true) {
     idx <- rev(idx)
   }
   idx
+}
+
+list_c <- function(x) {
+  inject(c(!!!x))
 }
 
 # nocov end
