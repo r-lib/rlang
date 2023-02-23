@@ -695,6 +695,8 @@ test_that("unquoting with rlang namespace is deprecated", {
 
   # Old tests
 
+  local_lifecycle_silence()
+
   expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
   expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
 

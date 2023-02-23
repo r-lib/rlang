@@ -85,7 +85,7 @@ test_that("are_na() fails with lists (#558)", {
 
 test_that("variadic ctors still work without warnings (#1210)", {
   expect_no_warning({
-    local_options(lifecycle_verbose_soft_deprecation = TRUE)
+    local_options(lifecycle_verbosity = "warning")
     expect_identical(lgl(1), TRUE)
     expect_identical(int(1), 1L)
     expect_identical(dbl(1), 1.0)

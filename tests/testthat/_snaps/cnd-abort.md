@@ -53,9 +53,8 @@
       Error in `h()`:
       ! Error message
       Warning message:
-      `"collapse"` is deprecated as of rlang 1.1.0.
-      Please use `"none"` instead.
-      This warning is displayed once per session. 
+      `"collapse"` is deprecated as of rlang 1.1.0. Please use `"none"` instead.
+      This warning is displayed once every 8 hours. 
       Execution halted
     Code
       cat_line(full)

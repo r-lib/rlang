@@ -282,6 +282,6 @@ void rlang_init_utils(void) {
   deprecate_warn_call = r_parse("rlang:::deprecate_warn(x, id = y)");
   r_preserve(deprecate_warn_call);
 
-  deprecate_soft_call = r_parse("rlang:::deprecate_soft(x, id = y, env = z)");
+  deprecate_soft_call = r_parse("rlang:::deprecate_soft(x, id = y, user_env = z)");
   r_preserve(deprecate_soft_call);
 }

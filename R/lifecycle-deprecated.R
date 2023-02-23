@@ -406,8 +406,8 @@ invoke <- function(.fn, .args = list(), ...,
 #' @name vector-coercion
 NULL
 
-signal_deprecated_cast <- function(fn, env = caller_env(2)) {
-  deprecate_soft(env = env, c(
+signal_deprecated_cast <- function(fn, user_env = caller_env(2)) {
+  deprecate_soft(user_env = user_env, c(
     sprintf("`%s()` is deprecated as of rlang 0.4.0", fn),
     "Please use `vctrs::vec_cast()` instead."
   ))

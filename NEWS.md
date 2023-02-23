@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* The lifecycle standalone file has been updated to match the modern
+  lifecycle tools.
+
 * New `env_is_direct()` function to determine if an evaluation frame
   corresponds to a direct (global environment or package being tested)
   or indirect usage (through a third party function).

@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-lifecycle.R
-# last-updated: 2021-04-19
+# last-updated: 2023-02-23
 # license: https://unlicense.org
 # ---
 #
@@ -11,6 +11,11 @@
 # namespace.
 #
 # ## Changelog
+#
+# 2023-02-23
+#
+# - Updated the API and internals to match modern lifecycle tools.
+#
 #
 # 2021-04-19
 #
@@ -34,11 +39,10 @@
 #' Signal deprecation
 #'
 #' @description
-#'
 #' These functions provide two levels of verbosity for deprecation
 #' warnings.
 #'
-#' * `deprecate_soft()` warns only if called from the global
+#' * `deprecate_soft()` warns only if called directly: from the global
 #'   environment (so the user can change their script) or from the
 #'   package currently being tested (so the package developer can fix
 #'   the package).
@@ -54,10 +58,10 @@
 #' @param id The id of the deprecation. A warning is issued only once
 #'   for each `id`. Defaults to `msg`, but you should give a unique ID
 #'   when the message is built programmatically and depends on inputs.
-#' @param env The environment in which the soft-deprecated function
-#'   was called. A warning is issued if called from the global
-#'   environment. If testthat is running, a warning is also called if
-#'   the retired function was called from the package being tested.
+#' @param user_env The environment in which the deprecated function
+#'   was called. The verbosity depends on whether the deprecated
+#'   feature was called directly, see [rlang::env_is_direct()] and the
+#'   documentation in the lifecycle package.
 #'
 #' @section Controlling verbosity:
 #'
@@ -81,95 +85,135 @@
 #' @noRd
 NULL
 
-deprecate_soft <- function(msg, id = msg, env = rlang::caller_env(2)) {
+deprecate_soft <- function(msg,
+                           id = msg,
+                           user_env = rlang::caller_env(2)) {
   msg <- .rlang_lifecycle_validate_message(msg)
   stopifnot(
     rlang::is_string(id),
-    rlang::is_environment(env)
+    rlang::is_environment(user_env)
   )
 
-  if (rlang::is_true(rlang::peek_option("lifecycle_disable_warnings"))) {
-    return(invisible(NULL))
-  }
+  .rlang_lifecycle_signal_stage(msg, "deprecated")
 
-  env_inherits_global <- function(env) {
-    # `topenv(emptyenv())` returns the global env. Return `FALSE` in
-    # that case to allow passing the empty env when the
-    # soft-deprecation should not be promoted to deprecation based on
-    # the caller environment.
-    if (rlang::is_reference(env, emptyenv())) {
-      return(FALSE)
-    }
+  verbosity <- .rlang_lifecycle_verbosity()
 
-    rlang::is_reference(topenv(env), rlang::global_env())
-  }
-
-  if (rlang::is_true(rlang::peek_option("lifecycle_verbose_soft_deprecation")) ||
-      env_inherits_global(env)) {
-    deprecate_warn(msg, id)
-    return(invisible(NULL))
-  }
-
-  # Test for environment names rather than reference/contents because
-  # testthat clones the namespace
-  tested_package <- Sys.getenv("TESTTHAT_PKG")
-  if (nzchar(tested_package) &&
-        identical(Sys.getenv("NOT_CRAN"), "true") &&
-        rlang::env_name(topenv(env)) == rlang::env_name(rlang::ns_env(tested_package))) {
-    deprecate_warn(msg, id)
-    return(invisible(NULL))
-  }
-
-  rlang::signal(msg, "lifecycle_soft_deprecated")
+  invisible(switch(
+    verbosity,
+    quiet = NULL,
+    warning = ,
+    default =
+      if (rlang::env_is_direct(user_env)) {
+        always <- verbosity == "warning"
+        trace <- rlang::trace_back(bottom = caller_env())
+        .rlang_lifecycle_deprecate_warn0(
+          msg,
+          id = id,
+          trace = trace,
+          always = always
+        )
+      },
+    error = deprecate_stop(msg)
+  ))
 }
 
-deprecate_warn <- function(msg, id = msg) {
+deprecate_warn <- function(msg,
+                           id = msg,
+                           always = FALSE,
+                           user_env = rlang::caller_env(2)) {
+  msg <- .rlang_lifecycle_validate_message(msg)
+  stopifnot(
+    rlang::is_string(id),
+    rlang::is_environment(user_env)
+  )
+
+  .rlang_lifecycle_signal_stage(msg, "deprecated")
+
+  verbosity <- .rlang_lifecycle_verbosity()
+
+  invisible(switch(
+    verbosity,
+    quiet = NULL,
+    warning = ,
+    default = {
+      direct <- rlang::env_is_direct(user_env)
+      always <- direct && (always || verbosity == "warning")
+
+      trace <- tryCatch(
+        rlang::trace_back(bottom = rlang::caller_env()),
+        error = function(...) NULL
+      )
+
+      .rlang_lifecycle_deprecate_warn0(
+        msg,
+        id = id,
+        trace = trace,
+        always = always
+      )
+    },
+    error = deprecate_stop(msg),
+  ))
+}
+
+.rlang_lifecycle_deprecate_warn0 <- function(msg,
+                                             id = msg,
+                                             trace = NULL,
+                                             always = FALSE,
+                                             call = rlang::caller_env()) {
   msg <- .rlang_lifecycle_validate_message(msg)
   stopifnot(rlang::is_string(id))
 
-  if (rlang::is_true(rlang::peek_option("lifecycle_disable_warnings"))) {
-    return(invisible(NULL))
-  }
-
-  if (!rlang::is_true(rlang::peek_option("lifecycle_repeat_warnings")) &&
-        rlang::env_has(.rlang_lifecycle_deprecation_env, id)) {
-    return(invisible(NULL))
-  }
-
-  rlang::env_poke(.rlang_lifecycle_deprecation_env, id, TRUE);
-
-  has_colour <- function() rlang::is_installed("crayon") && crayon::has_color()
-  silver <- function(x) if (has_colour()) crayon::silver(x) else x
-
-  if (rlang::is_true(rlang::peek_option("lifecycle_warnings_as_errors"))) {
-    .Signal <- deprecate_stop
+  if (always) {
+    freq <- "always"
   } else {
-    .Signal <- .Deprecated
+    freq <- "regularly"
   }
 
-  if (!rlang::is_true(rlang::peek_option("lifecycle_repeat_warnings"))) {
-    msg <- paste0(msg, "\n", silver("This warning is displayed once per session."))
-  }
-
-  .Signal(msg = msg)
+  rlang::warn(
+    msg,
+    class = "lifecycle_warning_deprecated",
+    .frequency = freq,
+    .frequency_id = id
+  )
 }
-.rlang_lifecycle_deprecation_env <- new.env(parent = emptyenv())
 
 deprecate_stop <- function(msg) {
   msg <- .rlang_lifecycle_validate_message(msg)
-  err <- rlang::cnd(
+
+  .rlang_lifecycle_signal_stage(msg, "deprecated")
+
+  stop(rlang::cnd(
     c("defunctError", "error", "condition"),
     old = NULL,
     new = NULL,
     package = NULL,
     message = msg
+  ))
+}
+
+.rlang_lifecycle_signal_stage <- function(msg, stage) {
+  rlang::signal(msg, "lifecycle_stage", stage = stage)
+}
+
+expect_deprecated <- function(expr, regexp = NULL, ...) {
+  rlang::local_options(lifecycle_verbosity = "warning")
+
+  if (!is.null(regexp) && rlang::is_na(regexp)) {
+    rlang::abort("`regexp` can't be `NA`.")
+  }
+
+  testthat::expect_warning(
+    {{ expr }},
+    regexp = regexp,
+    class = "lifecycle_warning_deprecated",
+    ...
   )
-  stop(err)
 }
 
 local_lifecycle_silence <- function(frame = rlang::caller_env()) {
-  rlang::local_options(.frame = frame,
-    lifecycle_disable_warnings = TRUE
+  rlang::local_options(
+    .frame = frame,
+    lifecycle_verbosity = "quiet"
   )
 }
 with_lifecycle_silence <- function(expr) {
@@ -178,10 +222,9 @@ with_lifecycle_silence <- function(expr) {
 }
 
 local_lifecycle_warnings <- function(frame = rlang::caller_env()) {
-  rlang::local_options(.frame = frame,
-    lifecycle_disable_warnings = FALSE,
-    lifecycle_verbose_soft_deprecation = TRUE,
-    lifecycle_repeat_warnings = TRUE
+  rlang::local_options(
+    .frame = frame,
+    lifecycle_verbosity = "warning"
   )
 }
 with_lifecycle_warnings <- function(expr) {
@@ -190,9 +233,9 @@ with_lifecycle_warnings <- function(expr) {
 }
 
 local_lifecycle_errors <- function(frame = rlang::caller_env()) {
-  local_lifecycle_warnings(frame = frame)
-  rlang::local_options(.frame = frame,
-    lifecycle_warnings_as_errors = TRUE
+  rlang::local_options(
+    .frame = frame,
+    lifecycle_verbosity = "error"
   )
 }
 with_lifecycle_errors <- function(expr) {
@@ -203,6 +246,23 @@ with_lifecycle_errors <- function(expr) {
 .rlang_lifecycle_validate_message <- function(msg) {
   stopifnot(rlang::is_character(msg))
   paste0(msg, collapse = "\n")
+}
+
+.rlang_lifecycle_verbosity <- function() {
+  opt <- getOption("lifecycle_verbosity", "default")
+
+  if (!rlang::is_string(opt, c("quiet", "default", "warning", "error"))) {
+    options(lifecycle_verbosity = "default")
+    rlang::warn(glue::glue(
+      "
+      The `lifecycle_verbosity` option must be set to one of:
+      \"quiet\", \"default\", \"warning\", or \"error\".
+      Resetting to \"default\".
+      "
+    ))
+  }
+
+  opt
 }
 
 # nocov end

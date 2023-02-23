@@ -558,9 +558,11 @@ test_that("`.data` pronoun fails informatively", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("supplying environment as data is deprecated", {
-  local_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbosity = "warning")
   `_x` <- "foo"
-  expect_warning(eval_tidy("foo", current_env()), "deprecated")
+  expect_deprecated(eval_tidy("foo", current_env()), "deprecated")
+
+  local_options(lifecycle_verbosity = "quiet")
   expect_identical(eval_tidy(quo(`_x`), current_env()), "foo")
   expect_error(eval_tidy(quo(`_y`), current_env()), "not found")
 })
