@@ -163,7 +163,7 @@ expression for <code>get_expr()</code>.</p>
 <span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="va">bar</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">frame</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/identity.html" class="external-link">identity</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identity.html" class="external-link">identity</a></span><span class="op">(</span><span class="fu"><a href="stack-deprecated.html">ctxt_frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`ctxt_frame()` is deprecated as of rlang 0.3.0.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once per session.</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_expr</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> foo(bar)</span>
@@ -174,7 +174,7 @@ expression for <code>get_expr()</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">set_expr</span><span class="op">(</span><span class="va">f</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">baz</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ~baz</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5573f0c37228&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x559dc8a59c68&gt;</span>
 <span class="r-in"><span><span class="fu">set_expr</span><span class="op">(</span><span class="va">e</span>, <span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">baz</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> baz</span>
 </code></pre></div>
