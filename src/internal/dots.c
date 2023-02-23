@@ -218,7 +218,7 @@ void signal_retired_splice(void) {
     "  # Good:\n"
     "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
     "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
-  warn_deprecated(msg, msg);
+  deprecate_warn(msg, msg);
 }
 
 static
@@ -619,7 +619,7 @@ static
 void check_named_splice(r_obj* node) {
   if (r_node_tag(node) != r_null) {
     const char* msg = "`!!!` can't be supplied with a name. Only the operand's names are retained.";
-    stop_defunct(msg);
+    deprecate_stop(msg);
   }
 }
 

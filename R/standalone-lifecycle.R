@@ -38,14 +38,14 @@
 #' These functions provide two levels of verbosity for deprecation
 #' warnings.
 #'
-#' * `signal_soft_deprecated()` warns only if called from the global
+#' * `deprecate_soft()` warns only if called from the global
 #'   environment (so the user can change their script) or from the
 #'   package currently being tested (so the package developer can fix
 #'   the package).
 #'
-#' * `warn_deprecated()` warns unconditionally.
+#' * `deprecate_warn()` warns unconditionally.
 #'
-#' * `stop_defunct()` fails unconditionally.
+#' * `deprecate_stop()` fails unconditionally.
 #'
 #' Both functions warn only once per session by default to avoid
 #' overwhelming the user with repeated warnings.
@@ -81,7 +81,7 @@
 #' @noRd
 NULL
 
-signal_soft_deprecated <- function(msg, id = msg, env = rlang::caller_env(2)) {
+deprecate_soft <- function(msg, id = msg, env = rlang::caller_env(2)) {
   msg <- .rlang_lifecycle_validate_message(msg)
   stopifnot(
     rlang::is_string(id),
@@ -106,7 +106,7 @@ signal_soft_deprecated <- function(msg, id = msg, env = rlang::caller_env(2)) {
 
   if (rlang::is_true(rlang::peek_option("lifecycle_verbose_soft_deprecation")) ||
       env_inherits_global(env)) {
-    warn_deprecated(msg, id)
+    deprecate_warn(msg, id)
     return(invisible(NULL))
   }
 
@@ -116,14 +116,14 @@ signal_soft_deprecated <- function(msg, id = msg, env = rlang::caller_env(2)) {
   if (nzchar(tested_package) &&
         identical(Sys.getenv("NOT_CRAN"), "true") &&
         rlang::env_name(topenv(env)) == rlang::env_name(rlang::ns_env(tested_package))) {
-    warn_deprecated(msg, id)
+    deprecate_warn(msg, id)
     return(invisible(NULL))
   }
 
   rlang::signal(msg, "lifecycle_soft_deprecated")
 }
 
-warn_deprecated <- function(msg, id = msg) {
+deprecate_warn <- function(msg, id = msg) {
   msg <- .rlang_lifecycle_validate_message(msg)
   stopifnot(rlang::is_string(id))
 
@@ -142,7 +142,7 @@ warn_deprecated <- function(msg, id = msg) {
   silver <- function(x) if (has_colour()) crayon::silver(x) else x
 
   if (rlang::is_true(rlang::peek_option("lifecycle_warnings_as_errors"))) {
-    .Signal <- stop_defunct
+    .Signal <- deprecate_stop
   } else {
     .Signal <- .Deprecated
   }
@@ -155,7 +155,7 @@ warn_deprecated <- function(msg, id = msg) {
 }
 .rlang_lifecycle_deprecation_env <- new.env(parent = emptyenv())
 
-stop_defunct <- function(msg) {
+deprecate_stop <- function(msg) {
   msg <- .rlang_lifecycle_validate_message(msg)
   err <- rlang::cnd(
     c("defunctError", "error", "condition"),

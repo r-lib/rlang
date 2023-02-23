@@ -119,7 +119,7 @@ locally <- function(expr) {
 #' type_of(list)
 #' type_of(`$`)
 type_of <- function(x) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "`type_of()` is deprecated as of rlang 0.4.0.",
     "Please use `typeof()` or your own version instead."
   ))
@@ -199,7 +199,7 @@ type_of <- function(x) {
 #'   "default"
 #' )
 switch_type <- function(.x, ...) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "`switch_type()` is soft-deprecated as of rlang 0.4.0.",
     "Please use `switch(typeof())` or `switch(my_typeof())` instead."
   ))
@@ -208,19 +208,19 @@ switch_type <- function(.x, ...) {
 #' @rdname switch_type
 #' @export
 coerce_type <- function(.x, .to, ...) {
-  signal_soft_deprecated("`coerce_type()` is soft-deprecated as of rlang 0.4.0.")
+  deprecate_soft("`coerce_type()` is soft-deprecated as of rlang 0.4.0.")
   switch(type_of_(.x), ..., abort_coercion(.x, .to))
 }
 #' @rdname switch_type
 #' @export
 switch_class <- function(.x, ...) {
-  signal_soft_deprecated("`switch_class()` is soft-deprecated as of rlang 0.4.0.")
+  deprecate_soft("`switch_class()` is soft-deprecated as of rlang 0.4.0.")
   switch(class(.x), ...)
 }
 #' @rdname switch_type
 #' @export
 coerce_class <- function(.x, .to, ...) {
-  signal_soft_deprecated("`coerce_class()` is soft-deprecated as of rlang 0.4.0.")
+  deprecate_soft("`coerce_class()` is soft-deprecated as of rlang 0.4.0.")
   switch(class(.x), ..., abort_coercion(.x, .to))
 }
 
@@ -238,7 +238,7 @@ coerce_class <- function(.x, .to, ...) {
 #' @export
 #' @keywords internal
 friendly_type <- function(type) {
-  signal_soft_deprecated("`friendly_type()` is deprecated as of rlang 0.4.11.")
+  deprecate_soft("`friendly_type()` is deprecated as of rlang 0.4.11.")
   type
 }
 
@@ -258,7 +258,7 @@ invoke <- function(.fn, .args = list(), ...,
                    .env = caller_env(), .bury = c(".fn", "")) {
   # rlang 0.4.0: Soft-deprecation
   # rlang 1.0.0: Deprecation
-  warn_deprecated(c(
+  deprecate_warn(c(
     "`invoke()` is deprecated as of rlang 0.4.0.",
     "Please use `exec()` or `inject()` instead."
   ))
@@ -407,7 +407,7 @@ invoke <- function(.fn, .args = list(), ...,
 NULL
 
 signal_deprecated_cast <- function(fn, env = caller_env(2)) {
-  signal_soft_deprecated(env = env, c(
+  deprecate_soft(env = env, c(
     sprintf("`%s()` is deprecated as of rlang 0.4.0", fn),
     "Please use `vctrs::vec_cast()` instead."
   ))
@@ -583,7 +583,7 @@ NULL
 #' @export
 ctxt_frame <- function(n = 1) {
   # 2022-01: https://github.com/tidyverse/purrr/issues/851
-  warn_deprecated("`ctxt_frame()` is deprecated as of rlang 0.3.0.")
+  deprecate_warn("`ctxt_frame()` is deprecated as of rlang 0.3.0.")
   stopifnot(n > 0)
   pos <- sys.nframe() - n
 
@@ -608,7 +608,7 @@ ctxt_frame <- function(n = 1) {
 #' @rdname stack-deprecated
 #' @export
 global_frame <- function() {
-  warn_deprecated("`global_frame()` is deprecated as of rlang 0.3.0.")
+  deprecate_warn("`global_frame()` is deprecated as of rlang 0.3.0.")
   new_frame(list(
     pos = 0L,
     caller_pos = NA_integer_,
@@ -636,7 +636,7 @@ new_frame <- function(x) {
 #' @export
 quo_expr <- function(quo, warn = FALSE) {
   # 2022-01: Still used by many packages on CRAN
-  warn_deprecated(paste_line(
+  deprecate_warn(paste_line(
     "`quo_expr()` is deprecated as of rlang 0.2.0.",
     "Please use `quo_squash()` instead."
   ))
@@ -697,7 +697,7 @@ UQS <- function(x) {
 lang <- function(.fn, ..., .ns = NULL) {
   # 2022-01: Still used in attempt
   # https://github.com/ColinFay/attempt/issues/16
-  warn_deprecated(paste_line(
+  deprecate_warn(paste_line(
     "`lang()` is deprecated as of rlang 0.2.0.",
     "Please use `call2()` instead."
   ))
@@ -715,7 +715,7 @@ lang <- function(.fn, ..., .ns = NULL) {
 is_lang <- function(x, name = NULL, n = NULL, ns = NULL) {
   # 2022-01: Still used in foolbox
   # https://github.com/mailund/foolbox/issues/50
-  warn_deprecated(paste_line(
+  deprecate_warn(paste_line(
     "`is_lang()` is deprecated as of rlang 0.2.0.",
     "Please use `is_call()` instead."
   ))
@@ -806,7 +806,7 @@ call_fn <- function(call, env = caller_env()) {
 #' @export
 scoped_env <- function(nm) {
   # 2022-01: https://github.com/r-lib/conflicted/issues/65
-  warn_deprecated(paste_line(
+  deprecate_warn(paste_line(
     "`scoped_env()` is deprecated as of rlang 0.3.0.",
     "Please use `search_env()` instead."
   ))
@@ -824,7 +824,7 @@ scoped_env <- function(nm) {
 #' @export
 is_scoped <- function(nm) {
   # 2022-01: https://github.com/tidyverse/purrr/issues/851
-  warn_deprecated(paste_line(
+  deprecate_warn(paste_line(
     "`is_scoped()` is deprecated as of rlang 0.3.0.",
     "Please use `is_attached()` instead."
   ))
@@ -857,12 +857,12 @@ NULL
 #' @rdname vector-old-ctors
 #' @export
 lgl_along <- function(.x) {
-  stop_defunct("`lgl_along()` is deprecated as of rlang 0.2.0.")
+  deprecate_stop("`lgl_along()` is deprecated as of rlang 0.2.0.")
 }
 #' @rdname vector-old-ctors
 #' @export
 int_along <- function(.x) {
-  stop_defunct("`int_along()` is deprecated as of rlang 0.2.0.")
+  deprecate_stop("`int_along()` is deprecated as of rlang 0.2.0.")
 }
 
 
@@ -879,7 +879,7 @@ set_attrs <- function(.x, ...) {
   # 2018-10: Soft-deprecated
   # 2019-06: Deprecated
   # 2022-01: Used in `survivalAnalysis`
-  warn_deprecated("`set_attrs()` is deprecated as of rlang 0.3.0")
+  deprecate_warn("`set_attrs()` is deprecated as of rlang 0.3.0")
 
   if (!is_copyable(.x)) {
     abort("`.x` is uncopyable.")
@@ -946,7 +946,7 @@ calling <- function(handler) {
 #' @rdname with_handlers
 #' @export
 exiting <- function(handler) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "`exiting()` is soft-deprecated as of rlang 0.4.0.",
     "Handlers are now treated as exiting by default."
   ))
@@ -972,7 +972,7 @@ exiting <- function(handler) {
 #' @keywords internal
 #' @export
 scoped_interactive <- function(value = TRUE, frame = caller_env()) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "`scoped_interactive()` is deprecated as of rlang 0.4.2.",
     "Please use `local_interactive()` instead."
   ))
@@ -981,7 +981,7 @@ scoped_interactive <- function(value = TRUE, frame = caller_env()) {
 #' @rdname scoped_interactive
 #' @export
 scoped_options <- function(..., .frame = caller_env()) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "`scoped_options()` is deprecated as of rlang 0.4.2.",
     "Please use `local_options()` instead."
   ))
@@ -990,7 +990,7 @@ scoped_options <- function(..., .frame = caller_env()) {
 #' @rdname scoped_interactive
 #' @export
 scoped_bindings <- function(..., .env = .frame, .frame = caller_env()) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "`scoped_bindings()` is deprecated as of rlang 0.4.2.",
     "Please use `local_bindings()` instead."
   ))

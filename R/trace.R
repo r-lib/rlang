@@ -449,7 +449,7 @@ arg_match_drop <- function(drop) {
 }
 
 deprecate_collapse <- function() {
-  warn_deprecated("`\"collapse\"` is deprecated as of rlang 1.1.0.\nPlease use `\"none\"` instead.")
+  deprecate_warn("`\"collapse\"` is deprecated as of rlang 1.1.0.\nPlease use `\"none\"` instead.")
 }
 
 trace_format <- function(trace,

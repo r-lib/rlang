@@ -199,7 +199,7 @@ as_quosure <- function(x, env = NULL) {
 
   if (is_symbolic(x)) {
     if (is_null(env)) {
-      warn_deprecated(paste_line(
+      deprecate_warn(paste_line(
         "`as_quosure()` requires an explicit environment as of rlang 0.3.0.",
         "Please supply `env`."
       ))
@@ -272,7 +272,7 @@ c.quosures <- function(..., recursive = FALSE) {
   if (every(out, is_quosure)) {
     new_quosures(out)
   } else {
-    warn_deprecated(paste_line(
+    deprecate_warn(paste_line(
       "Quosure lists can't be concatenated with objects other than quosures as of rlang 0.3.0.",
       "Please call `as.list()` on the quosure list first."
     ))
@@ -309,7 +309,7 @@ as.list.quosures <- function(x, ...) {
   x
 }
 signal_quosure_assign <- function(x) {
-  warn_deprecated(paste_line(
+  deprecate_warn(paste_line(
     "Assigning non-quosure objects to quosure lists is deprecated as of rlang 0.3.0.",
     "Please coerce to a bare list beforehand with `as.list()`"
   ))
@@ -518,7 +518,7 @@ str.quosure <- function(object, ...) {
 
 #' @export
 as.character.quosure <- function(x, ...) {
-  warn_deprecated(paste_line(
+  deprecate_warn(paste_line(
     "Using `as.character()` on a quosure is deprecated as of rlang 0.3.0.",
     "Please use `as_label()` or `as_name()` instead."
   ))
@@ -527,7 +527,7 @@ as.character.quosure <- function(x, ...) {
 
 #' @export
 `[.quosure` <- function(x, i, ...) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "Subsetting quosures with `[` is deprecated as of rlang 0.4.0",
     "Please use `quo_get_expr()` instead."
   ))
@@ -535,7 +535,7 @@ as.character.quosure <- function(x, ...) {
 }
 #' @export
 `[[.quosure` <- function(x, i, ...) {
-  signal_soft_deprecated(c(
+  deprecate_soft(c(
     "Subsetting quosures with `[[` is deprecated as of rlang 0.4.0",
     "Please use `quo_get_expr()` instead."
   ))
