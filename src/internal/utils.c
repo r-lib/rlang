@@ -55,20 +55,20 @@ void rlang_env_print(r_obj* x) {
 }
 
 
-static r_obj* signal_soft_deprecated_call = NULL;
-void signal_soft_deprecated(const char* msg,
+static r_obj* deprecate_soft_call = NULL;
+void deprecate_soft(const char* msg,
                             const char* id,
                             r_obj* env) {
   id = id ? id : msg;
   env = env ? env : r_envs.empty;
   if (!msg) {
-    r_abort("Internal error: NULL `msg` in r_signal_soft_deprecated()");
+    r_abort("Internal error: NULL `msg` in r_deprecate_soft()");
   }
 
   r_obj* msg_ = KEEP(r_chr(msg));
   r_obj* id_ = KEEP(r_chr(id));
 
-  r_eval_with_xyz(signal_soft_deprecated_call, msg_, id_, env, r_envs.base);
+  r_eval_with_xyz(deprecate_soft_call, msg_, id_, env, r_envs.base);
 
   FREE(2);
 }
@@ -85,9 +85,9 @@ void signal_soft_deprecated(const char* msg,
   }
 
 static void signal_retirement(const char* source, const char* buf);
-static r_obj* warn_deprecated_call = NULL;
+static r_obj* deprecate_warn_call = NULL;
 
-void warn_deprecated(const char* id, const char* fmt, ...) {
+void deprecate_warn(const char* id, const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
   r_obj* msg_ = KEEP(r_chr(buf));
@@ -95,15 +95,15 @@ void warn_deprecated(const char* id, const char* fmt, ...) {
   id = id ? id : buf;
   r_obj* id_ = KEEP(r_chr(id));
 
-  r_eval_with_xy(warn_deprecated_call, msg_, id_, r_envs.base);
+  r_eval_with_xy(deprecate_warn_call, msg_, id_, r_envs.base);
   FREE(2);
 }
 
-void stop_defunct(const char* fmt, ...) {
+void deprecate_stop(const char* fmt, ...) {
   char buf[BUFSIZE];
   INTERP(buf, fmt, ...);
 
-  signal_retirement("stop_defunct(msg = x)", buf);
+  signal_retirement("deprecate_stop(msg = x)", buf);
 
   r_abort("Internal error: Unexpected return after `.Defunct()`");
 }
@@ -279,9 +279,9 @@ r_obj* ffi_getppid(void) {
 
 
 void rlang_init_utils(void) {
-  warn_deprecated_call = r_parse("rlang:::warn_deprecated(x, id = y)");
-  r_preserve(warn_deprecated_call);
+  deprecate_warn_call = r_parse("rlang:::deprecate_warn(x, id = y)");
+  r_preserve(deprecate_warn_call);
 
-  signal_soft_deprecated_call = r_parse("rlang:::signal_soft_deprecated(x, id = y, env = z)");
-  r_preserve(signal_soft_deprecated_call);
+  deprecate_soft_call = r_parse("rlang:::deprecate_soft(x, id = y, user_env = z)");
+  r_preserve(deprecate_soft_call);
 }

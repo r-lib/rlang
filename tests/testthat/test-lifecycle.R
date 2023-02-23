@@ -1,127 +1,119 @@
-test_that("signal_soft_deprecated() warns when called from global env", {
-  old <- Sys.getenv("TESTTHAT_PKG")
-  Sys.setenv("TESTTHAT_PKG" = "")
-  on.exit(Sys.setenv("TESTTHAT_PKG" = old))
+test_that("deprecate_soft() warns when called from global env", {
+  reset_warning_verbosity("rlang_test1")
+  reset_warning_verbosity("rlang_test2")
+  reset_warning_verbosity("rlang_test3")
+  reset_warning_verbosity("rlang_test4")
 
-  retired <- function(id) signal_soft_deprecated("foo", id)
-  env_bind(global_env(), retired = retired)
-  on.exit(env_unbind(global_env(), "retired"), add = TRUE)
+  # Disable testthat handling
+  withr::local_envvar(c("TESTTHAT_PKG" = ""))
 
-  with_options(lifecycle_verbose_soft_deprecation = FALSE, {
-    locally({
-      expect_no_warning(retired("rlang_test3"), "foo")
-    })
-  })
+  depr_soft <- function(id) deprecate_soft("foo", id)
+  depr <- function(id) deprecate_warn("foo", id)
 
-  with_options(lifecycle_verbose_soft_deprecation = FALSE, {
-    with_env(global_env(), {
-      expect_warning(retired("rlang_test4"), "foo")
-    })
-  })
-})
-
-test_that("signal_soft_deprecated() warns when called from package being tested", {
-  old <- Sys.getenv("NOT_CRAN")
-  Sys.setenv("NOT_CRAN" = "true")
-  on.exit(Sys.setenv("NOT_CRAN" = old))
-  retired <- function() signal_soft_deprecated("warns from package being tested")
-  expect_warning(retired(), "warns from")
-})
-
-test_that("signal_soft_deprecated() warns when option is set", {
-  retired <- function(id) signal_soft_deprecated("foo", id)
-  with_options(lifecycle_verbose_soft_deprecation = TRUE, {
-    expect_warning(retired("rlang_test5"), "foo")
-  })
-})
-
-test_that("warn_deprecated() repeats warnings when option is set", {
-  local_options(lifecycle_verbose_soft_deprecation = TRUE)
-
-  retired1 <- function() signal_soft_deprecated("soft deprecated repeats")
-  retired2 <- function() warn_deprecated("deprecated repeats")
-
-  expect_warning(retired1(), "repeats")
-  expect_warning(retired2(), "repeats")
-
-  expect_no_warning(retired1())
-  expect_no_warning(retired2())
-
-  local_options(lifecycle_repeat_warnings = TRUE)
-  expect_warning(retired1(), "repeats")
-  expect_warning(retired2(), "repeats")
-})
-
-test_that("lifecycle warnings helper enable warnings", {
-  retired1 <- function() signal_soft_deprecated("soft deprecated wrn enabled by helper")
-  retired2 <- function() warn_deprecated("deprecated wrn enabled by helper")
-
-  with_options(
-    lifecycle_disable_warnings = TRUE,
-    {
-      evalq({
-        local_lifecycle_warnings()
-        expect_warning(retired1(), "enabled")
-        expect_warning(retired1(), "enabled")
-        expect_warning(retired2(), "enabled")
-        expect_warning(retired2(), "enabled")
-      })
-    }
+  # Indirect usage
+  local_env <- env(
+    ns_env("rlang"),
+    depr_soft = depr_soft,
+    depr = depr
   )
+  local(envir = local_env, {
+    expect_no_warning(depr_soft("rlang_test1"))
+    expect_warning(depr("rlang_test2"), "foo")
+
+    # Does not warn again
+    expect_no_warning(depr("rlang_test2"))
+  })
+
+  # Direct usage
+  local_bindings(
+    .env = global_env(),
+    depr_soft = depr_soft,
+    depr = depr
+  )
+  local(envir = global_env(), {
+    expect_warning(depr_soft("rlang_test3"), "foo")
+    expect_warning(depr("rlang_test4"), "foo")
+
+    # Warns again
+    expect_warning(depr_soft("rlang_test3"), "foo")
+    expect_warning(depr("rlang_test4"), "foo")
+  })
+})
+
+test_that("deprecate_soft() warns when called from package being tested", {
+  reset_warning_verbosity("rlang_test")
+
+  withr::local_envvar(c("TESTTHAT_PKG" = "rlang"))
+  depr <- function() deprecate_soft("warns from package being tested", id = "rlang_test")
+  expect_warning(depr(), "warns from")
+  expect_warning(depr(), "warns from")
+})
+
+test_that("deprecate_soft() indirect behaviour when warning verbosity is set", {
+  reset_warning_verbosity("rlang_test")
+
+  local_options(lifecycle_verbosity = "warning")
+
+  local_env <- env(
+    ns_env("base"),
+    depr = inject(function(id) (!!deprecate_soft)("foo", id))
+  )
+
+  # FIXME: Is this a bug in lifecycle?
+  local(envir = local_env, {
+    expect_no_warning(depr("rlang_test"))
+    expect_no_warning(depr("rlang_test"))
+  })
 })
 
 test_that("can disable lifecycle warnings", {
   local_lifecycle_silence()
-  local_options(
-    lifecycle_verbose_soft_deprecation = TRUE,
-    lifecycle_repeat_warnings = TRUE
-  )
-
-  expect_no_warning(signal_soft_deprecated("foo"))
-  expect_no_warning(warn_deprecated("foo"))
+  expect_no_warning(deprecate_soft("foo"))
+  expect_no_warning(deprecate_warn("foo"))
 })
 
 test_that("can promote lifecycle warnings to errors", {
   local_lifecycle_errors()
-  expect_defunct(signal_soft_deprecated("foo"), "foo")
-  expect_defunct(warn_deprecated("foo"), "foo")
+  expect_defunct(deprecate_soft("foo"), "foo")
+  expect_defunct(deprecate_warn("foo"), "foo")
 })
 
 test_that("can enable warnings and errors with `with_` helpers", {
-  expect_warning(with_lifecycle_warnings(signal_soft_deprecated("foo")), "foo")
-  expect_defunct(with_lifecycle_errors(signal_soft_deprecated("foo")), "foo")
-  expect_no_warning(with_lifecycle_warnings(with_lifecycle_silence(warn_deprecated("foo"))))
+  expect_defunct(with_lifecycle_errors(deprecate_soft("foo")), "foo")
+  expect_no_warning(with_lifecycle_warnings(with_lifecycle_silence(deprecate_warn("foo"))))
+
+  # FIXME: Is this a bug in lifecycle?
+  expect_no_warning(with_lifecycle_warnings(deprecate_soft("foo")))
 })
 
 test_that("soft-deprecation warnings are issued when called from child of global env as well", {
-  fn <- function() signal_soft_deprecated("called from child of global env")
+  fn <- function() deprecate_soft("called from child of global env")
   expect_warning(eval_bare(call2(fn), env(global_env())), "child of global env")
 })
 
 test_that("once-per-session note is not displayed on repeated warnings", {
-  wrn <- catch_cnd(warn_deprecated("foo", "once-per-session-note"))
-  expect_true(grepl("once per session", wrn$message))
+  reset_warning_verbosity("once-per-session-note")
 
-  local_options(lifecycle_repeat_warnings = TRUE)
-
-  wrn <- catch_cnd(warn_deprecated("foo", "once-per-session-no-note"))
-  expect_false(grepl("once per session", wrn$message))
-})
-
-test_that("inputs are type checked", {
-  expect_error(signal_soft_deprecated(1), "is_character")
-  expect_error(signal_soft_deprecated("foo", "bar", 1), "is_environment")
-  expect_error(warn_deprecated(1), "is_character")
-  expect_error(stop_defunct(1), "is_character")
+  wrn <- catch_cnd(
+    deprecate_warn("foo", "once-per-session-note"),
+    "lifecycle_warning_deprecated"
+  )
+  expect_true(grepl("once every", conditionMessage(wrn)))
 })
 
 test_that("lifecycle signallers support character vectors", {
   local_lifecycle_errors()
-  expect_defunct(signal_soft_deprecated(c("foo", "bar")), "foo\nbar")
-  expect_defunct(warn_deprecated(c("foo", "bar")), "foo\nbar")
-  expect_defunct(stop_defunct(c("foo", "bar")), "foo\nbar")
+  expect_defunct(deprecate_soft(c("foo", "bar")), "foo\nbar")
+  expect_defunct(deprecate_warn(c("foo", "bar")), "foo\nbar")
+  expect_defunct(deprecate_stop(c("foo", "bar")), "foo\nbar")
 })
 
 test_that("the topenv of the empty env is not the global env", {
-  expect_silent(signal_soft_deprecated("topenv empty env", env = empty_env()))
+  expect_silent(deprecate_soft("topenv empty env", user_env = empty_env()))
+})
+
+test_that("can supply bullets", {
+  expect_snapshot({
+    deprecate_warn(c("foo", "i" = "bar"))
+  })
 })

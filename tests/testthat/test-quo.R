@@ -196,7 +196,7 @@ test_that("as_quosures() auto-names if requested", {
 })
 
 test_that("quosures class has subset assign methods", {
-  local_options(lifecycle_verbose_soft_deprecation = TRUE)
+  local_options(lifecycle_verbosity = "warning")
 
   x <- quos(1, 2)
 
@@ -227,9 +227,12 @@ test_that("can remove quosures by assigning NULL", {
 })
 
 test_that("can't cast a quosure to base types (#523)", {
-  local_options(lifecycle_verbose_soft_deprecation = TRUE)
-  expect_warning(as.character(quo(foo)), "`as.character\\(\\)` on a quosure")
-  expect_identical(as.character(quo(foo)), c("~", "foo"))
+  expect_deprecated(
+    out <- as.character(quo(foo)),
+    "on a quosure",
+    fixed = TRUE
+  )
+  expect_identical(out, c("~", "foo"))
 })
 
 test_that("quosures fail with common operations (#478, tidyverse/dplyr#3476)", {

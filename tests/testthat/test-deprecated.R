@@ -1,9 +1,8 @@
-local_lifecycle_silence()
-
-
 # Deprecated in rlang 0.4.0 ------------------------------------------
 
 test_that("type_of() returns correct type", {
+  local_lifecycle_silence()
+
   expect_identical(type_of("foo"), "string")
   expect_identical(type_of(letters), "character")
   expect_identical(type_of(base::`$`), "primitive")
@@ -15,6 +14,8 @@ test_that("type_of() returns correct type", {
 })
 
 test_that("Unicode escapes are converted to UTF8 characters in env_names()", {
+  local_lifecycle_silence()
+
   with_non_utf8_locale({
     env <- child_env(empty_env())
     env_bind(env, !!get_alien_lang_string() := NULL)
@@ -24,6 +25,8 @@ test_that("Unicode escapes are converted to UTF8 characters in env_names()", {
 })
 
 test_that("no method dispatch", {
+  local_lifecycle_silence()
+
   as.logical.foo <- function(x) "wrong"
   expect_identical(as_integer(structure(TRUE, class = "foo")), 1L)
 
@@ -32,21 +35,29 @@ test_that("no method dispatch", {
 })
 
 test_that("input is left intact", {
+  local_lifecycle_silence()
+
   x <- structure(TRUE, class = "foo")
   y <- as_integer(x)
   expect_identical(x, structure(TRUE, class = "foo"))
 })
 
 test_that("as_list() zaps attributes", {
+  local_lifecycle_silence()
+
   expect_identical(as_list(structure(list(), class = "foo")), list())
 })
 
 test_that("as_list() only coerces vector or dictionary types", {
+  local_lifecycle_silence()
+
   expect_identical(as_list(1:3), list(1L, 2L, 3L))
   expect_error(as_list(quote(symbol)), "a symbol to")
 })
 
 test_that("as_list() bypasses environment method and leaves input intact", {
+  local_lifecycle_silence()
+
   as.list.foo <- function(x) "wrong"
   x <- structure(child_env(NULL), class = "foo")
   y <- as_list(x)
@@ -56,11 +67,15 @@ test_that("as_list() bypasses environment method and leaves input intact", {
 })
 
 test_that("as_integer() and as_logical() require integerish input", {
+  local_lifecycle_silence()
+
   expect_error(as_integer(1.5), "a fractional double vector to")
   expect_error(as_logical(1.5), "a fractional double vector to")
 })
 
 test_that("names are preserved", {
+  local_lifecycle_silence()
+
   nms <- as.character(1:3)
   x <- set_names(1:3, nms)
   expect_identical(names(as_double(x)), nms)
@@ -68,11 +83,15 @@ test_that("names are preserved", {
 })
 
 test_that("as_character() support logical NA", {
+  local_lifecycle_silence()
+
   expect_identical(as_character(NA), na_chr)
   expect_identical(as_character(lgl(NA, NA)), c(na_chr, na_chr))
 })
 
 test_that("can convert strings (#138)", {
+  local_lifecycle_silence()
+
   expect_identical(as_character("a"), "a")
   expect_identical(as_list("a"), list("a"))
 })
@@ -81,21 +100,29 @@ test_that("can convert strings (#138)", {
 # --------------------------------------------------------------------
 
 test_that("set_attrs() fails with uncopyable types", {
+  local_lifecycle_silence()
+
   expect_error(set_attrs(env(), foo = "bar"), "is uncopyable")
 })
 
 test_that("set_attrs() called with NULL zaps attributes", {
+  local_lifecycle_silence()
+
   obj <- set_attrs(letters, foo = "bar")
   expect_identical(set_attrs(obj, NULL), letters)
 })
 
 test_that("set_attrs() does not zap old attributes", {
+  local_lifecycle_silence()
+
   obj <- set_attrs(letters, foo = "bar")
   obj <- set_attrs(obj, baz = "bam")
   expect_named(attributes(obj), c("foo", "baz"))
 })
 
 test_that("invoke() buries arguments", {
+  local_lifecycle_silence()
+
   expect_identical(invoke(call_inspect, 1:2, 3L), quote(.fn(`1`, `2`, `3`)))
   expect_identical(invoke("call_inspect", 1:2, 3L), quote(call_inspect(`1`, `2`, `3`)))
   expect_identical(invoke(call_inspect, 1:2, 3L, .bury = c("foo", "bar")), quote(foo(`bar1`, `bar2`, `bar3`)))
@@ -103,11 +130,15 @@ test_that("invoke() buries arguments", {
 })
 
 test_that("invoke() can be called without arguments", {
+  local_lifecycle_silence()
+
   expect_identical(invoke("list"), list())
   expect_identical(invoke(list), list())
 })
 
 test_that("quo_expr() still works", {
+  local_lifecycle_silence()
+
   x <- quo(foo(!!quo(bar), !!local(quo(baz))))
   expect_identical(quo_expr(x), quo_squash(x))
 })

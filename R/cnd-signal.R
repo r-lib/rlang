@@ -239,7 +239,7 @@ deprecate_subclass <- function(subclass, fn, env = caller_env()) {
   # - https://github.com/NikKrieger/sociome/issues/14
   # - https://github.com/r-lib/testthat/commit/f09df60dd881530332b252474e9f35c97f8640be
   if (is_true(peek_option("force_subclass_deprecation"))) {
-    signal_soft_deprecated(msg)
+    deprecate_soft(msg)
   }
   env_bind(env, class = subclass)
 }

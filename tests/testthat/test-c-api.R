@@ -382,10 +382,10 @@ test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
   )
 })
 
-test_that("r_warn_deprecated() warns once", {
-  expect_warning(warn_deprecated("retired", "foo"), "retired")
-  expect_no_warning(warn_deprecated("retired", "foo"))
-  expect_warning(warn_deprecated("retired", "bar"), "retired")
+test_that("r_deprecate_warn() warns once", {
+  expect_warning(deprecate_warn("retired", "foo"), "retired")
+  expect_no_warning(deprecate_warn("retired", "foo"))
+  expect_warning(deprecate_warn("retired", "bar"), "retired")
 })
 
 test_that("nms_are_duplicated() detects duplicates", {

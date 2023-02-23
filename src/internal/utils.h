@@ -10,9 +10,9 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame);
 
 extern r_obj* rlang_ns_env;
 
-void signal_soft_deprecated(const char* msg, const char* id, r_obj* env);
-void warn_deprecated(const char* id, const char* fmt, ...);
-void stop_defunct(const char* fmt, ...);
+void deprecate_soft(const char* msg, const char* id, r_obj* env);
+void deprecate_warn(const char* id, const char* fmt, ...);
+void deprecate_stop(const char* fmt, ...);
 
 bool r_is_prefixed_call(r_obj* x, const char* name);
 bool r_is_namespaced_call(r_obj* x, const char* ns, const char* name);
