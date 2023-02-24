@@ -456,17 +456,15 @@ endots <- function(call,
   if (!is_null(names(syms))) {
     is_arg <- names(syms) %in% capture_args
     syms <- syms[!is_arg]
-  }
 
-  # Prevent names from propagating to output (#1505)
-  if (!length(syms)) {
-    names(syms) <- NULL
+    if (all(names(syms) == "")) {
+      names(syms) <- NULL
+    }
   }
 
   # Avoid note about registration problems
   dot_call <- .Call
 
-  splice_dots <- FALSE
   dots <- map(syms, function(sym) {
     if (!is_symbol(sym)) {
       abort(
@@ -475,8 +473,7 @@ endots <- function(call,
       )
     }
     if (identical(sym, dots_sym)) {
-      splice_dots <<- TRUE
-      splice(dot_call(
+      unclass(dot_call(
         capture_dots,
         frame_env = frame_env,
         named = named,
@@ -486,16 +483,11 @@ endots <- function(call,
         check_assign = check_assign
       ))
     } else {
-      dot_call(capture_arg, sym, frame_env)
+      list(dot_call(capture_arg, sym, frame_env))
     }
   })
 
-  if (splice_dots) {
-    with_options(
-      lifecycle_verbosity = "quiet",
-      dots <- flatten_if(dots, is_spliced)
-    )
-  }
+  dots <- list_c(dots) %||% dots
 
   if (ignore_empty == "all") {
     if (identical(capture_arg, ffi_enquo)) {
