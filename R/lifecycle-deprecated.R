@@ -1200,3 +1200,35 @@ squash_if <- function(x, predicate = is_spliced) {
   deprecate_soft("`squash_if()` is deprecated as of rlang 1.1.0.")
   .Call(ffi_squash, x, "list", predicate, -1L)
 }
+
+#' Splice lists
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' `dots_splice()` is like [dots_list()] but automatically splices
+#' list inputs.
+#'
+#' @inheritParams dots_list
+#' @keywords internal
+#' @export
+dots_splice <- function(...,
+                        .ignore_empty = c("trailing", "none", "all"),
+                        .preserve_empty = FALSE,
+                        .homonyms = c("keep", "first", "last", "error"),
+                        .check_assign = FALSE) {
+  deprecate_soft("`dots_splice()` is deprecated as of rlang 1.1.0.")
+  dots <- .Call(
+    ffi_dots_flat_list,
+    frame_env = environment(),
+    named = NULL,
+    ignore_empty = .ignore_empty,
+    preserve_empty = .preserve_empty,
+    unquote_names = TRUE,
+    homonyms = .homonyms,
+    check_assign = .check_assign
+  )
+  names(dots) <- names2(dots)
+  dots
+}
+# rlang 1.1.0: Soft deprecation.

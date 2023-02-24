@@ -13,11 +13,15 @@ test_that("exprs() captures empty arguments", {
 
 test_that("dots are always named", {
   expect_named(dots_list("foo"), "")
-  expect_named(dots_splice("foo", list("bar")), c("", ""))
   expect_named(exprs(foo, bar), c("", ""))
+
+  local_lifecycle_silence()
+  expect_named(dots_splice("foo", list("bar")), c("", ""))
 })
 
 test_that("dots can be spliced", {
+  local_lifecycle_silence()
+
   spliced_dots <- dots_values(!!!list(letters))
   expect_identical(spliced_dots, list(splice(list(letters))))
   expect_identical(list2(!!!list(letters)), list(letters))
@@ -96,12 +100,14 @@ test_that("can splice NULL value", {
 })
 
 test_that("dots_splice() flattens lists", {
+  local_lifecycle_silence()
   expect_identical(dots_splice(list("a", list("b"), "c"), "d", list("e")), named_list("a", list("b"), "c", "d", "e"))
   expect_identical(dots_splice(list("a"), !!! list("b"), list("c"), "d"), named_list("a", "b", "c", "d"))
   expect_identical(dots_splice(list("a"), splice(list("b")), list("c"), "d"), named_list("a", "b", "c", "d"))
 })
 
 test_that("dots_splice() doesn't squash S3 objects", {
+  local_lifecycle_silence()
   s <- structure(list(v1 = 1, v2 = 2), class = "foo")
   expect_identical(dots_splice(s, s), named_list(s, s))
 })
@@ -259,10 +265,13 @@ test_that("can mix `!!!` and splice boxes", {
 
 test_that("list2() and dots_values() support splice boxes", {
   expect_identical(list2(1, splice(c("foo", "bar")), 3), list(1, "foo", "bar", 3))
+
+  local_lifecycle_silence()
   expect_identical(dots_values(1, splice(c("foo", "bar")), 3), list(1, splice(list("foo", "bar")), 3))
 })
 
 test_that("dots_values() doesn't splice", {
+  local_lifecycle_silence()
   expect_identical_(dots_values(!!!c(1:3)), list(splice(as.list(1:3))))
   expect_identical_(dots_values(!!!list("foo", "bar")), list(splice(list("foo", "bar"))))
 })

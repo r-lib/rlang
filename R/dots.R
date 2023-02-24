@@ -335,29 +335,6 @@ print.rlang_box_splice <- function(x, ...) {
   print(unbox(x))
 }
 
-#' @rdname splice
-#' @inheritParams dots_list
-#' @export
-dots_splice <- function(...,
-                        .ignore_empty = c("trailing", "none", "all"),
-                        .preserve_empty = FALSE,
-                        .homonyms = c("keep", "first", "last", "error"),
-                        .check_assign = FALSE) {
-  dots <- .Call(
-    ffi_dots_flat_list,
-    frame_env = environment(),
-    named = NULL,
-    ignore_empty = .ignore_empty,
-    preserve_empty = .preserve_empty,
-    unquote_names = TRUE,
-    homonyms = .homonyms,
-    check_assign = .check_assign
-  )
-  names(dots) <- names2(dots)
-  dots
-}
-
-
 #' Evaluate dots with preliminary splicing
 #'
 #' This is a tool for advanced users. It captures dots, processes

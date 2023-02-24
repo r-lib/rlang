@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `dots_splice()` is deprecated. This function was previously in
+  the questioning lifecycle stage as we were moving towards the
+  explicit `!!!` splicing style.
+
 * `flatten()`, `squash()`, and their variants are deprecated in favour
   of `purrr::list_flatten()` and `purrr::list_c()`.
 

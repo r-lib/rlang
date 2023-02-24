@@ -567,6 +567,8 @@ test_that("`:=` unquotes its LHS as name unless `.unquote_names` is FALSE", {
   expect_identical(quos(a := b), quos_list(a = quo(b)))
   expect_identical(quos(a := b, .unquote_names = FALSE), quos_list(new_quosure(quote(a := b))))
   expect_identical(dots_list(a := NULL), list(a = NULL))
+
+  local_lifecycle_silence()
   expect_identical(dots_splice(a := NULL), list(a = NULL))
 })
 
@@ -574,6 +576,8 @@ test_that("`:=` chaining is detected at dots capture", {
   expect_error(exprs(a := b := c), "chained")
   expect_error(quos(a := b := c), "chained")
   expect_error(dots_list(a := b := c), "chained")
+
+  local_lifecycle_silence()
   expect_error(dots_splice(a := b := c), "chained")
 })
 
