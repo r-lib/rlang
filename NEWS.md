@@ -1,7 +1,7 @@
 # rlang (development version)
 
-* `abort()`, `warn()`, and `inform()` gain a `.inherit` parameter.
-  This controls whether `parent` is inherited. If `FALSE`
+* `abort()`, `warn()`, and `inform()` gain an `.inherit` parameter.
+  This controls whether `parent` is inherited. If `FALSE`,
   `cnd_inherits()` and `try_fetch()` do not match chained conditions
   across parents.
 

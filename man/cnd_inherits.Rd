@@ -25,7 +25,7 @@ object is a particular kind of error or has been caused by such an
 error.
 
 Some chained conditions carry parents that are not inherited. See
-the \code{inherit} argument of \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, and \code{\link[=inform]{inform()}}.
+the \code{.inherit} argument of \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, and \code{\link[=inform]{inform()}}.
 }
 \section{Capture an error with \code{cnd_inherits()}}{
 Error catchers like \code{\link[=tryCatch]{tryCatch()}} and \code{\link[=try_fetch]{try_fetch()}} can only match

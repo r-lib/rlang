@@ -288,7 +288,7 @@ cnd_type <- function(cnd) {
 #' error.
 #'
 #' Some chained conditions carry parents that are not inherited. See
-#' the `inherit` argument of [abort()], [warn()], and [inform()].
+#' the `.inherit` argument of [abort()], [warn()], and [inform()].
 #'
 #'
 #' # Capture an error with `cnd_inherits()`

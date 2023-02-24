@@ -132,7 +132,7 @@ environment(hnd_prompt_install) <- baseenv()
 #' insensitive to changes of implementation or context of evaluation
 #' that cause a classed error to suddenly get chained to a contextual
 #' error. Note that some chained conditions are not inherited, see the
-#' `inherit` argument of [abort()] or [warn()]. In particular,
+#' `.inherit` argument of [abort()] or [warn()]. In particular,
 #' downgraded conditions (e.g. from error to warning or from warning
 #' to message) are not matched across parents.
 #'
