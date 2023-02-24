@@ -387,3 +387,18 @@ test_that("picks up caller frame", {
     quote(get_call(cnd2))
   )
 })
+
+test_that("cnd_inherits() checks `inherit` field (#1573)", {
+  cnd <- catch_cnd(warn("", parent = error_cnd()))
+  expect_false(cnd_inherits(cnd, "error"))
+  expect_true(cnd_inherits(cnd, "warning"))
+
+  cnd <- catch_cnd(warn("", parent = error_cnd(), .inherit = TRUE))
+  expect_true(cnd_inherits(cnd, "error"))
+
+  parent <- error_cnd(class = "parent")
+  cnd_default <- catch_cnd(abort("", parent = parent))
+  cnd_false <- catch_cnd(abort("", parent = parent, .inherit = FALSE))
+  expect_true(cnd_inherits(cnd_default, "parent"))
+  expect_false(cnd_inherits(cnd_false, "parent"))
+})

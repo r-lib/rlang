@@ -53,7 +53,7 @@ r_obj* ffi_try_fetch(r_obj* try_fetch_args) {
     r_node_poke_car(subscript_node, r_int(i + 1));
 
     // Picks up `CLASS`
-    r_obj* class_node = r_node_cdr(r_node_cdar(r_node_cdar(r_node_cdar(r_node_cdar(r_node_cddr(r_node_cadr(r_node_cdar(r_node_cddr(hnd)))))))));
+    r_obj* class_node = r_node_cdr(r_node_cdar(r_node_cdar(r_node_cdar(r_node_cddr(r_node_cadr(r_node_cdar(r_node_cddr(hnd))))))));
     r_node_poke_car(class_node, r_str_as_character(cls));
 
     args = r_new_node3(hnd, args, r_syms.condition);

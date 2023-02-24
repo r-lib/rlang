@@ -88,6 +88,11 @@
 #'   individual and unformatted lines. Any newline character `"\\n"`
 #'   already present in `message` is reformatted by cli's paragraph
 #'   formatter. See `r link("topic_condition_formatting")`.
+#' @param .inherit Whether the condition inherits from `parent`
+#'   according to [cnd_inherits()] and [try_fetch()]. By default,
+#'   parent conditions of higher severity are not inherited. For
+#'   instance an error chained to a warning is not inherited to avoid
+#'   unexpectedly catching an error downgraded to a warning.
 #' @param .internal If `TRUE`, a footer bullet is added to `message`
 #'   to let the user know that the error is internal and that they
 #'   should report it to the package authors. This argument is
@@ -252,6 +257,7 @@ abort <- function(message = NULL,
                   trace = NULL,
                   parent = NULL,
                   use_cli_format = NULL,
+                  .inherit = TRUE,
                   .internal = FALSE,
                   .file = NULL,
                   .frame = caller_env(),
@@ -321,6 +327,11 @@ abort <- function(message = NULL,
   message <- message_info$message
   extra_fields <- message_info$extra_fields
   use_cli_format <- message_info$use_cli_format
+
+  extra_fields$rlang <- c(
+    extra_fields$rlang,
+    list(inherit = .inherit)
+  )
 
   parent_trace <- if (rethrowing) parent[["trace"]]
 

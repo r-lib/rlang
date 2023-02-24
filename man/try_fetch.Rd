@@ -66,8 +66,10 @@ that errors are matched across chains, see the \code{parent} argument of
 \code{\link[=abort]{abort()}}. This is a useful property that makes \code{try_fetch()}
 insensitive to changes of implementation or context of evaluation
 that cause a classed error to suddenly get chained to a contextual
-error. Note however that downgraded conditions (e.g. from error to
-warning or from warning to message) are not matched across parents.
+error. Note that some chained conditions are not inherited, see the
+\code{.inherit} argument of \code{\link[=abort]{abort()}} or \code{\link[=warn]{warn()}}. In particular,
+downgraded conditions (e.g. from error to warning or from warning
+to message) are not matched across parents.
 }
 \section{Stack overflows}{
 

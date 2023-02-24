@@ -95,7 +95,9 @@ warn <- function(message = NULL,
                  ...,
                  body = NULL,
                  footer = NULL,
+                 parent = NULL,
                  use_cli_format = NULL,
+                 .inherit = NULL,
                  .frequency = c("always", "regularly", "once"),
                  .frequency_id = NULL,
                  .subclass = deprecated()) {
@@ -117,11 +119,24 @@ warn <- function(message = NULL,
     return(invisible(NULL))
   }
 
+  if (!is_null(parent)) {
+    # Don't inherit from `parent` by default if chained to a
+    # downgraded error
+    if (is_null(.inherit)) {
+      .inherit <- !inherits(parent, "error")
+    }
+    extra_fields$rlang <- c(
+      extra_fields$rlang,
+      list(inherit = .inherit)
+    )
+  }
+
   cnd <- warning_cnd(
     class,
     message = message,
     !!!extra_fields,
     use_cli_format = use_cli_format,
+    parent = parent,
     ...
   )
   cnd$footer <- c(cnd$footer, message_freq(message, .frequency, "warning"))
@@ -136,7 +151,9 @@ inform <- function(message = NULL,
                    ...,
                    body = NULL,
                    footer = NULL,
+                   parent = NULL,
                    use_cli_format = NULL,
+                   .inherit = NULL,
                    .file = NULL,
                    .frequency = c("always", "regularly", "once"),
                    .frequency_id = NULL,
@@ -161,10 +178,23 @@ inform <- function(message = NULL,
     return(invisible(NULL))
   }
 
+  if (!is_null(parent)) {
+    # Don't inherit from `parent` by default if chained to a
+    # downgraded warning or error
+    if (is_null(.inherit)) {
+      .inherit <- !inherits(parent, c("warning", "error"))
+    }
+    extra_fields$rlang <- c(
+      extra_fields$rlang,
+      list(inherit = .inherit)
+    )
+  }
+
   cnd <- message_cnd(
     class,
     message = message,
     !!!extra_fields,
+    parent = parent,
     use_cli_format = use_cli_format,
     ...
   )

@@ -23,6 +23,9 @@ Whereas \code{inherits()} tells you whether an object is a particular
 kind of error, \code{cnd_inherits()} answers the question whether an
 object is a particular kind of error or has been caused by such an
 error.
+
+Some chained conditions carry parents that are not inherited. See
+the \code{.inherit} argument of \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, and \code{\link[=inform]{inform()}}.
 }
 \section{Capture an error with \code{cnd_inherits()}}{
 Error catchers like \code{\link[=tryCatch]{tryCatch()}} and \code{\link[=try_fetch]{try_fetch()}} can only match
@@ -77,6 +80,19 @@ away. Instead, it captures it only if the handler doesn't return a
 class(cnd)
 #> [1] "rlang_error" "error"       "condition"
 class(cnd$parent)
+#> [1] "bar"         "rlang_error" "error"       "condition"
+}\if{html}{\out{</div>}}
+
+Note that \code{try_fetch()} uses \code{cnd_inherits()} internally. This
+makes it very easy to match a parent condition:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cnd <- try_fetch(
+  f(),
+  bar = function(x) x
+)
+
+# This is the parent
+class(cnd)
 #> [1] "bar"         "rlang_error" "error"       "condition"
 }\if{html}{\out{</div>}}
 }

@@ -19,6 +19,7 @@ abort(
   trace = NULL,
   parent = NULL,
   use_cli_format = NULL,
+  .inherit = TRUE,
   .internal = FALSE,
   .file = NULL,
   .frame = caller_env(),
@@ -32,7 +33,9 @@ warn(
   ...,
   body = NULL,
   footer = NULL,
+  parent = NULL,
   use_cli_format = NULL,
+  .inherit = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
   .subclass = deprecated()
@@ -44,7 +47,9 @@ inform(
   ...,
   body = NULL,
   footer = NULL,
+  parent = NULL,
   use_cli_format = NULL,
+  .inherit = NULL,
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
@@ -130,6 +135,12 @@ If set to \code{TRUE}, \code{message} should be a character vector of
 individual and unformatted lines. Any newline character \code{"\\\\n"}
 already present in \code{message} is reformatted by cli's paragraph
 formatter. See \ifelse{html}{\link[=topic-condition-formatting]{Formatting messages with cli}}{\link[=topic-condition-formatting]{Formatting messages with cli}}.}
+
+\item{.inherit}{Whether the condition inherits from \code{parent}
+according to \code{\link[=cnd_inherits]{cnd_inherits()}} and \code{\link[=try_fetch]{try_fetch()}}. By default,
+parent conditions of higher severity are not inherited. For
+instance an error chained to a warning is not inherited to avoid
+unexpectedly catching an error downgraded to a warning.}
 
 \item{.internal}{If \code{TRUE}, a footer bullet is added to \code{message}
 to let the user know that the error is internal and that they

@@ -200,3 +200,12 @@ test_that("try_fetch() matches upgraded conditions", {
   expect_s3_class(out, "warning")
   expect_equal(cnd_header(out), "Parent warning")
 })
+
+test_that("`inherit` is recursively checked", {
+  out <- try_fetch(
+    abort("foo", parent = error_cnd("qux"), .inherit = FALSE),
+    qux = function(cnd) "qux",
+    error = function(cnd) "error"
+  )
+  expect_equal(out, "error")
+})

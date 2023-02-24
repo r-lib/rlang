@@ -131,8 +131,10 @@ environment(hnd_prompt_install) <- baseenv()
 #' [abort()]. This is a useful property that makes `try_fetch()`
 #' insensitive to changes of implementation or context of evaluation
 #' that cause a classed error to suddenly get chained to a contextual
-#' error. Note however that downgraded conditions (e.g. from error to
-#' warning or from warning to message) are not matched across parents.
+#' error. Note that some chained conditions are not inherited, see the
+#' `.inherit` argument of [abort()] or [warn()]. In particular,
+#' downgraded conditions (e.g. from error to warning or from warning
+#' to message) are not matched across parents.
 #'
 #' @param expr An R expression.
 #' @param ... <[`dynamic-dots`][rlang::dyn-dots]> Named condition
@@ -215,11 +217,18 @@ handler_call <- quote(function(cnd) {
       except <- ""
     }
   }
+
   while (!is_null(cnd)) {
-    if (inherits(cnd, CLASS) && !inherits(cnd, except)) {
+    if (inherits(cnd, CLASS)) {
       out <- handlers[[I]](cnd)
       if (!inherits(out, "rlang_zap")) throw(out)
     }
+
+    inherit <- .subset2(.subset2(cnd, "rlang"), "inherit")
+    if (is_false(inherit)) {
+      return()
+    }
+
     cnd <- .subset2(cnd, "parent")
   }
 })

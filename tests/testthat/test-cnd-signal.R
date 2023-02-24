@@ -316,6 +316,26 @@ test_that("can reset verbosity", {
   )
 })
 
+test_that("downgraded conditions are not inherited (#1573)", {
+  cnd <- catch_cnd(warn("", parent = error_cnd()))
+  expect_false(cnd$rlang$inherit)
+
+  cnd <- catch_cnd(inform("", parent = error_cnd()))
+  expect_false(cnd$rlang$inherit)
+
+  cnd <- catch_cnd(inform("", parent = warning_cnd()))
+  expect_false(cnd$rlang$inherit)
+
+  cnd <- catch_cnd(warn("", parent = error_cnd(), .inherit = TRUE))
+  expect_true(cnd$rlang$inherit)
+
+  cnd <- catch_cnd(inform("", parent = error_cnd(), .inherit = TRUE))
+  expect_true(cnd$rlang$inherit)
+
+  cnd <- catch_cnd(inform("", parent = warning_cnd(), .inherit = TRUE))
+  expect_true(cnd$rlang$inherit)
+})
+
 
 # Lifecycle ----------------------------------------------------------
 
