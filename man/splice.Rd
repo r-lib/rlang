@@ -4,111 +4,47 @@
 \alias{splice}
 \alias{is_spliced}
 \alias{is_spliced_bare}
-\alias{dots_splice}
-\title{Splice lists}
+\title{Splice values at dots collection time}
 \usage{
 splice(x)
 
 is_spliced(x)
 
 is_spliced_bare(x)
-
-dots_splice(
-  ...,
-  .ignore_empty = c("trailing", "none", "all"),
-  .preserve_empty = FALSE,
-  .homonyms = c("keep", "first", "last", "error"),
-  .check_assign = FALSE
-)
 }
 \arguments{
-\item{x}{A list to splice.}
-
-\item{...}{Arguments to collect in a list. These dots are
-\link[=dyn-dots]{dynamic}.}
-
-\item{.ignore_empty}{Whether to ignore empty arguments. Can be one
-of \code{"trailing"}, \code{"none"}, \code{"all"}. If \code{"trailing"}, only the
-last argument is ignored if it is empty.}
-
-\item{.preserve_empty}{Whether to preserve the empty arguments that
-were not ignored. If \code{TRUE}, empty arguments are stored with
-\code{\link[=missing_arg]{missing_arg()}} values. If \code{FALSE} (the default) an error is
-thrown when an empty argument is detected.}
-
-\item{.homonyms}{How to treat arguments with the same name. The
-default, \code{"keep"}, preserves these arguments. Set \code{.homonyms} to
-\code{"first"} to only keep the first occurrences, to \code{"last"} to keep
-the last occurrences, and to \code{"error"} to raise an informative
-error and indicate what arguments have duplicated names.}
-
-\item{.check_assign}{Whether to check for \verb{<-} calls. When \code{TRUE} a
-warning recommends users to use \code{=} if they meant to match a
-function parameter or wrap the \verb{<-} call in curly braces otherwise.
-This ensures assignments are explicit.}
+\item{x}{A list or vector to splice non-eagerly.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
-\itemize{
-\item \code{splice} marks an object to be spliced. It is equivalent to using
-\verb{!!!} in a function taking \link[=dyn-dots]{dynamic dots}.
-\item \code{dots_splice()} is like \code{\link[=dots_list]{dots_list()}} but automatically splices
-list inputs.
-}
-}
-\section{Standard splicing versus quoting splicing}{
+The splicing operator \verb{!!!} operates both in values contexts like
+\code{\link[=list2]{list2()}} and \code{\link[=dots_list]{dots_list()}}, and in metaprogramming contexts like
+\code{\link[=expr]{expr()}}, \code{\link[=enquos]{enquos()}}, or \code{\link[=inject]{inject()}}. While the end result looks the
+same, the implementation is different and much more efficient in
+the value cases. This difference in implementation may cause
+performance issues for instance when going from:
 
-
-The \verb{!!!} operator works differently in \emph{standard} functions taking
-dots with \code{dots_list()} than in \emph{quoting} functions taking dots
-with \code{\link[=enexprs]{enexprs()}} or \code{\link[=enquos]{enquos()}}.
-\itemize{
-\item In quoting functions \verb{!!!} disaggregates its argument (let's call
-it \code{x}) into as many objects as there are elements in
-\code{x}. E.g. \code{quo(foo(!!! c(1, 2)))} is completely equivalent to
-\code{quo(foo(1, 2))}. The creation of those separate objects has an
-overhead but is typically not important when manipulating calls
-because function calls typically take a small number of
-arguments.
-\item In standard functions, disaggregating the spliced collection
-would have a negative performance impact in cases where
-\code{dots_list()} is used to build up data structures from user
-inputs. To avoid this spliced inputs are marked with \code{\link[=splice]{splice()}}
-and the final list is built with (the equivalent of)
-\code{flatten_if(dots, is_spliced)}.
-}
-
-Most of the time you should not care about the difference. However
-if you use a standard function taking tidy dots within a quoting
-function, the \verb{!!!} operator will disaggregate its argument because
-the behaviour of the quasiquoting function has priority. You might
-then observe some performance cost in edge cases. Here is one
-example where this would happen:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{purrr::rerun(10, dplyr::bind_rows(!!! x))
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{xs <- list(2, 3)
+list2(1, !!!xs, 4)
 }\if{html}{\out{</div>}}
 
-\code{purrr::rerun()} is a quoting function and \code{dplyr::bind_rows()} is
-a standard function. Because \code{bind_rows()} is called \emph{inside}
-\code{rerun()}, the list \code{x} will be disaggregated into a pairlist of
-arguments. To avoid this you can use \code{splice()} instead:
+to:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{purrr::rerun(10, dplyr::bind_rows(splice(x)))
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{inject(list2(1, !!!xs, 4))
+}\if{html}{\out{</div>}}
+
+In the former case, the performant value-splicing is used. In the
+latter case, the slow metaprogramming splicing is used.
+
+A common practical case where this may occur is when code is
+wrapped inside a tidyeval context like \code{dplyr::mutate()}. In this
+case, the metaprogramming operator \verb{!!!} will take over the
+value-splicing operator, causing an unexpected slowdown.
+
+To avoid this in performance-critical code, use \code{splice()} instead
+of \verb{!!!}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# These both use the fast splicing:
+list2(1, splice(xs), 4)
+inject(list2(1, splice(xs), 4))
 }\if{html}{\out{</div>}}
 }
-
-\section{Life cycle}{
-
-\itemize{
-\item \code{dots_splice()} is in the questioning stage. It is part of our
-experiments with dots semantics. Compared to \code{dots_list()},
-\code{dots_splice()} automatically splices lists. We now lean towards
-adopting a single type of dots semantics (those of \code{dots_list()})
-where splicing is explicit.
-\item \code{splice()} is in the questioning stage. It is not clear whether it is
-really needed as there are other ways to avoid the performance
-issue discussed above.
-}
-}
-
-\keyword{internal}

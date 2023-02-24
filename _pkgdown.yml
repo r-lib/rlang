@@ -152,6 +152,7 @@ reference:
       - dyn-dots
       - list2
       - pairlist2
+      - splice
 
 
   - title: Error handling
