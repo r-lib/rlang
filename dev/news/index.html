@@ -134,6 +134,7 @@
 <li><p>Fixed a <code><a href="../reference/is_installed.html">check_installed()</a></code> issue with packages removed during the current R session (<a href="https://github.com/r-lib/rlang/issues/1561" class="external-link">#1561</a>).</p></li>
 <li><p><code><a href="../reference/as_data_mask.html">new_data_mask()</a></code> is now slightly faster due to a smaller initial mask size and usage of the C level function <code>R_NewEnv()</code> on R &gt;=4.1.0 (<a href="https://github.com/r-lib/rlang/issues/1553" class="external-link">#1553</a>).</p></li>
 <li><p>The C level <code>r_dyn_*_push_back()</code> utilities are now faster (<a href="https://github.com/r-lib/rlang/issues/1542" class="external-link">#1542</a>).</p></li>
+<li><p>The C level <code>r_lgl_sum()</code> and <code>r_lgl_which()</code> helpers are now faster (<a href="https://github.com/r-lib/rlang/issues/1577" class="external-link">#1577</a>, with contributions from <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</p></li>
 <li><p>rlang is now compliant with <code>-Wstrict-prototypes</code> as requested by CRAN (<a href="https://github.com/r-lib/rlang/issues/1508" class="external-link">#1508</a>).</p></li>
 </ul></div>
     <div class="section level2">
