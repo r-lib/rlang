@@ -1,6 +1,6 @@
 # Revdeps
 
-## Failed to check (82)
+## Failed to check (83)
 
 |package                 |version |error |warning |note |
 |:-----------------------|:-------|:-----|:-------|:----|
@@ -10,7 +10,6 @@
 |CHETAH                  |?       |      |        |     |
 |cicero                  |?       |      |        |     |
 |cinaR                   |?       |      |        |     |
-|ckanr                   |0.6.0   |1     |        |     |
 |concurve                |?       |      |        |     |
 |contextual              |?       |      |        |     |
 |covidmx                 |?       |      |        |     |
@@ -40,6 +39,7 @@
 |loon.ggplot             |?       |      |        |     |
 |loon.shiny              |?       |      |        |     |
 |MantaID                 |?       |      |        |     |
+|MarketMatching          |?       |      |        |     |
 |MARVEL                  |?       |      |        |     |
 |mbRes                   |?       |      |        |     |
 |microservices           |?       |      |        |     |
@@ -59,7 +59,6 @@
 |Platypus                |?       |      |        |     |
 |PLSiMCpp                |?       |      |        |     |
 |pmdplyr                 |?       |      |        |     |
-|PredPsych               |0.4     |1     |        |     |
 |prqlr                   |?       |      |        |     |
 |QuantileGH              |?       |      |        |     |
 |randomUniformForest     |?       |      |        |     |
@@ -74,8 +73,10 @@
 |scGate                  |?       |      |        |     |
 |SCpubr                  |?       |      |        |     |
 |shinyHugePlot           |?       |      |        |     |
+|SpaDES.tools            |?       |      |        |     |
 |SSVS                    |?       |      |        |     |
 |stortingscrape          |?       |      |        |     |
+|tame                    |?       |      |        |     |
 |tidySEM                 |?       |      |        |     |
 |tidytags                |?       |      |        |     |
 |tinyarray               |?       |      |        |     |
@@ -87,12 +88,15 @@
 |Xplortext               |?       |      |        |     |
 |xpose.nlmixr2           |?       |      |        |     |
 
-## New problems (4)
+## New problems (7)
 
-|package   |version |error  |warning |note |
-|:---------|:-------|:------|:-------|:----|
+|package        |version |error  |warning |note |
+|:--------------|:-------|:------|:-------|:----|
 |[dplyr](problems.md#dplyr)|1.1.0   |__+1__ |        |1    |
+|[exDE](problems.md#exde)|1.0.0   |__+1__ |        |     |
 |[htmltools](problems.md#htmltools)|0.5.4   |__+1__ |        |1    |
+|[hyperSpec](problems.md#hyperspec)|0.100.0 |__+1__ |        |1    |
+|[photosynthesis](problems.md#photosynthesis)|2.1.1   |__+1__ |        |2    |
 |[portalr](problems.md#portalr)|0.3.11  |__+1__ |        |     |
-|[rapbase](problems.md#rapbase)|1.23.0  |__+1__ |        |     |
+|[targets](problems.md#targets)|0.14.2  |__+1__ |        |     |
 

@@ -315,66 +315,6 @@ Status: 1 ERROR
 
 
 ```
-# ckanr
-
-<details>
-
-* Version: 0.6.0
-* GitHub: https://github.com/ropensci/ckanr
-* Source code: https://github.com/cran/ckanr
-* Date/Publication: 2021-02-03 19:30:02 UTC
-* Number of recursive dependencies: 65
-
-Run `revdepcheck::cloud_details(, "ckanr")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘ckanr’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/ckanr/new/ckanr.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘ckanr’ ...
-** package ‘ckanr’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘R6’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘ckanr’
-* removing ‘/tmp/workdir/ckanr/new/ckanr.Rcheck/ckanr’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘ckanr’ ...
-** package ‘ckanr’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘R6’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘ckanr’
-* removing ‘/tmp/workdir/ckanr/old/ckanr.Rcheck/ckanr’
-
-
-```
 # concurve
 
 <details>
@@ -382,7 +322,7 @@ ERROR: lazy loading failed for package ‘ckanr’
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/concurve
-* Number of recursive dependencies: 238
+* Number of recursive dependencies: 240
 
 Run `revdepcheck::cloud_details(, "concurve")` for more info
 
@@ -417,7 +357,7 @@ Run `revdepcheck::cloud_details(, "concurve")` for more info
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/contextual
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 131
 
 Run `revdepcheck::cloud_details(, "contextual")` for more info
 
@@ -452,7 +392,7 @@ Run `revdepcheck::cloud_details(, "contextual")` for more info
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/covidmx
-* Number of recursive dependencies: 150
+* Number of recursive dependencies: 151
 
 Run `revdepcheck::cloud_details(, "covidmx")` for more info
 
@@ -488,7 +428,7 @@ Run `revdepcheck::cloud_details(, "covidmx")` for more info
 * GitHub: https://github.com/cdriveraus/ctsem
 * Source code: https://github.com/cran/ctsem
 * Date/Publication: 2022-11-06 05:10:11 UTC
-* Number of recursive dependencies: 135
+* Number of recursive dependencies: 136
 
 Run `revdepcheck::cloud_details(, "ctsem")` for more info
 
@@ -565,7 +505,7 @@ ERROR: compilation failed for package ‘ctsem’
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/D2MCS
-* Number of recursive dependencies: 178
+* Number of recursive dependencies: 179
 
 Run `revdepcheck::cloud_details(, "D2MCS")` for more info
 
@@ -775,7 +715,7 @@ Run `revdepcheck::cloud_details(, "EpiForsk")` for more info
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/epitopeR
-* Number of recursive dependencies: 158
+* Number of recursive dependencies: 161
 
 Run `revdepcheck::cloud_details(, "epitopeR")` for more info
 
@@ -1436,7 +1376,7 @@ Run `revdepcheck::cloud_details(, "irtQ")` for more info
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/isoreader
-* Number of recursive dependencies: 128
+* Number of recursive dependencies: 129
 
 Run `revdepcheck::cloud_details(, "isoreader")` for more info
 
@@ -1614,7 +1554,7 @@ Status: 1 ERROR
 * GitHub: NA
 * Source code: https://github.com/cran/loon.shiny
 * Date/Publication: 2022-10-08 15:30:02 UTC
-* Number of recursive dependencies: 133
+* Number of recursive dependencies: 137
 
 Run `revdepcheck::cloud_details(, "loon.shiny")` for more info
 
@@ -1703,6 +1643,72 @@ Run `revdepcheck::cloud_details(, "MantaID")` for more info
 
 ```
 
+
+
+
+
+
+```
+# MarketMatching
+
+<details>
+
+* Version: 1.2.0
+* GitHub: NA
+* Source code: https://github.com/cran/MarketMatching
+* Date/Publication: 2021-01-08 20:10:02 UTC
+* Number of recursive dependencies: 73
+
+Run `revdepcheck::cloud_details(, "MarketMatching")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/MarketMatching/new/MarketMatching.Rcheck’
+* using R version 4.1.1 (2021-08-10)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘MarketMatching/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘MarketMatching’ version ‘1.2.0’
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Packages required but not available: 'CausalImpact', 'bsts', 'Boom'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/MarketMatching/old/MarketMatching.Rcheck’
+* using R version 4.1.1 (2021-08-10)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘MarketMatching/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘MarketMatching’ version ‘1.2.0’
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Packages required but not available: 'CausalImpact', 'bsts', 'Boom'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
 
 
 
@@ -1827,7 +1833,7 @@ Run `revdepcheck::cloud_details(, "mbRes")` for more info
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/microservices
-* Number of recursive dependencies: 69
+* Number of recursive dependencies: 70
 
 Run `revdepcheck::cloud_details(, "microservices")` for more info
 
@@ -1933,7 +1939,7 @@ Run `revdepcheck::cloud_details(, "moexer")` for more info
 * GitHub: https://github.com/nlmixr2/nlmixr2
 * Source code: https://github.com/cran/nlmixr2
 * Date/Publication: 2023-02-21 04:00:02 UTC
-* Number of recursive dependencies: 199
+* Number of recursive dependencies: 200
 
 Run `revdepcheck::cloud_details(, "nlmixr2")` for more info
 
@@ -2001,7 +2007,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/nlmixr2/nlmixr2extra
 * Source code: https://github.com/cran/nlmixr2extra
 * Date/Publication: 2022-10-22 22:32:34 UTC
-* Number of recursive dependencies: 202
+* Number of recursive dependencies: 203
 
 Run `revdepcheck::cloud_details(, "nlmixr2extra")` for more info
 
@@ -2133,7 +2139,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/nlmixr2/nlmixr2rpt
 * Source code: https://github.com/cran/nlmixr2rpt
 * Date/Publication: 2022-12-05 10:40:02 UTC
-* Number of recursive dependencies: 219
+* Number of recursive dependencies: 221
 
 Run `revdepcheck::cloud_details(, "nlmixr2rpt")` for more info
 
@@ -2729,68 +2735,6 @@ Run `revdepcheck::cloud_details(, "pmdplyr")` for more info
 
 
 
-
-
-```
-# PredPsych
-
-<details>
-
-* Version: 0.4
-* GitHub: NA
-* Source code: https://github.com/cran/PredPsych
-* Date/Publication: 2019-07-23 08:20:05 UTC
-* Number of recursive dependencies: 107
-
-Run `revdepcheck::cloud_details(, "PredPsych")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘PredPsych’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/PredPsych/new/PredPsych.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘PredPsych’ ...
-** package ‘PredPsych’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘modeltools’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘PredPsych’
-* removing ‘/tmp/workdir/PredPsych/new/PredPsych.Rcheck/PredPsych’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘PredPsych’ ...
-** package ‘PredPsych’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘modeltools’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘PredPsych’
-* removing ‘/tmp/workdir/PredPsych/old/PredPsych.Rcheck/PredPsych’
 
 
 ```
@@ -3449,6 +3393,82 @@ Run `revdepcheck::cloud_details(, "shinyHugePlot")` for more info
 
 
 ```
+# SpaDES.tools
+
+<details>
+
+* Version: 1.0.1
+* GitHub: https://github.com/PredictiveEcology/SpaDES.tools
+* Source code: https://github.com/cran/SpaDES.tools
+* Date/Publication: 2023-01-05 15:20:19 UTC
+* Number of recursive dependencies: 117
+
+Run `revdepcheck::cloud_details(, "SpaDES.tools")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/SpaDES.tools/new/SpaDES.tools.Rcheck’
+* using R version 4.1.1 (2021-08-10)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘SpaDES.tools/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘SpaDES.tools’ version ‘1.0.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+...
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking compiled code ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘test-all.R’
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/SpaDES.tools/old/SpaDES.tools.Rcheck’
+* using R version 4.1.1 (2021-08-10)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘SpaDES.tools/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘SpaDES.tools’ version ‘1.0.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+...
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking compiled code ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘test-all.R’
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
 # SSVS
 
 <details>
@@ -3525,6 +3545,41 @@ Status: 1 ERROR
 * Number of recursive dependencies: 61
 
 Run `revdepcheck::cloud_details(, "stortingscrape")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
+# tame
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/tame
+* Number of recursive dependencies: 65
+
+Run `revdepcheck::cloud_details(, "tame")` for more info
 
 </details>
 

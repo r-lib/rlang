@@ -1,8 +1,8 @@
 ## revdepcheck results
 
-We checked 6565 reverse dependencies (6518 from CRAN + 47 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 6576 reverse dependencies (6528 from CRAN + 48 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 4 new problems
+ * We saw 7 new problems
  * We failed to check 35 packages
 
 Issues with CRAN packages are summarised below.
@@ -13,13 +13,22 @@ Issues with CRAN packages are summarised below.
 * dplyr
   checking tests ... ERROR
 
+* exDE
+  checking tests ... ERROR
+
 * htmltools
+  checking tests ... ERROR
+
+* hyperSpec
+  checking running R code from vignettes ... ERROR
+
+* photosynthesis
   checking tests ... ERROR
 
 * portalr
   checking tests ... ERROR
 
-* rapbase
+* targets
   checking tests ... ERROR
 
 ### Failed to check
@@ -27,7 +36,6 @@ Issues with CRAN packages are summarised below.
 * beadplexr       (NA)
 * CensMFM         (NA)
 * cinaR           (NA)
-* ckanr           (NA)
 * ctsem           (NA)
 * FAMetA          (NA)
 * genekitr        (NA)
@@ -37,6 +45,7 @@ Issues with CRAN packages are summarised below.
 * ImputeRobust    (NA)
 * loon.ggplot     (NA)
 * loon.shiny      (NA)
+* MarketMatching  (NA)
 * MARVEL          (NA)
 * nlmixr2         (NA)
 * nlmixr2extra    (NA)
@@ -47,12 +56,12 @@ Issues with CRAN packages are summarised below.
 * OpenMx          (NA)
 * pathwayTMB      (NA)
 * Platypus        (NA)
-* PredPsych       (NA)
 * RcppCensSpatial (NA)
 * rPBK            (NA)
 * rstan           (NA)
 * RVA             (NA)
 * SCpubr          (NA)
+* SpaDES.tools    (NA)
 * SSVS            (NA)
 * tidySEM         (NA)
 * tinyarray       (NA)
