@@ -216,7 +216,6 @@ handler_call <- quote(function(cnd) {
     } else {
       except <- ""
     }
-    inherit <- .subset2(.subset2(cnd, "rlang"), "inherit")
   }
 
   while (!is_null(cnd)) {
@@ -225,6 +224,7 @@ handler_call <- quote(function(cnd) {
       if (!inherits(out, "rlang_zap")) throw(out)
     }
 
+    inherit <- .subset2(.subset2(cnd, "rlang"), "inherit")
     if (is_false(inherit)) {
       return()
     }
