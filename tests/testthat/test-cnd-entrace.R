@@ -364,3 +364,16 @@ test_that("can't set backtrace-on-warning to reminder", {
     "none"
   )
 })
+
+test_that("warnings converted to errors are not resignalled by `global_entrace()`", {
+  skip_if_not_installed("base", "3.6.0")
+
+  local_options(warn = 2)
+
+  out <- withCallingHandlers(
+    warning = entrace,
+    tryCatch(error = function(...) "ok", warning("foo"))
+  )
+
+  expect_equal(out, "ok")
+})

@@ -166,8 +166,12 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
 
     # Resignal enriched warning
     if (!is_null(findRestart("muffleWarning"))) {
-      cnd_signal(wrn)
-      invokeRestart("muffleWarning")
+      if (identical(peek_option("warn"), 2L)) {
+        return()
+      } else {
+        warning(wrn)
+        invokeRestart("muffleWarning")
+      }
     } else {
       return()
     }
