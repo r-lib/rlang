@@ -216,6 +216,9 @@ corresponding function call is retrieved.</p></dd>
 <span class="r-in"><span><span class="co"># When a relevant handler is set up, the signal transfers control</span></span></span>
 <span class="r-in"><span><span class="co"># to the handler</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="with_handlers.html">with_handlers</a></span><span class="op">(</span><span class="fu"><a href="cnd_signal.html">cnd_signal</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span>, foo <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">c</span><span class="op">)</span> <span class="st">"caught!"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`with_handlers()` is deprecated as of rlang 1.0.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `tryCatch()`, `withCallingHandlers()`, or `try_fetch()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "caught!"</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="fu"><a href="cnd_signal.html">cnd_signal</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span>, foo <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">c</span><span class="op">)</span> <span class="st">"caught!"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "caught!"</span>
