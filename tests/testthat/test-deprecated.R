@@ -144,10 +144,14 @@ test_that("quo_expr() still works", {
 })
 
 test_that("call_fn() extracts function", {
+  local_lifecycle_silence()
+
   expect_identical(call_fn(~matrix()), matrix)
 })
 
 test_that("call_fn() looks up function in `env`", {
+  local_lifecycle_silence()
+
   env <- local({
     fn <- function() "foo"
     current_env()
@@ -156,6 +160,8 @@ test_that("call_fn() looks up function in `env`", {
 })
 
 test_that("with_handlers() establishes inplace and exiting handlers", {
+  local_lifecycle_silence()
+
   handlers <- list(
     error = function(c) "caught error",
     message = function(c) "caught message",
@@ -171,20 +177,28 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
 })
 
 test_that("with_handlers() propagates visibility", {
+  local_lifecycle_silence()
+
   expect_visible(with_handlers(list(invisible(1))))
   expect_invisible(with_handlers(invisible(1)))
 })
 
 test_that("bare functions are treated as exiting handlers", {
+  local_lifecycle_silence()
+
   expect_identical(with_handlers(abort("foo"), error = function(cnd) "caught"), "caught")
 })
 
 test_that("with_handlers() supports formula shortcut for lambdas", {
+  local_lifecycle_silence()
+
   err <- with_handlers(abort("foo", "bar"), error = ~.x)
   expect_true(inherits(err, "bar"))
 })
 
 test_that("can muffle conditions", {
+  local_lifecycle_silence()
+
   expect_no_message(
     expect_identical(with_handlers({ message(""); "foo" }, message = calling(cnd_muffle)), "foo")
   )

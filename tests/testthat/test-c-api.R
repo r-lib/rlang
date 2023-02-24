@@ -17,10 +17,8 @@ test_that("chr_append() appends", {
 })
 
 test_that("r_warn() signals", {
-  handler <- function(c) expect_null(c$call)
-
   expect_warning(regexp = "foo",
-    with_handlers(warning = calling(handler),
+    withCallingHandlers(warning = function(c) expect_null(c$call),
       .Call(ffi_test_r_warn, "foo")
     ))
 })

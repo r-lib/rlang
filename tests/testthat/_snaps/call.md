@@ -8,12 +8,6 @@
       Error in `call_modify()`:
       ! `.call` must be a defused call, not a list.
     Code
-      err(call_standardise(x))
-    Output
-      <error/rlang_error>
-      Error in `call_standardise()`:
-      ! `call` must be a quoted call.
-    Code
       err(call_name(x))
     Output
       <error/rlang_error>
@@ -38,12 +32,6 @@
       <error/rlang_error>
       Error in `call_modify()`:
       ! `.call` must be a defused call, not a list.
-    Code
-      err(call_standardise(q))
-    Output
-      <error/rlang_error>
-      Error in `call_standardise()`:
-      ! `call` must be a quoted call.
     Code
       err(call_name(q))
     Output

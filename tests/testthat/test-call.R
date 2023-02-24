@@ -37,6 +37,8 @@ test_that("call2() requires a symbol when namespace is supplied", {
 # Standardisation ---------------------------------------------------------
 
 test_that("call_standardise() supports quosures", {
+  local_lifecycle_silence()
+
   fn <- function(foo, bar) "Not this one"
 
   quo <- local({
@@ -49,6 +51,8 @@ test_that("call_standardise() supports quosures", {
 })
 
 test_that("can standardise primitive functions (#473)", {
+  local_lifecycle_silence()
+
   expect_identical(call_standardise(foo ~ bar), foo ~ bar)
   expect_identical(call_standardise(quote(1 + 2)), quote(1 + 2))
 })
@@ -136,12 +140,16 @@ test_that("can modify formulas inplace", {
 })
 
 test_that("new args inserted at end", {
+  local_lifecycle_silence()
+
   call <- quote(matrix(1:10))
   out <- call_modify(call_standardise(call), nrow = 3)
   expect_equal(out, quote(matrix(data = 1:10, nrow = 3)))
 })
 
 test_that("new args replace old", {
+  local_lifecycle_silence()
+
   call <- quote(matrix(1:10))
   out <- call_modify(call_standardise(call), data = 3)
   expect_equal(out, quote(matrix(data = 3)))
@@ -347,14 +355,12 @@ test_that("call functions type-check their input (#187)", {
   expect_snapshot({
     x <- list(a = 1)
     err(call_modify(x, NULL))
-    err(call_standardise(x))
     err(call_name(x))
     err(call_args(x))
     err(call_args_names(x))
 
     q <- quo(!!x)
     err(call_modify(q, NULL))
-    err(call_standardise(q))
     err(call_name(q))
     err(call_args(q))
     err(call_args_names(q))

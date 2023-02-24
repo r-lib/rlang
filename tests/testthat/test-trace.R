@@ -315,9 +315,9 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
     eval()
   }
 
-  catch_cnd(with_handlers(
+  catch_cnd(withCallingHandlers(
     fn(),
-    error = calling(function(err) trace <<- trace_back(e))
+    error = function(err) trace <<- trace_back(e)
   ))
 
   expect_snapshot_trace(trace)
