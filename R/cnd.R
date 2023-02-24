@@ -370,13 +370,12 @@ cnd_inherits <- function(cnd, class) {
 }
 
 cnd_some <- function(cnd, fn, ...) {
-  inherit <- .subset2(.subset2(cnd, "rlang"), "inherit")
-
   while (is_condition(cnd)) {
     if (fn(cnd, ...)) {
       return(TRUE)
     }
 
+    inherit <- .subset2(.subset2(cnd, "rlang"), "inherit")
     if (is_false(inherit)) {
       return(FALSE)
     }
