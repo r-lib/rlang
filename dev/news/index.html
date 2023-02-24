@@ -100,7 +100,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/dots_splice.html">dots_splice()</a></code> is deprecated. This function was previously in the questioning lifecycle stage as we were moving towards the explicit <code>!!!</code> splicing style.</p></li>
+<ul><li>
+<p><code><a href="../reference/abort.html">abort()</a></code>, <code><a href="../reference/abort.html">warn()</a></code>, and <code><a href="../reference/abort.html">inform()</a></code> gain an <code>.inherit</code> parameter. This controls whether <code>parent</code> is inherited. If <code>FALSE</code>, <code><a href="../reference/cnd_inherits.html">cnd_inherits()</a></code> and <code><a href="../reference/try_fetch.html">try_fetch()</a></code> do not match chained conditions across parents.</p>
+<p>It’s normally <code>TRUE</code> by default, but if a warning is chained to an error or a message is chained to a warning or error (downgraded chaining), <code>.inherit</code> defaults to <code>FALSE</code> (<a href="https://github.com/r-lib/rlang/issues/1573" class="external-link">#1573</a>).</p>
+</li>
+<li><p><code><a href="../reference/dots_splice.html">dots_splice()</a></code> is deprecated. This function was previously in the questioning lifecycle stage as we were moving towards the explicit <code>!!!</code> splicing style.</p></li>
 <li><p><code><a href="../reference/flatten.html">flatten()</a></code>, <code><a href="../reference/flatten.html">squash()</a></code>, and their variants are deprecated in favour of <code><a href="https://purrr.tidyverse.org/reference/list_flatten.html" class="external-link">purrr::list_flatten()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/list_c.html" class="external-link">purrr::list_c()</a></code>.</p></li>
 <li><p>The lifecycle standalone file has been updated to match the modern lifecycle tools.</p></li>
 <li><p>New <code><a href="../reference/env_is_direct.html">env_is_direct()</a></code> function to determine if an evaluation frame corresponds to a direct (global environment or package being tested) or indirect usage (through a third party function).</p></li>
