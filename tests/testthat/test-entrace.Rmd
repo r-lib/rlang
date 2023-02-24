@@ -37,9 +37,3 @@ f(warning)
 ```{r}
 rlang::last_warnings()
 ```
-
-```{r}
-message("foo")
-
-rlang::last_messages()
-```
