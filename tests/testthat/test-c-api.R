@@ -401,6 +401,7 @@ test_that("nms_are_duplicated() handles empty and missing names", {
 
 test_that("r_lgl_sum() handles NA", {
   expect_identical(r_lgl_sum(lgl(TRUE, FALSE), TRUE), 1L)
+  expect_identical(r_lgl_sum(lgl(TRUE, FALSE), FALSE), 1L)
   expect_identical(r_lgl_sum(lgl(TRUE, NA), TRUE), 2L)
   expect_identical(r_lgl_sum(lgl(TRUE, NA), FALSE), 1L)
 })
@@ -408,22 +409,26 @@ test_that("r_lgl_sum() handles NA", {
 test_that("r_lgl_which() handles NA", {
   expect_identical(r_lgl_which(lgl(TRUE, FALSE), TRUE), 1L)
   expect_identical(r_lgl_which(lgl(TRUE, FALSE), FALSE), 1L)
-  expect_identical(r_lgl_which(lgl(TRUE, NA), TRUE), int(1L, NA))
-  expect_identical(r_lgl_which(lgl(TRUE, NA), FALSE), 1L)
+  expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, NA), TRUE), int(1L, NA, NA, 5L, NA))
+  expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, NA), FALSE), int(1L, 5L))
 })
 
 test_that("r_lgl_which() handles empty vectors", {
   expect_identical(r_lgl_which(lgl(), TRUE), int())
   expect_identical(r_lgl_which(lgl(), FALSE), int())
+
+  expect_identical(r_lgl_which(named(lgl()), TRUE), named(int()))
+  expect_identical(r_lgl_which(named(lgl()), FALSE), named(int()))
 })
 
 test_that("r_lgl_which() propagates names", {
-  x <- c(a = TRUE, b = FALSE, c = NA)
-  expect_named(r_lgl_which(x, na_propagate = TRUE), c("a", "c"))
-  expect_named(r_lgl_which(x, na_propagate = FALSE), "a")
+  x <- lgl(a = TRUE, b = FALSE, c = NA, d = FALSE, e = NA, f = TRUE)
+  expect_named(r_lgl_which(x, na_propagate = TRUE), c("a", "c", "e", "f"))
+  expect_named(r_lgl_which(x, na_propagate = FALSE), c("a", "f"))
 
   # Unnamed if input is unnamed
   expect_named(r_lgl_which(TRUE, na_propagate = TRUE), NULL)
+  expect_named(r_lgl_which(lgl(TRUE, NA), na_propagate = TRUE), NULL)
 })
 
 test_that("r_lgl_which() handles `NA` when propagation is disabled (#750)", {
