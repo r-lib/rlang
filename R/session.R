@@ -73,7 +73,7 @@ detect_installed <- function(info) {
     return(all(hook(info$pkg, info$ver, info$cmp)))
   }
 
-  list_c(pmap(info, function(pkg, cmp, ver) {
+  out <- list_c(pmap(info, function(pkg, cmp, ver) {
     if (is_string(pkg, "base")) {
       # Special-case the base package because it is not locked on
       # older R versions
@@ -96,6 +96,8 @@ detect_installed <- function(info) {
       FALSE
     }
   }))
+
+  out %||% TRUE
 }
 
 is_on_disk <- function(pkg) {

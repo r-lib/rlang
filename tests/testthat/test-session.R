@@ -240,3 +240,8 @@ test_that("is_installed() allows irregular package names", {
   expect_false(is_installed("foo 1.0"))
   expect_false(is_installed("::", version = "1.0"))
 })
+
+test_that("check_installed() and is_installed() support character vectors", {
+  expect_true(is_installed(chr()))
+  expect_null(check_installed(chr()))
+})
