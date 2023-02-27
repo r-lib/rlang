@@ -29,7 +29,7 @@ as_list(x)
 declarative, no encoding conversion is performed.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#soft-deprecated}{\figure{lifecycle-soft-deprecated.svg}{options: alt='[Soft-deprecated]'}}}{\strong{[Soft-deprecated]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 These are equivalent to the base functions (e.g. \code{\link[=as.logical]{as.logical()}},
 \code{\link[=as.list]{as.list()}}, etc), but perform coercion rather than conversion.
