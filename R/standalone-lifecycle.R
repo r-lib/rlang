@@ -60,7 +60,7 @@
 #'   when the message is built programmatically and depends on inputs.
 #' @param user_env The environment in which the deprecated function
 #'   was called. The verbosity depends on whether the deprecated
-#'   feature was called directly, see [rlang::env_is_direct()] and the
+#'   feature was called directly, see [rlang::env_is_user_facing()] and the
 #'   documentation in the lifecycle package.
 #'
 #' @section Controlling verbosity:
@@ -98,7 +98,7 @@ deprecate_soft <- function(msg,
     quiet = NULL,
     warning = ,
     default =
-      if (rlang::env_is_direct(user_env)) {
+      if (rlang::env_is_user_facing(user_env)) {
         always <- verbosity == "warning"
         trace <- rlang::trace_back(bottom = caller_env())
         .rlang_lifecycle_deprecate_warn0(
@@ -126,7 +126,7 @@ deprecate_warn <- function(msg,
     quiet = NULL,
     warning = ,
     default = {
-      direct <- rlang::env_is_direct(user_env)
+      direct <- rlang::env_is_user_facing(user_env)
       always <- direct && (always || verbosity == "warning")
 
       trace <- tryCatch(

@@ -756,20 +756,22 @@ env_is_browsed <- function(env) {
   .Call(ffi_env_is_browsed, env)
 }
 
-#' Is frame environment called directly?
+#' Is frame environment user facing?
 #'
 #' @description
-#' Detect if `env` is an environment that inherits from:
+#' Detects if `env` is user-facing, that is, whether it's an environment
+#' that inherits from:
 #'
 #' - The global environment, as would happen when called interactively
 #' - A package that is currently being tested
 #'
 #' If either is true, we consider `env` to belong to an evaluation
-#' frame that was called _directly_. By contrast, an _indirect_ usage
-#' would be via a third party function.
+#' frame that was called _directly_ by the end user. This is by
+#' contrast to _indirect_ calls by third party functions which are not
+#' user facing.
 #'
 #' For instance the [lifecycle](https://lifecycle.r-lib.org/) package
-#' uses `env_is_direct()` to figure out whether a deprecated function
+#' uses `env_is_user_facing()` to figure out whether a deprecated function
 #' was called directly or indirectly, and select an appropriate
 #' verbosity level as a function of that.
 #'
@@ -777,7 +779,7 @@ env_is_browsed <- function(env) {
 #'
 #' @examples
 #' fn <- function() {
-#'   env_is_direct(caller_env())
+#'   env_is_user_facing(caller_env())
 #' }
 #'
 #' # Direct call of `fn()` from the global env
@@ -786,7 +788,7 @@ env_is_browsed <- function(env) {
 #' # Indirect call of `fn()` from a package
 #' with(ns_env("utils"), fn())
 #' @export
-env_is_direct <- function(env) {
+env_is_user_facing <- function(env) {
   check_environment(env)
   env_inherits_global(env) || from_testthat(env)
 }

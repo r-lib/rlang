@@ -550,27 +550,27 @@ test_that("env_has() doesn't force active bindings (#1292)", {
   expect_true(env_has(e2, "active", inherit = TRUE))
 })
 
-test_that("env_is_direct() detects direct usage from the global env", {
-  expect_true(env_is_direct(global_env()))
-  expect_true(env_is_direct(env(global_env())))
+test_that("env_is_user_facing() detects direct usage from the global env", {
+  expect_true(env_is_user_facing(global_env()))
+  expect_true(env_is_user_facing(env(global_env())))
 
-  expect_false(env_is_direct(ns_env("base")))
-  expect_false(env_is_direct(ns_env("testthat")))
+  expect_false(env_is_user_facing(ns_env("base")))
+  expect_false(env_is_user_facing(ns_env("testthat")))
 })
 
-test_that("env_is_direct() detects direct usage in tests", {
+test_that("env_is_user_facing() detects direct usage in tests", {
   # Simulate `devtools::test()` and `devtools::check()` envs to allow
   # direct interactive evaluation
   env <- env(ns_env("rlang"))
 
   expect_true(from_testthat(env))
-  expect_true(env_is_direct(env))
+  expect_true(env_is_user_facing(env))
 
   withr::with_envvar(
     c(TESTTHAT_PKG = "foo"),
     {
       expect_false(from_testthat(env))
-      expect_false(env_is_direct(env))
+      expect_false(env_is_user_facing(env))
     }
   )
 })
