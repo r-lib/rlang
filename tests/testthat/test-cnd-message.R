@@ -572,3 +572,18 @@ test_that("chained errors may have empty messages", {
     cat_line(cnd_message(child, prefix = TRUE))
   })
 })
+
+test_that("`cnd_message()` returns a single string", {
+  local_interactive(TRUE)
+
+  f <- function(do) g(do)
+  g <- function(do) h(do)
+  h <- function(do) do("foo")
+
+  cnd <- catch_cnd(f(abort))
+  cnd <- cnd_set_backtrace_on_error(cnd, "reminder")
+  expect_length(cnd_message(cnd), 1)
+
+  class(cnd) <- c("rlang_warning", "warning", "condition")
+  expect_length(cnd_message(cnd), 1)
+})

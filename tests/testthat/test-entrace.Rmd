@@ -1,0 +1,39 @@
+```{r}
+options(
+  rlang_backtrace_on_error_report = "full"
+)
+
+f <- function(do = stop) g(do)
+g <- function(do) h(do)
+h <- function(do) do("foo")
+```
+
+```{r, error = TRUE}
+f()
+```
+
+```{r}
+rlang::global_entrace()
+```
+
+```{r, error = TRUE}
+f()
+```
+
+```{r}
+f(warning)
+```
+
+```{r}
+options(
+  rlang_backtrace_on_warning_report = "full"
+)
+```
+
+```{r}
+f(warning)
+```
+
+```{r}
+rlang::last_warnings()
+```

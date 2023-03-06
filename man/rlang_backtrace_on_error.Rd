@@ -3,6 +3,8 @@
 \name{rlang_backtrace_on_error}
 \alias{rlang_backtrace_on_error}
 \alias{add_backtrace}
+\alias{rlang_backtrace_on_error_report}
+\alias{rlang_backtrace_on_warning_report}
 \title{Display backtrace on error}
 \description{
 rlang errors carry a backtrace that can be inspected by calling
@@ -34,7 +36,7 @@ to print the backtrace or inspect its data.
 }
 }
 
-\section{Errors in RMarkdown}{
+\section{Warnings and errors in RMarkdown}{
 
 
 The display of errors depends on whether they're expected (i.e.
@@ -62,6 +64,23 @@ to the chunk environment \code{knitr::knit_global()}. This ensures that
 the part of the call stack belonging to knitr does not end up in
 backtraces. If needed, you can override this by setting the
 \code{rlang_trace_top_env} global option.
+
+Similarly to \code{rlang_backtrace_on_error_report}, you can set
+\code{rlang_backtrace_on_warning_report} inside RMarkdown documents to
+tweak the display of warnings. This is useful in conjunction with
+\code{\link[=global_entrace]{global_entrace()}}. Because of technical limitations, there is
+currently no corresponding \code{rlang_backtrace_on_warning} option for
+normal R sessions.
+
+To get full entracing in an Rmd document, include this in a setup
+chunk before the first error or warning is signalled.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{```\{r setup\}
+rlang::global_entrace()
+options(rlang_backtrace_on_warning_report = "full")
+options(rlang_backtrace_on_error_report = "full")
+```
+}\if{html}{\out{</div>}}
 }
 
 \examples{
@@ -73,4 +92,7 @@ backtraces. If needed, you can override this by setting the
 #   error = rlang::entrace
 # )
 # stop("foo")
+}
+\seealso{
+rlang_backtrace_on_warning
 }

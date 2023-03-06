@@ -91,7 +91,7 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
   backtrace_on_error <- cnd_backtrace_on_error(orig) %||% "none"
   trace_footer <- format_onerror_backtrace(orig, opt = backtrace_on_error)
 
-  c(msg, trace_footer)
+  paste_line(msg, trace_footer)
 }
 cnd_message_lines <- function(cnd, ...) {
   c(
@@ -318,6 +318,22 @@ on_load({
     # Include backtrace footer option in the condition. Processed by
     # `cnd_message()`.
     x <- cnd_set_backtrace_on_error(x, peek_backtrace_on_error_report())
+
+    # The `sew.error()` method calls `as.character()`, which dispatches
+    # to `cnd_message()`
+    NextMethod()
+  })
+})
+
+on_load({
+  s3_register("knitr::sew", "rlang_warning", function(x, options, ...) {
+    # Simulate interactive session to prevent full backtrace from
+    # being included in error message
+    local_interactive()
+
+    # Include backtrace footer option in the condition. Processed by
+    # `cnd_message()`.
+    x <- cnd_set_backtrace_on_error(x, peek_backtrace_on_warning_report())
 
     # The `sew.error()` method calls `as.character()`, which dispatches
     # to `cnd_message()`

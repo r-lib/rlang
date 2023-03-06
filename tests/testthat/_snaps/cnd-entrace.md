@@ -177,3 +177,81 @@
     Warning message:
     In f() : foo
 
+# can call `global_entrace()` in knitted documents
+
+    Code
+      cat_line(entrace_lines)
+    Output
+          options(
+            rlang_backtrace_on_error_report = "full"
+          )
+      
+          f <- function(do = stop) g(do)
+          g <- function(do) h(do)
+          h <- function(do) do("foo")
+      
+          f()
+      
+          ## Error in h(do): foo
+      
+          rlang::global_entrace()
+      
+          f()
+      
+          ## Error in `h()`:
+          ## ! foo
+          ## Backtrace:
+          ##     x
+          ##  1. \-rlang (local) f()
+          ##  2.   \-rlang (local) g(do)
+          ##  3.     \-rlang (local) h(do)
+      
+          f(warning)
+      
+          ## Warning in h(do): foo
+      
+          options(
+            rlang_backtrace_on_warning_report = "full"
+          )
+      
+          f(warning)
+      
+          ## Warning in h(do): foo
+          ## Backtrace:
+          ##     x
+          ##  1. \-rlang (local) f(warning)
+          ##  2.   \-rlang (local) g(do)
+          ##  3.     \-rlang (local) h(do)
+      
+          rlang::last_warnings()
+      
+          ## [[1]]
+          ## <warning/rlang_warning>
+          ## Warning in `h()`:
+          ## foo
+          ## ---
+          ## Backtrace:
+          ##  1. rlang (local) f(warning)
+          ##  2. rlang (local) g(do)
+          ##  3. rlang (local) h(do)
+          ## 
+          ## [[2]]
+          ## <warning/rlang_warning>
+          ## Warning in `h()`:
+          ## foo
+          ## ---
+          ## Backtrace:
+          ##  1. rlang (local) f(warning)
+          ##  2. rlang (local) g(do)
+          ##  3. rlang (local) h(do)
+
+# can't set backtrace-on-warning to reminder
+
+    Code
+      peek_backtrace_on_warning_report()
+    Warning <rlang_warning>
+      `rlang_backtrace_on_warning_report` must be one of `c("none", "branch", "full")`.
+      i The option was reset to "none".
+    Output
+      [1] "none"
+

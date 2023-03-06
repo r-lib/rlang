@@ -924,7 +924,6 @@
       
           ## Error in `h()`:
           ## ! foo
-      
           ## Run `rlang::last_trace()` to see where the error occurred.
       
           options(rlang_backtrace_on_error_report = "full")
@@ -932,7 +931,6 @@
       
           ## Error in `h()`:
           ## ! foo
-      
           ## Backtrace:
           ##     x
           ##  1. \-global f()

@@ -323,3 +323,57 @@ test_that("only the first n warnings are entraced (#1473)", {
     )
   })
 })
+
+test_that("warnings are resignalled", {
+  expect_no_warning(
+    cnd <- catch_cnd(withCallingHandlers(
+      warning = entrace,
+      warning("foo")
+    ))
+  )
+
+  expect_s3_class(cnd, "rlang_warning")
+  expect_true(!is_null(cnd$trace))
+})
+
+test_that("can call `global_entrace()` in knitted documents", {
+  local_options(
+    rlang_backtrace_on_error_report = peek_option("rlang_backtrace_on_error_report"),
+    rlang_backtrace_on_warning_report = peek_option("rlang_backtrace_on_warning_report")
+  )
+  skip_if_not_installed("knitr")
+  skip_if_not_installed("rmarkdown")
+  skip_if(!rmarkdown::pandoc_available())
+
+  entrace_lines <- render_md("test-entrace.Rmd", env = current_env())
+
+  expect_snapshot({
+    cat_line(entrace_lines)
+  })
+})
+
+test_that("can't set backtrace-on-warning to reminder", {
+  local_options(rlang_backtrace_on_warning_report = "reminder")
+
+  expect_snapshot({
+    peek_backtrace_on_warning_report()
+  })
+
+  expect_equal(
+    peek_option("rlang_backtrace_on_warning_report"),
+    "none"
+  )
+})
+
+test_that("warnings converted to errors are not resignalled by `global_entrace()`", {
+  skip_if_not_installed("base", "3.6.0")
+
+  local_options(warn = 2)
+
+  out <- withCallingHandlers(
+    warning = entrace,
+    tryCatch(error = function(...) "ok", warning("foo"))
+  )
+
+  expect_equal(out, "ok")
+})

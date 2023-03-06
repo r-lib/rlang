@@ -191,14 +191,6 @@ push_message <- function(cnd) {
   push_condition(cnd, "last_messages")
 }
 
-cmd_frame <- function() {
-  getOption("rlang:::cnd_frame", sys.frame(1))
-}
-
-has_new_cmd_frame <- function(top = obj_address(cmd_frame())) {
-  !identical(the$last_top_frame, top)
-}
-
 push_condition <- function(cnd, last) {
   top <- obj_address(cmd_frame())
 
@@ -215,6 +207,27 @@ push_condition <- function(cnd, last) {
   }
 }
 
+cmd_frame <- function() {
+  if (knitr_in_progress()) {
+    ns <- detect(sys.frames(), function(f) env_top_name(f) == "knitr")
+    ns %||% sys.frame(1)
+  } else {
+    getOption("rlang:::cnd_frame", sys.frame(1))
+  }
+}
+
+env_top_name <- function(x) {
+  x <- topenv(x)
+  if (is_namespace(x)) {
+    ns_env_name(x)
+  } else {
+    ""
+  }
+}
+
+has_new_cmd_frame <- function(top = obj_address(cmd_frame())) {
+  !identical(the$last_top_frame, top)
+}
 
 # Transform foreign warnings to rlang warnings or messages. Preserve
 # existing backtraces.
