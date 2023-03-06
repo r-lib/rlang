@@ -180,7 +180,6 @@ reference:
       - last_warnings
       - global_entrace
       - rlang_backtrace_on_error
-      - rlang_backtrace_on_warning
       - trace_back
 
   - subtitle: Conditions

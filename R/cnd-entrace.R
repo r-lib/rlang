@@ -29,8 +29,19 @@
 #' a backtrace. This needs to be done in a separate setup chunk before
 #' the first error or warning.
 #'
-#' This is useful in conjunction with [`rlang_backtrace_on_error`] and
-#' [`rlang_backtrace_on_warning`].
+#' This is useful in conjunction with
+#' [`rlang_backtrace_on_error_report`] and
+#' [`rlang_backtrace_on_warning_report`]. To get full entracing in an
+#' Rmd document, include this in a setup chunk before the first error
+#' or warning is signalled.
+#'
+#' ````
+#' ```{r setup}
+#' rlang::global_entrace()
+#' options(rlang_backtrace_on_warning_report = "full")
+#' options(rlang_backtrace_on_error_report = "full")
+#' ```
+#' ````
 #'
 #' @section Under the hood:
 #' On R 4.0 and newer, `global_entrace()` installs a global handler
