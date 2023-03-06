@@ -26,7 +26,8 @@
 #'
 #' Call `global_entrace()` inside an RMarkdown document to cause
 #' errors and warnings to be promoted to rlang conditions that include
-#' a backtrace.
+#' a backtrace. This needs to be done in a separate setup chunk before
+#' the first error or warning.
 #'
 #' This is useful in conjunction with [`rlang_backtrace_on_error`] and
 #' [`rlang_backtrace_on_warning`].

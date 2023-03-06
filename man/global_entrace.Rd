@@ -34,7 +34,8 @@ Set global entracing in your RProfile with:
 
 Call \code{global_entrace()} inside an RMarkdown document to cause
 errors and warnings to be promoted to rlang conditions that include
-a backtrace.
+a backtrace. This needs to be done in a separate setup chunk before
+the first error or warning.
 
 This is useful in conjunction with \code{\link{rlang_backtrace_on_error}} and
 \code{\link{rlang_backtrace_on_warning}}.
