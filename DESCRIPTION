@@ -5,8 +5,8 @@ Description: A toolbox for working with base types, core R features
   like the condition system, and core 'Tidyverse' features like tidy
   evaluation.
 Authors@R: c(
-    person("Lionel", "Henry", ,"lionel@rstudio.com", c("aut", "cre")),
-    person("Hadley", "Wickham", ,"hadley@rstudio.com", "aut"),
+    person("Lionel", "Henry", ,"lionel@posit.co", c("aut", "cre")),
+    person("Hadley", "Wickham", ,"hadley@posit.co", "aut"),
     person(given = "mikefc",
            email = "mikefc@coolbutuseless.com", 
            role = "cph", 
@@ -15,7 +15,7 @@ Authors@R: c(
            family = "Collet",
            role = "cph", 
            comment = "Author of the embedded xxHash library"),
-    person(given = "RStudio", role = c("cph", "fnd"))
+    person(given = "Posit, PBC", role = c("cph", "fnd"))
     )
 License: MIT + file LICENSE
 ByteCompile: true

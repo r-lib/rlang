@@ -20,18 +20,18 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Lionel Henry \email{lionel@rstudio.com}
+\strong{Maintainer}: Lionel Henry \email{lionel@posit.co}
 
 Authors:
 \itemize{
-  \item Hadley Wickham \email{hadley@rstudio.com}
+  \item Hadley Wickham \email{hadley@posit.co}
 }
 
 Other contributors:
 \itemize{
   \item mikefc \email{mikefc@coolbutuseless.com} (Hash implementation based on Mike's xxhashlite) [copyright holder]
   \item Yann Collet (Author of the embedded xxHash library) [copyright holder]
-  \item RStudio [copyright holder, funder]
+  \item Posit, PBC [copyright holder, funder]
 }
 
 }
