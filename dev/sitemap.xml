@@ -229,7 +229,7 @@
     <loc>https://rlang.r-lib.org/dev/reference/env_inherits.html</loc>
   </url>
   <url>
-    <loc>https://rlang.r-lib.org/dev/reference/env_is_direct.html</loc>
+    <loc>https://rlang.r-lib.org/dev/reference/env_is_user_facing.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/dev/reference/env_lock.html</loc>
