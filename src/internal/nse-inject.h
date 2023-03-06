@@ -46,7 +46,7 @@ struct injection_info {
   r_obj* root;     // Expression wrapping the unquoted value (optional)
 };
 
-static inline struct injection_info init_expansion_info() {
+static inline struct injection_info init_expansion_info(void) {
   struct injection_info info;
 
   info.op = INJECTION_OP_none;

@@ -253,7 +253,7 @@ r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym, r_obj* error_call) {
   return obj;
 }
 
-static void warn_env_as_mask_once() {
+static void warn_env_as_mask_once(void) {
   const char* msg =
     "Passing an environment as data mask is deprecated.\n"
     "Please use `new_data_mask()` to transform your environment to a mask.\n"

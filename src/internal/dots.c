@@ -134,7 +134,7 @@ r_obj* ffi_chr_has_curly(r_obj* x) {
 }
 
 static
-void require_glue() {
+void require_glue(void) {
   r_obj* call = KEEP(r_parse("is_installed('glue')"));
   r_obj* out = KEEP(r_eval(call, rlang_ns_env));
 
