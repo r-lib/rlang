@@ -56,7 +56,7 @@ on_load(
   the$last_error <- NULL
 )
 
-#' Display last warnings
+#' Display last messages and warnings
 #'
 #' @description
 #'
@@ -104,33 +104,6 @@ on_load(
 #' last_warnings()
 #' #> [[1]]
 #' #> <warning/rlang_warning>
-#' #> Warning in `f()`: foo
-#' #> Backtrace:
-#' #>  1. global f()
-#' #>
-#' #> [[2]]
-#' #> <warning/rlang_warning>
-#' #> Warning in `g()`: bar
-#' #> Backtrace:
-#' #>  1. global f()
-#' #>  2. global g()
-#' #>
-#' #> [[3]]
-#' #> <warning/rlang_warning>
-#' #> Warning in `h()`: baz
-#' #> Backtrace:
-#' #>  1. global f()
-#' #>  2. global g()
-#' #>  3. global h()
-#' ```
-#'
-#' To get a full backtrace, use [summary()]. In this case the full
-#' backtraces do not include more information:
-#'
-#' ```r
-#' summary(last_warnings())
-#' #> [[1]]
-#' #> <warning/rlang_warning>
 #' #> Warning in `f()`:
 #' #> foo
 #' #> Backtrace:
@@ -155,6 +128,47 @@ on_load(
 #' #>  1. \-global f()
 #' #>  2.   \-global g()
 #' #>  3.     \-global h()
+#' ```
+#'
+#' This works similarly with messages:
+#'
+#' ```r
+#' f <- function() { inform("Hey!"); g() }
+#' g <- function() { inform("Hi!"); h() }
+#' h <- function() inform("Hello!")
+#'
+#' f()
+#' #> Hey!
+#' #> Hi!
+#' #> Hello!
+#'
+#' rlang::last_messages()
+#' #> [[1]]
+#' #> <message/rlang_message>
+#' #>   Message:
+#' #>   Hey!
+#' #>   ---
+#' #>   Backtrace:
+#' #>   1. global f()
+#' #>
+#' #> [[2]]
+#' #> <message/rlang_message>
+#' #>   Message:
+#' #>   Hi!
+#' #>   ---
+#' #>   Backtrace:
+#' #>   1. global f()
+#' #>   2. global g()
+#' #>
+#' #> [[3]]
+#' #> <message/rlang_message>
+#' #>   Message:
+#' #>   Hello!
+#' #>   ---
+#' #>   Backtrace:
+#' #>   1. global f()
+#' #>   2. global g()
+#' #>   3. global h()
 #' ```
 #'
 #' @export

@@ -3,7 +3,7 @@
 \name{last_warnings}
 \alias{last_warnings}
 \alias{last_messages}
-\title{Display last warnings}
+\title{Display last messages and warnings}
 \usage{
 last_warnings(n = NULL)
 
@@ -51,32 +51,6 @@ Call \code{last_warnings()} to see backtraces for each of these warnings:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{last_warnings()
 #> [[1]]
 #> <warning/rlang_warning>
-#> Warning in `f()`: foo
-#> Backtrace:
-#>  1. global f()
-#>
-#> [[2]]
-#> <warning/rlang_warning>
-#> Warning in `g()`: bar
-#> Backtrace:
-#>  1. global f()
-#>  2. global g()
-#>
-#> [[3]]
-#> <warning/rlang_warning>
-#> Warning in `h()`: baz
-#> Backtrace:
-#>  1. global f()
-#>  2. global g()
-#>  3. global h()
-}\if{html}{\out{</div>}}
-
-To get a full backtrace, use \code{\link[=summary]{summary()}}. In this case the full
-backtraces do not include more information:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{summary(last_warnings())
-#> [[1]]
-#> <warning/rlang_warning>
 #> Warning in `f()`:
 #> foo
 #> Backtrace:
@@ -101,6 +75,46 @@ backtraces do not include more information:
 #>  1. \\-global f()
 #>  2.   \\-global g()
 #>  3.     \\-global h()
+}\if{html}{\out{</div>}}
+
+This works similarly with messages:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{f <- function() \{ inform("Hey!"); g() \}
+g <- function() \{ inform("Hi!"); h() \}
+h <- function() inform("Hello!")
+
+f()
+#> Hey!
+#> Hi!
+#> Hello!
+
+rlang::last_messages()
+#> [[1]]
+#> <message/rlang_message>
+#>   Message:
+#>   Hey!
+#>   ---
+#>   Backtrace:
+#>   1. global f()
+#>
+#> [[2]]
+#> <message/rlang_message>
+#>   Message:
+#>   Hi!
+#>   ---
+#>   Backtrace:
+#>   1. global f()
+#>   2. global g()
+#>
+#> [[3]]
+#> <message/rlang_message>
+#>   Message:
+#>   Hello!
+#>   ---
+#>   Backtrace:
+#>   1. global f()
+#>   2. global g()
+#>   3. global h()
 }\if{html}{\out{</div>}}
 }
 
