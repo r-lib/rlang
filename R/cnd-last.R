@@ -145,30 +145,33 @@ on_load(
 #' rlang::last_messages()
 #' #> [[1]]
 #' #> <message/rlang_message>
-#' #>   Message:
-#' #>   Hey!
-#' #>   ---
-#' #>   Backtrace:
-#' #>   1. global f()
+#' #> Message:
+#' #> Hey!
+#' #> ---
+#' #> Backtrace:
+#' #>     x
+#' #>  1. \-global f()
 #' #>
 #' #> [[2]]
 #' #> <message/rlang_message>
-#' #>   Message:
-#' #>   Hi!
-#' #>   ---
-#' #>   Backtrace:
-#' #>   1. global f()
-#' #>   2. global g()
+#' #> Message:
+#' #> Hi!
+#' #> ---
+#' #> Backtrace:
+#' #>     x
+#' #>  1. \-global f()
+#' #>  2.   \-global g()
 #' #>
 #' #> [[3]]
 #' #> <message/rlang_message>
-#' #>   Message:
-#' #>   Hello!
-#' #>   ---
-#' #>   Backtrace:
-#' #>   1. global f()
-#' #>   2. global g()
-#' #>   3. global h()
+#' #> Message:
+#' #> Hello!
+#' #> ---
+#' #> Backtrace:
+#' #>     x
+#' #>  1. \-global f()
+#' #>  2.   \-global g()
+#' #>  3.     \-global h()
 #' ```
 #'
 #' @export

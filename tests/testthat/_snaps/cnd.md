@@ -469,16 +469,18 @@
       <warning/rlang_warning>
       ---
       Backtrace:
-       1. f()
-       2. g()
+          x
+       1. \-f()
+       2.   \-g()
     Code
       print(message)
     Output
       <message/rlang_message>
       ---
       Backtrace:
-       1. f()
-       2. g()
+          x
+       1. \-f()
+       2.   \-g()
     Code
       summary(warning)
     Output

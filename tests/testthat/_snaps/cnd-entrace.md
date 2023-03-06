@@ -109,7 +109,8 @@
     foo
     ---
     Backtrace:
-     1. global f()
+        x
+     1. \-global f()
     
     [[2]]
     <warning/rlang_warning>
@@ -117,8 +118,9 @@
     bar
     ---
     Backtrace:
-     1. global f()
-     2. global g()
+        x
+     1. \-global f()
+     2.   \-global g()
     
     
     > rlang::last_warnings(2)
@@ -128,7 +130,8 @@
     foo
     ---
     Backtrace:
-     1. global f()
+        x
+     1. \-global f()
     
     [[2]]
     <warning/rlang_warning>
@@ -136,8 +139,9 @@
     bar
     ---
     Backtrace:
-     1. global f()
-     2. global g()
+        x
+     1. \-global f()
+     2.   \-global g()
     
     
     > summary(rlang::last_messages())
@@ -231,9 +235,10 @@
           ## foo
           ## ---
           ## Backtrace:
-          ##  1. rlang (local) f(warning)
-          ##  2. rlang (local) g(do)
-          ##  3. rlang (local) h(do)
+          ##     x
+          ##  1. \-rlang (local) f(warning)
+          ##  2.   \-rlang (local) g(do)
+          ##  3.     \-rlang (local) h(do)
           ## 
           ## [[2]]
           ## <warning/rlang_warning>
@@ -241,9 +246,10 @@
           ## foo
           ## ---
           ## Backtrace:
-          ##  1. rlang (local) f(warning)
-          ##  2. rlang (local) g(do)
-          ##  3. rlang (local) h(do)
+          ##     x
+          ##  1. \-rlang (local) f(warning)
+          ##  2.   \-rlang (local) g(do)
+          ##  3.     \-rlang (local) h(do)
 
 # can't set backtrace-on-warning to reminder
 

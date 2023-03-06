@@ -469,7 +469,7 @@ summary.rlang_warning <- function(object, ...) {
 format.rlang_warning <- function(x,
                                  ...,
                                  backtrace = TRUE,
-                                 simplify = c("branch", "none")) {
+                                 simplify = "none") {
   cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
 }
 
