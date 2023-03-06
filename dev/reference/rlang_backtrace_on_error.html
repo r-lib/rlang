@@ -152,7 +152,7 @@ to print the backtrace or inspect its data.</p></li>
 <code>rlang_backtrace_on_error</code> option.</p></li>
 </ul></div>
     <div class="section level2">
-    <h2 id="errors-in-rmarkdown">Errors in RMarkdown<a class="anchor" aria-label="anchor" href="#errors-in-rmarkdown"></a></h2>
+    <h2 id="warnings-and-errors-in-rmarkdown">Warnings and errors in RMarkdown<a class="anchor" aria-label="anchor" href="#warnings-and-errors-in-rmarkdown"></a></h2>
     
 
 
@@ -176,6 +176,23 @@ to the chunk environment <code><a href="https://rdrr.io/pkg/knitr/man/knit_globa
 the part of the call stack belonging to knitr does not end up in
 backtraces. If needed, you can override this by setting the
 <code>rlang_trace_top_env</code> global option.</p>
+<p>Similarly to <code>rlang_backtrace_on_error_report</code>, you can set
+<code>rlang_backtrace_on_warning_report</code> inside RMarkdown documents to
+tweak the display of warnings. This is useful in conjunction with
+<code><a href="global_entrace.html">global_entrace()</a></code>. Because of technical limitations, there is
+currently no corresponding <code>rlang_backtrace_on_warning</code> option for
+normal R sessions.</p>
+<p>To get full entracing in an Rmd document, include this in a setup
+chunk before the first error or warning is signalled.</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at">{r setup}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">rlang::global_entrace()</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">options(rlang_backtrace_on_warning_report = "full")</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">options(rlang_backtrace_on_error_report = "full")</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span></code></pre><p></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>rlang_backtrace_on_warning</p></div>
     </div>
 
     <div class="section level2">
