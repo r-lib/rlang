@@ -21,7 +21,7 @@ License: MIT + file LICENSE
 ByteCompile: true
 Biarch: true
 Depends:
-    R (>= 3.4.0)
+    R (>= 3.5.0)
 Imports:
     utils
 Suggests:
