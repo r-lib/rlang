@@ -574,3 +574,26 @@ test_that("env_is_user_facing() detects direct usage in tests", {
     }
   )
 })
+
+test_that("env_is_user_facing() can be overridden", {
+  with_options(
+    rlang_user_facing = TRUE,
+    expect_true(env_is_user_facing(empty_env()))
+  )
+
+  with_options(
+    rlang_user_facing = FALSE,
+    expect_false(env_is_user_facing(empty_env()))
+  )
+
+  with_options(
+    rlang_user_facing = "utils",
+    expect_true(env_is_user_facing(ns_env("utils")))
+  )
+
+  expect_snapshot({
+    options(rlang_user_facing = NA)
+    (expect_error(env_is_user_facing(empty_env())))
+    expect_null(peek_option("rlang_user_facing"))
+  })
+})

@@ -777,6 +777,16 @@ env_is_browsed <- function(env) {
 #'
 #' @param env An environment.
 #'
+#' @section Escape hatch:
+#'
+#' You can override the return value of `env_is_user_facing()` by
+#' setting the global option `"rlang_user_facing"` to:
+#'
+#' - `TRUE` or `FALSE`.
+#' - A package name as a string. Then `env_is_user_facing(x)` returns
+#'   `TRUE` if `x` inherits from the namespace corresponding to that
+#'   package name.
+#'
 #' @examples
 #' fn <- function() {
 #'   env_is_user_facing(caller_env())
@@ -790,7 +800,42 @@ env_is_browsed <- function(env) {
 #' @export
 env_is_user_facing <- function(env) {
   check_environment(env)
-  env_inherits_global(env) || from_testthat(env)
+
+  if (env_inherits_global(env)) {
+    return(TRUE)
+  }
+
+  opt <- peek_option("rlang_user_facing")
+  if (!is_null(opt)) {
+    if (is_bool(opt)) {
+      return(opt)
+    }
+
+    if (is_string(opt)) {
+      top <- topenv(env)
+      if (!is_namespace(top)) {
+        return(FALSE)
+      }
+
+      return(identical(ns_env_name(top), opt))
+    }
+
+    options(rlang_user_facing = NULL)
+    msg <- c(
+      sprintf(
+        "`options(rlang_user_facing = )` must be `TRUE`, `FALSE`, or a package name, not %s.",
+        obj_type_friendly(opt)
+      ),
+      "i" = "The option was reset to `NULL`."
+    )
+    abort(msg)
+  }
+
+  if (from_testthat(env)) {
+    return(TRUE)
+  }
+
+  FALSE
 }
 
 env_inherits_global <- function(env) {

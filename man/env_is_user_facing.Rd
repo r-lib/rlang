@@ -27,6 +27,19 @@ uses \code{env_is_user_facing()} to figure out whether a deprecated function
 was called directly or indirectly, and select an appropriate
 verbosity level as a function of that.
 }
+\section{Escape hatch}{
+
+
+You can override the return value of \code{env_is_user_facing()} by
+setting the global option \code{"rlang_user_facing"} to:
+\itemize{
+\item \code{TRUE} or \code{FALSE}.
+\item A package name as a string. Then \code{env_is_user_facing(x)} returns
+\code{TRUE} if \code{x} inherits from the namespace corresponding to that
+package name.
+}
+}
+
 \examples{
 fn <- function() {
   env_is_user_facing(caller_env())
