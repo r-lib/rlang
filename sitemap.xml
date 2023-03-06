@@ -34,6 +34,9 @@
     <loc>https://rlang.r-lib.org/reference/arg_match.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/args_data_masking.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/args_dots_empty.html</loc>
   </url>
   <url>
@@ -127,6 +130,9 @@
     <loc>https://rlang.r-lib.org/reference/check_required.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/child_env.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/chr_unserialise_unicode.html</loc>
   </url>
   <url>
@@ -161,6 +167,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/dots_n.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/dots_splice.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/dots_values.html</loc>
@@ -223,6 +232,9 @@
     <loc>https://rlang.r-lib.org/reference/env_inherits.html</loc>
   </url>
   <url>
+    <loc>https://rlang.r-lib.org/reference/env_is_user_facing.html</loc>
+  </url>
+  <url>
     <loc>https://rlang.r-lib.org/reference/env_lock.html</loc>
   </url>
   <url>
@@ -278,6 +290,9 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/faq-options.html</loc>
+  </url>
+  <url>
+    <loc>https://rlang.r-lib.org/reference/ffi_standalone_types_check.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/flatten.html</loc>
@@ -644,9 +659,6 @@
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/vector-construction.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/vector-old-ctors.html</loc>
   </url>
   <url>
     <loc>https://rlang.r-lib.org/reference/with_env.html</loc>

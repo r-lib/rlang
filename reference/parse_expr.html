@@ -8,18 +8,26 @@ error is issued. On the other hand parse_exprs() can handle
 multiple expressions. It always returns a list of expressions
 (compare to base::parse() which returns a base::expression
 vector). All functions also support R connections.
+parse_expr() concatenates x with \\n separators prior to
+parsing in order to support the roundtrip
+parse_expr(expr_deparse(x)) (deparsed expressions might be
+multiline). On the other hand, parse_exprs() doesn't do any
+concatenation because it's designed to support named inputs. The
+names are matched to the expressions in the output, which is
+useful when a single named string creates multiple expressions.
+In other words, parse_expr() supports vector of lines whereas
+parse_exprs() expects vectors of complete deparsed expressions.
 parse_quo() and parse_quos() are variants that create a
-quosure that inherits from the global environment by
-default. This is appropriate when you're parsing external user
-input to be evaluated in user context (rather than the private
-contexts of your functions).
+quosure. Supply env = current_env() if you're parsing
+code to be evaluated in your current context. Supply env = global_env() when you're parsing external user input to be
+evaluated in user context.
 Unlike quosures created with enquo(), enquos(), or {{, a
 parsed quosure never contains injected quosures. It is thus safe
 to evaluate them with eval() instead of eval_tidy(), though
 the latter is more convenient as you don't need to extract expr
 and env.
 
-"><title>Parse R code — parse_expr • rlang</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Parse R code — parse_expr"><meta property="og:description" content="These functions parse and transform text into R expressions. This
+"><title>Parse R code — parse_expr • rlang</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.5/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.5/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Parse R code — parse_expr"><meta property="og:description" content="These functions parse and transform text into R expressions. This
 is the first step to interpret or evaluate a piece of R code
 written by a programmer.
 parse_expr() returns one expression. If the text contains more
@@ -28,11 +36,19 @@ error is issued. On the other hand parse_exprs() can handle
 multiple expressions. It always returns a list of expressions
 (compare to base::parse() which returns a base::expression
 vector). All functions also support R connections.
+parse_expr() concatenates x with \\n separators prior to
+parsing in order to support the roundtrip
+parse_expr(expr_deparse(x)) (deparsed expressions might be
+multiline). On the other hand, parse_exprs() doesn't do any
+concatenation because it's designed to support named inputs. The
+names are matched to the expressions in the output, which is
+useful when a single named string creates multiple expressions.
+In other words, parse_expr() supports vector of lines whereas
+parse_exprs() expects vectors of complete deparsed expressions.
 parse_quo() and parse_quos() are variants that create a
-quosure that inherits from the global environment by
-default. This is appropriate when you're parsing external user
-input to be evaluated in user context (rather than the private
-contexts of your functions).
+quosure. Supply env = current_env() if you're parsing
+code to be evaluated in your current context. Supply env = global_env() when you're parsing external user input to be
+evaluated in user context.
 Unlike quosures created with enquo(), enquos(), or {{, a
 parsed quosure never contains injected quosures. It is thus safe
 to evaluate them with eval() instead of eval_tidy(), though
@@ -50,7 +66,7 @@ and env.
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,11 +164,19 @@ error is issued. On the other hand <code>parse_exprs()</code> can handle
 multiple expressions. It always returns a list of expressions
 (compare to <code><a href="https://rdrr.io/r/base/parse.html" class="external-link">base::parse()</a></code> which returns a base::expression
 vector). All functions also support R connections.</p></li>
+<li><p><code>parse_expr()</code> concatenates <code>x</code> with <code>\\n</code> separators prior to
+parsing in order to support the roundtrip
+<code>parse_expr(expr_deparse(x))</code> (deparsed expressions might be
+multiline). On the other hand, <code>parse_exprs()</code> doesn't do any
+concatenation because it's designed to support named inputs. The
+names are matched to the expressions in the output, which is
+useful when a single named string creates multiple expressions.</p>
+<p>In other words, <code>parse_expr()</code> supports vector of lines whereas
+<code>parse_exprs()</code> expects vectors of complete deparsed expressions.</p></li>
 <li><p><code>parse_quo()</code> and <code>parse_quos()</code> are variants that create a
-<a href="defusing-advanced.html">quosure</a> that inherits from the global environment by
-default. This is appropriate when you're parsing external user
-input to be evaluated in user context (rather than the private
-contexts of your functions).</p>
+<a href="defusing-advanced.html">quosure</a>. Supply <code>env = current_env()</code> if you're parsing
+code to be evaluated in your current context. Supply <code>env = global_env()</code> when you're parsing external user input to be
+evaluated in user context.</p>
 <p>Unlike quosures created with <code><a href="enquo.html">enquo()</a></code>, <code><a href="enquo.html">enquos()</a></code>, or <code>{{</code>, a
 parsed quosure never contains injected quosures. It is thus safe
 to evaluate them with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> instead of <code><a href="eval_tidy.html">eval_tidy()</a></code>, though
@@ -166,9 +190,9 @@ and <code>env</code>.</p></li>
 <span></span>
 <span><span class="fu">parse_exprs</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">parse_quo</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">parse_quo</span><span class="op">(</span><span class="va">x</span>, <span class="va">env</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">parse_quos</span><span class="op">(</span><span class="va">x</span>, env <span class="op">=</span> <span class="fu"><a href="search_envs.html">global_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">parse_quos</span><span class="op">(</span><span class="va">x</span>, <span class="va">env</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -259,11 +283,11 @@ The <code>_quo</code> suffixed variants return quosures.</p>
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p></p><p>Developed by <a href="https://github.com/lionel-" class="external-link">Lionel Henry</a>, <a href="http://hadley.nz" class="external-link">Hadley Wickham</a>, <a href="https://www.rstudio.com" class="external-link"><img src="https://www.tidyverse.org/rstudio-logo.svg" alt="RStudio" width="72"></a>.</p>
+  <p></p><p>Developed by <a href="https://github.com/lionel-" class="external-link">Lionel Henry</a>, <a href="http://hadley.nz" class="external-link">Hadley Wickham</a>, <a href="https://www.posit.co" class="external-link"><img src="https://www.tidyverse.org/posit-logo.svg" alt="Posit" height="16" style="margin-bottom: 3px;"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
   </div></footer></body></html>
