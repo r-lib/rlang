@@ -539,7 +539,7 @@ invoke <- function(.fn, .args = list(), ...,
 #'
 #' @description
 #'
-#' `r lifecycle::badge("soft-deprecated")`
+#' `r lifecycle::badge("deprecated")`
 #'
 #' These are equivalent to the base functions (e.g. [as.logical()],
 #' [as.list()], etc), but perform coercion rather than conversion.
