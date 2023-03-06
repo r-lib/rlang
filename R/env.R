@@ -756,28 +756,40 @@ env_is_browsed <- function(env) {
   .Call(ffi_env_is_browsed, env)
 }
 
-#' Is frame environment called directly?
+#' Is frame environment user facing?
 #'
 #' @description
-#' Detect if `env` is an environment that inherits from:
+#' Detects if `env` is user-facing, that is, whether it's an environment
+#' that inherits from:
 #'
 #' - The global environment, as would happen when called interactively
 #' - A package that is currently being tested
 #'
 #' If either is true, we consider `env` to belong to an evaluation
-#' frame that was called _directly_. By contrast, an _indirect_ usage
-#' would be via a third party function.
+#' frame that was called _directly_ by the end user. This is by
+#' contrast to _indirect_ calls by third party functions which are not
+#' user facing.
 #'
 #' For instance the [lifecycle](https://lifecycle.r-lib.org/) package
-#' uses `env_is_direct()` to figure out whether a deprecated function
+#' uses `env_is_user_facing()` to figure out whether a deprecated function
 #' was called directly or indirectly, and select an appropriate
 #' verbosity level as a function of that.
 #'
 #' @param env An environment.
 #'
+#' @section Escape hatch:
+#'
+#' You can override the return value of `env_is_user_facing()` by
+#' setting the global option `"rlang_user_facing"` to:
+#'
+#' - `TRUE` or `FALSE`.
+#' - A package name as a string. Then `env_is_user_facing(x)` returns
+#'   `TRUE` if `x` inherits from the namespace corresponding to that
+#'   package name.
+#'
 #' @examples
 #' fn <- function() {
-#'   env_is_direct(caller_env())
+#'   env_is_user_facing(caller_env())
 #' }
 #'
 #' # Direct call of `fn()` from the global env
@@ -786,9 +798,44 @@ env_is_browsed <- function(env) {
 #' # Indirect call of `fn()` from a package
 #' with(ns_env("utils"), fn())
 #' @export
-env_is_direct <- function(env) {
+env_is_user_facing <- function(env) {
   check_environment(env)
-  env_inherits_global(env) || from_testthat(env)
+
+  if (env_inherits_global(env)) {
+    return(TRUE)
+  }
+
+  opt <- peek_option("rlang_user_facing")
+  if (!is_null(opt)) {
+    if (is_bool(opt)) {
+      return(opt)
+    }
+
+    if (is_string(opt)) {
+      top <- topenv(env)
+      if (!is_namespace(top)) {
+        return(FALSE)
+      }
+
+      return(identical(ns_env_name(top), opt))
+    }
+
+    options(rlang_user_facing = NULL)
+    msg <- c(
+      sprintf(
+        "`options(rlang_user_facing = )` must be `TRUE`, `FALSE`, or a package name, not %s.",
+        obj_type_friendly(opt)
+      ),
+      "i" = "The option was reset to `NULL`."
+    )
+    abort(msg)
+  }
+
+  if (from_testthat(env)) {
+    return(TRUE)
+  }
+
+  FALSE
 }
 
 env_inherits_global <- function(env) {

@@ -28,9 +28,11 @@
 * The lifecycle standalone file has been updated to match the modern
   lifecycle tools.
 
-* New `env_is_direct()` function to determine if an evaluation frame
-  corresponds to a direct (global environment or package being tested)
-  or indirect usage (through a third party function).
+* New `env_is_user_facing()` function to determine if an evaluation
+  frame corresponds to a direct usage by the end user (from the global
+  environment or a package being tested) or indirect usage by a third
+  party function. The return value can be overridden by setting the
+  `"rlang_user_facing"` global option.
 
 * `last_error()` and `options(rlang_backtrace_on_error = "full")` now
   print the full backtrace tree by default (except for some hidden

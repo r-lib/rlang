@@ -268,7 +268,7 @@ reference:
       - as_environment
       - caller_env
       - env_browse
-      - env_is_direct
+      - env_is_user_facing
 
   - subtitle: Stack
     contents:
