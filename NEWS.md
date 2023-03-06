@@ -1,13 +1,37 @@
 # rlang (development version)
 
-* `last_warnings()` and `last_messages()` now work inside RMarkdown
-  documents more accurately.
+## Life cycle changes
+
+* `dots_splice()` is deprecated. This function was previously in
+  the questioning lifecycle stage as we were moving towards the
+  explicit `!!!` splicing style.
+
+* `flatten()`, `squash()`, and their variants are deprecated in favour
+  of `purrr::list_flatten()` and `purrr::list_c()`.
+
+* `child_env()` is deprecated in favour of `env()` which has supported
+  creating child environments for several years now.
+
+
+## Main new features
+
+* `last_error()` and `options(rlang_backtrace_on_error = "full")` now
+  print the full backtrace tree by default (except for some hidden
+  frames). The simplified backtraces tended to hide important context
+  too often. Now we show intervening frames in a lighter colour so
+  that they don't distract from the important parts of the backtraces
+  but are still easily inspectable.
+
+* `global_entrace()`, `last_warnings()`, and `last_messages()` now
+  support knitr documents.
 
 * New `rlang_backtrace_on_warning_report` global option. This is
   useful in conjunction with `global_entrace()` to get backtraces on
   warnings inside RMarkdown documents.
 
-* `global_entrace()` now supports knitr documents.
+* `global_entrace()` and `entrace()` now stop entracing warnings and
+  messages after 20 times. This is to avoid a large overhead when 100s
+  or 1000s of warnings are signalled in a loop (#1473).
 
 * `abort()`, `warn()`, and `inform()` gain an `.inherit` parameter.
   This controls whether `parent` is inherited. If `FALSE`,
@@ -18,54 +42,13 @@
   error or a message is chained to a warning or error (downgraded
   chaining), `.inherit` defaults to `FALSE` (#1573).
 
-* `dots_splice()` is deprecated. This function was previously in
-  the questioning lifecycle stage as we were moving towards the
-  explicit `!!!` splicing style.
-
-* `flatten()`, `squash()`, and their variants are deprecated in favour
-  of `purrr::list_flatten()` and `purrr::list_c()`.
-
-* The lifecycle standalone file has been updated to match the modern
-  lifecycle tools.
-
-* New `env_is_user_facing()` function to determine if an evaluation
-  frame corresponds to a direct usage by the end user (from the global
-  environment or a package being tested) or indirect usage by a third
-  party function. The return value can be overridden by setting the
-  `"rlang_user_facing"` global option.
-
-* `last_error()` and `options(rlang_backtrace_on_error = "full")` now
-  print the full backtrace tree by default (except for some hidden
-  frames). The simplified backtraces tended to hide important context
-  too often. Now we show intervening frames in a lighter colour so
-  that they don't distract from the important parts of the backtraces
-  but are still easily inspectable.
-
-* `child_env()` is deprecated in favour of `env()` which has supported
-  creating child environments for several years now.
-
-* Quosures can now be consistently concatenated to lists of quosures (#1446).
-
 * `try_fetch()` now looks up condition classes across chained errors
   (#1534). This makes `try_fetch()` insensitive to changes of
   implementation or context of evaluation that cause a classed error
   to suddenly get chained to a contextual error.
 
-* `parse_expr()` now supports vectors of lines (#1540).
-
-* Fixed a memory issue that caused excessive duplication in `list2()`
-  and friends (#1491).
-
-* Embraced empty arguments are now properly detected and trimmed by
-  `quos()` (#1421).
-
-* `enquos()` and friends gain a `.ignore_null` argument (#1450).
-
-* Fixed an edge case that caused `enquos(.named = NULL)` to return a
-  named list (#1505).
-
-* `expr_deparse()` now deparses the embrace operator `{{` on a single
-  line (#1511).
+* `englue()` gained `env`, `error_arg`, and `error_call` arguments to
+  support being wrapped in another function (#1565).
 
 * The data-masking documentation for arguments has been imported from
   dplyr. You can link to it by starting an argument documentation with
@@ -75,8 +58,35 @@
   <[`data-masking`][rlang::args_data_masking]>
   ```
 
-* `englue()` gained `env`, `error_arg`, and `error_call` arguments to
-  support being wrapped in another function (#1565).
+* `enquos()` and friends gain a `.ignore_null` argument (#1450).
+
+* New `env_is_user_facing()` function to determine if an evaluation
+  frame corresponds to a direct usage by the end user (from the global
+  environment or a package being tested) or indirect usage by a third
+  party function. The return value can be overridden by setting the
+  `"rlang_user_facing"` global option.
+
+
+## Miscellaneous fixes and features
+
+* The lifecycle standalone file has been updated to match the modern
+  lifecycle tools.
+
+* `parse_expr()` now supports vectors of lines (#1540).
+
+* Quosures can now be consistently concatenated to lists of quosures (#1446).
+
+* Fixed a memory issue that caused excessive duplication in `list2()`
+  and friends (#1491).
+
+* Embraced empty arguments are now properly detected and trimmed by
+  `quos()` (#1421).
+
+* Fixed an edge case that caused `enquos(.named = NULL)` to return a
+  named list (#1505).
+
+* `expr_deparse()` now deparses the embrace operator `{{` on a single
+  line (#1511).
 
 * `zap_srcref()` has been rewritten in C for efficiency (#1513).
 
@@ -84,10 +94,6 @@
 
 * The non-error path of `check_dots_unnamed()` has been rewritten in C
   for efficiency (#1528).
-
-* `global_entrace()` and `entrace()` now stop entracing warnings and
-  messages after 20 times. This is to avoid a large overhead when 100s
-  or 1000s of warnings are signalled in a loop (#1473).
 
 * Improved error messages in `englue()` (#1531) and in glue strings in
   the LHS of `:=` (#1526).
