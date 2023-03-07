@@ -188,3 +188,14 @@ test_that("non-numeric types are not numbers", {
     (expect_error(check_number_decimal(as.Date("2000-01-01"))))
   })
 })
+
+test_that("`check_data_frame()` checks", {
+  expect_null(check_data_frame(data.frame()))
+  expect_null(check_environment(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker(, check_data_frame))
+    err(checker(NULL, check_data_frame))
+    err(checker(list(data.frame(), data.frame()), check_data_frame, allow_null = TRUE))
+  })
+})
