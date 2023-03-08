@@ -69,7 +69,10 @@
 
 ## Miscellaneous fixes and features
 
-* New `check_logical()` in `standalone-types-check.R` (#1587, @mgirlich).
+* New `check_data_frame()` and `check_logical()` functions in
+  `standalone-types-check.R` (#1587, @mgirlich).
+
+* Added `allow_infinite` argument to `check_number_whole()` (#1588, @mgirlich).
 
 * The lifecycle standalone file has been updated to match the modern
   lifecycle tools.
