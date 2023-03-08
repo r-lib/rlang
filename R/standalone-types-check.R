@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-07
+# last-updated: 2023-03-13
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
@@ -289,6 +289,7 @@ check_symbol <- function(x,
     x,
     "a symbol",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -313,6 +314,7 @@ check_arg <- function(x,
     x,
     "an argument name",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -337,6 +339,7 @@ check_call <- function(x,
     x,
     "a defused call",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -361,6 +364,7 @@ check_environment <- function(x,
     x,
     "an environment",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -385,6 +389,7 @@ check_function <- function(x,
     x,
     "a function",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -409,6 +414,7 @@ check_closure <- function(x,
     x,
     "an R function",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -433,6 +439,7 @@ check_formula <- function(x,
     x,
     "a formula",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -460,6 +467,7 @@ check_character <- function(x,
     x,
     "a character vector",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
@@ -484,6 +492,7 @@ check_logical <- function(x,
     x,
     "a logical vector",
     ...,
+    allow_na = FALSE,
     allow_null = allow_null,
     arg = arg,
     call = call
