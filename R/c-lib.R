@@ -23,7 +23,7 @@ use_rlang_c_library <- function() {
   rlang_lib_path <- fs::path(rlang_path, "src", "rlang")
   rlang_lib_include_path <- fs::path(rlang_path, "src", c("rlang.c", "rlang-rcc.cpp"))
 
-  proj_path <- usethis::proj_path()
+  proj_path <- usethis::proj_get()
   if (is_rlang_dir(proj_path)) {
     abort(c(
       "Can't update rlang from itself.",
