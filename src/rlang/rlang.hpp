@@ -3,6 +3,9 @@
 
 #include <exception>
 
+#define R_NO_REMAP
+#include <Rinternals.h>
+
 extern "C" {
 #include <rlang.h>
 }
