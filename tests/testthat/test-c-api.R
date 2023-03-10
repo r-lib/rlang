@@ -1284,6 +1284,24 @@ test_that("attributes are re-encoded recursively", {
   expect_utf8_encoded(attrib_nested$latin1)
 })
 
+test_that("re-encoding attributes doesn't modify the original attributes", {
+  latin1 <- test_encodings()$latin1
+
+  # Large object so duplication in `r_obj_encode_utf8()` generates an ALTREP
+  # wrapper
+  x <- 1:1e6 + 0L
+  attr(x, "foo") <- latin1
+  original <- Encoding(latin1)
+
+  result <- r_obj_encode_utf8(x)
+  attrib <- attributes(result)
+  expect_utf8_encoded(attrib$foo)
+
+  # Still the same as before
+  attrib <- attributes(x)
+  expect_identical(Encoding(attrib$foo), original)
+})
+
 test_that("NAs aren't re-encoded to 'NA' (r-lib/vctrs#1291)", {
   utf8 <- c(NA, test_encodings()$utf8)
   latin1 <- c(NA, test_encodings()$latin1)
