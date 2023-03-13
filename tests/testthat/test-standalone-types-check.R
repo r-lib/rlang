@@ -116,8 +116,8 @@ test_that("`check_symbol()` checks", {
   expect_snapshot({
     err(checker(, check_symbol))
     err(checker(NULL, check_symbol))
-    err(checker(TRUE, check_symbol, allow_na = TRUE))
-    err(checker(alist(foo, bar), check_symbol, allow_na = TRUE, allow_null = TRUE))
+    err(checker(TRUE, check_symbol))
+    err(checker(alist(foo, bar), check_symbol, allow_null = TRUE))
     err(checker("foo", check_symbol))
     err(checker(quote(foo()), check_symbol))
   })
@@ -130,8 +130,8 @@ test_that("`check_call()` checks", {
   expect_snapshot({
     err(checker(, check_call))
     err(checker(NULL, check_call))
-    err(checker(TRUE, check_call, allow_na = TRUE))
-    err(checker(alist(foo(), bar()), check_call, allow_na = TRUE, allow_null = TRUE))
+    err(checker(TRUE, check_call))
+    err(checker(alist(foo(), bar()), check_call, allow_null = TRUE))
     err(checker(quote(foo), check_call))
   })
 })
@@ -143,8 +143,8 @@ test_that("`check_environment()` checks", {
   expect_snapshot({
     err(checker(, check_environment))
     err(checker(NULL, check_environment))
-    err(checker(FALSE, check_environment, allow_na = TRUE))
-    err(checker(list(env(), env()), check_environment, allow_na = TRUE, allow_null = TRUE))
+    err(checker(FALSE, check_environment))
+    err(checker(list(env(), env()), check_environment, allow_null = TRUE))
   })
 })
 
@@ -160,8 +160,8 @@ test_that("`check_character()` checks", {
     err(checker(, check_character))
     err(checker(NULL, check_character))
     err(checker(NA, check_character))
-    err(checker(1, check_character, allow_na = TRUE))
-    err(checker(list("foo", "bar"), check_character, allow_na = TRUE, allow_null = TRUE))
+    err(checker(1, check_character))
+    err(checker(list("foo", "bar"), check_character, allow_null = TRUE))
   })
 })
 

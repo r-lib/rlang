@@ -334,17 +334,17 @@
       Error in `checker()`:
       ! `foo` must be a symbol, not `NULL`.
     Code
-      err(checker(TRUE, check_symbol, allow_na = TRUE))
+      err(checker(TRUE, check_symbol))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a symbol or `NA`, not `TRUE`.
+      ! `foo` must be a symbol, not `TRUE`.
     Code
-      err(checker(alist(foo, bar), check_symbol, allow_na = TRUE, allow_null = TRUE))
+      err(checker(alist(foo, bar), check_symbol, allow_null = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a symbol, `NA`, or `NULL`, not a list.
+      ! `foo` must be a symbol or `NULL`, not a list.
     Code
       err(checker("foo", check_symbol))
     Output
@@ -373,17 +373,17 @@
       Error in `checker()`:
       ! `foo` must be a defused call, not `NULL`.
     Code
-      err(checker(TRUE, check_call, allow_na = TRUE))
+      err(checker(TRUE, check_call))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a defused call or `NA`, not `TRUE`.
+      ! `foo` must be a defused call, not `TRUE`.
     Code
-      err(checker(alist(foo(), bar()), check_call, allow_na = TRUE, allow_null = TRUE))
+      err(checker(alist(foo(), bar()), check_call, allow_null = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a defused call, `NA`, or `NULL`, not a list.
+      ! `foo` must be a defused call or `NULL`, not a list.
     Code
       err(checker(quote(foo), check_call))
     Output
@@ -406,17 +406,17 @@
       Error in `checker()`:
       ! `foo` must be an environment, not `NULL`.
     Code
-      err(checker(FALSE, check_environment, allow_na = TRUE))
+      err(checker(FALSE, check_environment))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be an environment or `NA`, not `FALSE`.
+      ! `foo` must be an environment, not `FALSE`.
     Code
-      err(checker(list(env(), env()), check_environment, allow_na = TRUE, allow_null = TRUE))
+      err(checker(list(env(), env()), check_environment, allow_null = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be an environment, `NA`, or `NULL`, not a list.
+      ! `foo` must be an environment or `NULL`, not a list.
 
 # `check_character()` checks
 
@@ -439,17 +439,17 @@
       Error in `checker()`:
       ! `foo` must be a character vector, not `NA`.
     Code
-      err(checker(1, check_character, allow_na = TRUE))
+      err(checker(1, check_character))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a character vector or `NA`, not the number 1.
+      ! `foo` must be a character vector, not the number 1.
     Code
-      err(checker(list("foo", "bar"), check_character, allow_na = TRUE, allow_null = TRUE))
+      err(checker(list("foo", "bar"), check_character, allow_null = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a character vector, `NA`, or `NULL`, not a list.
+      ! `foo` must be a character vector or `NULL`, not a list.
 
 # `check_logical()` checks
 
