@@ -10,8 +10,9 @@
 # ## Changelog
 #
 # 2023-03-13:
-# - Added `allow_infinite` argument to `check_number_whole()`.
-# - Added `check_data_frame()`.
+# - Improved error messages of number checkers (@teunbrand)
+# - Added `allow_infinite` argument to `check_number_whole()` (@mgirlich).
+# - Added `check_data_frame()` (@mgirlich).
 #
 # 2023-03-07:
 # - Added dependency on rlang (>= 1.1.0).
@@ -246,23 +247,25 @@ check_number_whole <- function(x,
                              allow_null,
                              arg,
                              call) {
+  if (allow_decimal) {
+    what <- "a number"
+  } else {
+    what <- "a whole number"
+  }
+
   if (exit_code == IS_NUMBER_oob) {
     min <- min %||% -Inf
     max <- max %||% Inf
 
     if (min > -Inf && max < Inf) {
-      what <- sprintf("a number between %s and %s", min, max)
+      what <- sprintf("%s between %s and %s", what, min, max)
     } else if (x < min) {
-      what <- sprintf("a number larger than %s", min)
+      what <- sprintf("%s larger than or equal to %s", what, min)
     } else if (x > max) {
-      what <- sprintf("a number smaller than %s", max)
+      what <- sprintf("%s smaller than or equal to %s", what, max)
     } else {
       abort("Unexpected state in OOB check", .internal = TRUE)
     }
-  } else if (allow_decimal) {
-    what <- "a number"
-  } else {
-    what <- "a whole number"
   }
 
   stop_input_type(

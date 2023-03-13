@@ -212,19 +212,19 @@
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number smaller than 0, not the number 1.
+      ! `foo` must be a whole number smaller than or equal to 0, not the number 1.
     Code
       err(checker(-1, min = 0, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number larger than 0, not the number -1.
+      ! `foo` must be a whole number larger than or equal to 0, not the number -1.
     Code
       err(checker(10, min = 1, max = 5, check_number_whole))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must be a number between 1 and 5, not the number 10.
+      ! `foo` must be a whole number between 1 and 5, not the number 10.
     Code
       err(checker(10, min = NA, check_number_whole))
     Output
