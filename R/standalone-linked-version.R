@@ -3,6 +3,7 @@
 # file: standalone-linked-version.R
 # last-updated: 2022-05-26
 # license: https://unlicense.org
+# imports: rlang (>= 1.0.0)
 # ---
 #
 # nocov start

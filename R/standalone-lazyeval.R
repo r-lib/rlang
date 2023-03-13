@@ -3,6 +3,7 @@
 # file: standalone-lazyeval.R
 # last-updated: 2018-09-18
 # license: https://unlicense.org
+# imports: rlang
 # ---
 #
 # This file serves as a reference for compatibility functions for lazyeval.

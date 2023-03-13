@@ -3,6 +3,7 @@
 # file: standalone-lifecycle.R
 # last-updated: 2023-02-23
 # license: https://unlicense.org
+# imports: rlang (>= 1.0.0)
 # ---
 #
 # This file serves as a reference for currently unexported rlang

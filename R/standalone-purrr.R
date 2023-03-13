@@ -3,6 +3,7 @@
 # file: standalone-purrr.R
 # last-updated: 2023-02-23
 # license: https://unlicense.org
+# imports: rlang
 # ---
 #
 # This file provides a minimal shim to provide a purrr-like API on top of

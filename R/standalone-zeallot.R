@@ -3,6 +3,7 @@
 # file: standalone-zeallot.R
 # last-updated: 2020-11-24
 # license: https://unlicense.org
+# imports: rlang
 # ---
 #
 # This drop-in file implements a simple version of zeallot::`%<-%`.
