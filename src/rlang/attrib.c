@@ -78,7 +78,7 @@ r_obj* r_attrs_zap_at(r_obj* attrs, r_obj* node, r_obj* value) {
   return attrs;
 }
 r_obj* r_clone2(r_obj* x) {
-  r_obj* attrs = r_attrib(x);
+  r_obj* attrs = KEEP(r_attrib(x));
 
   // Prevent attributes from being cloned
   r_poke_attrib(x, r_null);
@@ -86,6 +86,7 @@ r_obj* r_clone2(r_obj* x) {
   r_poke_attrib(x, attrs);
   r_poke_attrib(out, attrs);
 
+  FREE(1);
   return out;
 }
 
