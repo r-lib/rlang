@@ -80,8 +80,6 @@ $(SHLIB): rlang.o internal.o
 
 rlang.c: $(lib-files)
 	touch rlang.c
-rlang-rcc.cpp: $(lib-cpp-files)
-	touch rlang-rcc.cpp
 internal.c: $(internal-files)
 	touch internal.c
 export.c: $(export-files)
