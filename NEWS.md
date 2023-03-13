@@ -69,6 +69,8 @@
 
 ## Miscellaneous fixes and features
 
+* New `check_logical()` in `standalone-types-check.R` (#1587, @mgirlich).
+
 * The lifecycle standalone file has been updated to match the modern
   lifecycle tools.
 

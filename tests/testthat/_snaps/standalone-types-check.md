@@ -499,3 +499,24 @@
       Error:
       ! `as.Date("2000-01-01")` must be a number, not a <Date> object.
 
+# `check_data_frame()` checks
+
+    Code
+      err(checker(, check_data_frame))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a data frame, not absent.
+    Code
+      err(checker(NULL, check_data_frame))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a data frame, not `NULL`.
+    Code
+      err(checker(list(data.frame(), data.frame()), check_data_frame, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a data frame or `NULL`, not a list.
+

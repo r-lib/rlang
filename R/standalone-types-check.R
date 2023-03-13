@@ -11,6 +11,7 @@
 #
 # 2023-03-07:
 # - Added dependency on rlang (>= 1.1.0).
+# - Added `check_data_frame()`.
 #
 # 2023-02-15:
 # - Added `check_logical()`.
@@ -483,6 +484,30 @@ check_logical <- function(x,
   stop_input_type(
     x,
     "a logical vector",
+    ...,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_data_frame <- function(x,
+                             ...,
+                             allow_null = FALSE,
+                             arg = caller_arg(x),
+                             call = caller_env()) {
+  if (!missing(x)) {
+    if (is.data.frame(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a data frame",
     ...,
     allow_null = allow_null,
     arg = arg,
