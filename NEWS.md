@@ -1,4 +1,4 @@
-# rlang 1.1.0
+# rlang (development version)
 
 ## Life cycle changes
 
