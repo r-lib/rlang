@@ -337,19 +337,19 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-in"><span><span class="fu">quo</span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561f76cddf58</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55bc9b1f6420</span></span>
 <span class="r-in"><span><span class="fu">quos</span><span class="op">(</span><span class="va">foo</span>, <span class="va">bar</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;list_of&lt;quosure&gt;&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561f76cddf58</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55bc9b1f6420</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^bar</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561f76cddf58</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55bc9b1f6420</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `enexpr()` and `enexprs()` are the naked variants of `enquo()` and `enquos()`</span></span></span>
@@ -395,17 +395,17 @@ This ensures assignments are explicit.</p></dd>
 <span class="r-in"><span><span class="fu">automatic_injection</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo(1L, 2L, 3L)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561f76cddf58</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55bc9b1f6420</span></span>
 <span class="r-in"><span><span class="fu">no_injection</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo(!!!1:3)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561f76cddf58</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55bc9b1f6420</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Injection can still be done explicitly</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="inject.html">inject</a></span><span class="op">(</span><span class="fu">no_injection</span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">&lt;quosure&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> expr: <span style="color: #0000BB;">^foo(1L, 2L, 3L)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x561f76cddf58</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> env:  <span style="color: #0000BB;">0x55bc9b1f6420</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
