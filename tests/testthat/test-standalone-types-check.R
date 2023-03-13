@@ -57,6 +57,8 @@ test_that("`check_number_whole()` checks", {
   expect_null(check_number_whole(na_dbl, allow_na = TRUE))
   expect_null(check_number_whole(na_int, allow_na = TRUE))
   expect_null(check_number_whole(NULL, allow_null = TRUE))
+  expect_null(check_number_whole(Inf, allow_infinite = TRUE))
+  expect_null(check_number_whole(-Inf, allow_infinite = TRUE))
 
   check_number_whole(0, max = 0)
   check_number_whole(0, min = 0)

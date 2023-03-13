@@ -9,9 +9,12 @@
 #
 # ## Changelog
 #
+# 2023-03-13:
+# - Added `allow_infinite` argument to `check_number_whole()`.
+# - Added `check_data_frame()`.
+#
 # 2023-03-07:
 # - Added dependency on rlang (>= 1.1.0).
-# - Added `check_data_frame()`.
 #
 # 2023-02-15:
 # - Added `check_logical()`.
@@ -199,6 +202,7 @@ check_number_whole <- function(x,
                                ...,
                                min = NULL,
                                max = NULL,
+                               allow_infinite = FALSE,
                                allow_na = FALSE,
                                allow_null = FALSE,
                                arg = caller_arg(x),
@@ -211,7 +215,7 @@ check_number_whole <- function(x,
     allow_decimal = FALSE,
     min,
     max,
-    allow_infinite = FALSE,
+    allow_infinite,
     allow_na,
     allow_null
   ))) {
