@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,14 +100,17 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="rlang-110">rlang 1.1.0<a class="anchor" aria-label="anchor" href="#rlang-110"></a></h2>
 <div class="section level3">
-<h3 id="life-cycle-changes-development-version">Life cycle changes<a class="anchor" aria-label="anchor" href="#life-cycle-changes-development-version"></a></h3>
+<h3 id="life-cycle-changes-1-1-0">Life cycle changes<a class="anchor" aria-label="anchor" href="#life-cycle-changes-1-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/dots_splice.html">dots_splice()</a></code> is deprecated. This function was previously in the questioning lifecycle stage as we were moving towards the explicit <code>!!!</code> splicing style.</p></li>
 <li><p><code><a href="../reference/flatten.html">flatten()</a></code>, <code><a href="../reference/flatten.html">squash()</a></code>, and their variants are deprecated in favour of <code><a href="https://purrr.tidyverse.org/reference/list_flatten.html" class="external-link">purrr::list_flatten()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/list_c.html" class="external-link">purrr::list_c()</a></code>.</p></li>
 <li><p><code><a href="../reference/child_env.html">child_env()</a></code> is deprecated in favour of <code><a href="../reference/env.html">env()</a></code> which has supported creating child environments for several years now.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="main-new-features-development-version">Main new features<a class="anchor" aria-label="anchor" href="#main-new-features-development-version"></a></h3>
+<h3 id="main-new-features-1-1-0">Main new features<a class="anchor" aria-label="anchor" href="#main-new-features-1-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/last_error.html">last_error()</a></code> and <code>options(rlang_backtrace_on_error = "full")</code> now print the full backtrace tree by default (except for some hidden frames). The simplified backtraces tended to hide important context too often. Now we show intervening frames in a lighter colour so that they don’t distract from the important parts of the backtraces but are still easily inspectable.</p></li>
 <li><p><code><a href="../reference/global_entrace.html">global_entrace()</a></code>, <code><a href="../reference/last_warnings.html">last_warnings()</a></code>, and <code><a href="../reference/last_warnings.html">last_messages()</a></code> now support knitr documents.</p></li>
 <li><p>New <code>rlang_backtrace_on_warning_report</code> global option. This is useful in conjunction with <code><a href="../reference/global_entrace.html">global_entrace()</a></code> to get backtraces on warnings inside RMarkdown documents.</p></li>
@@ -126,7 +129,7 @@
 <li><p>New <code><a href="../reference/env_is_user_facing.html">env_is_user_facing()</a></code> function to determine if an evaluation frame corresponds to a direct usage by the end user (from the global environment or a package being tested) or indirect usage by a third party function. The return value can be overridden by setting the <code>"rlang_user_facing"</code> global option.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-fixes-and-features-development-version">Miscellaneous fixes and features<a class="anchor" aria-label="anchor" href="#miscellaneous-fixes-and-features-development-version"></a></h3>
+<h3 id="miscellaneous-fixes-and-features-1-1-0">Miscellaneous fixes and features<a class="anchor" aria-label="anchor" href="#miscellaneous-fixes-and-features-1-1-0"></a></h3>
 <ul><li><p>New <code>check_data_frame()</code> and <code>check_logical()</code> functions in <code>standalone-types-check.R</code> (<a href="https://github.com/r-lib/rlang/issues/1587" class="external-link">#1587</a>, <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</p></li>
 <li><p>Added <code>allow_infinite</code> argument to <code>check_number_whole()</code> (<a href="https://github.com/r-lib/rlang/issues/1588" class="external-link">#1588</a>, <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</p></li>
 <li><p>The lifecycle standalone file has been updated to match the modern lifecycle tools.</p></li>
