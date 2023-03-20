@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `parse_expr()` and `parse_exprs()` are now faster (#1603).
+
 # rlang 1.1.0
 
 ## Life cycle changes
