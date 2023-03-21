@@ -100,9 +100,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-</div>
+<ul><li>
+<code><a href="../reference/parse_expr.html">parse_expr()</a></code> and <code><a href="../reference/parse_expr.html">parse_exprs()</a></code> are now faster when <code>getOption("keep.source")</code> is <code>TRUE</code> (<a href="https://github.com/r-lib/rlang/issues/1603" class="external-link">#1603</a>).</li>
+</ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.0" id="rlang-110">rlang 1.1.0<a class="anchor" aria-label="anchor" href="#rlang-110"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.1.0" id="rlang-110">rlang 1.1.0<a class="anchor" aria-label="anchor" href="#rlang-110"></a></h2><p class="text-muted">CRAN release: 2023-03-14</p>
 <div class="section level3">
 <h3 id="life-cycle-changes-1-1-0">Life cycle changes<a class="anchor" aria-label="anchor" href="#life-cycle-changes-1-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/dots_splice.html">dots_splice()</a></code> is deprecated. This function was previously in the questioning lifecycle stage as we were moving towards the explicit <code>!!!</code> splicing style.</p></li>

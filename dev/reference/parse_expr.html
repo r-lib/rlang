@@ -224,6 +224,11 @@ contain several expressions (such as <code>"foo; bar"</code>). The names of
 The <code>_quo</code> suffixed variants return quosures.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Unlike <code><a href="https://rdrr.io/r/base/parse.html" class="external-link">base::parse()</a></code>, these functions never retain source reference
+information, as doing so is slow and rarely necessary.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/r/base/parse.html" class="external-link">base::parse()</a></code></p></div>
     </div>
