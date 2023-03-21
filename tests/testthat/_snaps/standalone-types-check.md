@@ -484,6 +484,33 @@
       Error in `checker()`:
       ! `foo` must be a logical vector or `NULL`, not a list.
 
+# `check_list()` checks
+
+    Code
+      err(checker(, check_list))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a list, not absent.
+    Code
+      err(checker(NULL, check_list))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a list, not `NULL`.
+    Code
+      err(checker(1, check_list))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a list, not the number 1.
+    Code
+      err(checker(1, check_list, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a list or `NULL`, not the number 1.
+
 # non-numeric types are not numbers
 
     Code

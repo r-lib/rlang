@@ -1,13 +1,16 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-13
+# last-updated: 2023-03-21
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+#
+# 2023-03-21:
+# - Added `check_list()`.
 #
 # 2023-03-13:
 # - Improved error messages of number checkers (@teunbrand)
@@ -499,6 +502,31 @@ check_logical <- function(x,
   stop_input_type(
     x,
     "a logical vector",
+    ...,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_list <- function(x,
+                       ...,
+                       allow_null = FALSE,
+                       arg = caller_arg(x),
+                       call = caller_env()) {
+  if (!missing(x)) {
+    if (is_list(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a list",
     ...,
     allow_na = FALSE,
     allow_null = allow_null,

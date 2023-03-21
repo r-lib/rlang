@@ -184,6 +184,20 @@ test_that("`check_logical()` checks", {
   })
 })
 
+test_that("`check_list()` checks", {
+  expect_null(check_list(list()))
+  expect_null(check_list(list(1)))
+  expect_null(check_list(list(1, "x")))
+  expect_null(check_list(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker(, check_list))
+    err(checker(NULL, check_list))
+    err(checker(1, check_list))
+    err(checker(1, check_list, allow_null = TRUE))
+  })
+})
+
 test_that("non-numeric types are not numbers", {
   expect_snapshot({
     (expect_error(check_number_whole(factor("a"))))
