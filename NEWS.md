@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* New `check_list()` in `standalone-types-check.R` (#1605).
+
 * `parse_expr()` and `parse_exprs()` are now faster when
   `getOption("keep.source")` is `TRUE` (#1603).
 
