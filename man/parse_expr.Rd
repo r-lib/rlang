@@ -68,6 +68,10 @@ the latter is more convenient as you don't need to extract \code{expr}
 and \code{env}.
 }
 }
+\details{
+Unlike \code{\link[base:parse]{base::parse()}}, these functions never retain source reference
+information, as doing so is slow and rarely necessary.
+}
 \examples{
 # parse_expr() can parse any R expression:
 parse_expr("mtcars \%>\% dplyr::mutate(cyl_prime = cyl / sd(cyl))")

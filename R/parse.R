@@ -35,6 +35,10 @@
 #'   the latter is more convenient as you don't need to extract `expr`
 #'   and `env`.
 #'
+#' @details
+#' Unlike [base::parse()], these functions never retain source reference
+#' information, as doing so is slow and rarely necessary.
+#'
 #' @param x Text containing expressions to parse_expr for
 #'   `parse_expr()` and `parse_exprs()`. Can also be an R connection,
 #'   for instance to a file. If the supplied connection is not open,
@@ -67,7 +71,7 @@
 #' parse_exprs(file(path))
 parse_expr <- function(x) {
   if (is_character(x)) {
-    exprs <- parse(text = paste_line(x))
+    exprs <- chr_parse(paste_line(x))
   } else {
     exprs <- parse_exprs(x)
   }
@@ -91,7 +95,7 @@ parse_exprs <- function(x) {
       open(x)
       on.exit(close(x))
     }
-    exprs <- parse(file = x)
+    exprs <- parse(file = x, keep.source = FALSE)
   } else if (is.character(x)) {
     exprs <- chr_parse_exprs(x)
   } else {
@@ -101,7 +105,7 @@ parse_exprs <- function(x) {
 }
 
 chr_parse_exprs <- function(x) {
-  parsed <- map(x, function(elt) as.list(parse(text = elt)))
+  parsed <- map(x, function(elt) as.list(chr_parse(elt)))
 
   nms <- names(parsed)
   parsed <- unname(parsed)
@@ -114,6 +118,12 @@ chr_parse_exprs <- function(x) {
   }
 
   set_names(parsed, nms)
+}
+
+chr_parse <- function(x) {
+  # Never keep sources, because they get dropped anyways when combining
+  # multiple expressions together, and keeping them here is very slow
+  parse(text = x, keep.source = FALSE)
 }
 
 #' @rdname parse_expr
