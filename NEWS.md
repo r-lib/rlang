@@ -1,6 +1,7 @@
 # rlang (development version)
 
-* `parse_expr()` and `parse_exprs()` are now faster (#1603).
+* `parse_expr()` and `parse_exprs()` are now faster when
+  `getOption("keep.source")` is `TRUE` (#1603).
 
 # rlang 1.1.0
 
