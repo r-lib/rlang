@@ -20,3 +20,9 @@ test_that("obj_type_oo() works", {
   r7 <- new_class("r7")()
   expect_equal(obj_type_oo(r7), "R7")
 })
+
+test_that("stop_input_type() handles I() in `arg` (#1607)", {
+  expect_snapshot({
+    err(checker(1, stop_input_type, what = "a logical", arg = I("Element 1 of `x`")))
+  })
+})
