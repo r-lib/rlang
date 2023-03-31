@@ -314,13 +314,15 @@ stop_input_type <- function(x,
   if (length(what)) {
     what <- oxford_comma(what)
   }
-  if (!inherits(arg, "AsIs")) {
-    arg <- cli$format_arg(arg)
+  if (inherits(arg, "AsIs")) {
+    format_arg <- identity
+  } else {
+    format_arg <- cli$format_arg
   }
 
   message <- sprintf(
     "%s must be %s, not %s.",
-    arg,
+    format_arg(arg),
     what,
     obj_type_friendly(x, value = show_value)
   )
