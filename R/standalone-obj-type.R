@@ -1,12 +1,15 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-obj-type.R
-# last-updated: 2022-10-04
+# last-updated: 2023-03-30
 # license: https://unlicense.org
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+#
+# 2023-03-30:
+# - `stop_input_type()` now handles `I()` input literally in `arg`.
 #
 # 2022-10-04:
 # - `obj_type_friendly(value = TRUE)` now shows numeric scalars
@@ -311,10 +314,15 @@ stop_input_type <- function(x,
   if (length(what)) {
     what <- oxford_comma(what)
   }
+  if (inherits(arg, "AsIs")) {
+    format_arg <- identity
+  } else {
+    format_arg <- cli$format_arg
+  }
 
   message <- sprintf(
     "%s must be %s, not %s.",
-    cli$format_arg(arg),
+    format_arg(arg),
     what,
     obj_type_friendly(x, value = show_value)
   )

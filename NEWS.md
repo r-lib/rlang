@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `stop_input_type()` now handles `I()` input literally in `arg`
+  (#1607, @simonpcouch).
+  
 * `parse_expr()` and `parse_exprs()` are now faster when
   `getOption("keep.source")` is `TRUE` (#1603).
 
