@@ -94,16 +94,15 @@ test_that("can supply `error` handler", {
 
   f <- function(...) check_dots_empty(error = hnd)
   expect_silent(f())
-  expect_warning(f(foo), class = "rlib_error_dots_nonempty")
+  expect_error(f(foo), class = "rlib_error_dots_nonempty")
 
   f <- function(...) check_dots_used(error = hnd)
   expect_silent(f())
-  expect_warning(f(foo), class = "rlib_error_dots_unused")
-
+  expect_error(f(foo), class = "rlib_error_dots_unused")
 
   f <- function(...) check_dots_unnamed(error = hnd)
   expect_silent(f(foo))
-  expect_warning(f(foo = foo), class = "rlib_error_dots_named")
+  expect_error(f(foo = foo), class = "rlib_error_dots_named")
 })
 
 test_that("expression contents are mentioned", {
