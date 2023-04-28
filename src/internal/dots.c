@@ -640,7 +640,7 @@ r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
     r_attrib_push(out, r_syms.names, out_names);
   }
 
-  for (r_ssize i = 0, count = 0; dots != r_null; ++i, dots = r_node_cdr(dots)) {
+  for (r_ssize count = 0; dots != r_null; dots = r_node_cdr(dots)) {
     r_obj* elt = r_node_car(dots);
 
     if (elt == empty_spliced_arg) {
