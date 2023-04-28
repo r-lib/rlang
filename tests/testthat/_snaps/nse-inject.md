@@ -51,28 +51,11 @@
       Error in `my_englue()`:
       ! `text` must be a single string, not an environment.
     Code
-      (expect_error(my_englue("{'foo'}")))
-    Output
-      <error/rlang_error>
-      Error in `my_englue()`:
-      ! Must use `{{`.
-      i Use `glue::glue()` for interpolation with `{`.
-    Code
       (expect_error(fn()))
     Output
       <error/rlang_error>
       Error in `fn()`:
       ! `x` is absent but must be supplied.
-
-# englue() works
-
-    Code
-      err(englue("{'foo'}"), "Must use")
-    Output
-      <error/rlang_error>
-      Error in `englue()`:
-      ! Must use `{{`.
-      i Use `glue::glue()` for interpolation with `{`.
 
 # englue() checks for the size of its result (#1492)
 

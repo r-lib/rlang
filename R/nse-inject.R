@@ -449,18 +449,6 @@ englue <- function(x,
                    error_call = current_env(),
                    error_arg = "x") {
   check_string(x, arg = error_arg, call = error_call)
-
-  if (!grepl("{{", x, fixed = TRUE)) {
-    abort(
-      c(
-        "Must use `{{`.",
-        i = "Use `glue::glue()` for interpolation with `{`."
-      ),
-      arg = error_arg,
-      call = error_call
-    )
-  }
-
   glue_embrace(x, env = env)
 }
 

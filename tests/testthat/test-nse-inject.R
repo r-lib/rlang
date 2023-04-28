@@ -681,11 +681,11 @@ test_that("can wrap englue() (#1565)", {
   }
 
   expect_equal(fn(bar), "bar_QUX_FOO")
+  expect_equal(my_englue("{'foo'}"), "foo")
 
   expect_snapshot({
     (expect_error(my_englue(c("a", "b"))))
     (expect_error(my_englue(env())))
-    (expect_error(my_englue("{'foo'}")))
     (expect_error(fn()))
   })
 })
@@ -820,8 +820,7 @@ test_that("englue() works", {
 
   g <- function(var) englue("prefix_{{ var }}_suffix")
   expect_equal(g(cyl), "prefix_cyl_suffix")
-
-  expect_snapshot(err(englue("{'foo'}"), "Must use"))
+  expect_equal(englue("{'foo'}"), "foo")
 })
 
 test_that("englue() checks for the size of its result (#1492)", {

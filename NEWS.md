@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* `englue()` now allows omitting `{{`. This is to make it easier to
+  embed in external functions that need to support either `{` and `{{`
+  (#1601).
+
 * Fix for CRAN checks.
 
 * `stop_input_type()` now handles `I()` input literally in `arg`
