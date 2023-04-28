@@ -209,8 +209,7 @@ The \code{.data} pronoun can only be subsetted with single column names. It does
 #> Error in `dplyr::summarise()`:
 #> i In argument: `.data[c("cyl", "am")]`.
 #> Caused by error in `.data[c("cyl", "am")]`:
-#> ! `[` is not supported by the `.data` pronoun, use `[[` or $
-#>   instead.
+#> ! `[` is not supported by the `.data` pronoun, use `[[` or $ instead.
 }\if{html}{\out{</div>}}
 
 There is no plural variant of \code{.data} built in tidy eval. Instead, we'll used the \code{all_of()} operator available in tidy selections to supply character vectors. This is straightforward in functions that take tidy selections, like \code{tidyr::pivot_longer()}:
@@ -224,7 +223,7 @@ mtcars \%>\% tidyr::pivot_longer(all_of(vars))
 #> 2    21   160   110   3.9  2.62  16.5     0     4     4 am        1
 #> 3    21   160   110   3.9  2.88  17.0     0     4     4 cyl       6
 #> 4    21   160   110   3.9  2.88  17.0     0     4     4 am        1
-#> # ... with 60 more rows
+#> # i 60 more rows
 }\if{html}{\out{</div>}}
 
 If the function does not take a tidy selection, it might be possible to use a \emph{bridge pattern}. This option is presented in the bridge section below. If a bridge is impossible or inconvenient, a little metaprogramming with the \link[=topic-metaprogramming]{symbolise-and-inject pattern} can help.

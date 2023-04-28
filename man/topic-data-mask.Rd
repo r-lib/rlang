@@ -12,7 +12,8 @@ mean(mtcars$cyl + mtcars$am)
 
 # Referring to columns is an error - Where is the data?
 mean(cyl + am)
-#> Error in mean(cyl + am): object 'cyl' not found
+#> Error:
+#> ! object 'cyl' not found
 
 # Data-masking
 with(mtcars, mean(cyl + am))
@@ -33,7 +34,7 @@ Let's see what happens when we pass arguments to a data-masking function like \c
 my_mean(mtcars, cyl, am)
 #> Error in `dplyr::summarise()`:
 #> i In argument: `mean(var1 + var2)`.
-#> Caused by error in `mean()`:
+#> Caused by error:
 #> ! object 'cyl' not found
 }\if{html}{\out{</div>}}
 
@@ -122,7 +123,8 @@ By default \code{eval()} and \code{eval_tidy()} evaluate in the current environm
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{code <- expr(mean(cyl + am))
 eval(code)
-#> Error in mean(cyl + am): object 'am' not found
+#> Error:
+#> ! object 'am' not found
 }\if{html}{\out{</div>}}
 
 You can supply an optional list or data frame that will be converted to an environment.

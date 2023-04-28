@@ -20,4 +20,6 @@ options(
 options(
   cli.unicode = FALSE
 )
+
+rlang::global_entrace()
 ```

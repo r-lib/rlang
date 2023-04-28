@@ -102,7 +102,7 @@ Now that we've passed the caller environment as \code{call} argument, \code{abor
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb()
 #> Error in `my_verb()`:
 #> ! Problem during step.
-#> Caused by error in `withCallingHandlers()`:
+#> Caused by error in `my_verb()`:
 #> ! argument "expr" is missing, with no default
 }\if{html}{\out{</div>}}
 
@@ -195,7 +195,8 @@ list(1, 2) |> my_map(add, 100)
 With this implementation, the user has no idea which iteration failed when an error occurs:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{list(1, "foo") |> my_map(add, 100)
-#> Error in x + y: non-numeric argument to binary operator
+#> Error in `x + y`:
+#> ! non-numeric argument to binary operator
 }\if{html}{\out{</div>}}
 \subsection{Rethrowing with iteration information}{
 

@@ -51,7 +51,8 @@ However in many cases embracing is done to implement \link[=topic-data-mask]{dat
 \}
 
 my_mean(mtcars, cyl)
-#> Error in mean(\{: object 'cyl' not found
+#> Error:
+#> ! object 'cyl' not found
 }\if{html}{\out{</div>}}
 
 Since \code{\link[=with]{with()}} is a base data-masking function that doesn't support tidy eval operators, the embrace operator does not work and we get an object not found error.
@@ -82,13 +83,16 @@ Triple negation is essentially the same as simple negation:
 This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{!"foo"
-#> Error in !"foo": invalid argument type
+#> Error in `!"foo"`:
+#> ! invalid argument type
 
 !quote(foo)
-#> Error in !quote(foo): invalid argument type
+#> Error in `!quote(foo)`:
+#> ! invalid argument type
 
 !quote(foo())
-#> Error in !quote(foo()): invalid argument type
+#> Error in `!quote(foo())`:
+#> ! invalid argument type
 }\if{html}{\out{</div>}}
 
 In the worst case, R will silently convert the input to logical. Unfortunately there is no systematic way of checking for these errors.

@@ -236,7 +236,8 @@ This sort of pattern is susceptible to \link[=topic-data-mask-ambiguity]{names c
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{df <- data.frame(var = "wrong")
 
 with(df, mean(get(var)))
-#> Error in get(var): object 'wrong' not found
+#> Error in `get()`:
+#> ! object 'wrong' not found
 }\if{html}{\out{</div>}}
 
 In general, prefer symbol injection over \code{get()} to prevent this sort of collisions. With base functions you will need to enable injection operators explicitly using \code{\link[=inject]{inject()}}:
@@ -280,7 +281,8 @@ var2 <- "vs"
 
 code <- paste(var1, "==", var2)
 with(mtcars, mean(eval(parse(text = code))))
-#> Error in parse(text = code): <text>:1:1: unexpected ':'
+#> Error in `parse()`:
+#> ! <text>:1:1: unexpected ':'
 #> 1: :
 #>     ^
 }\if{html}{\out{</div>}}
@@ -302,7 +304,8 @@ code
 The adversarial input now produces an error:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{with(mtcars, mean(eval(code)))
-#> Error in eval(code): object '(function() \{\\n  Sys.sleep(Inf)  # Could be a coin mining routine\\n\})()' not found
+#> Error:
+#> ! object '(function() \{\\n  Sys.sleep(Inf)  # Could be a coin mining routine\\n\})()' not found
 }\if{html}{\out{</div>}}
 
 Finally, it is recommended to inject the code instead of evaluating it to avoid names collisions:
