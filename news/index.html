@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.0" id="rlang-110">rlang 1.1.0<a class="anchor" aria-label="anchor" href="#rlang-110"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.1.1" id="rlang-111">rlang 1.1.1<a class="anchor" aria-label="anchor" href="#rlang-111"></a></h2>
+<ul><li><p><code><a href="../reference/englue.html">englue()</a></code> now allows omitting <code>{{</code>. This is to make it easier to embed in external functions that need to support either <code>{</code> and <code>{{</code> (<a href="https://github.com/r-lib/rlang/issues/1601" class="external-link">#1601</a>).</p></li>
+<li><p>Fix for CRAN checks.</p></li>
+<li><p><code>stop_input_type()</code> now handles <code><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I()</a></code> input literally in <code>arg</code> (<a href="https://github.com/r-lib/rlang/issues/1607" class="external-link">#1607</a>, <a href="https://github.com/simonpcouch" class="external-link">@simonpcouch</a>).</p></li>
+<li><p><code><a href="../reference/parse_expr.html">parse_expr()</a></code> and <code><a href="../reference/parse_expr.html">parse_exprs()</a></code> are now faster when <code>getOption("keep.source")</code> is <code>TRUE</code> (<a href="https://github.com/r-lib/rlang/issues/1603" class="external-link">#1603</a>).</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="rlang-110">rlang 1.1.0<a class="anchor" aria-label="anchor" href="#rlang-110"></a></h2><p class="text-muted">CRAN release: 2023-03-14</p>
 <div class="section level3">
 <h3 id="life-cycle-changes-1-1-0">Life cycle changes<a class="anchor" aria-label="anchor" href="#life-cycle-changes-1-1-0"></a></h3>
 <ul><li><p><code><a href="../reference/dots_splice.html">dots_splice()</a></code> is deprecated. This function was previously in the questioning lifecycle stage as we were moving towards the explicit <code>!!!</code> splicing style.</p></li>

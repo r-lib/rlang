@@ -56,7 +56,7 @@ There may be more than one contextual error in an error chain, but there is alwa
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -219,7 +219,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu">my_verb</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `my_verb()`:</span></span>
 <span><span class="co">#&gt; ! Problem during step.</span></span>
-<span><span class="co">#&gt; Caused by error in `withCallingHandlers()`:</span></span>
+<span><span class="co">#&gt; Caused by error in `my_verb()`:</span></span>
 <span><span class="co">#&gt; ! argument "expr" is missing, with no default</span></span></code></pre><p></p></div>
 <p>To fix this, simply require these arguments before setting up the chained error context, for instance with the <code><a href="check_required.html">check_required()</a></code> input checker exported from rlang:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">my_verb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span><span class="op">)</span> <span class="op">{</span></span>
@@ -295,7 +295,8 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span><span class="co">#&gt; [1] 102</span></span></code></pre><p></p></div>
 <p>With this implementation, the user has no idea which iteration failed when an error occurs:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"foo"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">my_map</span><span class="op">(</span><span class="va">add</span>, <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in x + y: non-numeric argument to binary operator</span></span></code></pre><p></p></div><div class="section">
+<span><span class="co">#&gt; Error in `x + y`:</span></span>
+<span><span class="co">#&gt; ! non-numeric argument to binary operator</span></span></code></pre><p></p></div><div class="section">
 <h3 id="rethrowing-with-iteration-information">Rethrowing with iteration information<a class="anchor" aria-label="anchor" href="#rethrowing-with-iteration-information"></a></h3>
 
 

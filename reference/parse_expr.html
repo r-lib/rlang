@@ -66,7 +66,7 @@ and env.
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -222,6 +222,11 @@ length of the input. This would happen is one of the strings
 contain several expressions (such as <code>"foo; bar"</code>). The names of
 <code>x</code> are preserved (and recycled in case of multiple expressions).
 The <code>_quo</code> suffixed variants return quosures.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Unlike <code><a href="https://rdrr.io/r/base/parse.html" class="external-link">base::parse()</a></code>, these functions never retain source reference
+information, as doing so is slow and rarely necessary.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

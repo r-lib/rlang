@@ -6,7 +6,8 @@ mean(mtcars$cyl + mtcars$am)
 
 # Referring to columns is an error - Where is the data?
 mean(cyl + am)
-#&amp;gt; Error in mean(cyl + am): object 'cyl' not found
+#&amp;gt; Error:
+#&amp;gt; ! object 'cyl' not found
 
 # Data-masking
 with(mtcars, mean(cyl + am))
@@ -19,7 +20,8 @@ mean(mtcars$cyl + mtcars$am)
 
 # Referring to columns is an error - Where is the data?
 mean(cyl + am)
-#&amp;gt; Error in mean(cyl + am): object 'cyl' not found
+#&amp;gt; Error:
+#&amp;gt; ! object 'cyl' not found
 
 # Data-masking
 with(mtcars, mean(cyl + am))
@@ -36,7 +38,7 @@ While data-masking makes it easy to program interactively with data frames, it m
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +135,8 @@ While data-masking makes it easy to program interactively with data frames, it m
 <span></span>
 <span><span class="co"># Referring to columns is an error - Where is the data?</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in mean(cyl + am): object 'cyl' not found</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! object 'cyl' not found</span></span>
 <span></span>
 <span><span class="co"># Data-masking</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span></span>
@@ -153,7 +156,7 @@ While data-masking makes it easy to program interactively with data frames, it m
 <span><span class="fu">my_mean</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `dplyr::summarise()`:</span></span>
 <span><span class="co">#&gt; i In argument: `mean(var1 + var2)`.</span></span>
-<span><span class="co">#&gt; Caused by error in `mean()`:</span></span>
+<span><span class="co">#&gt; Caused by error:</span></span>
 <span><span class="co">#&gt; ! object 'cyl' not found</span></span></code></pre><p></p></div>
 <p>The problem here is that <code>summarise()</code> defuses the R code it was supplied, i.e. <code>mean(var1 + var2)</code>.  Instead we want it to see <code>mean(cyl + am)</code>. This is why we need injection, we need to modify that piece of code by injecting the code supplied to the function in place of <code>var1</code> and <code>var2</code>.</p>
 <p>To inject a function argument in data-masked context, just embrace it with <code>{{</code>:</p>
@@ -217,7 +220,8 @@ While data-masking makes it easy to program interactively with data frames, it m
 <p>By default <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> and <code><a href="eval_tidy.html">eval_tidy()</a></code> evaluate in the current environment.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">code</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in mean(cyl + am): object 'am' not found</span></span></code></pre><p></p></div>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! object 'am' not found</span></span></code></pre><p></p></div>
 <p>You can supply an optional list or data frame that will be converted to an environment.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="va">code</span>, <span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 6.59375</span></span></code></pre><p></p></div>
