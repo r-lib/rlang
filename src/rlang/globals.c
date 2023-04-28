@@ -28,7 +28,7 @@ void r_init_library_globals(r_obj* ns) {
   r_globals.na_lgl = NA_LOGICAL;
   r_globals.na_int = NA_INTEGER;
   r_globals.na_dbl = NA_REAL;
-  r_globals.na_cpl = (r_complex) { NA_REAL, NA_REAL };
+  r_globals.na_cpl = (r_complex) { .r = NA_REAL, .i = NA_REAL };
   r_globals.na_str = NA_STRING;
 
   r_preserve_global(r_chrs.empty_string = r_chr(""));
