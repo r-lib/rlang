@@ -176,9 +176,9 @@ environment(hnd_prompt_install) <- baseenv()
 #'
 #' `try_fetch()` generalises `tryCatch()` and `withCallingHandlers()`
 #' in a single function. It reproduces the behaviour of both calling
-#' and exiting handlers depending the on the return value of the
-#' handler. If the handler returns the [zap()] sentinel, it is taken
-#' as a calling handler that declines to recover from a condition.
+#' and exiting handlers depending on the return value of the handler.
+#' If the handler returns the [zap()] sentinel, it is taken as a
+#' calling handler that declines to recover from a condition.
 #' Otherwise, it is taken as an exiting handler which returns a value
 #' from the catching site.
 #'
