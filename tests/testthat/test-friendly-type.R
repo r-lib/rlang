@@ -10,6 +10,11 @@ test_that("obj_type_friendly() supports objects", {
   ))
 })
 
+test_that("obj_type_friendly() only displays the first class of objects", {
+  x <- structure(1, class = c("subclass", "class"))
+  expect_identical(obj_type_friendly(x), "a <subclass> object")
+})
+
 test_that("obj_type_friendly() supports matrices and arrays (#141)", {
   expect_true(all(friendly_types(matrix(list(1, 2))) == "a list matrix"))
   expect_true(all(friendly_types(array(list(1, 2, 3), dim = 1:3)) == "a list array"))

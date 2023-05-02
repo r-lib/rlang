@@ -1,12 +1,15 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-obj-type.R
-# last-updated: 2023-03-30
+# last-updated: 2023-05-01
 # license: https://unlicense.org
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+#
+# 2023-05-01:
+# - `obj_type_friendly()` now only displays the first class of S3 objects.
 #
 # 2023-03-30:
 # - `stop_input_type()` now handles `I()` input literally in `arg`.
@@ -64,7 +67,7 @@ obj_type_friendly <- function(x, value = TRUE) {
     if (inherits(x, "quosure")) {
       type <- "quosure"
     } else {
-      type <- paste(class(x), collapse = "/")
+      type <- class(x)[[1L]]
     }
     return(sprintf("a <%s> object", type))
   }
