@@ -53,7 +53,7 @@ my_function(NA)
 my_function("foo")
 ```
 
-To fix this, let `abort()` knows about the function that it is throwing the error for by passing the corresponding function environment as `call` argument:
+To fix this, let `abort()` know about the function that it is throwing the error for by passing the corresponding function environment as the `call` argument:
 
 ```{r}
 stop_my_class <- function(message, call = caller_env()) {
@@ -134,7 +134,7 @@ their_function()
 rlang::last_error()
 ```
 
-With the correct `call`, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:
+With the correct `call`, the backtrace is much simpler and lets the user focus on the part of the stack that is relevant to them:
 
 ```{r, error = TRUE}
 use_call <- TRUE
