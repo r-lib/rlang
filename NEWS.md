@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `abort()` now respects the base R global option,
+  `options(show.error.messages = FALSE)` (#1630).
+
 * `obj_type_friendly()` now only displays the first class of S3 objects (#1622).
 
 # rlang 1.1.1
