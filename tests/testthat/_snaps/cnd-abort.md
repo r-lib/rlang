@@ -1841,3 +1841,19 @@
       foo
       bar
 
+# `show.error.messages` is respected by `abort()` (#1630)
+
+    Code
+      cat_line(with_messages)
+    Output
+      Error:
+      ! Oh no
+      Backtrace:
+          x
+       1. \-rlang::abort("Oh no")
+      Execution halted
+    Code
+      cat_line(without_messages)
+    Output
+      Execution halted
+

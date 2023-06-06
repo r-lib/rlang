@@ -861,15 +861,17 @@ signal_abort <- function(cnd, file = NULL) {
   # Save the unhandled error for `rlang::last_error()`.
   poke_last_error(cnd)
 
-  # Include backtrace footer option in the condition
-  cnd <- cnd_set_backtrace_on_error(cnd, peek_backtrace_on_error())
+  if (peek_show_error_messages()) {
+    # Include backtrace footer option in the condition
+    cnd <- cnd_set_backtrace_on_error(cnd, peek_backtrace_on_error())
 
-  # Print the error manually. This allows us to use our own style,
-  # include parent errors, and work around limitations on the length
-  # of error messages (#856).
-  msg <- cnd_message(cnd, inherit = TRUE, prefix = TRUE)
+    # Print the error manually. This allows us to use our own style,
+    # include parent errors, and work around limitations on the length
+    # of error messages (#856).
+    msg <- cnd_message(cnd, inherit = TRUE, prefix = TRUE)
 
-  cat_line(msg, file = file %||% default_message_file())
+    cat_line(msg, file = file %||% default_message_file())
+  }
 
   # Use `stop()` to run the `getOption("error")` handler (used by
   # RStudio to record a backtrace) and cause a long jump. Running the
@@ -878,6 +880,13 @@ signal_abort <- function(cnd, file = NULL) {
   # printing to avoid printing the error twice.
   local_options(show.error.messages = FALSE)
   stop(fallback)
+}
+
+peek_show_error_messages <- function() {
+  # `abort()` respects the base R option `show.error.messages` (#1630).
+  # The only time we don't display error messages is an explicit `FALSE`.
+  # All other values still show error messages.
+  !is_false(peek_option("show.error.messages"))
 }
 
 #' Set local error call in an execution environment
