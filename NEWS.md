@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Fixed an off-by-one typo in the traceback source column location (#1633).
+
 * `abort()` now respects the base R global option,
   `options(show.error.messages = FALSE)` (#1630).
 
