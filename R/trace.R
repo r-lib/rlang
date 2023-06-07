@@ -859,7 +859,7 @@ src_loc <- function(srcref) {
   }
 
   line <- srcref[[1]]
-  column <- srcref[[5]] - 1L
+  column <- srcref[[5]]
 
   style_hyperlink(
     paste0(file_trim, ":", line, ":", column),

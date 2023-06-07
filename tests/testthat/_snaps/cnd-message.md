@@ -124,7 +124,7 @@
       (expect_error(f()))
     Output
       <error/rlang_error>
-      Error in `g()` at bar/baz/myfile.R:2:9:
+      Error in `g()` at bar/baz/myfile.R:2:10:
       ! Foo.
 
 # inform() and warn() use fallback bullets formatting
