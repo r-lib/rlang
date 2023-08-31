@@ -3,7 +3,7 @@
 # file: standalone-types-check.R
 # last-updated: 2023-03-13
 # license: https://unlicense.org
-# dependencies: standalone-obj-type.R
+# dependencies: [standalone-obj-type.R, standalone-cli.R]
 # imports: rlang (>= 1.1.0)
 # ---
 #
