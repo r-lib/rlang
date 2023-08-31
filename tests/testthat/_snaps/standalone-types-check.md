@@ -427,6 +427,33 @@
 ---
 
     Code
+      err(checker(function(x) x, args = 0L, check_function))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must have 0 argument, not 1 argument.
+    Code
+      err(checker(function(x, y) x, args = 0L, check_function))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must have 0 arguments, not 2 arguments.
+    Code
+      err(checker(function() x, args = 2, check_function))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must have 2 arguments, not 0 arguments.
+    Code
+      err(checker(function(x, y, z) x, args = 2, check_function))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must have 2 arguments, not 3 arguments.
+
+---
+
+    Code
       err(checker(function(x) x, args = character(), check_function))
     Output
       <error/rlang_error>

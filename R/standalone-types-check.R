@@ -425,18 +425,35 @@ check_function <- function(x,
   }
 
   actual_args <- fn_fmls_names(f) %||% character()
+  n_actual_args <- length(actual_args)
+
+  if (is.numeric(expected_args)) {
+    n_expected_args <- expected_args
+    if (identical(n_expected_args, n_actual_args)) {
+      return(invisible(NULL))
+    }
+
+    message <- sprintf(
+      "%s must have %i %s, not %i %s.",
+      format_arg(arg),
+      n_expected_args,
+      pluralise(n_actual_args, "argument", "arguments"),
+      n_actual_args,
+      pluralise(n_actual_args, "argument", "arguments")
+    )
+    abort(message, call = call, arg = arg)
+  }
+
   if (identical(actual_args, expected_args)) {
     return(invisible(NULL))
   }
 
   n_expected_args <- length(expected_args)
-  n_actual_args <- length(actual_args)
-
   if (n_expected_args == 0) {
     message <- sprintf(
       "%s must have no arguments, not %i %s.",
       format_arg(arg),
-      length(actual_args),
+      n_actual_args,
       pluralise(n_actual_args, "argument", "arguments")
     )
     abort(message, call = call, arg = arg)
