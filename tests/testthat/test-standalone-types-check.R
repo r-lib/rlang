@@ -138,6 +138,34 @@ test_that("`check_call()` checks", {
   })
 })
 
+test_that("`check_function()` checks", {
+  expect_null(check_function(function(x) x))
+  expect_null(check_function(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker(, check_function))
+    err(checker(NULL, check_function))
+    err(checker(TRUE, check_function))
+    err(checker(alist(foo(), bar()), check_function, allow_null = TRUE))
+    err(checker(quote(foo), check_function))
+  })
+
+  expect_null(check_function(function() x, args = character()))
+  expect_null(check_function(function(x) x, args = "x"))
+  expect_null(check_function(function(x, y) x, args = c("x", "y")))
+
+  expect_snapshot({
+    # should have no arguments
+    err(checker(function(x) x, args = character(), check_function))
+    err(checker(function(x, y) x, args = character(), check_function))
+
+    # should have arguments
+    err(checker(function() x, args = "x", check_function))
+    err(checker(function(y) x, args = "x", check_function))
+    err(checker(function(y, x) x, args = c("x", "y"), check_function))
+  })
+})
+
 test_that("`check_environment()` checks", {
   expect_null(check_environment(env()))
   expect_null(check_environment(NULL, allow_null = TRUE))

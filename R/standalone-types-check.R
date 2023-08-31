@@ -9,6 +9,10 @@
 #
 # ## Changelog
 #
+# 2023-08-31:
+# - `check_functions()` gains the argument `args` to specify which arguments the
+#   function should have (@mgirlich).
+#
 # 2023-03-13:
 # - Improved error messages of number checkers (@teunbrand)
 # - Added `allow_infinite` argument to `check_number_whole()` (@mgirlich).
@@ -381,11 +385,19 @@ check_environment <- function(x,
 
 check_function <- function(x,
                            ...,
+                           args = NULL,
                            allow_null = FALSE,
                            arg = caller_arg(x),
                            call = caller_env()) {
   if (!missing(x)) {
     if (is_function(x)) {
+      .check_function_args(
+        f = x,
+        expected_args = args,
+        arg = arg,
+        call = call
+      )
+
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {
@@ -402,6 +414,48 @@ check_function <- function(x,
     arg = arg,
     call = call
   )
+}
+
+.check_function_args <- function(f,
+                                 expected_args,
+                                 arg,
+                                 call) {
+  if (is_null(expected_args)) {
+    return(invisible(NULL))
+  }
+
+  actual_args <- fn_fmls_names(f) %||% character()
+  if (identical(actual_args, expected_args)) {
+    return(invisible(NULL))
+  }
+
+  n_expected_args <- length(expected_args)
+  n_actual_args <- length(actual_args)
+
+  if (n_expected_args == 0) {
+    message <- sprintf(
+      "%s must have no arguments, not %i %s.",
+      format_arg(arg),
+      length(actual_args),
+      pluralise(n_actual_args, "argument", "arguments")
+    )
+    abort(message, call = call, arg = arg)
+  }
+
+  if (n_actual_args == 0) {
+    arg_info <- "instead of no arguments"
+  } else {
+    arg_info <- paste0("not ", format_arg(actual_args))
+  }
+
+  message <- sprintf(
+    "%s must have the %s %s, %s.",
+    format_arg(arg),
+    pluralise(n_expected_args, "argument", "arguments"),
+    format_arg(expected_args),
+    arg_info
+  )
+  abort(message, call = call, arg = arg)
 }
 
 check_closure <- function(x,
