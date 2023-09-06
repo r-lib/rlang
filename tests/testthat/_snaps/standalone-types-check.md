@@ -427,62 +427,32 @@
 ---
 
     Code
-      err(checker(function(x) x, args = 0L, check_function))
-    Output
-      <error/rlang_error>
-      Error in `checker()`:
-      ! `foo` must have 0 argument, not 1 argument.
-    Code
-      err(checker(function(x, y) x, args = 0L, check_function))
-    Output
-      <error/rlang_error>
-      Error in `checker()`:
-      ! `foo` must have 0 arguments, not 2 arguments.
-    Code
       err(checker(function() x, args = 2, check_function))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must have 2 arguments, not 0 arguments.
-    Code
-      err(checker(function(x, y, z) x, args = 2, check_function))
-    Output
-      <error/rlang_error>
-      Error in `checker()`:
-      ! `foo` must have 2 arguments, not 3 arguments.
+      ! `foo` must have at least 2 arguments, not 0 arguments.
 
 ---
 
-    Code
-      err(checker(function(x) x, args = character(), check_function))
-    Output
-      <error/rlang_error>
-      Error in `checker()`:
-      ! `foo` must have no arguments, not 1 argument.
-    Code
-      err(checker(function(x, y) x, args = character(), check_function))
-    Output
-      <error/rlang_error>
-      Error in `checker()`:
-      ! `foo` must have no arguments, not 2 arguments.
     Code
       err(checker(function() x, args = "x", check_function))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must have the argument `x`, instead of no arguments.
+      ! `foo` must have the argument `x`, instead it has no arguments.
     Code
       err(checker(function(y) x, args = "x", check_function))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must have the argument `x`, not `y`.
+      ! `foo` must have the argument `x`, instead it has `y`.
     Code
-      err(checker(function(y, x) x, args = c("x", "y"), check_function))
+      err(checker(function(y, z) x, args = "x", check_function))
     Output
       <error/rlang_error>
       Error in `checker()`:
-      ! `foo` must have the arguments `x` and `y`, not `y` and `x`.
+      ! `foo` must have the argument `x`, instead it has `y` and `z`.
 
 # `check_environment()` checks
 

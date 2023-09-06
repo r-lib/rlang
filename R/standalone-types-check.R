@@ -429,42 +429,33 @@ check_function <- function(x,
 
   if (is.numeric(expected_args)) {
     n_expected_args <- expected_args
-    if (identical(n_expected_args, n_actual_args)) {
+    if (n_actual_args >= n_expected_args) {
       return(invisible(NULL))
     }
 
     message <- sprintf(
-      "%s must have %i %s, not %i %s.",
+      "%s must have at least %i %s, not %i %s.",
       format_arg(arg),
       n_expected_args,
-      pluralise(n_actual_args, "argument", "arguments"),
+      pluralise(n_expected_args, "argument", "arguments"),
       n_actual_args,
       pluralise(n_actual_args, "argument", "arguments")
     )
     abort(message, call = call, arg = arg)
   }
 
-  if (identical(actual_args, expected_args)) {
+  missing_args <- setdiff(expected_args, actual_args)
+  if (is_empty(missing_args)) {
     return(invisible(NULL))
   }
 
-  n_expected_args <- length(expected_args)
-  if (n_expected_args == 0) {
-    message <- sprintf(
-      "%s must have no arguments, not %i %s.",
-      format_arg(arg),
-      n_actual_args,
-      pluralise(n_actual_args, "argument", "arguments")
-    )
-    abort(message, call = call, arg = arg)
-  }
-
   if (n_actual_args == 0) {
-    arg_info <- "instead of no arguments"
+    arg_info <- "instead it has no arguments"
   } else {
-    arg_info <- paste0("not ", format_arg(actual_args))
+    arg_info <- paste0("instead it has ", format_arg(actual_args))
   }
 
+  n_expected_args <- length(expected_args)
   message <- sprintf(
     "%s must have the %s %s, %s.",
     format_arg(arg),

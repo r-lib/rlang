@@ -150,32 +150,27 @@ test_that("`check_function()` checks", {
     err(checker(quote(foo), check_function))
   })
 
-  expect_null(check_function(function() x, args = 0L))
-  expect_null(check_function(function(x, y) x, args = 2L))
+  # numeric `args`
+  expect_null(check_function(function() x, args = 0))
+  expect_null(check_function(function(x) x, args = 0))
+  # can also have more arguments
+  expect_null(check_function(function(x, y, z) x, args = 2))
 
+  # must not have too few arguments
   expect_snapshot({
-    # should have no arguments
-    err(checker(function(x) x, args = 0L, check_function))
-    err(checker(function(x, y) x, args = 0L, check_function))
-
-    # should have arguments
     err(checker(function() x, args = 2, check_function))
-    err(checker(function(x, y, z) x, args = 2, check_function))
   })
 
+  # character `args`
   expect_null(check_function(function() x, args = character()))
   expect_null(check_function(function(x) x, args = "x"))
-  expect_null(check_function(function(x, y) x, args = c("x", "y")))
+  expect_null(check_function(function(x, y, z) x, args = c("x", "y")))
 
+  # arguments missing
   expect_snapshot({
-    # should have no arguments
-    err(checker(function(x) x, args = character(), check_function))
-    err(checker(function(x, y) x, args = character(), check_function))
-
-    # should have arguments
     err(checker(function() x, args = "x", check_function))
     err(checker(function(y) x, args = "x", check_function))
-    err(checker(function(y, x) x, args = c("x", "y"), check_function))
+    err(checker(function(y, z) x, args = "x", check_function))
   })
 })
 
