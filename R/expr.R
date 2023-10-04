@@ -185,7 +185,7 @@ is_symbolic <- function(x) {
 expr_label <- function(expr) {
   if (is.character(expr)) {
     encodeString(expr, quote = '"')
-  } else if (is.atomic(expr)) {
+  } else if (is.null(expr) || is.atomic(expr)) {
     format(expr)
   } else if (is.name(expr)) {
     paste0("`", as.character(expr), "`")

@@ -42,6 +42,9 @@ test_that("expr_label() truncates long calls", {
   expect_identical(expr_label(long_call), "`foo(...)`")
 })
 
+test_that("expr_label() NULL values come out as expected", {
+  expect_identical(expr_label(NULL), "NULL")
+})
 
 # expr_name() --------------------------------------------------------
 
