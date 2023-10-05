@@ -7,6 +7,8 @@
 
 * `obj_type_friendly()` now only displays the first class of S3 objects (#1622).
 
+* `expr_label()` now has back-compatility with respect to changes made by R version 4.4 and `is.atomic(NULL)` (#1655)
+
 # rlang 1.1.1
 
 * `englue()` now allows omitting `{{`. This is to make it easier to
