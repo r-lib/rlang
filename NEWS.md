@@ -9,6 +9,8 @@
 
 * `expr_label()` now has back-compatility with respect to changes made by R version 4.4 and `is.atomic(NULL)` (#1655)
 
+* Performance improvement in `.rlang_cli_compat()` (#1657).
+
 # rlang 1.1.1
 
 * `englue()` now allows omitting `{{`. This is to make it easier to
