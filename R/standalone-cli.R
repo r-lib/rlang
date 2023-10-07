@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-cli.R
-# last-updated: 2022-09-23
+# last-updated: 2023-10-06
 # license: https://unlicense.org
 # ---
 #
@@ -10,6 +10,10 @@
 # used to format the elements. Otherwise a fallback format is used.
 #
 # ## Changelog
+#
+# 2023-10-06:
+#
+# * Speedup in `.rlang_cli_compat()`.
 #
 # 2022-09-23:
 #
@@ -451,8 +455,12 @@ cli_escape <- function(x) {
       is_interactive = return(rlang::is_interactive)
     )
 
-    # Make sure rlang knows about "x" and "i" bullets
-    if (utils::packageVersion("rlang") >= "0.4.2") {
+    ns <- asNamespace("rlang")
+
+    # Make sure rlang knows about "x" and "i" bullets.
+    # Pull from namespace rather than via `utils::packageVersion()`
+    # to avoid slowdown (#1657)
+    if (ns[[".__NAMESPACE__."]][["spec"]][["version"]] >= "0.4.2") {
       switch(
         fn,
         abort = return(rlang::abort),
