@@ -37,20 +37,22 @@ local_utf8_test <- function(frame = caller_env()) {
 
 with_non_utf8_locale <- function(code) {
   local_utf8_test()
-  old_locale <- mut_non_utf8_locale()
+  old_locale <- poke_locale_non_utf8()
   on.exit(poke_ctype_locale(old_locale), add = TRUE)
   code
 }
 
-mut_non_utf8_locale <- function() {
-  if (.Platform$OS.type == "windows") return(NULL)
+poke_locale_non_utf8 <- function() {
+  if (.Platform$OS.type == "windows") {
+    return(NULL)
+  }
+
   tryCatch(
-    locale <- poke_ctype_locale("en_US.ISO8859-1"),
-    warning = function(e) {
+    poke_ctype_locale("en_US.ISO8859-1"),
+    warning = function(...) {
       testthat::skip("Cannot set latin-1 locale")
     }
   )
-  locale
 }
 
 with_latin1_locale <- function(expr) {
@@ -88,7 +90,9 @@ poke_mbcs_locale <- function() {
   poke_ctype_locale(locale)
 }
 poke_ctype_locale <- function(x) {
-  if (is_null(x)) return(x)
+  if (is_null(x)) {
+    return(x)
+  }
   # Workaround bug in Sys.setlocale()
   old <- Sys.getlocale("LC_CTYPE")
   Sys.setlocale("LC_CTYPE", locale = x)
