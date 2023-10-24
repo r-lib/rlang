@@ -22,22 +22,24 @@
 
     Code
       inform("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Message <rlang_message>
+    Message
       foo
       This message is displayed once every 8 hours.
     Code
       inform("bar", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Message <rlang_message>
+    Message
       bar
       This message is displayed once every 8 hours.
     Code
       warn("foo", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Warning <rlang_warning>
+    Condition
+      Warning:
       foo
       This warning is displayed once every 8 hours.
     Code
       warn("bar", .frequency = "regularly", .frequency_id = as.character(runif(1)))
-    Warning <rlang_warning>
+    Condition
+      Warning:
       bar
       This warning is displayed once every 8 hours.
 
@@ -87,10 +89,12 @@
 
     Code
       expect_equal(error_cnd(.subclass = "foo"), error_cnd("foo"))
-    Warning <lifecycle_warning_deprecated>
+    Condition
+      Warning:
       The `.subclass` argument of `error_cnd()` has been renamed to `class`.
     Code
       expect_error(abort("foo", .subclass = "bar"), class = "bar")
-    Warning <lifecycle_warning_deprecated>
+    Condition
+      Warning:
       The `.subclass` argument of `abort()` has been renamed to `class`.
 

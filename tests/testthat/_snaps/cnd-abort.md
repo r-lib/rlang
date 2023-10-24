@@ -1822,23 +1822,27 @@
 
     Code
       abort(~"foo")
-    Error <rlang_error>
-      foo
+    Condition
+      Error:
+      ! foo
     Code
       abort(function(cnd, ...) "foo")
-    Error <rlang_error>
-      foo
+    Condition
+      Error:
+      ! foo
 
 # newlines are preserved by cli (#1535)
 
     Code
       abort("foo\nbar", use_cli_format = TRUE)
-    Error <rlang_error>
-      foo bar
+    Condition
+      Error:
+      ! foo bar
     Code
       abort("foo\fbar", use_cli_format = TRUE)
-    Error <rlang_error>
-      foo
+    Condition
+      Error:
+      ! foo
       bar
 
 # `show.error.messages` is respected by `abort()` (#1630)

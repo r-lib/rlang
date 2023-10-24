@@ -2,7 +2,7 @@
 
     Code
       inform(c("Header.", i = "Bullet."))
-    Message <rlang_message>
+    Message
       Header.
       i Bullet.
 
@@ -10,7 +10,7 @@
 
     Code
       inform(c("Header.", i = "Bullet."))
-    Message <simpleMessage>
+    Message
       Header.
       Bullet.
 
@@ -18,7 +18,8 @@
 
     Code
       warn(c("Header.", i = "Bullet."))
-    Warning <rlang_warning>
+    Condition
+      Warning:
       Header.
       i Bullet.
 
@@ -26,7 +27,8 @@
 
     Code
       warn(c("Header.", i = "Bullet."))
-    Warning <simpleWarning>
+    Condition
+      Warning:
       Header.
       Bullet.
 
@@ -34,22 +36,25 @@
 
     Code
       abort(c("Header.", i = "Bullet."))
-    Error <rlang_error>
-      Header.
+    Condition
+      Error:
+      ! Header.
       i Bullet.
 
 ---
 
     Code
       abort(c("Header.", i = "Bullet."))
-    Error <simpleError>
-      Header.
+    Condition
+      Error:
+      ! Header.
       Bullet.
 
 # unknown functions throw
 
     Code
       .rlang_compat("foo")
-    Error <simpleError>
-      Internal error in rlang shims: Unknown function `foo()`.
+    Condition
+      Error in `.rlang_compat()`:
+      ! Internal error in rlang shims: Unknown function `foo()`.
 

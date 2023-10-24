@@ -525,17 +525,19 @@
 
     Code
       cnd_signal(error_cnd(message = c("foo", i = "bar")))
-    Error <rlang_error>
-      foo
+    Condition
+      Error:
+      ! foo
       i bar
     Code
       cnd_signal(warning_cnd(message = c("foo", i = "bar")))
-    Warning <rlang_warning>
+    Condition
+      Warning:
       foo
       i bar
     Code
       cnd_signal(message_cnd(message = c("foo", i = "bar")))
-    Message <rlang_message>
+    Message
       foo
       i bar
 
@@ -543,17 +545,19 @@
 
     Code
       cnd_signal(error_cnd(message = c("foo", i = "bar")))
-    Error <rlang_error>
-      foo
+    Condition
+      Error:
+      ! foo
       bar
     Code
       cnd_signal(warning_cnd(message = c("foo", i = "bar")))
-    Warning <rlang_warning>
+    Condition
+      Warning:
       foo
       bar
     Code
       cnd_signal(message_cnd(message = c("foo", i = "bar")))
-    Message <rlang_message>
+    Message
       foo
       bar
 

@@ -45,22 +45,25 @@
 
     Code
       f("foo")
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic argument:
       * ..1 = "foo"
       i Did you forget to name an argument?
     Code
       f(foo)
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic argument:
       * ..1 = foo
       i Did you forget to name an argument?
     Code
       inject(f(!!letters))
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic argument:
       * ..1 = <chr>
       i Did you forget to name an argument?
@@ -69,14 +72,16 @@
         1
         2
       })
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic argument:
       * a = { ... }
     Code
       f(a = toupper(letters))
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic argument:
       * a = toupper(letters)
 
@@ -84,21 +89,24 @@
 
     Code
       f(1)
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic argument:
       * ..1 = 1
       i Did you forget to name an argument?
     Code
       f(a = 1)
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic argument:
       * a = 1
     Code
       f(a = 1, 2)
-    Error <rlib_error_dots_nonempty>
-      `...` must be empty.
+    Condition
+      Error in `f()`:
+      ! `...` must be empty.
       x Problematic arguments:
       * a = 1
       * ..2 = 2

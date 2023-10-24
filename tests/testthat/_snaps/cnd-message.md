@@ -132,12 +132,14 @@
     Code
       local_use_cli(format = FALSE)
       warn(msg)
-    Warning <rlang_warning>
+    Condition
+      Warning:
       foo
       i bar
     Code
       warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
-    Warning <rlang_warning>
+    Condition
+      Warning:
       foo
       i bar
       This warning is displayed once per session.
@@ -147,12 +149,14 @@
     Code
       local_use_cli(format = TRUE)
       warn(msg)
-    Warning <rlang_warning>
+    Condition
+      Warning:
       foo
       i bar
     Code
       warn(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
-    Warning <rlang_warning>
+    Condition
+      Warning:
       foo
       i bar
       This warning is displayed once per session.
@@ -162,12 +166,12 @@
     Code
       local_use_cli(format = FALSE)
       inform(msg)
-    Message <rlang_message>
+    Message
       foo
       i bar
     Code
       inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
-    Message <rlang_message>
+    Message
       foo
       i bar
       This message is displayed once per session.
@@ -177,12 +181,12 @@
     Code
       local_use_cli(format = TRUE)
       inform(msg)
-    Message <rlang_message>
+    Message
       foo
       i bar
     Code
       inform(msg, .frequency = "once", .frequency_id = as.character(runif(1)))
-    Message <rlang_message>
+    Message
       foo
       i bar
       This message is displayed once per session.

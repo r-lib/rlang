@@ -255,7 +255,8 @@
 
     Code
       peek_backtrace_on_warning_report()
-    Warning <rlang_warning>
+    Condition
+      Warning:
       `rlang_backtrace_on_warning_report` must be one of `c("none", "branch", "full")`.
       i The option was reset to "none".
     Output
