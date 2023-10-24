@@ -25,8 +25,6 @@ In the latter two cases, the environment ancestry is searched for
 a namespace with \code{\link[base:ns-topenv]{base::topenv()}}. If the environment doesn't
 inherit from a namespace, this is an error.
 }}
-
-\item{env}{A namespace environment.}
 }
 \description{
 Namespaces are the environment where all the functions of a package

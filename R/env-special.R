@@ -186,7 +186,6 @@ ns_imports_env <- function(x = caller_env()) {
   env_parent(ns_env(x))
 }
 #' @rdname ns_env
-#' @param env A namespace environment.
 #' @export
 ns_env_name <- function(x = caller_env()) {
   env <- switch(typeof(x),
