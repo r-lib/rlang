@@ -115,3 +115,20 @@ encodings <- function(bytes = FALSE) {
   out
 }
 
+# On some plaftorms iconv doesn't create unicode markers when encoding
+# fails. Instead it transliterates to "?" characters.
+skip_if_no_utf8_marker <- function() {
+  skip <- tryCatch(
+    expr = {
+      out <- iconv("幸福", from = "UTF-8", to = "ISO8859-1")
+      !is_string(out) || !grepl("<", out)
+    },
+    error = function(...) {
+      TRUE
+    }
+  )
+
+  if (skip) {
+    skip("No UTF-8 marker with this version of libiconv.")
+  }
+}

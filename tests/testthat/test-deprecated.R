@@ -14,6 +14,7 @@ test_that("type_of() returns correct type", {
 })
 
 test_that("Unicode escapes are converted to UTF8 characters in env_names()", {
+  skip_if_no_utf8_marker()
   local_lifecycle_silence()
 
   with_non_utf8_locale({

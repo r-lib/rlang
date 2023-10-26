@@ -226,6 +226,7 @@ test_that("can capture missing argument", {
 })
 
 test_that("serialised unicode in `:=` LHS is unserialised", {
+  skip_if_no_utf8_marker()
   nms <- with_latin1_locale({
     exprs <- exprs("\u5e78" := 10)
     names(exprs)

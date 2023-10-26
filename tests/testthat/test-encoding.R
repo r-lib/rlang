@@ -1,4 +1,5 @@
 test_that("can roundtrip symbols in non-UTF8 locale", {
+  skip_if_no_utf8_marker()
   with_non_utf8_locale({
     expect_identical(
       as_string(sym(get_alien_lang_string())),
@@ -15,6 +16,7 @@ test_that("Unicode escapes are always converted to UTF8 characters on roundtrip"
 })
 
 test_that("Unicode escapes are always converted to UTF8 characters with env_names()", {
+  skip_if_no_utf8_marker()
   with_non_utf8_locale({
     env <- child_env(empty_env())
     env_bind(env, !! get_alien_lang_string() := NULL)

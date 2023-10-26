@@ -395,6 +395,7 @@ test_that("env_poke() doesn't warn when unrepresentable characters are serialise
 
     expect_no_warning(env_poke(e, nm, NA))
 
+    skip_if_no_utf8_marker()
     nms <- env_names(e)
     expect_equal(Encoding(nms), "UTF-8")
   })
