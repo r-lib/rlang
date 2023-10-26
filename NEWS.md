@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 1.1.2
 
 * Fixed an off-by-one typo in the traceback source column location (#1633).
 
@@ -10,6 +10,7 @@
 * `expr_label()` now has back-compatility with respect to changes made by R version 4.4 and `is.atomic(NULL)` (#1655)
 
 * Performance improvement in `.rlang_cli_compat()` (#1657).
+
 
 # rlang 1.1.1
 
