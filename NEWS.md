@@ -1,3 +1,5 @@
+# rlang (development version)
+
 # rlang 1.1.2
 
 * Fixed an off-by-one typo in the traceback source column location (#1633).
