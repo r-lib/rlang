@@ -228,8 +228,13 @@ cnd_message_format_prefixed <- function(cnd,
 
   if (parent) {
     prefix <- sprintf("Caused by %s", type)
+    # FIXME: Enable this by default later on
+    if (use_red_error_prefix()) {
+      prefix <- col_prefix(prefix, type)
+    }
   } else {
-    prefix <- col_yellow(capitalise(type))
+    prefix <- capitalise(type)
+    prefix <- col_prefix(prefix, type)
   }
 
   evalq({
@@ -268,6 +273,18 @@ cnd_message_format_prefixed <- function(cnd,
   } else {
     prefix
   }
+}
+
+col_prefix <- function(prefix, type) {
+  if (type == "error" && use_red_error_prefix()) {
+    col_red(prefix)
+  } else {
+    col_yellow(prefix)
+  }
+}
+
+use_red_error_prefix <- function() {
+  peek_option("rlang:::use_red_error_prefix") %||% FALSE
 }
 
 peek_call_format_srcref <- function() {
