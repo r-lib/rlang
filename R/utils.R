@@ -336,7 +336,7 @@ cli_with_whiteline_escapes <- function(x, fn) {
 style_rlang_run <- function(code) {
   style_hyperlink(
     paste0("rlang::", code),
-    paste0("rstudio:run:rlang::", code)
+    paste0("x-r-run:rlang::", code)
   )
 }
 
