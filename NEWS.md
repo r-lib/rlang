@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* `last_trace()` hyperlinks now use the modern `x-r-run` format (#1678).
+
+
 # rlang 1.1.3
 
 * Fix for CRAN checks.
