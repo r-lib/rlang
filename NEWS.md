@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fix for CRAN checks.
+
+
 # rlang 1.1.2
 
 * Fixed an off-by-one typo in the traceback source column location (#1633).

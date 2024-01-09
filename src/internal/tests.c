@@ -101,20 +101,20 @@ r_obj* ffi_test_r_warn(r_obj* x) {
 }
 
 r_obj* ffi_test_Rf_warning(r_obj* msg) {
-  Rf_warning(r_chr_get_c_string(msg, 0));
+  Rf_warning("%s", r_chr_get_c_string(msg, 0));
   return r_null;
 }
 r_obj* ffi_test_Rf_error(r_obj* msg) {
-  Rf_error(r_chr_get_c_string(msg, 0));
+  Rf_error("%s", r_chr_get_c_string(msg, 0));
   return r_null;
 }
 
 r_obj* ffi_test_Rf_warningcall(r_obj* call, r_obj* msg) {
-  Rf_warningcall(call, r_chr_get_c_string(msg, 0));
+  Rf_warningcall(call, "%s", r_chr_get_c_string(msg, 0));
   return r_null;
 }
 r_obj* ffi_test_Rf_errorcall(r_obj* call, r_obj* msg) {
-  Rf_errorcall(call, r_chr_get_c_string(msg, 0));
+  Rf_errorcall(call, "%s", r_chr_get_c_string(msg, 0));
   return r_null;
 }
 
