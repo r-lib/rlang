@@ -16,9 +16,9 @@ test_that("obj_type_oo() works", {
   r6 <- R6Class("r6")$new()
   expect_equal(obj_type_oo(r6), "R6")
 
-  import_or_skip("R7", "new_class")
-  r7 <- new_class("r7")()
-  expect_equal(obj_type_oo(r7), "R7")
+  import_or_skip("S7", "new_class")
+  s7 <- new_class("s7")()
+  expect_equal(obj_type_oo(s7), "S7")
 })
 
 test_that("stop_input_type() handles I() in `arg` (#1607)", {
