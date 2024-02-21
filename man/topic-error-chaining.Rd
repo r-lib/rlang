@@ -4,7 +4,9 @@
 \alias{topic-error-chaining}
 \title{Including contextual information with error chains}
 \description{
-Error chaining is a mechanism for providing contextual information when an error occurs. There are multiple situations in which you might be able to provide context that is helpful to quickly understand the cause or origin of an error:
+Error chaining is a mechanism for providing contextual information when an error occurs. There are multiple situations in which you might be able to provide context that is helpful to quickly understand the cause or origin of an error.
+}
+\section{Context where chaining is useful}{
 \itemize{
 \item Mentioning the \emph{high level context} in which a low level error arised. E.g. chaining a low-level HTTP error to a high-level download error.
 \item Mentioning the \emph{pipeline step} in which a user error occured. This is a major use-case for NSE interfaces in the tidyverse, e.g. in dplyr, tidymodels or ggplot2.
@@ -33,6 +35,7 @@ In all these cases, there are two errors in play, chained together:
 
 There may be more than one contextual error in an error chain, but there is always only one causal error.
 }
+
 \section{Rethrowing errors}{
 To create an error chain, you must first capture causal errors when they occur. We recommend using \code{try_fetch()} instead of \code{tryCatch()} or \code{withCallingHandlers()}.
 \itemize{
