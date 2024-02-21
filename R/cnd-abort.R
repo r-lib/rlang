@@ -1089,6 +1089,11 @@ NULL
 #' - Use `@inheritParams rlang::args_error_context` to document an
 #'   `arg` or `error_arg` argument that takes `error_arg()` as default.
 #'
+#' @section Use in `print()`:
+#' Note that `caller_arg()` will not work properly when redefining the
+#' `print()` method, as the name of the object is not in the callstack.
+#'
+#'
 #' @param arg An argument name in the current function.
 #' @usage NULL
 #'

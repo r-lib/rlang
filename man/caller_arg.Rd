@@ -19,6 +19,12 @@ in the cli package.
 \code{arg} or \code{error_arg} argument that takes \code{error_arg()} as default.
 }
 }
+\section{Use in \code{print()}}{
+
+Note that \code{caller_arg()} will not work properly when redefining the
+\code{print()} method, as the name of the object is not in the callstack.
+}
+
 \examples{
 arg_checker <- function(x, arg = caller_arg(x), call = caller_env()) {
   cli::cli_abort("{.arg {arg}} must be a thingy.", arg = arg, call = call)
