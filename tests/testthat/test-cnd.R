@@ -165,8 +165,8 @@ test_that("calls are consistently displayed on rethrow (#1240)", {
       expr = force(expr),
       error = function(cnd) {
         rlang::abort(
-          message = "Problem while executing step.", 
-          call = call(step_name), 
+          message = "Problem while executing step.",
+          call = call(step_name),
           parent = cnd
         )
       }
@@ -252,6 +252,9 @@ test_that("cnd_type() detects condition type", {
   expect_identical(cnd_type(warning_cnd()), "warning")
   expect_identical(cnd_type(error_cnd()), "error")
   expect_identical(cnd_type(catch_cnd(interrupt())), "interrupt")
+  # reticulate stores error conditions as environments (#1664)
+  env_cnd <- structure(env(), class = c("error", "condition"))
+  expect_identical(cnd_type(env_cnd), "error")
 })
 
 test_that("bare conditions must be subclassed", {

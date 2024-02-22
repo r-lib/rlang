@@ -100,7 +100,8 @@ void r_interrupt(void) {
 
 enum r_cnd_type r_cnd_type(r_obj* cnd) {
   r_obj* classes = r_class(cnd);
-  if (r_typeof(cnd) != R_TYPE_list ||
+  if (
+      (r_typeof(cnd) != R_TYPE_list && r_typeof(cnd) != R_TYPE_environment) ||
       r_typeof(classes) != R_TYPE_character) {
     goto error;
   }
