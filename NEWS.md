@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Fix for reticulate errors (#1664)
+
 * `last_trace()` hyperlinks now use the modern `x-r-run` format (#1678).
 
 
