@@ -69,6 +69,10 @@ the <- new.env(parent = emptyenv())
 #' `on_load()` is implemented via `.onLoad()` and requires
 #' `run_on_load()` to be called from that hook.
 #'
+#' The expressions inside `on_load()` do not undergo static analysis
+#' by `R CMD check`. Therefore, it is advisable to only use
+#' simple function calls inside `on_load()`.
+#'
 #' @examples
 #' quote({  # Not run
 #' 

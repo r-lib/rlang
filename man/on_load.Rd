@@ -72,6 +72,10 @@ disparate expressions in a single block.
 
 \code{on_load()} is implemented via \code{.onLoad()} and requires
 \code{run_on_load()} to be called from that hook.
+
+The expressions inside \code{on_load()} do not undergo static analysis
+by \verb{R CMD check}. Therefore, it is advisable to only use
+simple function calls inside \code{on_load()}.
 }
 
 \examples{
