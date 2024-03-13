@@ -205,6 +205,9 @@ any file, in context. This is unlike <code>.onLoad()</code> which gathers
 disparate expressions in a single block.</p>
 <p><code>on_load()</code> is implemented via <code>.onLoad()</code> and requires
 <code>run_on_load()</code> to be called from that hook.</p>
+<p>The expressions inside <code>on_load()</code> do not undergo static analysis
+by <code>R CMD check</code>. Therefore, it is advisable to only use
+simple function calls inside <code>on_load()</code>.</p>
     </div>
 
     <div class="section level2">

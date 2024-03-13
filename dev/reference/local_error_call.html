@@ -140,20 +140,20 @@ error call.</p></dd>
 
 <p>By default <code><a href="abort.html">abort()</a></code> uses the function call of its caller as
 context in error messages:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">abort</span>(<span class="st">"Uh oh."</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in `foo()`: Uh oh.</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">abort</span>(<span class="st">"Uh oh."</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">foo</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt; Error in `foo()`: Uh oh.</span></span></code></pre><p></p></div>
 <p>This is not always appropriate. For example a function that checks
 an input on the behalf of another function should reference the
 latter, not the former:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>arg_check <span class="ot">&lt;-</span> <span class="cf">function</span>(arg,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error_arg =</span> <span class="fu">as_string</span>(<span class="fu">substitute</span>(arg))) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abort</span>(cli<span class="sc">::</span><span class="fu">format_error</span>(<span class="st">"{.arg {error_arg}} is failing."</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">arg_check</span>(x)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>()</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in `arg_check()`: `x` is failing.</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>arg_check <span class="ot">&lt;-</span> <span class="cf">function</span>(arg,</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>                      <span class="at">error_arg =</span> <span class="fu">as_string</span>(<span class="fu">substitute</span>(arg))) {</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">abort</span>(cli<span class="sc">::</span><span class="fu">format_error</span>(<span class="st">"{.arg {error_arg}} is failing."</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">arg_check</span>(x)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">foo</span>()</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; Error in `arg_check()`: `x` is failing.</span></span></code></pre><p></p></div>
 <p>The mismatch is clear in the example above. <code>arg_check()</code> does not
 have any <code>x</code> argument and so it is confusing to present
 <code>arg_check()</code> as being the relevant context for the failure of the
@@ -163,18 +163,18 @@ and pass it to <code><a href="abort.html">abort()</a></code>. Here we name this 
 for consistency with <code>error_arg</code> which is prefixed because there is
 an existing <code>arg</code> argument. In other situations, taking <code>arg</code> and
 <code>call</code> arguments might be appropriate.</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>arg_check <span class="ot">&lt;-</span> <span class="cf">function</span>(arg,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error_arg =</span> <span class="fu">as_string</span>(<span class="fu">substitute</span>(arg)),</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error_call =</span> <span class="fu">caller_env</span>()) {</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abort</span>(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">format_error</span>(<span class="st">"{.arg {error_arg}} is failing."</span>),</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">call =</span> error_call</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">arg_check</span>(x)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>()</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in `foo()`: `x` is failing.</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>arg_check <span class="ot">&lt;-</span> <span class="cf">function</span>(arg,</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>                      <span class="at">error_arg =</span> <span class="fu">as_string</span>(<span class="fu">substitute</span>(arg)),</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>                      <span class="at">error_call =</span> <span class="fu">caller_env</span>()) {</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="fu">abort</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">format_error</span>(<span class="st">"{.arg {error_arg}} is failing."</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="at">call =</span> error_call</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  )</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>}</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">arg_check</span>(x)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">foo</span>()</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt; Error in `foo()`: `x` is failing.</span></span></code></pre><p></p></div>
 <p>This is the generally recommended pattern for argument checking
 functions. If you mention an argument in an error message, provide
 your callers a way to supply a different argument name and a
@@ -189,27 +189,27 @@ to climb the call stack one level to find the relevant call. In the
 following example, the complexity is not so important that sparing
 the argument passing makes a big difference. However this
 illustrates the pattern:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>arg_check <span class="ot">&lt;-</span> <span class="cf">function</span>(arg,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error_arg =</span> <span class="fu">caller_arg</span>(arg),</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">error_call =</span> <span class="fu">caller_env</span>()) {</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set the local error call</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">local_error_call</span>(error_call)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">my_classed_stop</span>(</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">format_error</span>(<span class="st">"{.arg {error_arg}} is failing."</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>my_classed_stop <span class="ot">&lt;-</span> <span class="cf">function</span>(message) {</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Forward the local error call to the caller's</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">local_error_call</span>(<span class="fu">caller_env</span>())</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abort</span>(message, <span class="at">class =</span> <span class="st">"my_class"</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">arg_check</span>(x)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">foo</span>()</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in `foo()`: `x` is failing.</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>arg_check <span class="ot">&lt;-</span> <span class="cf">function</span>(arg,</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>                      <span class="at">error_arg =</span> <span class="fu">caller_arg</span>(arg),</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>                      <span class="at">error_call =</span> <span class="fu">caller_env</span>()) {</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="co"># Set the local error call</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="fu">local_error_call</span>(error_call)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="fu">my_classed_stop</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    cli<span class="sc">::</span><span class="fu">format_error</span>(<span class="st">"{.arg {error_arg}} is failing."</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  )</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>}</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>my_classed_stop <span class="ot">&lt;-</span> <span class="cf">function</span>(message) {</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  <span class="co"># Forward the local error call to the caller's</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="fu">local_error_call</span>(<span class="fu">caller_env</span>())</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="fu">abort</span>(message, <span class="at">class =</span> <span class="st">"my_class"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>}</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>foo <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">arg_check</span>(x)</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="fu">foo</span>()</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; Error in `foo()`: `x` is failing.</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="error-call-flags-in-performance-critical-functions">Error call flags in performance-critical functions<a class="anchor" aria-label="anchor" href="#error-call-flags-in-performance-critical-functions"></a></h2>
@@ -223,7 +223,7 @@ error is triggered. Note that eagerly calling <code><a href="stack.html">caller_
 fast enough in almost all cases.</p>
 <p>If your function needs to be really fast, assign the error call
 flag directly instead of calling <code>local_error_call()</code>:</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>.__error_call__. <span class="ot">&lt;-</span> <span class="st">"caller"</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>.__error_call__. <span class="ot">&lt;-</span> <span class="st">"caller"</span></span></code></pre><p></p></div>
     </div>
 
     <div class="section level2">
@@ -237,7 +237,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(quote(foo()))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(sys.call())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c8238ec468&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5e8ce056dbd8&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Disable the context</span></span></span>
 <span class="r-in"><span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -246,7 +246,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(NULL)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c8238ec468&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5e8ce056dbd8&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use the caller's context</span></span></span>
 <span class="r-in"><span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -255,7 +255,7 @@ flag directly instead of calling <code>local_error_call()</code>:</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   local_error_call(caller_env())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55c8238ec468&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5e8ce056dbd8&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
