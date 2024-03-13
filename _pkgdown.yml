@@ -13,8 +13,7 @@ template:
 
 navbar:
   structure:
-    left:  [reference, tidyeval, metaprog, errors]
-    right: [news, github]
+    left:  [reference, tidyeval, metaprog, errors, news]
   components:
     tidyeval:
       text: Tidy evaluation
