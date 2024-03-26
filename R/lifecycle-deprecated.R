@@ -465,7 +465,8 @@ coerce_class <- function(.x, .to, ...) {
 #' `r lifecycle::badge("deprecated")`
 #'
 #' `friendly_type()` is deprecated. Please use the
-#' `standalone-friendly-type.R` file instead.
+#' `standalone-obj-type.R` file instead. You can import it
+#' in your package with `usethis::use_standalone("r-lib/rlang", "obj-type")`.
 #'
 #' @param type A type as returned by [typeof()].
 #' @return A string of the prettified type, qualified with an
