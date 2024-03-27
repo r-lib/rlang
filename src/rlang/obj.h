@@ -81,6 +81,30 @@ r_obj* r_clone_shared(r_obj* x) {
   return r_is_shared(x) ? r_clone(x) : x;
 }
 
+// Copy/Clone equivalents that attempt to generate a thin ALTREP wrapper
+// instead of copying/cloning if possible. Typically useful before modifying
+// attributes, rather than before modifying the underlying data.
+static inline
+r_obj* r_wrap_or_copy(r_obj* x) {
+#if R_VERSION >= R_Version(3, 6, 0)
+  return R_duplicate_attr(x);
+#else
+  return r_copy(x);
+#endif
+}
+static inline
+r_obj* r_wrap_or_clone(r_obj* x) {
+#if R_VERSION >= R_Version(3, 6, 0)
+  return R_shallow_duplicate_attr(x);
+#else
+  return r_clone(x);
+#endif
+}
+static inline
+r_obj* r_wrap_or_clone_shared(r_obj* x) {
+  return r_is_shared(x) ? r_wrap_or_clone(x) : x;
+}
+
 // These also clone names
 r_obj* r_vec_clone(r_obj* x);
 r_obj* r_vec_clone_shared(r_obj* x);
