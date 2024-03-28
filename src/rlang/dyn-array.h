@@ -174,6 +174,18 @@ void r_dyn_cpl_push_back(struct r_dyn_array* p_vec, r_complex elt) {
   r_dyn_cpl_poke(p_vec, loc, elt);
 }
 static inline
+void r_dyn_raw_push_back(struct r_dyn_array* p_vec, char elt) {
+  r_ssize loc = r__dyn_increment(p_vec);
+  r_dyn_raw_poke(p_vec, loc, elt);
+}
+static inline
+void r_dyn_chr_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
+  KEEP(elt);
+  r_ssize loc = r__dyn_increment(p_vec);
+  r_dyn_chr_poke(p_vec, loc, elt);
+  FREE(1);
+}
+static inline
 void r_dyn_list_push_back(struct r_dyn_array* p_vec, r_obj* elt) {
   KEEP(elt);
   r_ssize loc = r__dyn_increment(p_vec);
