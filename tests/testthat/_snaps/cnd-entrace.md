@@ -85,6 +85,7 @@
      2.   \-global g()
      3.     \-global h()
     Execution halted
+    Ran 8/8 deferred expressions
 
 ---
 
@@ -96,6 +97,7 @@
      2.   \-global g()
      3.     \-global h()
     Execution halted
+    Ran 8/8 deferred expressions
 
 ---
 
@@ -180,6 +182,7 @@
     
     Warning message:
     In f() : foo
+    Ran 8/8 deferred expressions
 
 # can call `global_entrace()` in knitted documents
 
