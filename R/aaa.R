@@ -84,7 +84,7 @@ the <- new.env(parent = emptyenv())
 #'
 #' # Register a method on load
 #' on_load({
-#'   s3_register("foo::bar", "my_class"))
+#'   s3_register("foo::bar", "my_class")
 #' })
 #'
 #' # Assign an object on load
