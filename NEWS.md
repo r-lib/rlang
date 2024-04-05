@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Added missing C level `r_dyn_raw_push_back()` and `r_dyn_chr_push_back()`
+  utilities (#1699).
+
 * `last_trace()` hyperlinks now use the modern `x-r-run` format (#1678).
 
 
@@ -1217,7 +1220,7 @@ extensive changes to the display of error messages.
 
 * Infix operators now stick to their LHS when deparsed by
   `expr_deparse()` (#890).
-  
+
 
 # rlang 0.4.2
 
@@ -2002,7 +2005,7 @@ error reporting, tidy eval, and tidy dots.
 * `env_get()` now evaluates promises and active bindings since these are
   internal objects which should not be exposed at the R level (#554)
 
-* `env_print()` calls `get_env()` on its argument, making it easier to 
+* `env_print()` calls `get_env()` on its argument, making it easier to
   see the environment of closures and quosures (#567).
 
 * `env_get()` now supports retrieving missing arguments when `inherit`
