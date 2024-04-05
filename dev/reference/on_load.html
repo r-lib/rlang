@@ -212,7 +212,51 @@ simple function calls inside <code>on_load()</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="op">{</span>  <span class="co"># Not run</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># First add `run_on_load()` to your `.onLoad()` hook,</span></span></span>
+<span class="r-in"><span><span class="co"># then use `on_load()` anywhere in your package</span></span></span>
+<span class="r-in"><span><span class="va">.onLoad</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">lib</span>, <span class="va">pkg</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">run_on_load</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Register a method on load</span></span></span>
+<span class="r-in"><span><span class="fu">on_load</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">s3_register</span><span class="op">(</span><span class="st">"foo::bar"</span>, <span class="st">"my_class"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Assign an object on load</span></span></span>
+<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="fu">on_load</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">foo</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To use `on_package_load()` at top level, wrap it in `on_load()`</span></span></span>
+<span class="r-in"><span><span class="fu">on_load</span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">on_package_load</span><span class="op">(</span><span class="st">"foo"</span>, <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"foo is loaded"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># In functions it can be called directly</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">on_package_load</span><span class="op">(</span><span class="st">"foo"</span>, <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"foo is loaded"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     .onLoad &lt;- function(lib, pkg) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         run_on_load()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     on_load({</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         s3_register("foo::bar", "my_class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     var &lt;- NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     on_load({</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         var &lt;- foo()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     on_load({</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         on_package_load("foo", message("foo is loaded"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     })</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     f &lt;- function() on_package_load("foo", message("foo is loaded"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
