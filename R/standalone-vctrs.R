@@ -13,6 +13,10 @@
 # of data frames without having to depend on tibble or vctrs. The
 # embedded type system is minimal and not extensible.
 
+# 2024-04-17:
+# * `vec_recycle_common()` throws intended error when `size = 1` but input
+#   is larger.
+
 # 2021-08-27:
 # * `vec_slice()` now preserves attributes of data frames and vectors.
 # * `vec_ptype2()` detects unspecified columns of data frames.
@@ -118,7 +122,7 @@ vec_recycle_common <- function(xs, size = NULL) {
   } else if (ns == 1) {
     if (is.null(size)) {
       size <- n
-    } else if (ns != size) {
+    } else if (n != size) {
       stop("Inputs can't be recycled to `size`.", call. = FALSE)
     }
   } else {
