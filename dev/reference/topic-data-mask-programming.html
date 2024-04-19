@@ -302,12 +302,11 @@ If you'd like to go further and learn about defusing and injecting expressions, 
 <span></span>
 <span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>Since <code>across()</code> takes selections in a single argument (unlike <code>select()</code> which takes multiple arguments), you can't directly pass <code>...</code>. Instead, take them within <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>, which is the tidyselect way of supplying multiple selections within a single argument:</p>
-<p></p><div class="sourceCode r"><pre><code>my_group_by &lt;- function(.data, ...) {
-  .data %&gt;% dplyr::group_by(across(c(...)}))
-}
-
-mtcars %&gt;% my_group_by(starts_with("c"), vs:gear)
-</code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_group_by</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.data</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.data</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"c"</span><span class="op">)</span>, <span class="va">vs</span><span class="op">:</span><span class="va">gear</span><span class="op">)</span></span></code></pre><p></p></div>
 </div>
 
 <div class="section">
