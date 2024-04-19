@@ -246,7 +246,7 @@ mtcars \%>\% my_group_by(starts_with("c"))
 Since \code{across()} takes selections in a single argument (unlike \code{select()} which takes multiple arguments), you can't directly pass \code{...}. Instead, take them within \code{c()}, which is the tidyselect way of supplying multiple selections within a single argument:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_group_by <- function(.data, ...) \{
-  .data \%>\% dplyr::group_by(across(c(...)\}))
+  .data \%>\% dplyr::group_by(across(c(...)))
 \}
 
 mtcars \%>\% my_group_by(starts_with("c"), vs:gear)
