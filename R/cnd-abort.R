@@ -245,7 +245,15 @@
 #'       abort(msg, parent = err)
 #'   })
 #' )
-#'
+#' # Hard-code call
+#'  f <- function() {
+#'   abort(call = call("the_source_fn"))
+#' }
+#' g <- function() {
+#'   f()
+#' }
+#' # will show that error occured in `the_source_fn()`
+#' try(g())
 #' }
 #' @export
 abort <- function(message = NULL,
