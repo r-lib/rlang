@@ -173,8 +173,6 @@ Once enabled, create error snapshots with:
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{expect_snapshot(error = TRUE, \{
   my_function()
 \})
-
-expect_snapshot_error(my_function())
 }\if{html}{\out{</div>}}
 
 You'll have to make sure that the snapshot coverage for error messages is sufficient for your package.
