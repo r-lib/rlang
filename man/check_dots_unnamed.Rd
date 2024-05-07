@@ -39,3 +39,9 @@ f(1, 2, 3, foofy = 4)
 
 try(f(1, 2, 3, foof = 4))
 }
+\seealso{
+Other dots checking functions: 
+\code{\link{check_dots_empty}()},
+\code{\link{check_dots_used}()}
+}
+\concept{dots checking functions}

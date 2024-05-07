@@ -69,3 +69,9 @@ fn <- function(...) {
 fn()
 
 }
+\seealso{
+Other dots checking functions: 
+\code{\link{check_dots_empty}()},
+\code{\link{check_dots_unnamed}()}
+}
+\concept{dots checking functions}
