@@ -1,9 +1,15 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-s3-register.R
-# last-updated: 2022-08-29
+# last-updated: 2024-05-14
 # license: https://unlicense.org
 # ---
+#
+# ## Changelog
+#
+# 2024-05-14:
+#
+# * Mentioned `usethis::use_standalone()`.
 #
 # nocov start
 
@@ -30,12 +36,13 @@
 #' ```
 #'
 #' @section Usage in other packages:
-#' To avoid taking a dependency on vctrs, you copy the source of
+#' To avoid taking a dependency on rlang, you copy the source of
 #' [`s3_register()`](https://github.com/r-lib/rlang/blob/main/R/standalone-s3-register.R)
-#' into your own package. It is licensed under the permissive
-#' [unlicense](https://choosealicense.com/licenses/unlicense/) to make it
-#' crystal clear that we're happy for you to do this. There's no need to include
-#' the license or even credit us when using this function.
+#' into your own package or with
+#' `usethis::use_standalone("r-lib/rlang", "s3-register")`. It is licensed under
+#' the permissive [unlicense](https://choosealicense.com/licenses/unlicense/) to
+#' make it crystal clear that we're happy for you to do this. There's no need to
+#' include the license or even credit us when using this function.
 #'
 #' @param generic Name of the generic in the form `"pkg::generic"`.
 #' @param class Name of the class
