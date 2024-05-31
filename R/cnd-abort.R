@@ -245,15 +245,18 @@
 #'       abort(msg, parent = err)
 #'   })
 #' )
-#' # Hard-code call
+#'
+#' # You can also hard-code the call when it's not easy to
+#' # forward it from the caller
 #'  f <- function() {
-#'   abort(call = call("the_source_fn"))
+#'   abort("my message", call = call("my_function"))
 #' }
 #' g <- function() {
 #'   f()
 #' }
-#' # will show that error occured in `the_source_fn()`
+#' # Shows that the error occured in `my_function()`
 #' try(g())
+#'
 #' }
 #' @export
 abort <- function(message = NULL,
