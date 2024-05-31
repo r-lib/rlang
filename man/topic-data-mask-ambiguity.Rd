@@ -72,7 +72,9 @@ This is especially useful in functions because the data frame is not known in ad
 data.frame(value = 1) \%>\% my_rescale(value)
 #>   value
 #> 1   0.1
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Oh no!
 data.frame(factor = 0, value = 1) \%>\% my_rescale(value)
 #>   factor value

@@ -54,7 +54,9 @@ missing argument:
 
 fn()
 #> [1] TRUE
-fn(1)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
 #> [1] FALSE
 }\if{html}{\out{</div>}}
 
@@ -73,7 +75,9 @@ default arguments as missing, even in internal contexts:
 
 fn()
 #> [1] FALSE
-fn(1)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fn(1)
 #> [1] FALSE
 }\if{html}{\out{</div>}}
 

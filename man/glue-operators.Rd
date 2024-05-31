@@ -11,7 +11,9 @@
 #>     foo
 #>   <dbl>
 #> 1     1
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 foo <- "name"
 tibble::tibble("\{foo\}" := 1)
 #> # A tibble: 1 x 1
@@ -59,7 +61,9 @@ mtcars \%>\% my_mean(cyl)
 #>     cyl
 #>   <dbl>
 #> 1  6.19
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(cyl * am)
 #> # A tibble: 1 x 1
 #>   `cyl * am`
@@ -78,7 +82,9 @@ mtcars \%>\% my_mean(cyl)
 #>    mean
 #>   <dbl>
 #> 1  6.19
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(cyl, name = "cyl")
 #> # A tibble: 1 x 1
 #>     cyl
@@ -93,7 +99,9 @@ Using the wrong operator causes unexpected results:
 list2("\{\{ x \}\}" := 1)
 #> $`"name"`
 #> [1] 1
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 list2("\{x\}" := 1)
 #> $name
 #> [1] 1
@@ -120,7 +128,9 @@ Now the user may supply their own name if needed:
 #>   `cyl * am`
 #>        <dbl>
 #> 1       2.06
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(cyl * am, name = "mean_cyl_am")
 #> # A tibble: 1 x 1
 #>   mean_cyl_am
