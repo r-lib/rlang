@@ -293,9 +293,9 @@ errors on old versions of R.</p>
 
 <p><code>try_fetch()</code> generalises <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">withCallingHandlers()</a></code>
 in a single function. It reproduces the behaviour of both calling
-and exiting handlers depending the on the return value of the
-handler. If the handler returns the <code><a href="zap.html">zap()</a></code> sentinel, it is taken
-as a calling handler that declines to recover from a condition.
+and exiting handlers depending on the return value of the handler.
+If the handler returns the <code><a href="zap.html">zap()</a></code> sentinel, it is taken as a
+calling handler that declines to recover from a condition.
 Otherwise, it is taken as an exiting handler which returns a value
 from the catching site.</p>
 <p>The important difference between <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> and <code>try_fetch()</code> is

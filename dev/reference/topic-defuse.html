@@ -5,6 +5,7 @@ Using expr() we can observe the difference between computing an expression and d
 1 + 1
 #&amp;gt; [1] 2
 
+
 # Return the expression `1 + 1`
 expr(1 + 1)
 #&amp;gt; 1 + 1
@@ -26,6 +27,7 @@ Using expr() we can observe the difference between computing an expression and d
 # Return the result of `1 + 1`
 1 + 1
 #&amp;gt; [1] 2
+
 
 # Return the expression `1 + 1`
 expr(1 + 1)
@@ -148,8 +150,8 @@ eval(e, mtcars)
 <p>Using <code><a href="expr.html">expr()</a></code> we can observe the difference between computing an expression and defusing it:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Return the result of `1 + 1`</span></span>
 <span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span></span>
-<span><span class="co">#&gt; [1] 2</span></span>
-<span></span>
+<span><span class="co">#&gt; [1] 2</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span></span>
 <span><span class="co"># Return the expression `1 + 1`</span></span>
 <span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 1 + 1</span></span></code></pre><p></p></div>
@@ -191,8 +193,8 @@ eval(e, mtcars)
 <span><span class="va">force</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="va">arg</span></span>
 <span></span>
 <span><span class="fu">ignore</span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; NULL</span></span>
-<span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"boom"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in force(warning("boom")): boom</span></span></code></pre><p></p></div>
 <p>A warning is only emitted when the function actually <em>triggers</em> evaluation of its argument. Evaluation of arguments can be chained by passing them to other functions. If one of the functions ignores its argument, it breaks the chain of evaluation.</p>
