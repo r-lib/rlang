@@ -246,6 +246,17 @@
 #'   })
 #' )
 #'
+#' # You can also hard-code the call when it's not easy to
+#' # forward it from the caller
+#'  f <- function() {
+#'   abort("my message", call = call("my_function"))
+#' }
+#' g <- function() {
+#'   f()
+#' }
+#' # Shows that the error occured in `my_function()`
+#' try(g())
+#'
 #' }
 #' @export
 abort <- function(message = NULL,
