@@ -9,8 +9,8 @@
 #' * The predicates for vectors include the `n` argument for
 #'   pattern-matching on the vector length.
 #'
-#' * Unlike `is.atomic()`, `is_atomic()` does not return `TRUE` for
-#'   `NULL`.
+#' * Unlike `is.atomic()` in R < 4.4.0, `is_atomic()` does not return `TRUE` for
+#'   `NULL`. Starting in R 4.4.0 `is.atomic(NULL)` returns FALSE.
 #'
 #' * Unlike `is.vector()`, `is_vector()` tests if an object is an
 #'   atomic vector or a list. `is.vector` checks for the presence of
@@ -197,8 +197,9 @@ is_bool <- function(x) {
 #' * The predicates for vectors include the `n` argument for
 #'   pattern-matching on the vector length.
 #'
-#' * Like [is_atomic()] and unlike base R `is.atomic()`,
-#'   `is_bare_atomic()` does not return `TRUE` for `NULL`.
+#' * Like [is_atomic()] and unlike base R `is.atomic()` for R < 4.4.0,
+#'   `is_bare_atomic()` does not return `TRUE` for `NULL`. Starting in
+#'   R 4.4.0, `is.atomic(NULL)` returns FALSE.
 #'
 #' * Unlike base R `is.numeric()`, `is_bare_double()` only returns
 #'   `TRUE` for floating point numbers.
