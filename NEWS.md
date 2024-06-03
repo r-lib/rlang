@@ -3,6 +3,8 @@
 * Added missing C level `r_dyn_raw_push_back()` and `r_dyn_chr_push_back()`
   utilities (#1699).
 
+* Fix for reticulate errors (#1664)
+
 * `last_trace()` hyperlinks now use the modern `x-r-run` format (#1678).
 
 
