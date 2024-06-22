@@ -14,7 +14,7 @@ a data frame is a list, but not a bare list."><meta property="og:image" content=
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.3.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.4.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,8 +151,9 @@ a data frame is a list, but not a bare list.</p>
     
 <ul><li><p>The predicates for vectors include the <code>n</code> argument for
 pattern-matching on the vector length.</p></li>
-<li><p>Like <code><a href="type-predicates.html">is_atomic()</a></code> and unlike base R <code><a href="https://rdrr.io/r/base/is.recursive.html" class="external-link">is.atomic()</a></code>,
-<code>is_bare_atomic()</code> does not return <code>TRUE</code> for <code>NULL</code>.</p></li>
+<li><p>Like <code><a href="type-predicates.html">is_atomic()</a></code> and unlike base R <code><a href="https://rdrr.io/r/base/is.recursive.html" class="external-link">is.atomic()</a></code> for R &lt; 4.4.0,
+<code>is_bare_atomic()</code> does not return <code>TRUE</code> for <code>NULL</code>. Starting in
+R 4.4.0, <code>is.atomic(NULL)</code> returns FALSE.</p></li>
 <li><p>Unlike base R <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">is.numeric()</a></code>, <code>is_bare_double()</code> only returns
 <code>TRUE</code> for floating point numbers.</p></li>
 </ul></div>

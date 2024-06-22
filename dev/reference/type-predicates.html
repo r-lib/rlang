@@ -14,7 +14,7 @@ at a level beneath S3/S4 etc."><meta property="og:image" content="https://rlang.
     
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.3.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.4.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,8 +155,8 @@ vector needs to be traversed and checked.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Compared to base R functions:</p><ul><li><p>The predicates for vectors include the <code>n</code> argument for
 pattern-matching on the vector length.</p></li>
-<li><p>Unlike <code><a href="https://rdrr.io/r/base/is.recursive.html" class="external-link">is.atomic()</a></code>, <code>is_atomic()</code> does not return <code>TRUE</code> for
-<code>NULL</code>.</p></li>
+<li><p>Unlike <code><a href="https://rdrr.io/r/base/is.recursive.html" class="external-link">is.atomic()</a></code> in R &lt; 4.4.0, <code>is_atomic()</code> does not return <code>TRUE</code> for
+<code>NULL</code>. Starting in R 4.4.0 <code>is.atomic(NULL)</code> returns FALSE.</p></li>
 <li><p>Unlike <code><a href="https://rdrr.io/r/base/vector.html" class="external-link">is.vector()</a></code>, <code>is_vector()</code> tests if an object is an
 atomic vector or a list. <code>is.vector</code> checks for the presence of
 attributes (other than name).</p></li>
