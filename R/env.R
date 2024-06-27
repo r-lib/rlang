@@ -576,7 +576,7 @@ env_unlock <- function(env) {
     msg <- c(
       msg,
       "i" = sprintf(
-        "This error is likely caused by an outdated version of pkgload. You are running pkgload %s and you need at least 1.3.5",
+        "This error is likely caused by an outdated version of pkgload. You are running pkgload %s and you need at least 1.4.0",
         ver
       )
     )
