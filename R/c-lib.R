@@ -145,6 +145,10 @@ detect_rlang_lib_usage <- function(src_path) {
   FALSE
 }
 
+has_private_accessors <- function() {
+  .Call(ffi_has_private_accessors)
+}
+
 
 # cnd.c
 
@@ -401,5 +405,5 @@ vec_resize <- function(x, n) {
 # walk.c
 
 sexp_iterate <- function(x, fn) {
-  .Call(ffi_sexp_iterate, x, fn)
+  do.call(".Call", list(ffi_sexp_iterate, x, fn))
 }
