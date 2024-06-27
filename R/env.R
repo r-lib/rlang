@@ -554,8 +554,9 @@ env_is_locked <- function(env) {
 
 #' Unlock an environment
 #'
-#' This function should only be used in development tools or
-#' interactively.
+#' `r lifecycle::badge("defunct")`. This function is now defunct
+#' because recent versions of R no longer make it possible to
+#' unlock an environment.
 #'
 #' @inheritParams env_lock
 #' @return Whether the environment has been unlocked.
@@ -563,7 +564,25 @@ env_is_locked <- function(env) {
 #' @keywords internal
 #' @export
 env_unlock <- function(env) {
-  invisible(.Call(ffi_env_unlock, env))
+  msg <- "`env_unlock()` is defunct as of rlang 1.1.5"
+
+  old_pkgload_running <- 
+    "pkgload" %in% loadedNamespaces() && 
+    some(sys.frames(), function(env) identical(topenv(env), ns_env("pkgload"))) &&
+    utils::packageVersion("pkgload") <= "1.3.4"
+
+  if (old_pkgload_running) {
+    ver <- utils::packageVersion("pkgload")
+    msg <- c(
+      msg,
+      "i" = sprintf(
+        "This error is likely caused by an outdated version of pkgload. You are running pkgload %s and you need at least 1.3.5",
+        ver
+      )
+    )
+  }
+
+  abort(msg)
 }
 
 
