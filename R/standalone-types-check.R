@@ -8,6 +8,8 @@
 # ---
 #
 # ## Changelog
+# 2024-06-28:
+# - Improved error messages of number checkers (@olivroy)
 #
 # 2023-03-13:
 # - Improved error messages of number checkers (@teunbrand)
@@ -258,7 +260,11 @@ check_number_whole <- function(x,
     max <- max %||% Inf
 
     if (min > -Inf && max < Inf) {
-      what <- sprintf("%s between %s and %s", what, min, max)
+      if (min == max) {
+         what <- sprintf("%s equal to %s", what, min)
+      } else {
+         what <- sprintf("%s between %s and %s", what, min, max)
+      }
     } else if (x < min) {
       what <- sprintf("%s larger than or equal to %s", what, min)
     } else if (x > max) {
