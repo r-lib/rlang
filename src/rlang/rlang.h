@@ -72,6 +72,7 @@ bool _r_use_local_precious_list;
 #include "vec-chr.h"
 #include "vec-lgl.h"
 #include "vendor.h"
+#include "view.h"
 #include "walk.h"
 
 

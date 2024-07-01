@@ -2,6 +2,9 @@
 #include "../internal/utils.h"
 #include "../internal/vec.h"
 
+// From rlang/rlang.c
+void r_init_library_with_dll(DllInfo* dll, const char* package);
+
 // From rlang/vec.c
 void r_vec_poke_n(r_obj* x, r_ssize offset,
                   r_obj* y, r_ssize from, r_ssize n);
@@ -15,6 +18,13 @@ r_obj* ffi_compiled_by_gcc(void) {
   #else
   return r_false;
   #endif
+}
+
+
+// altrep.h
+
+r_obj* ffi_is_altrep(r_obj* x) {
+  return r_lgl(r_is_altrep(x));
 }
 
 
@@ -1050,6 +1060,25 @@ r_obj* ffi_vec_resize(r_obj* x, r_obj* n) {
 r_obj* ffi_list_poke(r_obj* x, r_obj* i, r_obj* value) {
   r_list_poke(x, r_arg_as_ssize(i, "i"), value);
   return r_null;
+}
+
+
+// view.c
+
+r_obj* ffi_vec_view(r_obj* x, r_obj* ffi_start, r_obj* ffi_size) {
+  const r_ssize start = r_arg_as_ssize(ffi_start, "start") - 1;
+  const r_ssize size = r_arg_as_ssize(ffi_size, "size");
+  return r_vec_view(x, start, size);
+}
+
+r_obj* ffi_view_is_materialized(r_obj* x) {
+  r_check_view(x);
+  return r_lgl(r_view_is_materialized(x));
+}
+
+r_obj* ffi_view_materialize(r_obj* x) {
+  r_check_view(x);
+  return r_view_materialize(x);
 }
 
 
