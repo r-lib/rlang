@@ -21,8 +21,12 @@ r_complex* r_cpl_begin(r_obj* x) {
   return COMPLEX(x);
 }
 static inline
-void* r_raw_begin(r_obj* x) {
+r_byte* r_raw_begin0(r_obj* x) {
   return RAW(x);
+}
+static inline
+void* r_raw_begin(r_obj* x) {
+  return r_raw_begin0(x);
 }
 
 static inline
@@ -42,8 +46,12 @@ const r_complex* r_cpl_cbegin(r_obj* x) {
   return (const r_complex*) COMPLEX(x);
 }
 static inline
+const r_byte* r_raw_cbegin0(r_obj* x) {
+  return (const r_byte*) RAW(x);
+}
+static inline
 const void* r_raw_cbegin(r_obj* x) {
-  return (const void*) RAW(x);
+  return (const void*) r_raw_cbegin0(x);
 }
 static inline
 r_obj* const * r_chr_cbegin(r_obj* x) {

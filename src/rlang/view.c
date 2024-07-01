@@ -26,6 +26,7 @@ R_altrep_class_t r_lgl_view_class;
 R_altrep_class_t r_int_view_class;
 R_altrep_class_t r_dbl_view_class;
 R_altrep_class_t r_cpl_view_class;
+R_altrep_class_t r_raw_view_class;
 R_altrep_class_t r_chr_view_class;
 R_altrep_class_t r_list_view_class;
 
@@ -60,6 +61,9 @@ static inline r_obj* r_dbl_view(r_obj* x, r_ssize start, r_ssize size) {
 static inline r_obj* r_cpl_view(r_obj* x, r_ssize start, r_ssize size) {
   return r_view(r_cpl_view_class, x, start, size);
 }
+static inline r_obj* r_raw_view(r_obj* x, r_ssize start, r_ssize size) {
+  return r_view(r_raw_view_class, x, start, size);
+}
 static inline r_obj* r_chr_view(r_obj* x, r_ssize start, r_ssize size) {
   return r_view(r_chr_view_class, x, start, size);
 }
@@ -79,6 +83,8 @@ r_obj* r_vec_view(r_obj* x, r_ssize start, r_ssize size) {
       return r_dbl_view(x, start, size);
     case R_TYPE_complex:
       return r_cpl_view(x, start, size);
+    case R_TYPE_raw:
+      return r_raw_view(x, start, size);
     case R_TYPE_character:
       return r_chr_view(x, start, size);
     case R_TYPE_list:
@@ -102,6 +108,9 @@ static inline bool r_is_dbl_view(r_obj* x) {
 static inline bool r_is_cpl_view(r_obj* x) {
   return R_altrep_inherits(x, r_cpl_view_class);
 }
+static inline bool r_is_raw_view(r_obj* x) {
+  return R_altrep_inherits(x, r_raw_view_class);
+}
 static inline bool r_is_chr_view(r_obj* x) {
   return R_altrep_inherits(x, r_chr_view_class);
 }
@@ -119,6 +128,8 @@ bool r_is_view(r_obj* x) {
       return r_is_dbl_view(x);
     case R_TYPE_complex:
       return r_is_cpl_view(x);
+    case R_TYPE_raw:
+      return r_is_raw_view(x);
     case R_TYPE_character:
       return r_is_chr_view(x);
     case R_TYPE_list:
@@ -213,6 +224,9 @@ static r_obj* r_cpl_view_materialize(r_obj* x) {
       r_alloc_complex, r_complex, r_cpl_begin, COMPLEX_GET_REGION
   );
 }
+static r_obj* r_raw_view_materialize(r_obj* x) {
+  R_VIEW_MATERIALIZE(r_alloc_raw, r_byte, r_raw_begin0, RAW_GET_REGION);
+}
 static r_obj* r_chr_view_materialize(r_obj* x) {
   R_VIEW_MATERIALIZE_BARRIER(
       r_alloc_character, r_obj*, r_chr_cbegin, r_chr_poke
@@ -232,6 +246,8 @@ r_obj* r_view_materialize(r_obj* x) {
       return r_dbl_view_materialize(x);
     case R_TYPE_complex:
       return r_cpl_view_materialize(x);
+    case R_TYPE_raw:
+      return r_raw_view_materialize(x);
     case R_TYPE_character:
       return r_chr_view_materialize(x);
     case R_TYPE_list:
@@ -270,6 +286,9 @@ static inline double* r_dbl_view_dataptr_writable(r_obj* x) {
 static inline r_complex* r_cpl_view_dataptr_writable(r_obj* x) {
   R_VIEW_DATAPTR_WRITABLE(r_cpl_view_materialize, r_cpl_begin);
 }
+static inline r_byte* r_raw_view_dataptr_writable(r_obj* x) {
+  R_VIEW_DATAPTR_WRITABLE(r_raw_view_materialize, r_raw_begin0);
+}
 static inline void* r_chr_view_dataptr_writable(r_obj* x) {
   // R's internal usage of `STRING_PTR()` forces us to implement this,
   // but we should never call this function ourselves. `STRING_PTR()` is also
@@ -307,6 +326,9 @@ static inline double const* r_dbl_view_dataptr_readonly(r_obj* x) {
 static inline r_complex const* r_cpl_view_dataptr_readonly(r_obj* x) {
   R_VIEW_DATAPTR_READONLY(r_cpl_cbegin);
 }
+static inline r_byte const* r_raw_view_dataptr_readonly(r_obj* x) {
+  R_VIEW_DATAPTR_READONLY(r_raw_cbegin0);
+}
 static inline r_obj* const* r_chr_view_dataptr_readonly(r_obj* x) {
   R_VIEW_DATAPTR_READONLY(r_chr_cbegin);
 }
@@ -343,6 +365,9 @@ static void* r_dbl_view_dataptr(r_obj* x, Rboolean writable) {
 static void* r_cpl_view_dataptr(r_obj* x, Rboolean writable) {
   R_VIEW_DATAPTR(r_cpl_view_dataptr_writable, r_cpl_view_dataptr_readonly);
 }
+static void* r_raw_view_dataptr(r_obj* x, Rboolean writable) {
+  R_VIEW_DATAPTR(r_raw_view_dataptr_writable, r_raw_view_dataptr_readonly);
+}
 static void* r_chr_view_dataptr(r_obj* x, Rboolean writable) {
   R_VIEW_DATAPTR(r_chr_view_dataptr_writable, r_chr_view_dataptr_readonly);
 }
@@ -362,6 +387,9 @@ static const void* r_dbl_view_dataptr_or_null(r_obj* x) {
 }
 static const void* r_cpl_view_dataptr_or_null(r_obj* x) {
   return (const void*) r_cpl_view_dataptr_readonly(x);
+}
+static const void* r_raw_view_dataptr_or_null(r_obj* x) {
+  return (const void*) r_raw_view_dataptr_readonly(x);
 }
 static const void* r_chr_view_dataptr_or_null(r_obj* x) {
   return (const void*) r_chr_view_dataptr_readonly(x);
@@ -446,6 +474,15 @@ static Rboolean r_cpl_view_inspect(
       "altrep_complex_view", x, pre, deep, pvec, inspect_subtree
   );
 }
+static Rboolean r_raw_view_inspect(
+    r_obj* x,
+    int pre,
+    int deep,
+    int pvec,
+    void (*inspect_subtree)(r_obj*, int, int, int)
+) {
+  return r_view_inspect("altrep_raw_view", x, pre, deep, pvec, inspect_subtree);
+}
 static Rboolean r_chr_view_inspect(
     r_obj* x,
     int pre,
@@ -505,6 +542,9 @@ static double r_dbl_view_elt(r_obj* x, r_ssize i) {
 }
 static r_complex r_cpl_view_elt(r_obj* x, r_ssize i) {
   R_VIEW_ELT(COMPLEX_ELT);
+}
+static r_byte r_raw_view_elt(r_obj* x, r_ssize i) {
+  R_VIEW_ELT(RAW_ELT);
 }
 static r_obj* r_chr_view_elt(r_obj* x, r_ssize i) {
   R_VIEW_ELT(STRING_ELT);
@@ -632,6 +672,26 @@ static void r_init_library_cpl_view(DllInfo* dll, const char* package) {
   R_set_altcomplex_Elt_method(r_cpl_view_class, r_cpl_view_elt);
 }
 
+static void r_init_library_raw_view(DllInfo* dll, const char* package) {
+  r_raw_view_class = R_make_altraw_class("raw_view", package, dll);
+
+  // ALTVEC
+  R_set_altvec_Dataptr_method(r_raw_view_class, r_raw_view_dataptr);
+  R_set_altvec_Dataptr_or_null_method(
+      r_raw_view_class, r_raw_view_dataptr_or_null
+  );
+
+  // ALTREP
+  R_set_altrep_Length_method(r_raw_view_class, r_view_length);
+  R_set_altrep_Inspect_method(r_raw_view_class, r_raw_view_inspect);
+  R_set_altrep_Serialized_state_method(
+      r_raw_view_class, r_view_serialized_state
+  );
+
+  // ALTTYPE
+  R_set_altraw_Elt_method(r_raw_view_class, r_raw_view_elt);
+}
+
 static void r_init_library_chr_view(DllInfo* dll, const char* package) {
   r_chr_view_class = R_make_altstring_class("character_view", package, dll);
 
@@ -679,6 +739,7 @@ void r_init_library_view(DllInfo* dll, const char* package) {
   r_init_library_int_view(dll, package);
   r_init_library_dbl_view(dll, package);
   r_init_library_cpl_view(dll, package);
+  r_init_library_raw_view(dll, package);
   r_init_library_chr_view(dll, package);
   r_init_library_list_view(dll, package);
 }
