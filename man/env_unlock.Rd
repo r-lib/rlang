@@ -13,7 +13,8 @@ env_unlock(env)
 Whether the environment has been unlocked.
 }
 \description{
-This function should only be used in development tools or
-interactively.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#defunct}{\figure{lifecycle-defunct.svg}{options: alt='[Defunct]'}}}{\strong{[Defunct]}}. This function is now defunct
+because recent versions of R no longer make it possible to
+unlock an environment.
 }
 \keyword{internal}

@@ -87,7 +87,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_env_poke",                     (DL_FUNC) &ffi_env_poke, 5},
   {"ffi_env_poke_parent",              (DL_FUNC) &ffi_env_poke_parent, 2},
   {"ffi_env_unbind",                   (DL_FUNC) &ffi_env_unbind, 3},
-  {"ffi_env_unlock",                   (DL_FUNC) &ffi_env_unlock, 1},
   {"ffi_eval_top",                     (DL_FUNC) &ffi_eval_top, 2},
   {"ffi_exprs_interp",                 (DL_FUNC) &ffi_exprs_interp, 6},
   {"ffi_f_lhs",                        (DL_FUNC) &r_f_lhs, 1},

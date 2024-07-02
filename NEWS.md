@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `env_unlock()` is now defunct because recent versions of R no long
+  make it possible to unlock an environment. Make sure to use an up-to-date
+  version of pkgload (>= 1.4.0) following this change.
+
+
 # rlang 1.1.4
 
 * Added missing C level `r_dyn_raw_push_back()` and `r_dyn_chr_push_back()`
