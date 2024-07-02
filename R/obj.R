@@ -45,12 +45,6 @@ unmark_object <- function(x) {
 true_length <- function(x) {
   .Call(ffi_true_length, x)
 }
-env_frame <- function(x) {
-  .Call(ffi_env_frame, x)
-}
-env_hash_table <- function(x) {
-  .Call(ffi_env_hash_table, x)
-}
 
 promise_expr <- function(name, env = caller_env()) {
   .Call(ffi_promise_expr, name, env)

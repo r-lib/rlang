@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* The SEXP iterator of the rlang C library (used in r-lib/memtools) is now
+  behind a feature flag because it requires private API accessors. Compile
+  rlang with `-DRLANG_USE_PRIVATE_ACCESSORS` to enable it.
+
 * `env_unlock()` is now defunct because recent versions of R no long
   make it possible to unlock an environment. Make sure to use an up-to-date
   version of pkgload (>= 1.4.0) following this change.

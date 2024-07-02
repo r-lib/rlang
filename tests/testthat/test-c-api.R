@@ -1164,6 +1164,8 @@ test_that("can push to arrays in dynamic list-of", {
 })
 
 test_that("sexp iterator visits in full order", {
+  skip_if_not(has_private_accessors())
+
   it_dirs <- function(snapshot) {
     dirs <- sapply(snapshot, `[[`, "dir")
     dirs <- table(dirs)

@@ -390,29 +390,6 @@ test_that("env_length() gives env length", {
   expect_identical(env_length(env(a = "a")), 1L)
 })
 
-test_that("env_clone() duplicates frame", {
-  skip_silently("Would fail on non-GNU R")
-
-  e <- new.env(hash = FALSE)
-  e$x <- 1
-  c <- env_clone(e)
-  expect_false(is_reference(env_frame(e), env_frame(c)))
-})
-
-test_that("env_clone() duplicates hash table", {
-  skip_silently("Would fail on non-GNU R")
-
-  e <- env(x = 1)
-  c <- env_clone(e)
-
-  e_hash <- env_hash_table(e)
-  c_hash <- env_hash_table(c)
-  expect_false(is_reference(e_hash, c_hash))
-
-  i <- detect_index(e_hash, is_null, .p = is_false)
-  expect_false(is_reference(e_hash[[i]], c_hash[[i]]))
-})
-
 test_that("env_clone() increases refcounts (#621)", {
   e <- env(x = 1:2)
   env_bind_lazy(e, foo = 1)
