@@ -511,26 +511,6 @@ r_obj* ffi_env_bind_list(r_obj* env, r_obj* names, r_obj* data) {
   return r_null;
 }
 
-r_obj* ffi_env_browse(r_obj* env, r_obj* value) {
-  if (r_typeof(env) != R_TYPE_environment) {
-    r_abort("`env` must be an environment.");
-  }
-  if (!r_is_bool(value)) {
-    r_abort("`value` must be a single logical value.");
-  }
-
-  r_obj* old = r_lgl(RDEBUG(env));
-  SET_RDEBUG(env, r_lgl_get(value, 0));
-  return old;
-}
-
-r_obj* ffi_env_is_browsed(r_obj* env) {
-  if (r_typeof(env) != R_TYPE_environment) {
-    r_abort("`env` must be an environment.");
-  }
-  return r_lgl(RDEBUG(env));
-}
-
 r_obj* ffi_ns_registry_env(void) {
   return R_NamespaceRegistry;
 }

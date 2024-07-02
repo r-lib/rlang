@@ -1,8 +1,11 @@
 # rlang (development version)
 
+* `env_browse()` and `env_is_browsed()` are now defunct as they require an API
+  that is no longer available to packages (#1727).
+
 * `env_unlock()` is now defunct because recent versions of R no long
-  make it possible to unlock an environment. Make sure to use an up-to-date
-  version of pkgload (>= 1.4.0) following this change.
+  make it possible to unlock an environment (#1705). Make sure to use an
+  up-to-date version of pkgload (>= 1.4.0) following this change.
 
 
 # rlang 1.1.4

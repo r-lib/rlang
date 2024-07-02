@@ -566,8 +566,8 @@ env_is_locked <- function(env) {
 env_unlock <- function(env) {
   msg <- "`env_unlock()` is defunct as of rlang 1.1.5"
 
-  old_pkgload_running <- 
-    "pkgload" %in% loadedNamespaces() && 
+  old_pkgload_running <-
+    "pkgload" %in% loadedNamespaces() &&
     some(sys.frames(), function(env) identical(topenv(env), ns_env("pkgload"))) &&
     utils::packageVersion("pkgload") <= "1.3.4"
 
@@ -754,6 +754,8 @@ str.rlang_envs <- function(object, ...) {
 #'
 #' @description
 #'
+#' `r lifecycle::badge("defunct")`
+#'
 #' * `env_browse(env)` is equivalent to evaluating `browser()` in
 #'   `env`. It persistently sets the environment for step-debugging.
 #'   Supply `value = FALSE` to disable browsing.
@@ -767,12 +769,12 @@ str.rlang_envs <- function(object, ...) {
 #'   `env_is_browsed()` (a logical), invisibly.
 #' @export
 env_browse <- function(env, value = TRUE) {
-  invisible(.Call(ffi_env_browse, env, value))
+  abort("`env_browse()` is defunct as of rlang 1.2.0 because R no longer supports it")
 }
 #' @rdname env_browse
 #' @export
 env_is_browsed <- function(env) {
-  .Call(ffi_env_is_browsed, env)
+  abort("`env_is_browsed()` is defunct as of rlang 1.2.0 because R no longer supports it")
 }
 
 #' Is frame environment user facing?
