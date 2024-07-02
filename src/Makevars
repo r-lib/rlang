@@ -30,6 +30,7 @@ lib-files = \
         rlang/vec.c \
         rlang/vec-chr.c \
         rlang/vec-lgl.c \
+        rlang/view.c \
         rlang/vendor.c \
         rlang/walk.c
 

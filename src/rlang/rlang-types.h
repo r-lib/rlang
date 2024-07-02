@@ -22,6 +22,7 @@
 
 typedef struct SEXPREC r_obj;
 typedef Rcomplex r_complex;
+typedef Rbyte r_byte;
 
 typedef R_xlen_t r_ssize;
 #define R_SSIZE_MAX R_XLEN_T_MAX

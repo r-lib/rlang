@@ -29,6 +29,7 @@
 #include "vec-chr.c"
 #include "vec-lgl.c"
 #include "vendor.c"
+#include "view.c"
 #include "walk.c"
 
 
@@ -118,6 +119,13 @@ r_obj* r_init_library(r_obj* ns) {
 
   // Return a SEXP so the init function can be called from R
   return r_null;
+}
+
+// This *must* be called before making any calls to the functions
+// provided in the library. Call this function from your `R_init_<package>()`
+// function, passing along the `dll` and your package's name.
+void r_init_library_with_dll(DllInfo* dll, const char* package) {
+  r_init_library_view(dll, package);
 }
 
 bool _r_use_local_precious_list = false;
