@@ -6,6 +6,7 @@ r_obj* ffi_ellipsis_find_dots(r_obj* env) {
     r_abort("`env` is a not an environment.");
   }
 
+  // `r_env_get()` doesn't work here because it triggers missing argument errors
   r_obj* dots = KEEP(r_env_find(env, r_syms.dots));
   if (dots == r_syms.unbound) {
     r_abort("No `...` found.");
