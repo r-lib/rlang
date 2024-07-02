@@ -322,6 +322,7 @@ void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env) {
 
 static
 r_obj* env_get(r_obj* env, r_obj* sym) {
+  // Can't use `r_env_get()` because we can't error with missing arguments
   r_obj* out = r_env_find(env, sym);
 
   if (out == r_syms.unbound) {
