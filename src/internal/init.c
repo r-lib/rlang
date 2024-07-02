@@ -142,7 +142,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_lof_unwrap",                   (DL_FUNC) &ffi_lof_unwrap, 1},
   {"ffi_mark_object",                  (DL_FUNC) &ffi_mark_object, 1},
   {"ffi_missing_arg",                  (DL_FUNC) &ffi_missing_arg, 0},
-  {"ffi_named",                        (DL_FUNC) &ffi_named, 2},
   {"ffi_names2",                       (DL_FUNC) &ffi_names2, 2},
   {"ffi_names_as_unique",              (DL_FUNC) &ffi_names_as_unique, 2},
   {"ffi_new_call",                     (DL_FUNC) &ffi_new_call_node, 2},

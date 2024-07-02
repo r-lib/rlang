@@ -806,23 +806,6 @@ r_obj* ffi_promise_value(r_obj* x, r_obj* env) {
   }
 }
 
-// Picks up symbols from parent environment to avoid bumping namedness
-// during promise resolution
-r_obj* ffi_named(r_obj* x, r_obj* env) {
-  int n_kept = 0;
-
-  x = PROTECT(Rf_findVarInFrame3(env, x, FALSE));
-  ++n_kept;
-
-  if (TYPEOF(x) == PROMSXP) {
-    x = PROTECT(Rf_eval(x, env));
-    ++n_kept;
-  }
-
-  UNPROTECT(n_kept);
-  return Rf_ScalarInteger(NAMED(x));
-}
-
 r_obj* ffi_find_var(r_obj* env, r_obj* sym) {
   return Rf_findVar(sym, env);
 }
