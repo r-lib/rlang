@@ -271,19 +271,36 @@ bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
   return env == ancestor;
 }
 
-r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last) {
+static
+r_obj* env_until(r_obj* env, r_obj* sym, r_obj* last) {
   r_obj* stop = r_envs.empty;
   if (last != r_envs.empty) {
     stop = r_env_parent(last);
   }
 
-  while (!r_env_has(env, sym) && env != r_envs.empty && env != stop) {
-    env = r_env_parent(env);
-  }
+  while (true) {
+    if (env == r_envs.empty || r_env_has(env, sym)) {
+      return env;
+    }
 
+    r_obj* next = r_env_parent(env);
+    if (next == r_envs.empty || next == stop) {
+      return env;
+    }
+
+    env = next;
+  }
+}
+
+r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last) {
+  env = env_until(env, sym, last);
   return r_env_get(env, sym);
 }
 
+bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last) {
+  env = env_until(env, sym, last);
+  return r_env_has(env, sym);
+}
 
 void r_init_rlang_ns_env(void) {
   rlang_ns_env = r_ns_env("rlang");

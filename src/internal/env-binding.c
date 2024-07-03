@@ -27,6 +27,8 @@ r_obj* ffi_env_get(r_obj* env,
   return env_get_sym(env, sym, c_inherit, last, closure_env);
 }
 
+// This util is a little more complex than it would be by calling `getVar()`
+// directly because it evaluates `default` lazily
 static
 r_obj* env_get_sym(r_obj* env,
                    r_obj* sym,
@@ -37,24 +39,20 @@ r_obj* env_get_sym(r_obj* env,
     r_abort("`last` must be an environment.");
   }
 
-  r_obj* out;
+  bool unbound;
   if (inherit) {
     if (last == r_null) {
-      out = r_env_find_anywhere(env, sym);
+      unbound = !r_env_has_anywhere(env, sym);
     } else {
-      out = r_env_get_until(env, sym, last);
+      unbound = !r_env_has_until(env, sym, last);
     }
   } else {
-    out = r_env_find(env, sym);
+    unbound = !r_env_has(env, sym);
   }
 
-  if (r_typeof(out) == R_TYPE_promise) {
-    KEEP(out);
-    out = r_eval(out, r_envs.empty);
-    FREE(1);
-  }
-
-  if (out == r_syms.unbound) {
+  if (unbound) {
+    // Can't use `r_env_get()` here because we have a custom error
+    // when `default` is missing
     if (r_env_find(closure_env, r_sym("default")) == r_missing_arg) {
       struct r_pair args[] = {
         { r_sym("nm"), KEEP(r_str_as_character(r_sym_string(sym))) }
@@ -67,10 +65,18 @@ r_obj* env_get_sym(r_obj* env,
       r_stop_unreachable();
     }
 
-    out = r_eval(r_sym("default"), closure_env);
+    return r_eval(r_sym("default"), closure_env);
   }
 
-  return out;
+  if (inherit) {
+    if (last == r_null) {
+      return r_env_get_anywhere(env, sym);
+    } else {
+      return r_env_get_until(env, sym, last);
+    }
+  } else {
+    return r_env_get(env, sym);
+  }
 }
 
 r_obj* ffi_env_get_list(r_obj* env,
