@@ -48,6 +48,16 @@ bool r_is_namespace(r_obj* x) {
   return R_IsNamespaceEnv(x);
 }
 
+static inline
+r_obj* r_env_find(r_obj* env, r_obj* sym) {
+  return Rf_findVarInFrame3(env, sym, FALSE);
+}
+static inline
+r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
+  return Rf_findVar(sym, env);
+}
+r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last);
+
 #if R_VERSION < R_Version(4, 5, 0)
 static inline
 r_obj* r_env_get(r_obj* env, r_obj* sym) {
@@ -84,18 +94,6 @@ r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym) {
   return R_getVar(sym, env, TRUE);
 }
 #endif
-
-
-static inline
-r_obj* r_env_find(r_obj* env, r_obj* sym) {
-  return Rf_findVarInFrame3(env, sym, FALSE);
-}
-static inline
-r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
-  return Rf_findVar(sym, env);
-}
-r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last);
-
 
 static inline
 bool r_env_has(r_obj* env, r_obj* sym) {
