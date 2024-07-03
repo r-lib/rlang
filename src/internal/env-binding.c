@@ -42,7 +42,7 @@ r_obj* env_get_sym(r_obj* env,
     if (last == r_null) {
       out = r_env_find_anywhere(env, sym);
     } else {
-      out = r_env_find_until(env, sym, last);
+      out = r_env_get_until(env, sym, last);
     }
   } else {
     out = r_env_find(env, sym);

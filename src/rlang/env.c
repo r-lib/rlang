@@ -265,25 +265,23 @@ bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
     if (env == ancestor) {
       return true;
     }
-    env = r_env_parent(env);;
+    env = r_env_parent(env);
   }
 
   return env == ancestor;
 }
 
-r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last) {
+r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last) {
   r_obj* stop = r_envs.empty;
   if (last != r_envs.empty) {
     stop = r_env_parent(last);
   }
 
-  r_obj* out = r_syms.unbound;
-  while (out == r_syms.unbound && env != r_envs.empty && env != stop) {
-    out = r_env_find(env, sym);
+  while (!r_env_has(env, sym) && env != r_envs.empty && env != stop) {
     env = r_env_parent(env);
   }
 
-  return out;
+  return r_env_get(env, sym);
 }
 
 
