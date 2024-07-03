@@ -145,34 +145,34 @@ static void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* value, r_obj* eval_env)
 static void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env);
 static r_obj* env_get(r_obj* env, r_obj* sym);
 
-r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* inherit, r_obj* create) {
+r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* ffi_inherit, r_obj* ffi_create) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
   if (!r_is_string(nm)) {
     r_abort("`nm` must be a string.");
   }
-  if (!r_is_bool(inherit)) {
+  if (!r_is_bool(ffi_inherit)) {
     r_abort("`inherit` must be a logical value.");
   }
-  if (!r_is_bool(create)) {
+  if (!r_is_bool(ffi_create)) {
     r_abort("`create` must be a logical value.");
   }
 
-  bool c_inherit = r_lgl_get(inherit, 0);
-  bool c_create = r_lgl_get(create, 0);
+  bool inherit = r_lgl_get(ffi_inherit, 0);
+  bool create = r_lgl_get(ffi_create, 0);
   r_obj* sym = r_str_as_symbol(r_chr_get(nm, 0));
 
   r_obj* old;
-  if (c_inherit) {
+  if (inherit) {
     old = r_env_find_anywhere(env, sym);
   } else {
     old = r_env_find(env, sym);
   }
 
-  bool absent = (old == r_syms.unbound);
-  if (absent) {
-    if (!c_create) {
+  bool unbound = (old == r_syms.unbound);
+  if (unbound) {
+    if (!create) {
       r_abort("Can't find existing binding in `env` for \"%s\".",
               r_sym_c_string(sym));
     }
@@ -180,7 +180,7 @@ r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* inherit, r_obj* 
   }
   KEEP(old);
 
-  if (c_inherit && !absent) {
+  if (inherit && !unbound) {
     while (env != r_envs.empty) {
       if (r_env_has(env, sym)) {
         break;
