@@ -123,6 +123,8 @@ bool r_env_has_anywhere(r_obj* env, r_obj* sym) {
 #endif
 }
 
+bool r_env_has_missing(r_obj* env, r_obj* sym);
+
 r_obj* r_ns_env(const char* pkg);
 r_obj* r_base_ns_get(const char* name);
 
