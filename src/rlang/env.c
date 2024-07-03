@@ -302,6 +302,14 @@ bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last) {
   return r_env_has(env, sym);
 }
 
+bool r_env_has_missing(r_obj* env, r_obj* sym) {
+  // That's a special primitive so no need to protect `sym`
+  r_obj* call = KEEP(r_call2(missing_prim, sym));
+  r_obj* out = r_eval(call, env);
+  FREE(1);
+  return r_as_bool(out);
+}
+
 void r_init_rlang_ns_env(void) {
   rlang_ns_env = r_ns_env("rlang");
 }
@@ -314,6 +322,8 @@ void r_init_library_env(void) {
   new_env__parent_node = r_node_cddr(new_env_call);
   new_env__size_node = r_node_cdr(new_env__parent_node);
 #endif
+
+  missing_prim = r_parse_eval("missing", r_envs.base);
 
   env2list_call = r_parse("as.list.environment(x, all.names = TRUE)");
   r_preserve(env2list_call);
@@ -366,3 +376,6 @@ r_obj* env2list_call = NULL;
 
 static
 r_obj* list2env_call = NULL;
+
+static
+r_obj* missing_prim = NULL;

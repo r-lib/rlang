@@ -51,9 +51,7 @@ r_obj* env_get_sym(r_obj* env,
   }
 
   if (unbound) {
-    // Can't use `r_env_get()` here because we have a custom error
-    // when `default` is missing
-    if (r_env_find(closure_env, r_sym("default")) == r_missing_arg) {
+    if (r_env_has_missing(closure_env, r_sym("default"))) {
       struct r_pair args[] = {
         { r_sym("nm"), KEEP(r_str_as_character(r_sym_string(sym))) }
       };
