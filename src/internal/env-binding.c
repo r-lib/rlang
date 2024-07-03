@@ -163,20 +163,24 @@ r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* ffi_inherit, r_o
   bool create = r_lgl_get(ffi_create, 0);
   r_obj* sym = r_str_as_symbol(r_chr_get(nm, 0));
 
-  r_obj* old;
+  bool unbound;
   if (inherit) {
-    old = r_env_find_anywhere(env, sym);
+    unbound = !r_env_has_anywhere(env, sym);
   } else {
-    old = r_env_find(env, sym);
+    unbound = !r_env_has(env, sym);
   }
 
-  bool unbound = (old == r_syms.unbound);
+  r_obj* old;
   if (unbound) {
     if (!create) {
       r_abort("Can't find existing binding in `env` for \"%s\".",
               r_sym_c_string(sym));
     }
     old = rlang_zap;
+  } else if (inherit) {
+    old = r_env_get_anywhere(env, sym);
+  } else {
+    old = r_env_get(env, sym);
   }
   KEEP(old);
 
