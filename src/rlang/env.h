@@ -95,6 +95,7 @@ r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym) {
 #endif
 
 r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last);
+bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last);
 
 static inline
 bool r_env_has(r_obj* env, r_obj* sym) {
