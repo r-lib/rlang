@@ -108,6 +108,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_init_rlang",                   (DL_FUNC) &ffi_init_rlang, 1},
   {"ffi_interp",                       (DL_FUNC) &ffi_interp, 2},
   {"ffi_interrupt",                    (DL_FUNC) &ffi_interrupt, 0},
+  {"ffi_is_altrep",                    (DL_FUNC) &ffi_is_altrep, 1},
   {"ffi_is_atomic",                    (DL_FUNC) &ffi_is_atomic, 2},
   {"ffi_is_call",                      (DL_FUNC) &ffi_is_call, 4},
   {"ffi_is_character",                 (DL_FUNC) &ffi_is_character, 4},
@@ -234,6 +235,10 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_vec_poke_n",                   (DL_FUNC) &ffi_vec_poke_n, 5},
   {"ffi_vec_poke_range",               (DL_FUNC) &ffi_vec_poke_range, 5},
   {"ffi_vec_resize",                   (DL_FUNC) &ffi_vec_resize, 2},
+  {"ffi_vec_view",                     (DL_FUNC) &ffi_vec_view, 3},
+  {"ffi_view_inspect",                 (DL_FUNC) &ffi_view_inspect, 1},
+  {"ffi_view_is_materialized",         (DL_FUNC) &ffi_view_is_materialized, 1},
+  {"ffi_view_materialize",             (DL_FUNC) &ffi_view_materialize, 1},
   {"ffi_which_operator",               (DL_FUNC) &ffi_which_operator, 1},
   {"ffi_wref_key",                     (DL_FUNC) &ffi_wref_key, 1},
   {"ffi_wref_value",                   (DL_FUNC) &ffi_wref_value, 1},
@@ -317,6 +322,8 @@ void R_init_rlang(DllInfo* dll) {
 
   R_registerRoutines(dll, NULL, r_callables, NULL, externals);
   R_useDynamicSymbols(dll, FALSE);
+
+  r_init_library_with_dll(dll, "rlang");
 }
 
 
