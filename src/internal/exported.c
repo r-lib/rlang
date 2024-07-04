@@ -1071,6 +1071,11 @@ r_obj* ffi_vec_view(r_obj* x, r_obj* ffi_start, r_obj* ffi_size) {
   return r_vec_view(x, start, size);
 }
 
+r_obj* ffi_view_inspect(r_obj* x) {
+  r_check_view(x);
+  return r_lgl(r_view_inspect(x));
+}
+
 r_obj* ffi_view_is_materialized(r_obj* x) {
   r_check_view(x);
   return r_lgl(r_view_is_materialized(x));

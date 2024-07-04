@@ -240,6 +240,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_vec_poke_range",               (DL_FUNC) &ffi_vec_poke_range, 5},
   {"ffi_vec_resize",                   (DL_FUNC) &ffi_vec_resize, 2},
   {"ffi_vec_view",                     (DL_FUNC) &ffi_vec_view, 3},
+  {"ffi_view_inspect",                 (DL_FUNC) &ffi_view_inspect, 1},
   {"ffi_view_is_materialized",         (DL_FUNC) &ffi_view_is_materialized, 1},
   {"ffi_view_materialize",             (DL_FUNC) &ffi_view_materialize, 1},
   {"ffi_which_operator",               (DL_FUNC) &ffi_which_operator, 1},
