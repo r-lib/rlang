@@ -13,6 +13,12 @@
 # define ALTREP(x) false
 #endif
 
+#if R_VERSION >= R_Version(4, 3, 0)
+#define RLANG_R_HAS_ALTLIST 1
+#else
+#define RLANG_R_HAS_ALTLIST 0
+#endif
+
 static inline
 bool r_is_altrep(r_obj* x) {
   return ALTREP(x);

@@ -39,7 +39,9 @@ R_altrep_class_t r_dbl_view_class;
 R_altrep_class_t r_cpl_view_class;
 R_altrep_class_t r_raw_view_class;
 R_altrep_class_t r_chr_view_class;
+#if RLANG_R_HAS_ALTLIST
 R_altrep_class_t r_list_view_class;
+#endif
 
 // -----------------------------------------------------------------------------
 
@@ -79,9 +81,11 @@ static inline r_obj* r_raw_view(r_obj* x, r_ssize start, r_ssize size) {
 static inline r_obj* r_chr_view(r_obj* x, r_ssize start, r_ssize size) {
   R_VIEW(r_chr_view_class, r_chr_cbegin);
 }
+#if RLANG_R_HAS_ALTLIST
 static inline r_obj* r_list_view(r_obj* x, r_ssize start, r_ssize size) {
   R_VIEW(r_list_view_class, r_list_cbegin);
 }
+#endif
 
 // Up to the caller to verify that `start` and `size` are sized correctly.
 // `start` is 0-indexed.
@@ -99,8 +103,10 @@ r_obj* r_vec_view(r_obj* x, r_ssize start, r_ssize size) {
       return r_raw_view(x, start, size);
     case R_TYPE_character:
       return r_chr_view(x, start, size);
+#if RLANG_R_HAS_ALTLIST
     case R_TYPE_list:
       return r_list_view(x, start, size);
+#endif
     default:
       r_stop_internal("Type not implemented.");
   }
@@ -126,9 +132,11 @@ static inline bool r_is_raw_view(r_obj* x) {
 static inline bool r_is_chr_view(r_obj* x) {
   return R_altrep_inherits(x, r_chr_view_class);
 }
+#if RLANG_R_HAS_ALTLIST
 static inline bool r_is_list_view(r_obj* x) {
   return R_altrep_inherits(x, r_list_view_class);
 }
+#endif
 
 bool r_is_view(r_obj* x) {
   switch (r_typeof(x)) {
@@ -144,8 +152,10 @@ bool r_is_view(r_obj* x) {
       return r_is_raw_view(x);
     case R_TYPE_character:
       return r_is_chr_view(x);
+#if RLANG_R_HAS_ALTLIST
     case R_TYPE_list:
       return r_is_list_view(x);
+#endif
     default:
       return false;
   }
@@ -262,9 +272,11 @@ static r_obj* r_chr_view_materialize(r_obj* x) {
       r_alloc_character, r_obj*, r_chr_cbegin, r_chr_poke
   );
 }
+#if RLANG_R_HAS_ALTLIST
 static r_obj* r_list_view_materialize(r_obj* x) {
   R_VIEW_MATERIALIZE_BARRIER(r_alloc_list, r_obj*, r_list_cbegin, r_list_poke);
 }
+#endif
 
 r_obj* r_view_materialize(r_obj* x) {
   switch (r_typeof(x)) {
@@ -280,8 +292,10 @@ r_obj* r_view_materialize(r_obj* x) {
       return r_raw_view_materialize(x);
     case R_TYPE_character:
       return r_chr_view_materialize(x);
+#if RLANG_R_HAS_ALTLIST
     case R_TYPE_list:
       return r_list_view_materialize(x);
+#endif
     default:
       r_stop_internal("Type not implemented.");
   }
@@ -338,11 +352,13 @@ static inline void* r_chr_view_dataptr_writable(r_obj* x) {
 
   return DATAPTR(data);
 }
+// #if RLANG_R_HAS_ALTLIST
 // static inline void r_list_view_dataptr_writable(r_obj* x) {
 //   // R does not use `VECTOR_PTR()` internally, and it even errors in
 //   // `ALTVEC_DATAPTR_EX()` if you try and take a `writable` `DATAPTR()` on an
 //   // ALTREP list, so we don't need this.
 // }
+// #endif
 
 #define R_VIEW_DATAPTR_READONLY(CTYPE, CBEGIN)                        \
   r_obj* metadata = r_altrep_data2(x);                                \
@@ -381,9 +397,11 @@ static inline r_byte const* r_raw_view_dataptr_readonly(r_obj* x) {
 static inline r_obj* const* r_chr_view_dataptr_readonly(r_obj* x) {
   R_VIEW_DATAPTR_READONLY(r_obj*, r_chr_cbegin);
 }
+#if RLANG_R_HAS_ALTLIST
 static inline r_obj* const* r_list_view_dataptr_readonly(r_obj* x) {
   R_VIEW_DATAPTR_READONLY(r_obj*, r_list_cbegin);
 }
+#endif
 
 #define R_VIEW_DATAPTR(WRITABLE, READONLY) \
   if (writable) {                          \
@@ -393,6 +411,7 @@ static inline r_obj* const* r_list_view_dataptr_readonly(r_obj* x) {
     return (void*) READONLY(x);            \
   }
 
+#if RLANG_R_HAS_ALTLIST
 #define R_VIEW_DATAPTR_BARRIER(READONLY)            \
   if (writable) {                                   \
     /* `ALTVEC_DATAPTR_EX()` should have errored */ \
@@ -401,6 +420,7 @@ static inline r_obj* const* r_list_view_dataptr_readonly(r_obj* x) {
     /* Caller promises not to mutate it */          \
     return (void*) READONLY(x);                     \
   }
+#endif
 
 static void* r_lgl_view_dataptr(r_obj* x, Rboolean writable) {
   R_VIEW_DATAPTR(r_lgl_view_dataptr_writable, r_lgl_view_dataptr_readonly);
@@ -420,9 +440,11 @@ static void* r_raw_view_dataptr(r_obj* x, Rboolean writable) {
 static void* r_chr_view_dataptr(r_obj* x, Rboolean writable) {
   R_VIEW_DATAPTR(r_chr_view_dataptr_writable, r_chr_view_dataptr_readonly);
 }
+#if RLANG_R_HAS_ALTLIST
 static void* r_list_view_dataptr(r_obj* x, Rboolean writable) {
   R_VIEW_DATAPTR_BARRIER(r_list_view_dataptr_readonly);
 }
+#endif
 
 // We can always provide a readonly view
 static const void* r_lgl_view_dataptr_or_null(r_obj* x) {
@@ -443,9 +465,11 @@ static const void* r_raw_view_dataptr_or_null(r_obj* x) {
 static const void* r_chr_view_dataptr_or_null(r_obj* x) {
   return (const void*) r_chr_view_dataptr_readonly(x);
 }
+#if RLANG_R_HAS_ALTLIST
 static const void* r_list_view_dataptr_or_null(r_obj* x) {
   return (const void*) r_list_view_dataptr_readonly(x);
 }
+#endif
 
 // -----------------------------------------------------------------------------
 
@@ -537,6 +561,7 @@ static Rboolean r_chr_view_inspect(
       "altrep_character_view", x, pre, deep, pvec, inspect_subtree
   );
 }
+#if RLANG_R_HAS_ALTLIST
 static Rboolean r_list_view_inspect(
     r_obj* x,
     int pre,
@@ -548,6 +573,7 @@ static Rboolean r_list_view_inspect(
       "altrep_list_view", x, pre, deep, pvec, inspect_subtree
   );
 }
+#endif
 
 Rboolean r_view_inspect(r_obj* x) {
   switch (r_typeof(x)) {
@@ -563,8 +589,10 @@ Rboolean r_view_inspect(r_obj* x) {
       return r_raw_view_inspect(x, 0, 0, 0, NULL);
     case R_TYPE_character:
       return r_chr_view_inspect(x, 0, 0, 0, NULL);
+#if RLANG_R_HAS_ALTLIST
     case R_TYPE_list:
       return r_list_view_inspect(x, 0, 0, 0, NULL);
+#endif
     default:
       r_stop_internal("Type not implemented.");
   }
@@ -621,9 +649,11 @@ static r_byte r_raw_view_elt(r_obj* x, r_ssize i) {
 static r_obj* r_chr_view_elt(r_obj* x, r_ssize i) {
   R_VIEW_ELT(r_obj*, STRING_ELT);
 }
+#if RLANG_R_HAS_ALTLIST
 static r_obj* r_list_view_elt(r_obj* x, r_ssize i) {
   R_VIEW_ELT(r_obj*, VECTOR_ELT);
 }
+#endif
 
 // -----------------------------------------------------------------------------
 
@@ -648,9 +678,11 @@ static r_obj* r_list_view_elt(r_obj* x, r_ssize i) {
 static void r_chr_view_set_elt(r_obj* x, r_ssize i, r_obj* elt) {
   R_VIEW_SET_ELT(r_chr_view_materialize, r_chr_poke);
 }
+#if RLANG_R_HAS_ALTLIST
 static void r_list_view_set_elt(r_obj* x, r_ssize i, r_obj* elt) {
   R_VIEW_SET_ELT(r_list_view_materialize, r_list_poke);
 }
+#endif
 
 // -----------------------------------------------------------------------------
 
@@ -786,6 +818,7 @@ static void r_init_library_chr_view(DllInfo* dll, const char* package) {
   R_set_altstring_Set_elt_method(r_chr_view_class, r_chr_view_set_elt);
 }
 
+#if RLANG_R_HAS_ALTLIST
 static void r_init_library_list_view(DllInfo* dll, const char* package) {
   r_list_view_class = R_make_altlist_class("list_view", package, dll);
 
@@ -806,6 +839,7 @@ static void r_init_library_list_view(DllInfo* dll, const char* package) {
   R_set_altlist_Elt_method(r_list_view_class, r_list_view_elt);
   R_set_altlist_Set_elt_method(r_list_view_class, r_list_view_set_elt);
 }
+#endif
 
 void r_init_library_view(DllInfo* dll, const char* package) {
   r_init_library_lgl_view(dll, package);
@@ -814,5 +848,7 @@ void r_init_library_view(DllInfo* dll, const char* package) {
   r_init_library_cpl_view(dll, package);
   r_init_library_raw_view(dll, package);
   r_init_library_chr_view(dll, package);
+#if RLANG_R_HAS_ALTLIST
   r_init_library_list_view(dll, package);
+#endif
 }

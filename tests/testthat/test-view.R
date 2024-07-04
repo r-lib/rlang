@@ -29,6 +29,7 @@ test_that("views can be created", {
   expect_false(view_is_materialized(x))
   expect_identical(x, base[2:4])
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
   expect_false(view_is_materialized(x))
@@ -60,6 +61,7 @@ test_that("views have right length", {
   x <- vec_view(base, start = 2L, size = 3L)
   expect_identical(length(x), 3L)
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
   expect_identical(length(x), 3L)
@@ -114,6 +116,7 @@ test_that("views can be sliced with subset", {
   expect_identical(x[c(0L, 2L)], base[c(0L, 3L)])
   expect_false(view_is_materialized(x))
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
   expect_identical(x[1:2], base[2:3])
@@ -166,6 +169,7 @@ test_that("views can be sliced with subset2", {
   expect_error(x[[4]])
   expect_false(view_is_materialized(x))
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
   expect_identical(x[[1]], base[[2L]])
@@ -217,6 +221,7 @@ test_that("views can be assigned to", {
   expect_identical(x[2:3], assign)
   expect_identical(base, c("a", "b", "c", "d"))
 
+  skip_if_no_altlist()
   assign <- list(NA, "e")
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
@@ -274,6 +279,7 @@ test_that("views can wrap other views", {
   expect_identical(y, x[2:3])
   expect_false(view_is_materialized(x))
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 1L, size = 3L)
   y <- vec_view(x, start = 2L, size = 2L)
@@ -326,6 +332,7 @@ test_that("views can be manually materialized", {
   expect_true(view_is_materialized(x))
   expect_false(is_altrep(materialized))
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
   expect_false(view_is_materialized(x))
@@ -359,6 +366,7 @@ test_that("views can be inspected", {
   x <- vec_view(base, start = 2L, size = 3L)
   expect_snapshot(view_inspect(x))
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
   expect_snapshot(view_inspect(x))
@@ -411,6 +419,7 @@ test_that("views can be roundtripped through serialization, and lose ALTREPness"
   expect_false(is_altrep(x))
   expect_identical(x, base[2:4])
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 3L)
   bytes <- serialize(x, connection = NULL)
@@ -450,6 +459,7 @@ test_that("can make zero length view", {
   expect_identical(x, base[0L])
   expect_identical(length(x), 0L)
 
+  skip_if_no_altlist()
   base <- list("a", "b", "c", "d")
   x <- vec_view(base, start = 2L, size = 0L)
   expect_identical(x, base[0L])
