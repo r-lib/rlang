@@ -6,37 +6,19 @@ r_obj* rlang_ns_env;
 
 
 r_obj* r_ns_env(const char* pkg) {
-  r_obj* ns = r_env_find(R_NamespaceRegistry, r_sym(pkg));
-  if (ns == r_syms.unbound) {
+  r_obj* pkg_sym = r_sym(pkg);
+  if (!r_env_has(R_NamespaceRegistry, pkg_sym)) {
     r_abort("Can't find namespace `%s`", pkg);
   }
-  return ns;
+
+  return r_env_get(R_NamespaceRegistry, pkg_sym);
 }
 
-static
-r_obj* ns_env_get(r_obj* env, const char* name) {
-  r_obj* obj = KEEP(r_env_find(env, r_sym(name)));
-
-  // Can be a promise to a lazyLoadDBfetch() call
-  if (r_typeof(obj) == R_TYPE_promise) {
-    obj = r_eval(obj, r_envs.empty);
-  }
-  if (obj != r_syms.unbound) {
-    FREE(1);
-    return obj;
-  }
-
-  // Trigger object not found error
-  r_eval(r_sym(name), env);
-  r_stop_unreachable();
-}
 r_obj* r_base_ns_get(const char* name) {
-  return ns_env_get(r_envs.base, name);
+  return r_env_get(r_envs.base, r_sym(name));
 }
-
-
 r_obj* rlang_ns_get(const char* name) {
-  return ns_env_get(rlang_ns_env, name);
+  return r_env_get(rlang_ns_env, r_sym(name));
 }
 
 
