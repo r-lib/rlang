@@ -330,18 +330,13 @@ void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env) {
 
 static
 r_obj* env_get(r_obj* env, r_obj* sym) {
-  // Can't use `r_env_get()` because we can't error with missing arguments
-  r_obj* out = r_env_find(env, sym);
-
-  if (out == r_syms.unbound) {
+  if (!r_env_has(env, sym)) {
     return rlang_zap;
   }
 
-  if (r_typeof(out) == R_TYPE_promise) {
-    KEEP(out);
-    out = r_eval(out, r_envs.base);
-    FREE(1);
+  if (r_env_has_missing(env, sym)) {
+    return r_missing_arg;
   }
 
-  return out;
+  return r_env_get(env, sym);
 }
