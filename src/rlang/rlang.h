@@ -18,7 +18,6 @@
 #ifndef _ISOC99_SOURCE
 #define _ISOC99_SOURCE
 #endif
-#include <stdio.h>
 
 #define R_NO_REMAP
 #include <Rinternals.h>
