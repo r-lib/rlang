@@ -1,3 +1,5 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_DEBUG_H
 #define RLANG_DEBUG_H
 
