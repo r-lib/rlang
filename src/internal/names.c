@@ -1,8 +1,9 @@
 #include <rlang.h>
 #include <ctype.h>
-#include "internal.h"
+#include <stdlib.h>
 
 #include "decl/names-decl.h"
+#include "utils.h"
 
 // 3 leading '.' + 1 trailing '\0' + 24 characters
 #define MAX_IOTA_SIZE 28
