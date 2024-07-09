@@ -3,6 +3,8 @@
 #ifndef RLANG_DYN_LIST_OF_H
 #define RLANG_DYN_LIST_OF_H
 
+#include "rlang-types.h"
+#include "dyn-array.h"
 
 struct r_dyn_list_of {
   r_obj* shelter;

@@ -3,6 +3,9 @@
 #ifndef RLANG_INTERNAL_WALK_H
 #define RLANG_INTERNAL_WALK_H
 
+#include "rlang-types.h"
+#include "cnd.h"
+
 /**
  * Direction of iteration
  *

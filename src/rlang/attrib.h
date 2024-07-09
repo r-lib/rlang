@@ -3,8 +3,9 @@
 #ifndef RLANG_ATTRIB_H
 #define RLANG_ATTRIB_H
 
+#include "rlang-types.h"
+#include "globals.h"
 #include "node.h"
-#include "sym.h"
 
 
 static inline

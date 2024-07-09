@@ -3,6 +3,9 @@
 #ifndef RLANG_C_UTILS_H
 #define RLANG_C_UTILS_H
 
+#include "rlang-types.h"
+
+#include <inttypes.h>
 #include <math.h>
 #include <float.h>
 #include "cnd.h"

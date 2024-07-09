@@ -3,6 +3,9 @@
 #ifndef RLANG_DYN_ARRAY_H
 #define RLANG_DYN_ARRAY_H
 
+#include "rlang-types.h"
+#include "c-utils.h"
+#include "cnd.h"
 #include "vec.h"
 
 

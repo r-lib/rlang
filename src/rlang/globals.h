@@ -3,6 +3,7 @@
 #ifndef RLANG_GLOBALS_H
 #define RLANG_GLOBALS_H
 
+#include "rlang-types.h"
 
 struct r_globals {
   r_obj* empty_lgl;

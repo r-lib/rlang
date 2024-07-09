@@ -3,6 +3,7 @@
 #ifndef RLANG_STACK_H
 #define RLANG_STACK_H
 
+#include "rlang-types.h"
 
 void r_on_exit(r_obj* expr, r_obj* frame);
 

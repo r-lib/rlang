@@ -3,7 +3,8 @@
 #ifndef RLANG_VECTOR_CHR_H
 #define RLANG_VECTOR_CHR_H
 
-#include <string.h>
+#include "globals.h"
+#include "rlang-types.h"
 
 
 static inline

@@ -3,6 +3,9 @@
 #ifndef RLANG_EVAL_H
 #define RLANG_EVAL_H
 
+#include "rlang-types.h"
+#include "c-utils.h"
+#include "call.h"
 
 static inline
 r_obj* r_eval(r_obj* expr, r_obj* env) {

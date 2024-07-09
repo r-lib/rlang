@@ -20,13 +20,11 @@
 #endif
 
 #define R_NO_REMAP
+
+#include <stdbool.h> // IWYU pragma: export
 #include <Rinternals.h> // IWYU pragma: export
 #include <Rversion.h> // IWYU pragma: export
-
 #include "rlang-types.h" // IWYU pragma: export
-
-#include <inttypes.h>
-#include <stdbool.h>
 
 
 r_obj* r_init_library(r_obj* ns);

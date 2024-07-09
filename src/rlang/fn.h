@@ -3,6 +3,8 @@
 #ifndef RLANG_FN_H
 #define RLANG_FN_H
 
+#include "rlang-types.h"
+#include "obj.h"
 
 static inline
 r_obj* r_fn_body(r_obj* fn) {

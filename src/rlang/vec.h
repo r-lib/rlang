@@ -4,6 +4,10 @@
 #define RLANG_VECTOR_H
 
 #include <string.h>
+#include "rlang-types.h"
+#include "cnd.h"
+#include "globals.h"
+#include "obj.h"
 
 
 static inline
