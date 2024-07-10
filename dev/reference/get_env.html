@@ -64,9 +64,9 @@ simplifying code when writing generic functions for environments)."><meta proper
     <li><h6 class="dropdown-header" data-toc-skip>Notes</h6></li>
     <li><a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a></li>
   </ul></li>
-      </ul><ul class="navbar-nav"><li class="nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Release notes</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a></li>
@@ -75,6 +75,8 @@ simplifying code when writing generic functions for environments)."><meta proper
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/rlang/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -144,13 +146,13 @@ package.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Environment of closure functions:</span></span></span>
 <span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="st">"foo"</span></span></span>
 <span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b2b0f34db8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556b0633f040&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or of quosures or formulas:</span></span></span>
 <span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b2b0f34db8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556b0633f040&gt;</span>
 <span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b2b0f34db8&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556b0633f040&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Provide a default in case the object doesn't bundle an environment.</span></span></span>
@@ -184,7 +186,7 @@ package.</p>
 <span class="r-in"><span><span class="va">other_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="child_env.html">child_env</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">set_env</span><span class="op">(</span><span class="va">fn</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function() NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b2b0538b00&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x556b0580c168&gt;</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
