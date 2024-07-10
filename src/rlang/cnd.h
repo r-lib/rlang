@@ -1,7 +1,10 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_CND_H
 #define RLANG_CND_H
 
-#include <stdbool.h>
+#include "rlang-types.h"
+#include "obj.h"
 
 
 void r_inform(const char* fmt, ...);

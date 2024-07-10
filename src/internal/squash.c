@@ -1,6 +1,8 @@
 #include <rlang.h>
-#include "export.h"
 #include "squash.h"
+#include "dots.h"
+#include "utils.h"
+#include "vec.h"
 
 static r_ssize r_vec_length(r_obj* x);
 

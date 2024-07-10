@@ -1,5 +1,4 @@
 #include <rlang.h>
-#include "utils.h"
 
 // Defined in capture.c
 r_obj* rlang_capturearginfo(r_obj* call, r_obj* op, r_obj* args, r_obj* rho);

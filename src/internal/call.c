@@ -1,6 +1,8 @@
 #include <rlang.h>
 #include "internal.h"
 #include "decl/call-decl.h"
+#include "utils.h"
+#include "vec.h"
 
 
 r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {

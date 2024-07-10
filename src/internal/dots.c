@@ -4,7 +4,6 @@
 #include "internal.h"
 #include "squash.h"
 #include "utils.h"
-#include "vec.h"
 
 enum dots_homonyms {
   DOTS_HOMONYMS_keep = 0,

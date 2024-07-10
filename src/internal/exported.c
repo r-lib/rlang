@@ -1,6 +1,7 @@
 #include <rlang.h>
-#include "../internal/utils.h"
-#include "../internal/vec.h"
+#include "internal.h"
+#include "utils.h"
+#include "vec.h"
 
 // From rlang/vec.c
 void r_vec_poke_n(r_obj* x, r_ssize offset,

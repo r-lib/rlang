@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "vec.h"
 #include "decl/vec-decl.h"
 
 

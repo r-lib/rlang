@@ -1,5 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_DF_H
 #define RLANG_DF_H
+
+#include "rlang-types.h"
 
 
 r_obj* r_alloc_df_list(r_ssize n_rows,

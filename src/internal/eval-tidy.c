@@ -1,5 +1,8 @@
 #include <rlang.h>
+#include "env.h"
 #include "internal.h"
+#include "quo.h"
+#include "utils.h"
 
 
 static r_obj* quo_mask_flag_sym = NULL;

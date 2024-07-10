@@ -1,8 +1,12 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_ENV_H
 #define RLANG_ENV_H
 
-#include <stdbool.h>
-#include <Rversion.h>
+#include "rlang-types.h"
+#include "cnd.h"
+#include "globals.h"
+#include "obj.h"
 
 
 extern r_obj* r_methods_ns_env;

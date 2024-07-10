@@ -1,7 +1,13 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_VECTOR_H
 #define RLANG_VECTOR_H
 
 #include <string.h>
+#include "rlang-types.h"
+#include "cnd.h"
+#include "globals.h"
+#include "obj.h"
 
 
 static inline

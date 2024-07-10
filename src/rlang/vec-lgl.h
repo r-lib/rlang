@@ -1,5 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_VECTOR_LGL_H
 #define RLANG_VECTOR_LGL_H
+
+#include "rlang-types.h"
 
 
 r_ssize r_lgl_sum(r_obj* x, bool na_true);
