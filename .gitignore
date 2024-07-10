@@ -9,3 +9,5 @@ revdep/cloud.noindex
 src/config.h
 docs/
 .vscode
+compile_commands.json
+.cache

@@ -1,7 +1,13 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_VECTOR_H
 #define RLANG_VECTOR_H
 
 #include <string.h>
+#include "rlang-types.h"
+#include "cnd.h"
+#include "globals.h"
+#include "obj.h"
 
 
 static inline
@@ -47,12 +53,12 @@ const void* r_raw_cbegin(r_obj* x) {
 }
 static inline
 r_obj* const * r_chr_cbegin(r_obj* x) {
-  return (r_obj* const *) STRING_PTR(x);
+  return STRING_PTR_RO(x);
 }
 static inline
 r_obj* const * r_list_cbegin(r_obj* x) {
 #if (R_VERSION < R_Version(3, 5, 0))
-  return ((r_obj* const *) STRING_PTR(x));
+  return STRING_PTR_RO(x);
 #else
   return ((r_obj* const *) DATAPTR_RO(x));
 #endif

@@ -1,16 +1,5 @@
 #include <rlang.h>
 
-#define FRAME_LOCK_MASK (1 << 14)
-#define FRAME_IS_LOCKED(e) (ENVFLAGS(e) & FRAME_LOCK_MASK)
-#define UNLOCK_FRAME(e) SET_ENVFLAGS(e, ENVFLAGS(e) & (~FRAME_LOCK_MASK))
-
-// Should only be used in development tools
-r_obj* ffi_env_unlock(r_obj* env) {
-  UNLOCK_FRAME(env);
-  return FRAME_IS_LOCKED(env) == 0 ? r_true : r_false;
-}
-
-
 void r_env_unbind_anywhere(r_obj* env, r_obj* sym) {
   while (env != r_envs.empty) {
     if (r_env_has(env, sym)) {

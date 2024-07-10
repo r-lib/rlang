@@ -79,7 +79,7 @@
 #' functions that expect symbolic arguments. The objects may also leak
 #' in representations of the call stack, such as [traceback()].
 #'
-#' @seealso call_modify
+#' @seealso [call_modify()]
 #' @examples
 #' # fn can either be a string, a symbol or a call
 #' call2("f", a = 1)

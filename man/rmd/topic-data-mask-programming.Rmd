@@ -228,7 +228,7 @@ Since `across()` takes selections in a single argument (unlike `select()` which 
 
 ```r
 my_group_by <- function(.data, ...) {
-  .data %>% dplyr::group_by(across(c(...)}))
+  .data %>% dplyr::group_by(across(c(...)))
 }
 
 mtcars %>% my_group_by(starts_with("c"), vs:gear)

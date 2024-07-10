@@ -18,14 +18,13 @@
 #ifndef _ISOC99_SOURCE
 #define _ISOC99_SOURCE
 #endif
-#include <stdio.h>
 
 #define R_NO_REMAP
-#include <Rinternals.h>
-#include <Rversion.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include "rlang-types.h"
+
+#include <stdbool.h> // IWYU pragma: export
+#include <Rinternals.h> // IWYU pragma: export
+#include <Rversion.h> // IWYU pragma: export
+#include "rlang-types.h" // IWYU pragma: export
 
 
 r_obj* r_init_library(r_obj* ns);
@@ -41,6 +40,7 @@ extern
 bool _r_use_local_precious_list;
 
 
+// IWYU pragma: begin_exports
 #include "obj.h"
 #include "globals.h"
 
@@ -73,6 +73,7 @@ bool _r_use_local_precious_list;
 #include "vec-lgl.h"
 #include "vendor.h"
 #include "walk.h"
+// IWYU pragma: end_exports
 
 
 #define r_abort_lazy_call(LAZY, ...) \

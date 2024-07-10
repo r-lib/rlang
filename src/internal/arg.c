@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "globals.h"
 #include "internal.h"
 #include "nse-inject.h"
 #include "utils.h"

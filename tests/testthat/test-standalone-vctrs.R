@@ -452,3 +452,16 @@ test_that("ptype is finalised", {
   out <- vec_cast_common(list(out, x))[[1]]
   expect_identical(out$x, NA)
 })
+
+test_that("vec_recycle_common() throws appropriate errors", {
+
+  expect_error(
+    vec_recycle_common(list(a = 1:2), size = 1),
+    "Inputs can't be recycled to `size`."
+  )
+  expect_error(
+    vec_recycle_common(list(a = 1:2, b = 1:3)),
+    "Inputs can't be recycled to a common size."
+  )
+
+})

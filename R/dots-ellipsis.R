@@ -11,6 +11,7 @@
 #' @param env Environment in which to look for `...` and to set up handler.
 #' @inheritParams args_error_context
 #'
+#' @family dots checking functions
 #' @details
 #' In packages, document `...` with this standard tag:
 #'
@@ -91,6 +92,7 @@ check_dots <- function(env = caller_env(), error, action, call) {
 #' fail with an error when named arguments are detected.
 #'
 #' @inheritParams check_dots_used
+#' @family dots checking functions
 #' @param env Environment in which to look for `...`.
 #' @export
 #' @examples
@@ -139,6 +141,7 @@ check_dots_unnamed <- function(env = caller_env(),
 #' @inheritParams check_dots_used
 #' @param env Environment in which to look for `...`.
 #'
+#' @family dots checking functions
 #' @details
 #' In packages, document `...` with this standard tag:
 #'

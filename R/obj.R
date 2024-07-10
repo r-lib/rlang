@@ -34,11 +34,6 @@ sexp_address <- obj_address
 poke_type <- function(x, type) {
   invisible(.Call(ffi_poke_type, x, type))
 }
-sexp_named <- function(x) {
-  # Don't use `substitute()` because dots might be forwarded
-  arg <- match.call(expand.dots = FALSE)$x
-  .Call(ffi_named, arg, parent.frame())
-}
 
 mark_object <- function(x) {
   invisible(.Call(ffi_mark_object, x))

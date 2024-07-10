@@ -3,12 +3,6 @@
 
 #include <rlang.h>
 
-#include "arg.h"
-#include "call.h"
-#include "globals.h"
-#include "quo.h"
-#include "vec.h"
-
 struct rlang_globals_syms {
   r_obj* c_null;
   r_obj* handlers;

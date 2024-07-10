@@ -19,6 +19,7 @@ env_is_browsed(env)
 \code{env_is_browsed()} (a logical), invisibly.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#defunct}{\figure{lifecycle-defunct.svg}{options: alt='[Defunct]'}}}{\strong{[Defunct]}}
 \itemize{
 \item \code{env_browse(env)} is equivalent to evaluating \code{browser()} in
 \code{env}. It persistently sets the environment for step-debugging.

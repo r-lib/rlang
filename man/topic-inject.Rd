@@ -70,7 +70,9 @@ rbind2("\{name\}" := 1:2, bar = 3:4)
 #>     [,1] [,2]
 #> foo    1    2
 #> bar    3    4
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 rbind2("prefix_\{name\}" := 1:2, bar = 3:4)
 #>            [,1] [,2]
 #> prefix_foo    1    2

@@ -56,7 +56,6 @@ internal-files = \
         internal/fn.c \
         internal/globals.c \
         internal/hash.c \
-        internal/init.c \
         internal/internal.c \
         internal/names.c \
         internal/nse-defuse.c \

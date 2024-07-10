@@ -1,7 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_LANG_H
 #define RLANG_LANG_H
 
-#include "node.h"
+#include "rlang-types.h"
 
 
 #define r_new_call Rf_lcons

@@ -72,6 +72,10 @@ disparate expressions in a single block.
 
 \code{on_load()} is implemented via \code{.onLoad()} and requires
 \code{run_on_load()} to be called from that hook.
+
+The expressions inside \code{on_load()} do not undergo static analysis
+by \verb{R CMD check}. Therefore, it is advisable to only use
+simple function calls inside \code{on_load()}.
 }
 
 \examples{
@@ -84,16 +88,20 @@ quote({  # Not run
 }
 
 # Register a method on load
-on_load(s3_register("foo::bar", "my_class"))
+on_load({
+  s3_register("foo::bar", "my_class")
+})
 
 # Assign an object on load
 var <- NULL
-on_load(
+on_load({
   var <- foo()
-)
+})
 
 # To use `on_package_load()` at top level, wrap it in `on_load()`
-on_load(on_package_load("foo", message("foo is loaded")))
+on_load({
+  on_package_load("foo", message("foo is loaded"))
+})
 
 # In functions it can be called directly
 f <- function() on_package_load("foo", message("foo is loaded"))

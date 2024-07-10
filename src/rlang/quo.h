@@ -1,6 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_QUO_H
 #define RLANG_QUO_H
 
+#include "rlang-types.h"
 
 extern r_obj* (*r_quo_get_expr)(r_obj* quo);
 extern r_obj* (*r_quo_set_expr)(r_obj* quo, r_obj* expr);

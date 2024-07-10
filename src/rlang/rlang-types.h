@@ -1,10 +1,14 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_RLANG_TYPES_H
 #define RLANG_RLANG_TYPES_H
 
-
 #define R_NO_REMAP
-#include <Rinternals.h>
-#include <R_ext/Visibility.h>
+
+#include <stdbool.h> // IWYU pragma: export
+#include <Rinternals.h> // IWYU pragma: export
+#include <Rversion.h> // IWYU pragma: export
+#include <R_ext/Visibility.h> // IWYU pragma: export
 
 // Use `r_visible` to mark your init function. Then users can compile
 // with `-fvisibility=hidden -DHAVE_VISIBILITY_ATTRIBUTE` to link to

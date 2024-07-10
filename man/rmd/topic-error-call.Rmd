@@ -158,8 +158,6 @@ Once enabled, create error snapshots with:
 expect_snapshot(error = TRUE, {
   my_function()
 })
-
-expect_snapshot_error(my_function())
 ```
 
 You'll have to make sure that the snapshot coverage for error messages is sufficient for your package.

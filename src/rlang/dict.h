@@ -1,5 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_DICT_H
 #define RLANG_DICT_H
+
+#include "rlang-types.h"
 
 /**
  * This is a simple hash table of `r_obj*`. It is structured like R

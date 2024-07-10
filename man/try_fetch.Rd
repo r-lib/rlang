@@ -108,9 +108,9 @@ errors on old versions of R.
 
 \code{try_fetch()} generalises \code{tryCatch()} and \code{withCallingHandlers()}
 in a single function. It reproduces the behaviour of both calling
-and exiting handlers depending the on the return value of the
-handler. If the handler returns the \code{\link[=zap]{zap()}} sentinel, it is taken
-as a calling handler that declines to recover from a condition.
+and exiting handlers depending on the return value of the handler.
+If the handler returns the \code{\link[=zap]{zap()}} sentinel, it is taken as a
+calling handler that declines to recover from a condition.
 Otherwise, it is taken as an exiting handler which returns a value
 from the catching site.
 
