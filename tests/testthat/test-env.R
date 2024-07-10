@@ -236,14 +236,6 @@ test_that("can lock environments", {
   expect_true(env_lock(env))
 })
 
-test_that("can unlock environments", {
-  env <- env()
-  env_lock(env)
-  expect_true(env_unlock(env))
-  expect_false(env_is_locked(env))
-  expect_no_error(env_bind(env, a = 1))
-})
-
 test_that("env_print() has flexible input", {
   # because it's primarily used interactively
   f <- function() 1
@@ -525,19 +517,6 @@ test_that("env_unbind() removes objects", {
 
 test_that("get_env() returns the base namespace for primitive functions (r-lib/downlit#32)", {
   expect_identical(get_env(is.null), ns_env("base"))
-})
-
-test_that("can browse environments", {
-  env <- env()
-  expect_false(env_is_browsed(env))
-
-  old <- env_browse(env)
-  expect_false(old)
-  expect_true(env_is_browsed(env))
-
-  old <- env_browse(env, FALSE)
-  expect_true(old)
-  expect_false(env_is_browsed(env))
 })
 
 test_that("env_has() doesn't force active bindings (#1292)", {

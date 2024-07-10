@@ -101,5 +101,5 @@ call2("fun", arg = quote(baz), .ns = "mypkg")
 call2("[", quote(x), , drop = )
 }
 \seealso{
-call_modify
+\code{\link[=call_modify]{call_modify()}}
 }

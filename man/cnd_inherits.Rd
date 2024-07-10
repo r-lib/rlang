@@ -60,7 +60,9 @@ cnd <- callCC(function(throw) \{
 
 class(cnd)
 #> [1] "rlang_error" "error"       "condition"
-class(cnd$parent)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{class(cnd$parent)
 #> [1] "bar"         "rlang_error" "error"       "condition"
 }\if{html}{\out{</div>}}
 }
@@ -79,7 +81,9 @@ away. Instead, it captures it only if the handler doesn't return a
 
 class(cnd)
 #> [1] "rlang_error" "error"       "condition"
-class(cnd$parent)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{class(cnd$parent)
 #> [1] "bar"         "rlang_error" "error"       "condition"
 }\if{html}{\out{</div>}}
 

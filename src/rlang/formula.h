@@ -1,6 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_FORMULA_H
 #define RLANG_FORMULA_H
 
+#include "rlang-types.h"
 
 bool r_is_formula(r_obj* x, int scoped, int lhs);
 

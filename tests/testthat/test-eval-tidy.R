@@ -454,6 +454,9 @@ test_that("can't take the names() and length() of the `.data` pronoun", {
 })
 
 test_that("eval_tidy() does not infloop when the quosure inherits from the mask", {
+  # New r-devel error: cycles in parent chains are not allowed
+  skip_if(getRversion() >= "4.4.0" && grepl("devel", R.version$status))
+
   mask <- as_data_mask(list(foo = 1))
   quo <- new_quosure(quote(foo), mask)
   expect_identical(eval_tidy(quo, mask), 1)

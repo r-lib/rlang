@@ -1,4 +1,6 @@
 #include <rlang.h>
+#include "utils.h"
+#include "internal.h"
 
 
 r_obj* new_preserved_empty_list(void) {

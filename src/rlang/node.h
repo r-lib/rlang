@@ -1,6 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_NODE_H
 #define RLANG_NODE_H
 
+#include "rlang-types.h"
 
 static inline r_obj* r_node_car(r_obj* x) { return CAR(x); }
 static inline r_obj* r_node_cdr(r_obj* x) { return CDR(x); }

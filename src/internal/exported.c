@@ -1,6 +1,7 @@
 #include <rlang.h>
-#include "../internal/utils.h"
-#include "../internal/vec.h"
+#include "internal.h"
+#include "utils.h"
+#include "vec.h"
 
 // From rlang/vec.c
 void r_vec_poke_n(r_obj* x, r_ssize offset,
@@ -325,6 +326,42 @@ r_obj* ffi_dyn_list_poke(r_obj* x, r_obj* i, r_obj* value) {
 }
 
 // [[ register() ]]
+r_obj* ffi_dyn_lgl_push_back(r_obj* x, r_obj* value) {
+  r_dyn_lgl_push_back(r_shelter_deref(x), r_as_bool(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_int_push_back(r_obj* x, r_obj* value) {
+  r_dyn_int_push_back(r_shelter_deref(x), r_as_int(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_dbl_push_back(r_obj* x, r_obj* value) {
+  r_dyn_dbl_push_back(r_shelter_deref(x), r_as_double(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_cpl_push_back(r_obj* x, r_obj* value) {
+  r_dyn_cpl_push_back(r_shelter_deref(x), r_as_complex(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_raw_push_back(r_obj* x, r_obj* value) {
+  r_dyn_raw_push_back(r_shelter_deref(x), r_as_char(value));
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_chr_push_back(r_obj* x, r_obj* value) {
+  r_dyn_chr_push_back(r_shelter_deref(x), value);
+  return r_null;
+}
+// [[ register() ]]
+r_obj* ffi_dyn_list_push_back(r_obj* x, r_obj* value) {
+  r_dyn_list_push_back(r_shelter_deref(x), value);
+  return r_null;
+}
+
+// [[ register() ]]
 r_obj* ffi_has_size_one_bool(void) {
   return r_lgl(sizeof(bool) == 1);
 }
@@ -473,26 +510,6 @@ r_obj* ffi_env_bind_list(r_obj* env, r_obj* names, r_obj* data) {
   }
 
   return r_null;
-}
-
-r_obj* ffi_env_browse(r_obj* env, r_obj* value) {
-  if (r_typeof(env) != R_TYPE_environment) {
-    r_abort("`env` must be an environment.");
-  }
-  if (!r_is_bool(value)) {
-    r_abort("`value` must be a single logical value.");
-  }
-
-  r_obj* old = r_lgl(RDEBUG(env));
-  SET_RDEBUG(env, r_lgl_get(value, 0));
-  return old;
-}
-
-r_obj* ffi_env_is_browsed(r_obj* env) {
-  if (r_typeof(env) != R_TYPE_environment) {
-    r_abort("`env` must be an environment.");
-  }
-  return r_lgl(RDEBUG(env));
 }
 
 r_obj* ffi_ns_registry_env(void) {
@@ -768,23 +785,6 @@ r_obj* ffi_promise_value(r_obj* x, r_obj* env) {
   } else {
     return value;
   }
-}
-
-// Picks up symbols from parent environment to avoid bumping namedness
-// during promise resolution
-r_obj* ffi_named(r_obj* x, r_obj* env) {
-  int n_kept = 0;
-
-  x = PROTECT(Rf_findVarInFrame3(env, x, FALSE));
-  ++n_kept;
-
-  if (TYPEOF(x) == PROMSXP) {
-    x = PROTECT(Rf_eval(x, env));
-    ++n_kept;
-  }
-
-  UNPROTECT(n_kept);
-  return Rf_ScalarInteger(NAMED(x));
 }
 
 r_obj* ffi_find_var(r_obj* env, r_obj* sym) {

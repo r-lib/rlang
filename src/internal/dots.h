@@ -1,6 +1,10 @@
 #ifndef RLANG_INTERNAL_DOTS_H
 #define RLANG_INTERNAL_DOTS_H
 
+#include <rlang.h>
+
+bool is_splice_box(r_obj* x);
+r_obj* rlang_unbox(r_obj* x);
 
 enum dots_collect {
   DOTS_COLLECT_expr,

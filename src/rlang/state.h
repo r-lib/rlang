@@ -1,6 +1,14 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_STATE_H
 #define RLANG_STATE_H
 
+#include "call.h"
+#include "eval.h"
+#include "globals.h"
+#include "node.h"
+#include "rlang-types.h"
+#include "sym.h"
 
 static inline
 r_obj* r_peek_option(const char* name) {

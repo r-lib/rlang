@@ -1,6 +1,7 @@
 #include <rlang.h>
 
 #include "internal.h"
+#include "utils.h"
 
 
 r_obj* ffi_new_function(r_obj* args, r_obj* body, r_obj* env) {

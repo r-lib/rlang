@@ -117,7 +117,9 @@ This does work in simple cases:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{mtcars \%>\% my_group_by(cyl) \%>\% dplyr::group_vars()
 #> [1] "cyl"
+}\if{html}{\out{</div>}}
 
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_group_by(list(cyl, am)) \%>\% dplyr::group_vars()
 #> [1] "cyl" "am"
 }\if{html}{\out{</div>}}

@@ -32,7 +32,6 @@ r_obj* obj_encode_utf8(r_obj* x) {
   default: break;
   }
 
-  // For performance, avoid `KEEP()` / `FREE()` when not needed
   r_obj* attrib = r_attrib(x);
   if (attrib != r_null) {
     KEEP(x);

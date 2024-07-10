@@ -1,6 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_SYM_H
 #define RLANG_SYM_H
 
+#include "rlang-types.h"
 
 // The results of `r_sym_as_` functions must be protected
 

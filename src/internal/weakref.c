@@ -1,5 +1,4 @@
-#include <R.h>
-#include <Rdefines.h>
+#include <rlang.h>
 
 r_obj* ffi_new_weakref(r_obj* key, r_obj* value, r_obj* finalizer, r_obj* on_quit) {
   if (r_typeof(key) != ENVSXP && r_typeof(key) != EXTPTRSXP) {

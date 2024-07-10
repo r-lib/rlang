@@ -1,5 +1,7 @@
 #include <rlang.h>
 #include "internal.h"
+#include "env.h"
+#include "quo.h"
 
 #include "decl/env-decl.h"
 

@@ -287,6 +287,28 @@ dyn_list_poke <- function(x, i, value) {
   invisible(.Call(ffi_dyn_list_poke, x, i, value))
 }
 
+dyn_lgl_push_back <- function(x, value) {
+  invisible(.Call(ffi_dyn_lgl_push_back, x, value))
+}
+dyn_int_push_back <- function(x, value) {
+  invisible(.Call(ffi_dyn_int_push_back, x, value))
+}
+dyn_dbl_push_back <- function(x, value) {
+  invisible(.Call(ffi_dyn_dbl_push_back, x, value))
+}
+dyn_cpl_push_back <- function(x, value) {
+  invisible(.Call(ffi_dyn_cpl_push_back, x, value))
+}
+dyn_raw_push_back <- function(x, value) {
+  invisible(.Call(ffi_dyn_raw_push_back, x, value))
+}
+dyn_chr_push_back <- function(x, value) {
+  invisible(.Call(ffi_dyn_chr_push_back, x, value))
+}
+dyn_list_push_back <- function(x, value) {
+  invisible(.Call(ffi_dyn_list_push_back, x, value))
+}
+
 # https://github.com/r-lib/rlang/issues/1556
 has_size_one_bool <- function() {
   .Call(ffi_has_size_one_bool)

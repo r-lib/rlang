@@ -1,9 +1,9 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_EXPORT_H
 #define RLANG_EXPORT_H
 
-#include <Rversion.h>
-#include <R_ext/Rdynload.h>
-
+#include "rlang-types.h"
 
 #if (defined(R_VERSION) && R_VERSION < R_Version(3, 4, 0))
 typedef union {void* p; DL_FUNC fn;} fn_ptr;

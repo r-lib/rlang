@@ -57,8 +57,8 @@ Compared to base R functions:
 \itemize{
 \item The predicates for vectors include the \code{n} argument for
 pattern-matching on the vector length.
-\item Unlike \code{is.atomic()}, \code{is_atomic()} does not return \code{TRUE} for
-\code{NULL}.
+\item Unlike \code{is.atomic()} in R < 4.4.0, \code{is_atomic()} does not return \code{TRUE} for
+\code{NULL}. Starting in R 4.4.0 \code{is.atomic(NULL)} returns FALSE.
 \item Unlike \code{is.vector()}, \code{is_vector()} tests if an object is an
 atomic vector or a list. \code{is.vector} checks for the presence of
 attributes (other than name).

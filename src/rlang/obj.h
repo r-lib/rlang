@@ -1,5 +1,10 @@
+// IWYU pragma: private; include "rlang.h"
+
 #ifndef RLANG_OBJ_H
 #define RLANG_OBJ_H
+
+#include <stdbool.h>
+#include "rlang-types.h"
 
 #define r_missing_arg R_MissingArg
 
