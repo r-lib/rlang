@@ -74,6 +74,8 @@ arg_match <- function(arg,
 }
 
 arg_match_multi <- function(arg, values, error_arg, error_call) {
+  # Set an option temporarily to make sure the multiple message shows.
+  local_options("rlang_multiple_error" = TRUE)
   map_chr(arg, ~ arg_match0(.x, values, error_arg, error_call = error_call))
 }
 
@@ -128,7 +130,8 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     check_string(arg, arg = error_arg, call = error_call)
   }
 
-  msg <- arg_match_invalid_msg(arg, values, multiple = FALSE, error_arg)
+  multiple <- getOption("rlang_multiple_error", FALSE)
+  msg <- arg_match_invalid_msg(arg, values, multiple, error_arg)
 
   # Try suggest the most probable and helpful candidate value
   candidate <- NULL

@@ -1,6 +1,7 @@
 # rlang (development version)
 
-* `arg_match()` now throws better error messages if `multiple = TRUE` or if a single value is allowed (#1635, #1682)
+* `arg_match()` now throws better error messages if `multiple = TRUE` or if a single value is allowed (@olivroy, #1635, #1682).
+
 * `env_browse()` and `env_is_browsed()` are now defunct as they require an API
   that is no longer available to packages (#1727).
 
