@@ -60,7 +60,7 @@ arg_match <- function(arg,
     abort(msg, call = error_call, arg = error_arg)
   }
   if (length(arg) > 1 && !setequal(arg, values)) {
-    msg <- arg_match_invalid_msg(arg, values, error_arg)
+    msg <- arg_match_invalid_msg(arg, values, multiple, error_arg)
     abort(msg, call = error_call, arg = error_arg)
   }
 
@@ -128,7 +128,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
     check_string(arg, arg = error_arg, call = error_call)
   }
 
-  msg <- arg_match_invalid_msg(arg, values, error_arg)
+  msg <- arg_match_invalid_msg(arg, values, multiple = FALSE, error_arg)
 
   # Try suggest the most probable and helpful candidate value
   candidate <- NULL
@@ -160,14 +160,26 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
   abort(msg, call = error_call, arg = error_arg)
 }
 
-arg_match_invalid_msg <- function(val, values, error_arg) {
-  msg <- paste0(format_arg(error_arg), " must be one of ")
+arg_match_invalid_msg <- function(val, values, multiple, error_arg) {
+  if (length(values) == 1) {
+    #1635
+    word <- " must be "
+  } else if (multiple) {
+    #1682
+    word <- " must be in "
+  } else {
+    word <- " must be one of "
+  }
+  msg <- paste0(format_arg(error_arg), word)
   msg <- paste0(msg, oxford_comma(chr_quoted(values, "\"")))
 
   if (is_null(val)) {
     msg <- paste0(msg, ".")
   } else {
-    msg <- paste0(msg, sprintf(', not "%s\".', val[[1]]))
+    # only show incorrect values.
+    incorrect_val <- setdiff(val, values)
+    incorrect_val <- oxford_comma(incorrect_val)
+    msg <- paste0(msg, sprintf(', not "%s\".', incorrect_val))
   }
 
   msg
