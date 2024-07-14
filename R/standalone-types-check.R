@@ -1,13 +1,15 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-13
+# last-updated: 2024-07-14
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+# 2024-07-14:
+# - `check_character()` gains `allow_zero` to allow prohibiting `character(0)` (@olivroy)
 #
 # 2023-03-13:
 # - Improved error messages of number checkers (@teunbrand)
@@ -460,10 +462,11 @@ check_formula <- function(x,
 check_character <- function(x,
                             ...,
                             allow_null = FALSE,
+                            allow_zero = TRUE,
                             arg = caller_arg(x),
                             call = caller_env()) {
   if (!missing(x)) {
-    if (is_character(x)) {
+    if (is_character(x) && (allow_zero || length(x) > 0)) {
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {
