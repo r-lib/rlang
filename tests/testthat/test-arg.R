@@ -50,6 +50,17 @@ test_that("informative error message on partial match", {
   )
 })
 
+test_that("arg_match() works well when multiple = TRUE (#1682)", {
+  f <- function(x, ...) {
+    arg_match(x, ..., multiple = TRUE)
+  }
+  expect_snapshot(error = TRUE, {
+    f("x", values = c("y", "z"))
+    f(c("x", "y"), values = c("y", "z"))
+
+  })
+})
+
 test_that("`arg_match()` has informative error messages", {
   arg_match_wrapper <- function(...) {
     arg_match0_wrapper(...)
