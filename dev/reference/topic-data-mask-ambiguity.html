@@ -64,7 +64,6 @@ data.frame(value = 1) %&amp;gt;% my_rescale(value)
 #&amp;gt;   value
 #&amp;gt; 1   0.1
 
-
 # Oh no!
 data.frame(factor = 0, value = 1) %&amp;gt;% my_rescale(value)
 #&amp;gt;   factor value
@@ -228,7 +227,6 @@ my_rescale &amp;lt;- function(data, var, factor = 10) {
 data.frame(value = 1) %&amp;gt;% my_rescale(value)
 #&amp;gt;   value
 #&amp;gt; 1   0.1
-
 
 # Oh no!
 data.frame(factor = 0, value = 1) %&amp;gt;% my_rescale(value)
@@ -470,8 +468,8 @@ If tidy selections were affected by the data mask ambiguity, this function would
 <span><span class="co"># This works</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   value</span></span>
-<span><span class="co">#&gt; 1   0.1</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; 1   0.1</span></span>
+<span></span>
 <span><span class="co"># Oh no!</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>factor <span class="op">=</span> <span class="fl">0</span>, value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">my_rescale</span><span class="op">(</span><span class="va">value</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   factor value</span></span>

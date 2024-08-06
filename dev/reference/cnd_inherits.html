@@ -165,8 +165,8 @@ throw, nothing happens.</p>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "rlang_error" "error"       "condition"</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">$</span><span class="va">parent</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "rlang_error" "error"       "condition"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">$</span><span class="va">parent</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "bar"         "rlang_error" "error"       "condition"</span></span></code></pre><p></p></div>
 </div>
 
@@ -184,8 +184,8 @@ away. Instead, it captures it only if the handler doesn't return a
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "rlang_error" "error"       "condition"</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">$</span><span class="va">parent</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "rlang_error" "error"       "condition"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">cnd</span><span class="op">$</span><span class="va">parent</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "bar"         "rlang_error" "error"       "condition"</span></span></code></pre><p></p></div>
 <p>Note that <code><a href="try_fetch.html">try_fetch()</a></code> uses <code>cnd_inherits()</code> internally. This
 makes it very easy to match a parent condition:</p>

@@ -4,12 +4,10 @@
 mean(mtcars$cyl + mtcars$am)
 #&amp;gt; [1] 6.59375
 
-
 # Referring to columns is an error - Where is the data?
 mean(cyl + am)
 #&amp;gt; Error:
 #&amp;gt; ! object 'cyl' not found
-
 
 # Data-masking
 with(mtcars, mean(cyl + am))
@@ -20,12 +18,10 @@ While data-masking makes it easy to program interactively with data frames, it m
 mean(mtcars$cyl + mtcars$am)
 #&amp;gt; [1] 6.59375
 
-
 # Referring to columns is an error - Where is the data?
 mean(cyl + am)
 #&amp;gt; Error:
 #&amp;gt; ! object 'cyl' not found
-
 
 # Data-masking
 with(mtcars, mean(cyl + am))
@@ -116,13 +112,13 @@ While data-masking makes it easy to program interactively with data frames, it m
     <p>Data-masking is a distinctive feature of R whereby programming is performed directly on a data set, with columns defined as normal objects.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Unmasked programming</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">am</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 6.59375</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; [1] 6.59375</span></span>
+<span></span>
 <span><span class="co"># Referring to columns is an error - Where is the data?</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error:</span></span>
-<span><span class="co">#&gt; ! object 'cyl' not found</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; ! object 'cyl' not found</span></span>
+<span></span>
 <span><span class="co"># Data-masking</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 6.59375</span></span></code></pre><p></p></div>
@@ -198,8 +194,8 @@ While data-masking makes it easy to program interactively with data frames, it m
 <span><span class="co">#&gt; &lt;environment: 0x7febb17e3468&gt;</span></span></code></pre><p></p></div></li>
 <li><p>Explicit evaluation with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> (base) or <code><a href="eval_tidy.html">eval_tidy()</a></code> (rlang). When R code is defused, evaluation is interrupted. It can be resumed later on with <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code>:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1 + 1</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; 1 + 1</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval</a></span><span class="op">(</span><span class="fu"><a href="../reference/expr.html">expr</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2</span></span></code></pre><p></p></div>
 <p>By default <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">eval()</a></code> and <code><a href="eval_tidy.html">eval_tidy()</a></code> evaluate in the current environment.</p>

@@ -6,7 +6,6 @@ tibble::tibble(foo = 1)
 #&amp;gt;   &amp;lt;dbl&amp;gt;
 #&amp;gt; 1     1
 
-
 foo &amp;lt;- &quot;name&quot;
 tibble::tibble(&quot;{foo}&quot; := 1)
 #&amp;gt; # A tibble: 1 x 1
@@ -49,7 +48,6 @@ mtcars %&amp;gt;% my_mean(cyl)
 #&amp;gt;   &amp;lt;dbl&amp;gt;
 #&amp;gt; 1  6.19
 
-
 mtcars %&amp;gt;% my_mean(cyl * am)
 #&amp;gt; # A tibble: 1 x 1
 #&amp;gt;   `cyl * am`
@@ -67,7 +65,6 @@ mtcars %&amp;gt;% my_mean(cyl)
 #&amp;gt;   &amp;lt;dbl&amp;gt;
 #&amp;gt; 1  6.19
 
-
 mtcars %&amp;gt;% my_mean(cyl, name = &quot;cyl&quot;)
 #&amp;gt; # A tibble: 1 x 1
 #&amp;gt;     cyl
@@ -80,7 +77,6 @@ x &amp;lt;- &quot;name&quot;
 list2(&quot;{{ x }}&quot; := 1)
 #&amp;gt; $`&quot;name&quot;`
 #&amp;gt; [1] 1
-
 
 list2(&quot;{x}&quot; := 1)
 #&amp;gt; $name
@@ -105,7 +101,6 @@ mtcars %&amp;gt;% my_mean(cyl * am)
 #&amp;gt;   `cyl * am`
 #&amp;gt;        &amp;lt;dbl&amp;gt;
 #&amp;gt; 1       2.06
-
 
 mtcars %&amp;gt;% my_mean(cyl * am, name = &quot;mean_cyl_am&quot;)
 #&amp;gt; # A tibble: 1 x 1
@@ -144,7 +139,6 @@ tibble::tibble(foo = 1)
 #&amp;gt;   &amp;lt;dbl&amp;gt;
 #&amp;gt; 1     1
 
-
 foo &amp;lt;- &quot;name&quot;
 tibble::tibble(&quot;{foo}&quot; := 1)
 #&amp;gt; # A tibble: 1 x 1
@@ -187,7 +181,6 @@ mtcars %&amp;gt;% my_mean(cyl)
 #&amp;gt;   &amp;lt;dbl&amp;gt;
 #&amp;gt; 1  6.19
 
-
 mtcars %&amp;gt;% my_mean(cyl * am)
 #&amp;gt; # A tibble: 1 x 1
 #&amp;gt;   `cyl * am`
@@ -205,7 +198,6 @@ mtcars %&amp;gt;% my_mean(cyl)
 #&amp;gt;   &amp;lt;dbl&amp;gt;
 #&amp;gt; 1  6.19
 
-
 mtcars %&amp;gt;% my_mean(cyl, name = &quot;cyl&quot;)
 #&amp;gt; # A tibble: 1 x 1
 #&amp;gt;     cyl
@@ -218,7 +210,6 @@ x &amp;lt;- &quot;name&quot;
 list2(&quot;{{ x }}&quot; := 1)
 #&amp;gt; $`&quot;name&quot;`
 #&amp;gt; [1] 1
-
 
 list2(&quot;{x}&quot; := 1)
 #&amp;gt; $name
@@ -243,7 +234,6 @@ mtcars %&amp;gt;% my_mean(cyl * am)
 #&amp;gt;   `cyl * am`
 #&amp;gt;        &amp;lt;dbl&amp;gt;
 #&amp;gt; 1       2.06
-
 
 mtcars %&amp;gt;% my_mean(cyl * am, name = &quot;mean_cyl_am&quot;)
 #&amp;gt; # A tibble: 1 x 1
@@ -362,8 +352,8 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
 <span><span class="co">#&gt;     foo</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1     1</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; 1     1</span></span>
+<span></span>
 <span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="st">"name"</span></span>
 <span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="st">"{foo}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
@@ -401,8 +391,8 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
 <span><span class="co">#&gt;     cyl</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; 1  6.19</span></span>
+<span></span>
 <span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
 <span><span class="co">#&gt;   `cyl * am`</span></span>
@@ -417,8 +407,8 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
 <span><span class="co">#&gt;    mean</span></span>
 <span><span class="co">#&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  6.19</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; 1  6.19</span></span>
+<span></span>
 <span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span>, name <span class="op">=</span> <span class="st">"cyl"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
 <span><span class="co">#&gt;     cyl</span></span>
@@ -429,8 +419,8 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 <span></span>
 <span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="st">"{{ x }}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`"name"`</span></span>
-<span><span class="co">#&gt; [1] 1</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span></span>
 <span><span class="fu"><a href="../reference/list2.html">list2</a></span><span class="op">(</span><span class="st">"{x}"</span> <span class="op">:=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $name</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre><p></p></div>
@@ -451,8 +441,8 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
 <span><span class="co">#&gt;   `cyl * am`</span></span>
 <span><span class="co">#&gt;        &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1       2.06</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; 1       2.06</span></span>
+<span></span>
 <span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_mean</span><span class="op">(</span><span class="va">cyl</span> <span class="op">*</span> <span class="va">am</span>, name <span class="op">=</span> <span class="st">"mean_cyl_am"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 x 1</span></span>
 <span><span class="co">#&gt;   mean_cyl_am</span></span>

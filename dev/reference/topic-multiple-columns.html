@@ -204,8 +204,8 @@ But what if you want to take multiple columns in a single named argument rather 
 <span><span class="op">}</span></span></code></pre><p></p></div>
 <p>This does work in simple cases:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_vars</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "cyl"</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; [1] "cyl"</span></span>
+<span></span>
 <span><span class="va">mtcars</span> <span class="op">%&gt;%</span> <span class="fu">my_group_by</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">cyl</span>, <span class="va">am</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_data.html" class="external-link">group_vars</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "cyl" "am"</span></span></code></pre><p></p></div>
 <p>However this parsing approach quickly shows limits:</p>

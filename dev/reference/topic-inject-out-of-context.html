@@ -11,7 +11,6 @@ In the R language, { is like ( but takes multiple expressions instead of one:
 }
 #&amp;gt; [1] 2
 
-
 list(
   { message(&quot;foo&quot;); 2 }
 )
@@ -22,7 +21,6 @@ list(
 Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:
 ((1))
 #&amp;gt; [1] 1
-
 
 {{ 2 }}
 #&amp;gt; [1] 2
@@ -55,14 +53,12 @@ Double negation can be used in ordinary code to convert an input to logical:
 !!10
 #&amp;gt; [1] TRUE
 
-
 !!0
 #&amp;gt; [1] FALSE
 
 Triple negation is essentially the same as simple negation:
 !10
 #&amp;gt; [1] FALSE
-
 
 !!!10
 #&amp;gt; [1] FALSE
@@ -72,11 +68,9 @@ This means that when injection operators are used in the wrong place, they will 
 #&amp;gt; Error in `!&quot;foo&quot;`:
 #&amp;gt; ! invalid argument type
 
-
 !quote(foo)
 #&amp;gt; Error in `!quote(foo)`:
 #&amp;gt; ! invalid argument type
-
 
 !quote(foo())
 #&amp;gt; Error in `!quote(foo())`:
@@ -96,7 +90,6 @@ In the R language, { is like ( but takes multiple expressions instead of one:
 }
 #&amp;gt; [1] 2
 
-
 list(
   { message(&quot;foo&quot;); 2 }
 )
@@ -107,7 +100,6 @@ list(
 Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:
 ((1))
 #&amp;gt; [1] 1
-
 
 {{ 2 }}
 #&amp;gt; [1] 2
@@ -140,14 +132,12 @@ Double negation can be used in ordinary code to convert an input to logical:
 !!10
 #&amp;gt; [1] TRUE
 
-
 !!0
 #&amp;gt; [1] FALSE
 
 Triple negation is essentially the same as simple negation:
 !10
 #&amp;gt; [1] FALSE
-
 
 !!!10
 #&amp;gt; [1] FALSE
@@ -157,11 +147,9 @@ This means that when injection operators are used in the wrong place, they will 
 #&amp;gt; Error in `!&quot;foo&quot;`:
 #&amp;gt; ! invalid argument type
 
-
 !quote(foo)
 #&amp;gt; Error in `!quote(foo)`:
 #&amp;gt; ! invalid argument type
-
 
 !quote(foo())
 #&amp;gt; Error in `!quote(foo())`:
@@ -261,8 +249,8 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 <span>  <span class="fl">1</span> <span class="co"># Discarded</span></span>
 <span>  <span class="fl">2</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; [1] 2</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"foo"</span><span class="op">)</span>; <span class="fl">2</span> <span class="op">}</span></span>
 <span><span class="op">)</span></span>
@@ -271,8 +259,8 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 <span><span class="co">#&gt; [1] 2</span></span></code></pre><p></p></div>
 <p>Just like you can wrap an expression in as many parentheses as you'd like, you can wrap multiple times with braces:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="op">(</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span></span>
 <span><span class="op">{</span><span class="op">{</span> <span class="fl">2</span> <span class="op">}</span><span class="op">}</span></span>
 <span><span class="co">#&gt; [1] 2</span></span></code></pre><p></p></div>
 <p>So nothing prevents you from embracing a function argument in a context where this operation is not implemented. R will just treat the braces like a set of parentheses and silently return the result:</p>
@@ -299,25 +287,25 @@ In the worst case, R will silently convert the input to logical. Unfortunately t
 <p>The injection operators <code><a href="injection-operator.html">!!</a></code> and <code><a href="splice-operator.html">!!!</a></code> are implemented in <a href="topic-data-mask.html">data-masked</a> arguments, <a href="dyn-dots.html">dynamic dots</a>, and within <code><a href="inject.html">inject()</a></code>. When used in other contexts, they are interpreted by R as double and triple <em>negations</em>.</p>
 <p>Double negation can be used in ordinary code to convert an input to logical:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="op">!</span><span class="op">!</span><span class="fl">10</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span></span>
 <span><span class="op">!</span><span class="op">!</span><span class="fl">0</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre><p></p></div>
 <p>Triple negation is essentially the same as simple negation:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="op">!</span><span class="fl">10</span></span>
-<span><span class="co">#&gt; [1] FALSE</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span>
+<span></span>
 <span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="fl">10</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre><p></p></div>
 <p>This means that when injection operators are used in the wrong place, they will be interpreted as negation. In the best case scenario you will get a type error:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="op">!</span><span class="st">"foo"</span></span>
 <span><span class="co">#&gt; Error in `!"foo"`:</span></span>
-<span><span class="co">#&gt; ! invalid argument type</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; ! invalid argument type</span></span>
+<span></span>
 <span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `!quote(foo)`:</span></span>
-<span><span class="co">#&gt; ! invalid argument type</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span></span>
+<span><span class="co">#&gt; ! invalid argument type</span></span>
+<span></span>
 <span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fu">foo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in `!quote(foo())`:</span></span>
 <span><span class="co">#&gt; ! invalid argument type</span></span></code></pre><p></p></div>
