@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-downstream-deps.R
-# last-updated: 2022-01-19
+# last-updated: 2024-07-11
 # license: https://unlicense.org
 # ---
 #
@@ -13,6 +13,10 @@
 # outdated dep is being loaded.
 #
 # ## Changelog
+# 
+# 2024-07-11
+# 
+# * Correct link
 #
 # 2022-01-19:
 #
@@ -258,7 +262,7 @@ check_downstream <- function(ver,
   os <- tolower(Sys.info()[["sysname"]])
 
   if (os == "windows") {
-    url <- "https://github.com/jennybc/what-they-forgot/issues/62"
+    url <- "https://github.com/rstats-wtf/what-they-forgot/issues/62"
     c(
       i = sprintf("Please update %s to the latest version.", pkg),
       i = sprintf("Updating packages on Windows requires precautions:\n  <%s>", url)
