@@ -13,9 +13,7 @@ Using \code{\link[=expr]{expr()}} we can observe the difference between computin
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the result of `1 + 1`
 1 + 1
 #> [1] 2
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Return the expression `1 + 1`
 expr(1 + 1)
 #> 1 + 1
@@ -72,9 +70,7 @@ force <- function(arg) arg
 
 ignore(warning("boom"))
 #> NULL
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 force(warning("boom"))
 #> Warning in force(warning("boom")): boom
 }\if{html}{\out{</div>}}

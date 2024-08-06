@@ -54,7 +54,7 @@ In both cases, the default error call is not very helpful to the end user becaus
 #> ! Unimplemented
 }\if{html}{\out{</div>}}
 
-To fix this, let \code{abort()} knows about the function that it is throwing the error for by passing the corresponding function environment as \code{call} argument:
+To fix this, let \code{abort()} know about the function that it is throwing the error for by passing the corresponding function environment as the \code{call} argument:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{stop_my_class <- function(message, call = caller_env()) \{
   abort(message, class = "my_class", call = call)
@@ -143,7 +143,7 @@ their_function()
 #> Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
 }\if{html}{\out{</div>}}
 
-With the correct \code{call}, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:
+With the correct \code{call}, the backtrace is much simpler and lets the user focus on the part of the stack that is relevant to them:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- TRUE
 their_function()

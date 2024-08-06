@@ -16,9 +16,7 @@ In the R language, \verb{\{} is like \code{(} but takes multiple expressions ins
   2
 \}
 #> [1] 2
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 list(
   \{ message("foo"); 2 \}
 )
@@ -31,9 +29,7 @@ Just like you can wrap an expression in as many parentheses as you'd like, you c
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{((1))
 #> [1] 1
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 \{\{ 2 \}\}
 #> [1] 2
 }\if{html}{\out{</div>}}
@@ -70,9 +66,7 @@ Double negation can be used in ordinary code to convert an input to logical:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{!!10
 #> [1] TRUE
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 !!0
 #> [1] FALSE
 }\if{html}{\out{</div>}}
@@ -81,9 +75,7 @@ Triple negation is essentially the same as simple negation:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{!10
 #> [1] FALSE
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 !!!10
 #> [1] FALSE
 }\if{html}{\out{</div>}}
@@ -93,15 +85,11 @@ This means that when injection operators are used in the wrong place, they will 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{!"foo"
 #> Error in `!"foo"`:
 #> ! invalid argument type
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 !quote(foo)
 #> Error in `!quote(foo)`:
 #> ! invalid argument type
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 !quote(foo())
 #> Error in `!quote(foo())`:
 #> ! invalid argument type
