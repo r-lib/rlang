@@ -187,7 +187,7 @@ test_that("zap_srcref() works on calls", {
   expect_true("srcref" %in% names(attributes(call)))
 })
 
-test_that("is_dictionaryish return true if names(x) is NULL", {
-  x <- "x"
-  expect_true(is_dictionaryish(x))
+test_that("is_dictionaryish return true if is NULL", {
+
+  expect_true(is_dictionaryish(NULL))
 })

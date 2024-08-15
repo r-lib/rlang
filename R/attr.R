@@ -110,13 +110,15 @@ detect_void_name <- function(x) {
 is_dictionaryish <- function(x) {
   # 2022-01: Used in many packages. Don't deprecate without a
   # replacement.
-  if (!length(x)) {
-    return(!is.null(x))
-  }
-  if (is.null(names(x))) {
+  if (is.null(x)) {
     TRUE
   } else {
+    if (!length(x)) {
+      return(!is.null(x))
+    }
+
     is_named(x) && !any(duplicated(names(x)))
+
   }
 }
 
