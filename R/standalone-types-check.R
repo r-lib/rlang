@@ -475,7 +475,7 @@ check_character <- function(x,
   }
 
   what <- "a character vector"  
-  if (min_length > 0) {
+  if (min_length > 1) {
     what <- paste0(what, "of length greater or equal to", min_length) 
   }
 
