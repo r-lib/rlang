@@ -263,7 +263,7 @@
     Output
       <error/rlang_error>
       Error in `f()`:
-      ! `x` must be a single string, not a character `NA`.
+      ! `x` must be a character vector, not a character `NA`.
     Code
       (expect_error(f(chr())))
     Output

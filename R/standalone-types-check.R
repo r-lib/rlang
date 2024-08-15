@@ -459,11 +459,16 @@ check_formula <- function(x,
 
 check_character <- function(x,
                             ...,
+                            allow_na = FALSE,
                             allow_null = FALSE,
                             arg = caller_arg(x),
                             call = caller_env()) {
+
   if (!missing(x)) {
-    if (is_character(x)) {
+    if (is_character(x) & allow_na) {
+      return(invisible(NULL))
+    }
+    if(is.character(x) & !(TRUE %in% is.na(x)) & !allow_na){
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {
@@ -475,7 +480,7 @@ check_character <- function(x,
     x,
     "a character vector",
     ...,
-    allow_na = FALSE,
+    allow_na = allow_na,
     allow_null = allow_null,
     arg = arg,
     call = call

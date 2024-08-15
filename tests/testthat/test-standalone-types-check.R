@@ -152,11 +152,16 @@ test_that("`check_environment()` checks", {
 
 test_that("`check_character()` checks", {
   expect_null(check_character(""))
-  expect_null(check_character(na_chr))
+  expect_error(check_character(na_chr))
   expect_null(check_character(chr()))
   expect_null(check_character("foo"))
   expect_null(check_character(letters))
+
   expect_null(check_character(NULL, allow_null = TRUE))
+  expect_error(check_character(NULL, allow_null = FALSE))
+
+  expect_error(check_character(c("a",NA)))
+  expect_null(check_character(c("a",NA), allow_na = TRUE))
 
   expect_snapshot({
     err(checker(, check_character))
