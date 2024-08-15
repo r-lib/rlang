@@ -3,11 +3,15 @@
 # file: standalone-types-check.R
 # last-updated: 2023-03-13
 # license: https://unlicense.org
-# dependencies: standalone-obj-type.R
+# dependencies: [standalone-obj-type.R, standalone-cli.R]
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+#
+# 2023-08-31:
+# - `check_functions()` gains the argument `args` to specify which arguments the
+#   function should have (@mgirlich).
 #
 # 2023-03-13:
 # - Improved error messages of number checkers (@teunbrand)
@@ -381,11 +385,19 @@ check_environment <- function(x,
 
 check_function <- function(x,
                            ...,
+                           args = NULL,
                            allow_null = FALSE,
                            arg = caller_arg(x),
                            call = caller_env()) {
   if (!missing(x)) {
     if (is_function(x)) {
+      .check_function_args(
+        f = x,
+        expected_args = args,
+        arg = arg,
+        call = call
+      )
+
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {
@@ -402,6 +414,56 @@ check_function <- function(x,
     arg = arg,
     call = call
   )
+}
+
+.check_function_args <- function(f,
+                                 expected_args,
+                                 arg,
+                                 call) {
+  if (is_null(expected_args)) {
+    return(invisible(NULL))
+  }
+
+  actual_args <- fn_fmls_names(f) %||% character()
+  n_actual_args <- length(actual_args)
+
+  if (is.numeric(expected_args)) {
+    n_expected_args <- expected_args
+    if (n_actual_args >= n_expected_args) {
+      return(invisible(NULL))
+    }
+
+    message <- sprintf(
+      "%s must have at least %i %s, not %i %s.",
+      format_arg(arg),
+      n_expected_args,
+      pluralise(n_expected_args, "argument", "arguments"),
+      n_actual_args,
+      pluralise(n_actual_args, "argument", "arguments")
+    )
+    abort(message, call = call, arg = arg)
+  }
+
+  missing_args <- setdiff(expected_args, actual_args)
+  if (is_empty(missing_args)) {
+    return(invisible(NULL))
+  }
+
+  if (n_actual_args == 0) {
+    arg_info <- "instead it has no arguments"
+  } else {
+    arg_info <- paste0("instead it has ", format_arg(actual_args))
+  }
+
+  n_expected_args <- length(expected_args)
+  message <- sprintf(
+    "%s must have the %s %s, %s.",
+    format_arg(arg),
+    pluralise(n_expected_args, "argument", "arguments"),
+    format_arg(expected_args),
+    arg_info
+  )
+  abort(message, call = call, arg = arg)
 }
 
 check_closure <- function(x,
