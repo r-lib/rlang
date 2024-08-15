@@ -468,13 +468,19 @@ check_character <- function(x,
     if (is_character(x) & allow_na) {
       return(invisible(NULL))
     }
-    if(is.character(x) & !(TRUE %in% is.na(x)) & !allow_na){
+
+    if (is_character(x)){
+      if (!allow_na && any(is.na(x))) {
+        cli::cli_abort("`x` must not contain NA values.", call = caller_env())
+      }
       return(invisible(NULL))
     }
+
     if (allow_null && is_null(x)) {
       return(invisible(NULL))
     }
   }
+
 
   stop_input_type(
     x,

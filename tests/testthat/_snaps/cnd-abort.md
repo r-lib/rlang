@@ -101,6 +101,8 @@
     Code
       cat_line(branch_depth_0)
     Output
+      Warning message:
+      package ‘rlang’ was built under R version 4.3.3 
       Error:
       ! foo
       Backtrace:
@@ -109,6 +111,8 @@
     Code
       cat_line(full_depth_0)
     Output
+      Warning message:
+      package ‘rlang’ was built under R version 4.3.3 
       Error:
       ! foo
       Backtrace:
@@ -118,6 +122,8 @@
     Code
       cat_line(branch_depth_1)
     Output
+      Warning message:
+      package ‘rlang’ was built under R version 4.3.3 
       Error in `f()`:
       ! foo
       Backtrace:
@@ -126,6 +132,8 @@
     Code
       cat_line(full_depth_1)
     Output
+      Warning message:
+      package ‘rlang’ was built under R version 4.3.3 
       Error in `f()`:
       ! foo
       Backtrace:

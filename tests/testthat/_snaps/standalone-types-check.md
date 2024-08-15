@@ -439,6 +439,18 @@
       Error in `checker()`:
       ! `foo` must be a character vector, not `NA`.
     Code
+      err(checker(na_chr, check_character))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `x` must not contain NA values.
+    Code
+      err(checker(c("a", NA), check_character))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `x` must not contain NA values.
+    Code
       err(checker(1, check_character))
     Output
       <error/rlang_error>

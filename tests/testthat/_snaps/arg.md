@@ -262,8 +262,8 @@
       (expect_error(f(na_chr)))
     Output
       <error/rlang_error>
-      Error in `f()`:
-      ! `x` must be a character vector, not a character `NA`.
+      Error in `arg_match()`:
+      ! `x` must not contain NA values.
     Code
       (expect_error(f(chr())))
     Output
