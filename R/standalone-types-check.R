@@ -9,7 +9,7 @@
 #
 # ## Changelog
 # 2024-07-14:
-# - `check_character()` gains `allow_zero` to allow prohibiting `character(0)` (@olivroy)
+# - `check_character()` gains `min_length` to allow prohibiting `character(0)` (@olivroy)
 #
 # 2023-03-13:
 # - Improved error messages of number checkers (@teunbrand)
@@ -462,11 +462,11 @@ check_formula <- function(x,
 check_character <- function(x,
                             ...,
                             allow_null = FALSE,
-                            allow_zero = TRUE,
+                            min_length = 0,
                             arg = caller_arg(x),
                             call = caller_env()) {
   if (!missing(x)) {
-    if (is_character(x) && (allow_zero || length(x) > 0)) {
+    if (is_character(x) && (length(x) >= min_length)) {
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {
