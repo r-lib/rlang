@@ -111,16 +111,16 @@ is_dictionaryish <- function(x) {
   # 2022-01: Used in many packages. Don't deprecate without a
   # replacement.
   if (is.null(x)) {
-    TRUE
-  } else {
-    if (!length(x)) {
-      return(!is.null(x))
-    }
-
-    is_named(x) && !any(duplicated(names(x)))
-
+    return(TRUE)
   }
+
+  if (!length(x)) {
+    return(!is.null(x))
+  }
+
+  is_named(x) && !any(duplicated(names(x)))
 }
+
 
 
 #' Does an object have an element with this name?
