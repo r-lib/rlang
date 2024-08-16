@@ -459,20 +459,21 @@ check_formula <- function(x,
 
 check_character <- function(x,
                             ...,
-                            allow_na = FALSE,
+                            allow_na = TRUE,
                             allow_null = FALSE,
                             arg = caller_arg(x),
                             call = caller_env()) {
 
   if (!missing(x)) {
-    if (is_character(x) & allow_na) {
-      return(invisible(NULL))
-    }
-
-    if (is_character(x)){
+    if (is_character(x)) {
       if (!allow_na && any(is.na(x))) {
-        cli::cli_abort("`x` must not contain NA values.", call = caller_env())
+        abort(
+          sprintf("`%s` can't contain NA values.", arg),
+          arg = arg,
+          call = call
+        )
       }
+
       return(invisible(NULL))
     }
 
@@ -481,12 +482,10 @@ check_character <- function(x,
     }
   }
 
-
   stop_input_type(
     x,
     "a character vector",
     ...,
-    allow_na = allow_na,
     allow_null = allow_null,
     arg = arg,
     call = call
