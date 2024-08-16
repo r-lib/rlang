@@ -9,6 +9,9 @@
 #
 # ## Changelog
 #
+# 2024-08-15:
+# - `check_character()` gains an `allow_na` argument (@martaalcalde, #1724)
+#
 # 2023-03-13:
 # - Improved error messages of number checkers (@teunbrand)
 # - Added `allow_infinite` argument to `check_number_whole()` (@mgirlich).
@@ -456,6 +459,8 @@ check_formula <- function(x,
 
 
 # Vectors -----------------------------------------------------------------
+
+# TODO: Figure out what to do with logical `NA` and `allow_na = TRUE`
 
 check_character <- function(x,
                             ...,
