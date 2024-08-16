@@ -450,6 +450,12 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a character vector or `NULL`, not a list.
+    Code
+      err(checker(c("a", NA), check_character, allow_na = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` can't contain NA values.
 
 # `check_logical()` checks
 
