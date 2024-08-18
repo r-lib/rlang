@@ -167,7 +167,6 @@ test_that("`check_character()` checks", {
     err(checker(list("foo", "bar"), check_character, allow_null = TRUE))
     err(checker(c("a", NA), check_character, allow_na = FALSE))
     err(checker(character(0), check_character, allow_empty = FALSE))
-
   })
 })
 
