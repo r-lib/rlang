@@ -476,7 +476,7 @@ check_character <- function(x,
 
   what <- "a character vector"  
   if (min_length > 1) {
-    what <- paste0(what, "of length greater or equal to", min_length) 
+    what <- paste(what, "of length greater or equal to", min_length) 
   }
 
   stop_input_type(
