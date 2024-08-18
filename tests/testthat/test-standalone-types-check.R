@@ -166,6 +166,8 @@ test_that("`check_character()` checks", {
     err(checker(1, check_character))
     err(checker(list("foo", "bar"), check_character, allow_null = TRUE))
     err(checker(c("a", NA), check_character, allow_na = FALSE))
+    err(checker(character(0), check_character, allow_empty = FALSE))
+
   })
 })
 
@@ -183,6 +185,8 @@ test_that("`check_logical()` checks", {
     err(checker(NA_integer_, check_logical))
     err(checker(1, check_logical))
     err(checker(list("foo", "bar"), check_logical, allow_null = TRUE))
+    err(checker(logical(0), check_logical, allow_empty = FALSE))
+
   })
 })
 
