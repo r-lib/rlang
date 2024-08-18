@@ -85,9 +85,7 @@ explicitly enable \verb{!!!}. However, many functions implement \link[=list2]{dy
 #> 2     1 b    
 #> 3     2 a    
 #> 4     2 b
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 xs <- list(x = 1:2, y = c("a", "b"))
 tidyr::expand_grid(!!!xs)
 #> # A tibble: 4 x 2
@@ -177,9 +175,7 @@ box.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{n_args(1, 2)
 #> [1] 2
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 n_args(!!!mtcars)
 #> [1] 11
 }\if{html}{\out{</div>}}

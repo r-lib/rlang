@@ -153,6 +153,7 @@ test_that("`check_environment()` checks", {
 test_that("`check_character()` checks", {
   expect_null(check_character(""))
   expect_null(check_character(na_chr))
+  expect_null(check_character(c("a", NA)))
   expect_null(check_character(chr()))
   expect_null(check_character("foo"))
   expect_null(check_character(letters))
@@ -164,6 +165,7 @@ test_that("`check_character()` checks", {
     err(checker(NA, check_character))
     err(checker(1, check_character))
     err(checker(list("foo", "bar"), check_character, allow_null = TRUE))
+    err(checker(c("a", NA), check_character, allow_na = FALSE))
   })
 })
 

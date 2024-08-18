@@ -47,9 +47,7 @@ For instance, here is how to create an automatic name for a defused argument usi
 
 f(cyl)
 #> [1] "cyl"
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 f(1 + 1)
 #> [1] "1 + 1"
 }\if{html}{\out{</div>}}
@@ -96,9 +94,7 @@ Symbolise a single string with \code{\link[=sym]{sym()}} or \code{\link[=data_sy
 
 sym(var)
 #> cyl
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 data_sym(var)
 #> .data$cyl
 }\if{html}{\out{</div>}}
@@ -113,9 +109,7 @@ syms(vars)
 #> 
 #> [[2]]
 #> am
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 data_syms(vars)
 #> [[1]]
 #> .data$cyl

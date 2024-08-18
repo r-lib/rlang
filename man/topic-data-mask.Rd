@@ -9,16 +9,12 @@ Data-masking is a distinctive feature of R whereby programming is performed dire
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Unmasked programming
 mean(mtcars$cyl + mtcars$am)
 #> [1] 6.59375
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Referring to columns is an error - Where is the data?
 mean(cyl + am)
 #> Error:
 #> ! object 'cyl' not found
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Data-masking
 with(mtcars, mean(cyl + am))
 #> [1] 6.59375
@@ -118,9 +114,7 @@ Data-masking relies on three language features:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{expr(1 + 1)
 #> 1 + 1
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 eval(expr(1 + 1))
 #> [1] 2
 }\if{html}{\out{</div>}}

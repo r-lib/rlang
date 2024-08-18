@@ -6,6 +6,8 @@
 * `env_unlock()` is now defunct because recent versions of R no long
   make it possible to unlock an environment (#1705). Make sure to use an
   up-to-date version of pkgload (>= 1.4.0) following this change.
+  
+* `is_dictionaryish()` now will return TRUE for NULL (@ilovemane, #1712).
 
 
 # rlang 1.1.4

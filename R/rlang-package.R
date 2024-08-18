@@ -18,6 +18,3 @@ compiled_by_gcc <- function() {
 #' @rawNamespace export(ffi_standalone_is_bool_1.0.7)
 #' @rawNamespace export(ffi_standalone_check_number_1.0.7)
 NULL
-
-# Enable pkgload to hotpatch `::` in detached namespaces
-on_load(`::` <- base::`::`)
