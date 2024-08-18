@@ -157,7 +157,7 @@ test_that("`check_character()` checks", {
   expect_null(check_character(chr()))
   expect_null(check_character("foo"))
   expect_null(check_character(letters))
-  expect_null(check_character(NULL, allow_null = TRUE))
+  expect_null(check_character(NULL, allow_null = TRUE, allow_empty = FALSE))
 
   expect_snapshot({
     err(checker(, check_character))
@@ -177,7 +177,7 @@ test_that("`check_logical()` checks", {
   expect_null(check_logical(na_lgl))
   expect_null(check_logical(lgl()))
   expect_null(check_logical(c(TRUE, FALSE, NA)))
-  expect_null(check_logical(NULL, allow_null = TRUE))
+  expect_null(check_logical(NULL, allow_null = TRUE, allow_empty = FALSE))
 
   expect_snapshot({
     err(checker(, check_logical))
