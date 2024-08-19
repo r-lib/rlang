@@ -1055,7 +1055,7 @@ call_deparse_highlight <- function(call, arg) {
     args_list <- format_arg_unquoted(args_list)
   } else {
     args_list <- call
-    args_list[[1]] <- quote(FALSE)
+    args_list[[1]] <- quote(F)
     args_list <- as_label(args_list)
     args_list <- substring(args_list, 3, nchar(args_list) - 1)
   }
