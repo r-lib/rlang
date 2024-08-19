@@ -100,7 +100,7 @@ env <- function(...) {
   if (length(dots$unnamed)) {
     parent <- dots$unnamed[[1]]
   } else {
-    parent = caller_env()
+    parent <- caller_env()
   }
 
   env <- new.env(parent = parent)

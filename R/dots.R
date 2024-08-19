@@ -432,7 +432,7 @@ homonym_enum <- function(nm, dups, nms) {
 # `x` always end up on the names of the output list,
 # unlike `as.list.factor()`.
 rlang_as_list <- function(x) {
-  if ("list" %in% class(x)) {
+  if (inherits(x, "list")) {
     # `x` explicitly inherits from `"list"`, which we take it to mean
     # that it has list storage (i.e. it's not a class like POSIXlt,
     # it's not proxied, and it's not a scalar object like `"lm"`)

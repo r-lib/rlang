@@ -299,7 +299,7 @@ vec_cast <- function(x, to) {
 
   lgl_cast <- function(x, to) {
     lgl_cast_from_num <- function(x) {
-      if (any(!x %in% c(0L, 1L))) {
+      if (!all(x %in% c(0L, 1L))) {
         stop_incompatible_cast(x, to)
       }
       as.logical(x)

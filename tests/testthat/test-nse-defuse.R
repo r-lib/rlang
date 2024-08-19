@@ -89,7 +89,7 @@ test_that("dot names are interpolated", {
 
 test_that("corner cases are handled when interpolating dot names", {
     var <- na_chr
-    expect_identical(names(quos(!!var := NULL)), "NA")
+    expect_named(quos(!!var := NULL), "NA")
 
     var <- NULL
     expect_snapshot({
@@ -139,7 +139,7 @@ test_that("can capture empty list of dots", {
 
 test_that("quosures are spliced before serialisation", {
   quosures <- quos(!! quo(foo(!! quo(bar))), .named = TRUE)
-  expect_identical(names(quosures), "foo(bar)")
+  expect_named(quosures, "foo(bar)")
 })
 
 test_that("missing arguments are captured", {
@@ -326,13 +326,13 @@ test_that("endots() requires symbols", {
 test_that("endots() returns a named list", {
   # enquos()
   fn <- function(foo, bar) enquos(foo, bar)
-  expect_identical(names(fn()), c("", ""))
+  expect_named(fn(), c("", ""))
   fn <- function(arg, ...) enquos(other = arg, ...)
   expect_identical(fn(arg = 1, b = 2), quos(other = 1, b = 2))
 
   # enexprs()
   fn <- function(foo, bar) enexprs(foo, bar)
-  expect_identical(names(fn()), c("", ""))
+  expect_named(fn(), c("", ""))
   fn <- function(arg, ...) enexprs(other = arg, ...)
   expect_identical(fn(arg = 1, b = 2), exprs(other = 1, b = 2))
 })

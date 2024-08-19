@@ -54,7 +54,7 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
     },
     list =
       if (inherits(lazy, "lazy")) {
-        lazy = new_quosure(lazy$expr, lazy$env)
+        lazy <- new_quosure(lazy$expr, lazy$env)
       }
   )
 
@@ -83,7 +83,7 @@ compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
   }
 
   named <- have_name(dots)
-  if (.named && any(!named)) {
+  if (.named && !all(named)) {
     nms <- vapply(dots[!named], function(x) expr_text(get_expr(x)), character(1))
     names(dots)[!named] <- nms
   }

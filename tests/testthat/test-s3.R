@@ -90,7 +90,7 @@ test_that("can pass additional attributes to boxes", {
 test_that("done() boxes values", {
   expect_true(is_done_box(done(3)))
   expect_identical(unbox(done(3)), 3)
-  expect_identical(done(3) %@% empty, FALSE)
+  expect_false(done(3) %@% empty)
 })
 
 test_that("done() can be empty", {
@@ -100,7 +100,7 @@ test_that("done() can be empty", {
 
   expect_true(is_done_box(empty))
   expect_s3_class(empty, "rlang_box_done")
-  expect_identical(empty %@% empty, TRUE)
+  expect_true(empty %@% empty)
 
   expect_true(is_done_box(empty, empty = TRUE))
   expect_false(is_done_box(empty, empty = FALSE))

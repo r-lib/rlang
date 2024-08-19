@@ -118,7 +118,7 @@ is_dictionaryish <- function(x) {
     return(!is.null(x))
   }
 
-  is_named(x) && !any(duplicated(names(x)))
+  is_named(x) && !anyDuplicated(names(x)) > 0
 }
 
 
