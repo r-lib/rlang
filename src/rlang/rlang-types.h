@@ -117,5 +117,8 @@ struct r_lazy {
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 
 #define RLANG_SET_ENCLOS(x, v) SETCDR(x, v)
+#define RLANG_SET_FORMALS(x, v) SETCAR(x, v)
+#define RLANG_SET_BODY(x, v) SETCDR(x, v)
+#define RLANG_SET_CLOENV(x, v) SET_TAG(x, v)
 
 #endif
