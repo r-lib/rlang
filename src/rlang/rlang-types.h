@@ -114,8 +114,8 @@ struct r_lazy {
     FREE(1);                                    \
   } while (0)
 
-
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 
+#define RLANG_SET_ENCLOS(x, v) SETCDR(x, v)
 
 #endif
