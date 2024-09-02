@@ -477,10 +477,10 @@ r_obj* ffi_env_poke_parent(r_obj* env, r_obj* new_parent) {
 }
 
 r_obj* ffi_env_frame(r_obj* env) {
-  return FRAME(env);
+  return RLANG_FRAME(env);
 }
 r_obj* ffi_env_hash_table(r_obj* env) {
-  return HASHTAB(env);
+  return RLANG_HASHTAB(env);
 }
 
 r_obj* ffi_env_inherits(r_obj* env, r_obj* ancestor) {
@@ -771,15 +771,15 @@ r_obj* rlang_get_promise(r_obj* x, r_obj* env) {
 
 r_obj* ffi_promise_expr(r_obj* x, r_obj* env) {
   r_obj* prom = rlang_get_promise(x, env);
-  return PREXPR(prom);
+  return RLANG_PREXPR(prom);
 }
 r_obj* ffi_promise_env(r_obj* x, r_obj* env) {
   r_obj* prom = rlang_get_promise(x, env);
-  return PRENV(prom);
+  return RLANG_PRENV(prom);
 }
 r_obj* ffi_promise_value(r_obj* x, r_obj* env) {
   r_obj* prom = rlang_get_promise(x, env);
-  r_obj* value = PRVALUE(prom);
+  r_obj* value = RLANG_PRVALUE(prom);
   if (value == r_syms.unbound) {
     return r_sym("R_UnboundValue");
   } else {
