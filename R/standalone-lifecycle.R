@@ -34,6 +34,10 @@
 #
 # - Soft-namespaced private objects.
 #
+# 2024-09-27
+#
+# - Removed call to `glue::glue()` in `.rlang_lifecycle_verbosity()`
+#
 # nocov start
 
 
@@ -235,12 +239,10 @@ with_lifecycle_errors <- function(expr) {
 
   if (!rlang::is_string(opt, c("quiet", "default", "warning", "error"))) {
     options(lifecycle_verbosity = "default")
-    rlang::warn(glue::glue(
-      "
-      The `lifecycle_verbosity` option must be set to one of:
-      \"quiet\", \"default\", \"warning\", or \"error\".
-      Resetting to \"default\".
-      "
+    rlang::warn(paste(
+      "The `lifecycle_verbosity` option must be set to one of:",
+      '"quiet", "default", "warning", or "error".',
+      'Resetting to "default".'
     ))
   }
 
