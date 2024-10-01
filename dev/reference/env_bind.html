@@ -248,13 +248,13 @@ other words, <code>env_bind()</code> and its variants have side effects.</p>
 <span class="r-in"><span><span class="co"># You can remove bindings by supplying zap sentinels:</span></span></span>
 <span class="r-in"><span><span class="fu">env_bind</span><span class="op">(</span><span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span>, foo <span class="op">=</span> <span class="fu"><a href="zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir, enclos) : object 'foo' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : object 'foo' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Unquote-splice a named list of zaps</span></span></span>
 <span class="r-in"><span><span class="va">zaps</span> <span class="op">&lt;-</span> <span class="fu"><a href="rep_along.html">rep_named</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foo"</span>, <span class="st">"bar"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="zap.html">zap</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">env_bind</span><span class="op">(</span><span class="fu"><a href="stack.html">current_env</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">zaps</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="va">bar</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir, enclos) : object 'bar' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : object 'bar' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># It is most useful to change other environments:</span></span></span>
 <span class="r-in"><span><span class="va">my_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -384,7 +384,7 @@ other words, <code>env_bind()</code> and its variants have side effects.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
   </div></footer></body></html>

@@ -267,27 +267,31 @@ capture context.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 16. </span>                  └─pkgdown:::highlight_examples(code, topic, env = env)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 17. </span>                    └─<span style="font-weight: bold;">downlit</span>::evaluate_and_highlight(...)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 18. </span>                      └─<span style="font-weight: bold;">evaluate</span>::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 19. </span>                        └─evaluate:::evaluate_call(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 20. </span>                          ├─evaluate (local) timing_fn(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 21. </span>                          ├─evaluate (local) handle(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 22. </span>                          │ └─<span style="font-weight: bold;">base</span>::try(f, silent = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 23. </span>                          │   └─base::tryCatch(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 24. </span>                          │     └─base (local) tryCatchList(expr, classes, parentenv, handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 25. </span>                          │       └─base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 26. </span>                          │         └─base (local) doTryCatch(return(expr), name, parentenv, handler)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 27. </span>                          ├─base::withCallingHandlers(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 28. </span>                          ├─base::withVisible(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 29. </span>                          └─<span style="font-weight: bold;">evaluate</span>:::eval_with_user_handlers(expr, envir, enclos, user_handlers)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 30. </span>                            └─<span style="font-weight: bold;">base</span>::eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 31. </span>                              └─base::eval(expr, envir, enclos)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 32. </span>                                ├─base::source(conn, echo = TRUE, local = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 33. </span>                                │ ├─base::withVisible(eval(ei, envir))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 34. </span>                                │ └─base::eval(ei, envir)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 35. </span>                                │   └─base::eval(ei, envir)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 36. </span>                                ├─base::summary(f())</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 37. </span>                                └─f()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 38. </span>                                  └─g()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 39. </span>                                    └─h()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 19. </span>                        ├─<span style="font-weight: bold;">base</span>::withRestarts(...)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 20. </span>                        │ └─base (local) withRestartList(expr, restarts)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 21. </span>                        │   ├─base (local) withOneRestart(withRestartList(expr, restarts[-nr]), restarts[[nr]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 22. </span>                        │   │ └─base (local) doWithOneRestart(return(expr), restart)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 23. </span>                        │   └─base (local) withRestartList(expr, restarts[-nr])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 24. </span>                        │     ├─base (local) withOneRestart(withRestartList(expr, restarts[-nr]), restarts[[nr]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 25. </span>                        │     │ └─base (local) doWithOneRestart(return(expr), restart)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 26. </span>                        │     └─base (local) withRestartList(expr, restarts[-nr])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 27. </span>                        │       └─base (local) withOneRestart(expr, restarts[[1L]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 28. </span>                        │         └─base (local) doWithOneRestart(return(expr), restart)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 29. </span>                        ├─<span style="font-weight: bold;">evaluate</span>:::with_handlers(...)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 30. </span>                        │ ├─<span style="font-weight: bold;">base</span>::eval(call)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 31. </span>                        │ │ └─base::eval(call)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 32. </span>                        │ └─base::withCallingHandlers(...)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 33. </span>                        ├─base::withVisible(eval(expr, envir))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 34. </span>                        └─base::eval(expr, envir)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 35. </span>                          └─base::eval(expr, envir)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 36. </span>                            ├─base::source(conn, echo = TRUE, local = TRUE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 37. </span>                            │ ├─base::withVisible(eval(ei, envir))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 38. </span>                            │ └─base::eval(ei, envir)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 39. </span>                            │   └─base::eval(ei, envir)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 40. </span>                            ├─base::summary(f())</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 41. </span>                            └─f()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 42. </span>                              └─g()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> 43. </span>                                └─h()</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">close</a></span><span class="op">(</span><span class="va">conn</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To automatically strip this off, specify which frame should be</span></span></span>
@@ -319,7 +323,7 @@ capture context.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
   </div></footer></body></html>
