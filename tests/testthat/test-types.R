@@ -25,7 +25,7 @@ test_that("is_integerish() heeds type requirement", {
   for (n in 0:2) {
     expect_true(is_integerish(integer(n)))
     expect_true(is_integerish(double(n)))
-    expect_false(is_integerish(double(n + 1) + .000001))
+    expect_false(is_integerish(double(n + 1) + 0.000001))
   }
 
   types <- c("logical", "complex", "character", "expression", "list", "raw")

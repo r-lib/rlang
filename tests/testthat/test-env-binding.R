@@ -403,7 +403,7 @@ test_that("env_poke() doesn't warn when unrepresentable characters are serialise
 
 test_that("new_environment() supports non-list data", {
   env <- new_environment(c(a = 1))
-  expect_equal(typeof(env), "environment")
+  expect_type(env, "environment")
   expect_equal(env$a, 1)
 })
 

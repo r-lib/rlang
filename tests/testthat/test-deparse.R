@@ -34,8 +34,8 @@ test_that("line_push() strips ANSI codes before computing overflow", {
   if (!has_ansi()) {
     skip("test needs cli")
   }
-  expect_identical(length(line_push("foo", open_blue(), width = 3L)), 2L)
-  expect_identical(length(line_push("foo", open_blue(), width = 3L, has_colour = TRUE)), 1L)
+  expect_length(line_push("foo", open_blue(), width = 3L), 2L)
+  expect_length(line_push("foo", open_blue(), width = 3L, has_colour = TRUE), 1L)
 })
 
 test_that("can push several lines (useful for default base deparser)", {
@@ -364,7 +364,7 @@ test_that("expr_text() deparses empty arguments", {
 test_that("expr_name() deparses empty arguments", {
   expect_identical(expr_name(expr()), "")
   expect_identical(quo_name(quo()), "")
-  expect_identical(names(quos_auto_name(quos(, ))), "<empty>")
+  expect_named(quos_auto_name(quos(, )), "<empty>")
   expect_identical(as_label(expr()), "<empty>")
 })
 
