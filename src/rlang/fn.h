@@ -12,7 +12,7 @@ r_obj* r_fn_body(r_obj* fn) {
 }
 static inline
 void r_fn_poke_body(r_obj* fn, r_obj* body) {
-  SET_BODY(fn, body);
+  RLANG_SET_BODY(fn, body);
 }
 
 static inline
@@ -21,15 +21,15 @@ r_obj* r_fn_env(r_obj* fn) {
 }
 static inline
 void r_fn_poke_env(r_obj* fn, r_obj* env) {
-  SET_CLOENV(fn, env);
+  RLANG_SET_CLOENV(fn, env);
 }
 
 static inline
 r_obj* r_new_function(r_obj* formals, r_obj* body, r_obj* env) {
   SEXP fn = Rf_allocSExp(R_TYPE_closure);
-  SET_FORMALS(fn, formals);
-  SET_BODY(fn, body);
-  SET_CLOENV(fn, env);
+  RLANG_SET_FORMALS(fn, formals);
+  RLANG_SET_BODY(fn, body);
+  RLANG_SET_CLOENV(fn, env);
   return fn;
 }
 
