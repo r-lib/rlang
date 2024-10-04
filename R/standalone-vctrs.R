@@ -419,7 +419,7 @@ vec_ptype_common <- function(xs, ptype = NULL) {
   if (length(xs) == 1) {
     out <- vec_ptype(xs[[1]])
   } else {
-    xs <- map(xs, vec_ptype)
+    xs <- lapply(xs, vec_ptype)
     out <- Reduce(vec_ptype2, xs)
   }
 
