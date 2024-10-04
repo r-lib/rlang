@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-vctrs.R
-# last-updated: 2021-08-27
+# last-updated: 2024-10-04
 # license: https://unlicense.org
 # ---
 
