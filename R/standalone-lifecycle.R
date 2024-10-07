@@ -1,8 +1,9 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-lifecycle.R
-# last-updated: 2023-02-23
+# last-updated: 2024-10-05
 # license: https://unlicense.org
+# dependencies: standalone-cli.R
 # imports: rlang (>= 1.0.0)
 # ---
 #
@@ -13,10 +14,17 @@
 #
 # ## Changelog
 #
+# 2024-09-27
+#
+# - Depends on `standalone-cli.R` instead of the cli package.
+#
+# 2024-09-27
+#
+# - Removed call to `glue::glue()` in `.rlang_lifecycle_verbosity()`
+#
 # 2023-02-23
 #
 # - Updated the API and internals to match modern lifecycle tools.
-#
 #
 # 2021-04-19
 #
@@ -33,10 +41,6 @@
 #   images in your package.
 #
 # - Soft-namespaced private objects.
-#
-# 2024-09-27
-#
-# - Removed call to `glue::glue()` in `.rlang_lifecycle_verbosity()`
 #
 # nocov start
 
@@ -170,7 +174,7 @@ deprecate_warn <- function(msg,
 }
 
 deprecate_stop <- function(msg) {
-  msg <- cli::format_error(msg)
+  msg <- format_error(msg)
   .rlang_lifecycle_signal_stage(msg, "deprecated")
 
   stop(rlang::cnd(
