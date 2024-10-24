@@ -119,9 +119,8 @@ test_that("obj_type_friendly() handles scalars", {
     vector = "a list",
     vector_length = "a list of length 1"
   ))
-
-  expect_true(all(friendly_types(matrix(NA)) == "a logical matrix"))
-  expect_true(all(friendly_types(matrix(1)) == "a double matrix"))
+  expect_setequal(friendly_types(matrix(NA)), "a logical matrix")
+  expect_setequal(friendly_types(matrix(1)), "a double matrix")
 })
 
 test_that("obj_type_friendly() handles empty vectors", {
@@ -171,7 +170,7 @@ test_that("obj_type_friendly() handles empty vectors", {
 
 test_that("obj_type_friendly() handles NULL", {
   expect_true(all(friendly_types(NULL, vector = FALSE) == "`NULL`"))
-  expect_snapshot((expect_error(friendly_types(NULL))))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, friendly_types(NULL))
 })
 
 test_that("obj_type_friendly() handles NaN and infinities", {

@@ -14,9 +14,9 @@ test_that("names2<- doesn't add missing values (#1301)", {
 })
 
 test_that("inputs must be valid", {
-  expect_snapshot({
-    (expect_error(set_names(environment())))
-    (expect_error(set_names(1:10, letters[1:4])))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    set_names(environment())
+    set_names(1:10, letters[1:4])
   })
 })
 
@@ -137,7 +137,7 @@ test_that("can zap_srcref() on functions with `[[` methods", {
     `[[<-.rlang:::not_subsettable` = function(...) stop("Can't subset!")
   )
   fn <- structure(quote(function() NULL), class = "rlang:::not_subsettable")
-  expect_error(zap_srcref(fn), NA)
+  expect_no_error(zap_srcref(fn))
 })
 
 test_that("set_names() recycles names of size 1", {
@@ -184,7 +184,7 @@ test_that("zap_srcref() works on calls", {
   call <- f()
 
   expect_null(attributes(zap_srcref(call)))
-  expect_true("srcref" %in% names(attributes(call)))
+  expect_contains(names(attributes(call)), "srcref")
 })
 
 test_that("is_dictionaryish return true if is NULL", {

@@ -1,9 +1,8 @@
 # error if dots not used by another function
 
     Code
-      (expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused"))
-    Output
-      <error/rlib_error_dots_unused>
+      f(x = 10, c = 3)
+    Condition <rlib_error_dots_unused>
       Error in `f()`:
       ! Arguments in `...` must be used.
       x Problematic argument:
@@ -25,17 +24,15 @@
 # error if if dots not empty
 
     Code
-      (expect_error(f(xy = 4), class = "rlib_error_dots_nonempty"))
-    Output
-      <error/rlib_error_dots_nonempty>
+      f(xy = 4)
+    Condition <rlib_error_dots_nonempty>
       Error in `f()`:
       ! `...` must be empty.
       x Problematic argument:
       * xy = 4
     Code
-      (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
-    Output
-      <error/rlib_error_dots_nonempty>
+      f0(xy = 4)
+    Condition <rlib_error_dots_nonempty>
       Error in `f0()`:
       ! `...` must be empty.
       x Problematic argument:
@@ -115,9 +112,8 @@
 # check_dots_empty() allows trailing missing arg (#1390)
 
     Code
-      (expect_error(fn(a = 1, b = )))
-    Output
-      <error/rlib_error_dots_nonempty>
+      fn(a = 1, b = )
+    Condition <rlib_error_dots_nonempty>
       Error in `fn()`:
       ! `...` must be empty.
       x Problematic argument:

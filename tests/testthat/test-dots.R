@@ -66,9 +66,9 @@ test_that("dots_values() handles forced dots", {
 })
 
 test_that("empty arguments trigger meaningful error", {
-  expect_snapshot({
-    (expect_error(list2(1, , 3), "empty"))
-    (expect_error(dots_list(1, , 3), "empty"))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    list2(1, , 3)
+    dots_list(1, , 3)
   })
 })
 

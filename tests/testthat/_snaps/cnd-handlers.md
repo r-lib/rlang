@@ -1,9 +1,8 @@
 # try_fetch() checks inputs
 
     Code
-      (expect_error(try_fetch(NULL, function(...) NULL)))
-    Output
-      <error/rlang_error>
+      try_fetch(NULL, function(...) NULL)
+    Condition <rlang_error>
       Error in `try_fetch()`:
       ! `...` must be named with condition classes.
 

@@ -56,10 +56,10 @@ test_that("format_onerror_backtrace handles empty and size 1 traces", {
   local_options(rlang_backtrace_on_error = "branch")
 
   trace <- new_trace(list(), int())
-  expect_identical(format_onerror_backtrace(trace), NULL)
+  expect_null(format_onerror_backtrace(trace))
 
   trace <- new_trace(list(quote(foo)), int(0))
-  expect_identical(format_onerror_backtrace(trace), NULL)
+  expect_null(format_onerror_backtrace(trace))
 
   trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1))
   expect_match(format_onerror_backtrace(error_cnd(trace = trace)), "foo.*bar")

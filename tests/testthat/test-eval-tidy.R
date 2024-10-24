@@ -513,14 +513,14 @@ test_that("eval_tidy() has dimnames method (#1265)", {
 })
 
 test_that("fake pronoun fails informatively", {
-  expect_snapshot({
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
     "Fake pronouns"
 
     f <- function() .data$foo
-    (expect_error(f(), "subset"))
+    f()
 
     f <- function() .data[["foo"]]
-    (expect_error(f(), "subset"))
+    f()
   })
 })
 

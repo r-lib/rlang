@@ -647,21 +647,21 @@ test_that("englue() returns a bare string", {
 })
 
 test_that("englue() has good error messages (#1531)", {
-  expect_snapshot({
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
     fn <- function(x) englue(c("a", "b"))
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) englue(env())
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) glue_embrace("{{ x }}_foo")
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) englue("{{ x }}_foo")
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) list2("{{ x }}_foo" := NULL)
-    (expect_error(fn()))
+    fn()
   })
 })
 
@@ -683,10 +683,10 @@ test_that("can wrap englue() (#1565)", {
   expect_equal(fn(bar), "bar_QUX_FOO")
   expect_equal(my_englue("{'foo'}"), "foo")
 
-  expect_snapshot({
-    (expect_error(my_englue(c("a", "b"))))
-    (expect_error(my_englue(env())))
-    (expect_error(fn()))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    my_englue(c("a", "b"))
+    my_englue(env())
+    fn()
   })
 })
 
@@ -824,11 +824,11 @@ test_that("englue() works", {
 })
 
 test_that("englue() checks for the size of its result (#1492)", {
-  expect_snapshot({
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
     fn <- function(x) englue("{{ x }} {NULL}")
-    (expect_error(fn(foo)))
+    fn(foo)
 
     fn <- function(x) list2("{{ x }} {NULL}" := NULL)
-    (expect_error(fn(foo)))
+    fn(foo)
   })
 })
