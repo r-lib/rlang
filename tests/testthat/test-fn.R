@@ -314,24 +314,24 @@ test_that("as_function() has nice errors", {
     as_function(my_arg)
   }
 
-  expect_snapshot({
-    (expect_error(as_function(1)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    as_function(1)
 
-    (expect_error(as_function(1, arg = "foo")))
+    as_function(1, arg = "foo")
 
-    (expect_error(my_function(1 + 2)))
+    my_function(1 + 2)
 
-    (expect_error(my_function(1)))
+    my_function(1)
 
-    (expect_error(my_function(a ~ b)))
+    my_function(a ~ b)
   })
 })
 
 test_that("check inputs in function accessors", {
-  expect_snapshot({
-    (expect_error(fn_fmls(1)))
-    (expect_error(fn_body(1)))
-    (expect_error(fn_env(1)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    fn_fmls(1)
+    fn_body(1)
+    fn_env(1)
   })
 })
 

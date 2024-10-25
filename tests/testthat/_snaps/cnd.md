@@ -503,21 +503,18 @@
 # cnd ctors check arguments
 
     Code
-      (expect_error(warning_cnd(class = list())))
-    Output
-      <error/rlang_error>
+      warning_cnd(class = list())
+    Condition <rlang_error>
       Error in `warning_cnd()`:
       ! `class` must be a character vector, not a list.
     Code
-      (expect_error(error_cnd(class = list())))
-    Output
-      <error/rlang_error>
+      error_cnd(class = list())
+    Condition <rlang_error>
       Error in `error_cnd()`:
       ! `class` must be a character vector, not a list.
     Code
-      (expect_error(message_cnd(message = 1)))
-    Output
-      <error/rlang_error>
+      message_cnd(message = 1)
+    Condition <rlang_error>
       Error in `message_cnd()`:
       ! `message` must be a character vector, not the number 1.
 

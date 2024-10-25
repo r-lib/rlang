@@ -6,19 +6,16 @@ test_that("check_installed() fails if packages are not installed", {
   local_options(rlang_interactive = FALSE)
   local_error_call(call("foo"))
 
-  expect_snapshot({
-    (expect_error(check_installed("rlangFoo")))
-    (expect_error(check_installed(c("rlangFoo", "rlangBar"))))
-    (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.")))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    check_installed("rlangFoo")
+    check_installed(c("rlangFoo", "rlangBar"))
+    check_installed(c("rlangFoo", "rlangBar"), "to proceed.")
   })
 })
 
 test_that("is_installed() checks minimal versions", {
-  expect_snapshot({
-    (expect_error(
-      is_installed(c("rlang", "testthat"), version = "0.1"),
-      "the same length"
-    ))
+  expect_snapshot(error = TRUE, cnd_clas = TRUE, {
+    is_installed(c("rlang", "testthat"), version = "0.1")
   })
   expect_true(is_installed(c("rlang", "testthat"), version = c("0.1", "0.1")))
   expect_false(is_installed(c("rlang", "testthat"), version = c("100.1", "0.1")))
@@ -39,21 +36,21 @@ test_that("check_installed() checks minimal versions", {
 
   expect_null(check_installed(c("rlang (>= 0.1)", "testthat (>= 0.1)")))
 
-  expect_snapshot({
-    (expect_error(check_installed(c("rlang", "testthat"), version = "0.1")))
-    (expect_error(check_installed("rlangFoo", version = "1.0")))
-    (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c("1.0", NA))))
-    (expect_error(check_installed(c("rlangFoo", "rlangBar"), version = c(NA, "2.0"))))
-    (expect_error(check_installed(c("rlangFoo", "rlangBar"), "to proceed.", version = c("1.0", "2.0"))))
-    (expect_error(check_installed(c("rlangFoo (>= 1.0)", "rlangBar (> 2.0)"), "to proceed.")))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    check_installed(c("rlang", "testthat"), version = "0.1")
+    check_installed("rlangFoo", version = "1.0")
+    check_installed(c("rlangFoo", "rlangBar"), version = c("1.0", NA))
+    check_installed(c("rlangFoo", "rlangBar"), version = c(NA, "2.0"))
+    check_installed(c("rlangFoo", "rlangBar"), "to proceed.", version = c("1.0", "2.0"))
+    check_installed(c("rlangFoo (>= 1.0)", "rlangBar (> 2.0)"), "to proceed.")
   })
 })
 
 test_that("< requirements can't be recovered with restart", {
   local_options(rlang_interactive = TRUE)
   local_error_call(call("foo"))
-  expect_snapshot({
-    (expect_error(check_installed("rlang (< 0.1)")))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    check_installed("rlang (< 0.1)")
   })
 })
 
@@ -132,11 +129,11 @@ test_that("can handle check-installed", {
 })
 
 test_that("`pkg` is type-checked", {
-  expect_snapshot({
-    (expect_error(is_installed(1)))
-    (expect_error(is_installed(na_chr)))
-    (expect_error(check_installed(c("foo", ""))))
-    (expect_error(check_installed(c("foo", "bar"), version = c("1", ""))))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    is_installed(1)
+    is_installed(na_chr)
+    check_installed(c("foo", ""))
+    check_installed(c("foo", "bar"), version = c("1", ""))
   })
 })
 
@@ -170,10 +167,10 @@ test_that("pkg_version_info() parses info", {
     ver = c("1.0", "2.0", "3.0", "4.0", "3.0")
   ))
 
-  expect_snapshot({
-    (expect_error(pkg_version_info("foo (1.0)"), "parse"))
-    (expect_error(pkg_version_info("foo (>= 1.0)", "1.0"), "both"))
-    (expect_error(pkg_version_info(c("foo (!= 1.0)"))))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    pkg_version_info("foo (1.0)")
+    pkg_version_info("foo (>= 1.0)", "1.0")
+    pkg_version_info(c("foo (!= 1.0)"))
   })
 })
 
@@ -189,19 +186,19 @@ test_that("pkg_version_info() supports `cmp`", {
     ver = c("1.0", "2.0", "3.0", "3.1")
   ))
 
-  expect_snapshot({
-    err(pkg_version_info(c("foo", "bar", "baz"), NULL, c(NA, NA, ">=")))
-    err(pkg_version_info(c("foo", "bar", "baz"), c("1", "2", NA), c(NA, NA, ">=")))
-    err(pkg_version_info(c("foo", "bar (>= 2.0)"), c(NA, "2.0"), c(NA, ">=")))
-    err(pkg_version_info("foo", "1.0", "!="))
-    err(pkg_version_info("bar (== 1.0)", "1.0", "=="))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    pkg_version_info(c("foo", "bar", "baz"), NULL, c(NA, NA, ">="))
+    pkg_version_info(c("foo", "bar", "baz"), c("1", "2", NA), c(NA, NA, ">="))
+    pkg_version_info(c("foo", "bar (>= 2.0)"), c(NA, "2.0"), c(NA, ">="))
+    pkg_version_info("foo", "1.0", "!=")
+    pkg_version_info("bar (== 1.0)", "1.0", "==")
   })
 })
 
 test_that("`action` is checked", {
-  expect_snapshot({
-    err(check_installed("foo", action = "identity"))
-    err(check_installed("foo", action = identity))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    check_installed("foo", action = "identity")
+    check_installed("foo", action = identity)
   })
 })
 

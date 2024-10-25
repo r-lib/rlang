@@ -331,10 +331,10 @@ test_that("warnings and messages have `summary()` methods", {
 })
 
 test_that("cnd ctors check arguments", {
-  expect_snapshot({
-    (expect_error(warning_cnd(class = list())))
-    (expect_error(error_cnd(class = list())))
-    (expect_error(message_cnd(message = 1)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    warning_cnd(class = list())
+    error_cnd(class = list())
+    message_cnd(message = 1)
   })
 })
 

@@ -183,8 +183,8 @@ test_that("messages can be silenced", {
     rlib_message_verbosity = "quiet",
     rlib_warning_verbosity = "quiet"
   )
-  expect_message(inform("foo"), NA)
-  expect_warning(warn("foo"), NA)
+  expect_no_message(inform("foo"))
+  expect_no_warning(warn("foo"))
 })
 
 test_that("`.frequency_id` is mandatory", {
@@ -283,11 +283,11 @@ test_that("can pass `use_cli_format` as condition field", {
 })
 
 test_that("signal functions check inputs", {
-  expect_snapshot({
-    (expect_error(abort(error_cnd("foo"))))
-    (expect_error(inform(error_cnd("foo"))))
-    (expect_error(warn(class = error_cnd("foo"))))
-    (expect_error(abort("foo", call = base::call)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    abort(error_cnd("foo"))
+    inform(error_cnd("foo"))
+    warn(class = error_cnd("foo"))
+    abort("foo", call = base::call)
   })
 })
 

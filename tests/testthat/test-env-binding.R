@@ -153,9 +153,9 @@ test_that("env_get() and env_get_list() accept default value", {
 })
 
 test_that("env_get() without default fails", {
-  expect_snapshot({
-    (expect_error(env_get(env(), "foobar")))
-    (expect_error(env_get_list(env(), "foobar")))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    env_get(env(), "foobar")
+    env_get_list(env(), "foobar")
   })
 
   fn <- function(env, default) env_get(env, "_foobar", default = default)

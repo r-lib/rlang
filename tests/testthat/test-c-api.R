@@ -1211,9 +1211,9 @@ test_that("re-encoding fails purposefully with any bytes", {
   bytes <- rawToChar(as.raw(0xdc))
   Encoding(bytes) <- "bytes"
 
-  expect_snapshot(
-    (expect_error(r_obj_encode_utf8(bytes)))
-  )
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    r_obj_encode_utf8(bytes)
+  })
 
   for (enc in test_encodings()) {
     expect_snapshot(

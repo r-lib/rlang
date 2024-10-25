@@ -139,10 +139,10 @@ test_that("is_string() matches on string", {
 
 test_that("is_string2() matches on `empty`", {
   # Input checking
-  expect_snapshot({
-    (expect_error(is_string2("foo", empty = 1)))
-    (expect_error(is_string2("foo", empty = NA)))
-    (expect_error(is_string2("foo", "foo", empty = TRUE)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    is_string2("foo", empty = 1)
+    is_string2("foo", empty = NA)
+    is_string2("foo", "foo", empty = TRUE)
   })
 
   expect_true(is_string2("foo", empty = NULL))

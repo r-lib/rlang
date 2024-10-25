@@ -321,9 +321,9 @@ test_that("parent errors prints with bullets in all cases", {
     )
   }
 
-  expect_snapshot({
-    (expect_error(f(TRUE)))
-    (expect_error(f(FALSE)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(TRUE)
+    f(FALSE)
   })
 })
 
