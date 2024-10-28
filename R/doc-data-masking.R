@@ -34,7 +34,7 @@
 #' instead of `diamonds[diamonds$x == 0 & diamonds$y == 0 & diamonds$z == 0, ]`.
 #'
 #'
-#' # Indirection
+#' # Indirection in wrapper functions
 #'
 #' The main challenge of data masking arises when you introduce some
 #' indirection, i.e. instead of directly typing the name of a variable you
