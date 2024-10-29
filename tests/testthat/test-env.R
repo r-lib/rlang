@@ -135,8 +135,8 @@ test_that("new_environment() creates a child of the empty env", {
 })
 
 test_that("new_environment() accepts empty vectors", {
-  expect_identical(length(new_environment()), 0L)
-  expect_identical(length(new_environment(dbl())), 0L)
+  expect_length(new_environment(), 0L)
+  expect_length(new_environment(dbl()), 0L)
 })
 
 test_that("env_tail() detects sentinel", {
@@ -223,7 +223,7 @@ test_that("env_parents() stops at the sentinel if supplied", {
 
 test_that("env_parents() returns a named list", {
   env <- env(structure(env(base_env()), name = "foobar"))
-  expect_identical(names(env_parents(env)), c("foobar", "package:base", "empty"))
+  expect_named(env_parents(env), c("foobar", "package:base", "empty"))
 })
 
 test_that("can lock environments", {

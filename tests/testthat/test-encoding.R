@@ -34,5 +34,5 @@ test_that("dots names are converted to and from UTF-8 (#1218)", {
   names(call)[[2]] <- x
   out <- eval(as.call(call))
 
-  expect_equal(names(out), x)
+  expect_named(out, x)
 })

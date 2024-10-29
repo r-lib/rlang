@@ -5,7 +5,7 @@ test_that("search_envs() includes the global and base env", {
 })
 
 test_that("search_envs() returns named environments", {
-  expect_identical(names(search_envs()), c("global", search()[-1]))
+  expect_named(search_envs(), c("global", search()[-1]))
 })
 
 test_that("search_envs() returns an rlang_envs object", {
