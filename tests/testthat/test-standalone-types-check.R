@@ -157,7 +157,7 @@ test_that("`check_character()` checks", {
   expect_null(check_character(chr()))
   expect_null(check_character("foo"))
   expect_null(check_character(letters))
-  expect_null(check_character(NULL, allow_null = TRUE))
+  expect_null(check_character(NULL, allow_null = TRUE, allow_empty = FALSE))
 
   expect_snapshot({
     err(checker(, check_character))
@@ -166,6 +166,7 @@ test_that("`check_character()` checks", {
     err(checker(1, check_character))
     err(checker(list("foo", "bar"), check_character, allow_null = TRUE))
     err(checker(c("a", NA), check_character, allow_na = FALSE))
+    err(checker(character(0), check_character, allow_empty = FALSE))
   })
 })
 
@@ -175,7 +176,7 @@ test_that("`check_logical()` checks", {
   expect_null(check_logical(na_lgl))
   expect_null(check_logical(lgl()))
   expect_null(check_logical(c(TRUE, FALSE, NA)))
-  expect_null(check_logical(NULL, allow_null = TRUE))
+  expect_null(check_logical(NULL, allow_null = TRUE, allow_empty = FALSE))
 
   expect_snapshot({
     err(checker(, check_logical))
@@ -183,6 +184,7 @@ test_that("`check_logical()` checks", {
     err(checker(NA_integer_, check_logical))
     err(checker(1, check_logical))
     err(checker(list("foo", "bar"), check_logical, allow_null = TRUE))
+    err(checker(logical(0), check_logical, allow_empty = FALSE))
   })
 })
 
