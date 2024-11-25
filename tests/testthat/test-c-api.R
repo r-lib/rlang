@@ -175,7 +175,7 @@ test_that("client library passes tests", {
   return("Disabled")
 
   # Avoid installing into system library by default
-  skip_if(!nzchar(Sys.getenv("RLANG_FULL_TESTS")))
+  skip_if_not(nzchar(Sys.getenv("RLANG_FULL_TESTS")))
 
   skip_on_cran()
   skip_on_ci()
@@ -1109,7 +1109,7 @@ test_that("can push to dynamic list-of", {
 })
 
 test_that("internal error is thrown with OOB dyn-lof access", {
-  skip_if(!compiled_by_gcc())
+  skip_if_not(compiled_by_gcc())
   lof <- new_dyn_list_of("integer", 3, 2)
   expect_snapshot({
     err(lof_arr_push_back(lof, 0, 42L), "Location 0 does not exist")
