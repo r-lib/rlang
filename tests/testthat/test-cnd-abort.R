@@ -538,7 +538,7 @@ test_that("generic call is picked up in methods", {
 test_that("errors are fully displayed (parents, calls) in knitted files", {
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
-  skip_if(!rmarkdown::pandoc_available())
+  skip_if_not(rmarkdown::pandoc_available())
 
   expect_snapshot({
     writeLines(render_md("test-parent-errors.Rmd"))
