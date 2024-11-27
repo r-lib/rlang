@@ -343,7 +343,7 @@ test_that("can call `global_entrace()` in knitted documents", {
   )
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
-  skip_if(!rmarkdown::pandoc_available())
+  skip_if_not(rmarkdown::pandoc_available())
 
   entrace_lines <- render_md("test-entrace.Rmd", env = current_env())
 

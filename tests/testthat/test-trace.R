@@ -452,7 +452,7 @@ test_that("fails when `bottom` is not on the stack", {
 test_that("caught error does not display backtrace in knitted files", {
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
-  skip_if(!rmarkdown::pandoc_available())
+  skip_if_not(rmarkdown::pandoc_available())
 
   local_options(
     rlang_backtrace_on_error = NULL,
