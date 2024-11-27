@@ -34,7 +34,7 @@ r_obj* r_env_parent(r_obj* env) {
 }
 static inline
 void r_env_poke_parent(r_obj* env, r_obj* new_parent) {
-  SET_ENCLOS(env, new_parent);
+  RLANG_SET_ENCLOS(env, new_parent);
 }
 
 static inline
