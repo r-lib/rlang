@@ -3,7 +3,7 @@ test_that("poke_type() changes object type", {
   out <- withVisible(poke_type(x, "language"))
   expect_false(out$visible)
   expect_identical(out$value, x)
-  expect_identical(typeof(x), "language")
+  expect_type(x, "language")
 })
 
 test_that("can access promise properties", {

@@ -10,7 +10,7 @@ test_that("names2() fails for environments", {
 test_that("names2<- doesn't add missing values (#1301)", {
   x <- 1:3
   names2(x)[1:2] <- "foo"
-  expect_equal(names(x), c("foo", "foo", ""))
+  expect_named(x, c("foo", "foo", ""))
 })
 
 test_that("inputs must be valid", {

@@ -54,10 +54,7 @@ test_that("detect_run_starts() works", {
     detect_run_starts(chr()),
     lgl()
   )
-  expect_equal(
-    detect_run_starts("a"),
-    TRUE
-  )
+  expect_true(detect_run_starts("a"))
   expect_equal(
     detect_run_starts(NA),
     NA
