@@ -140,8 +140,6 @@ list2(!!x := 1)
 }\if{html}{\out{</div>}}
 
 Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of \code{=}.
-
-As we are now moving away from \code{\link[=injection-operator]{!!}} for common tasks, we are considering enabling glue strings with \code{=} and superseding \verb{:=} usage. Track the progress of this change in \href{https://github.com/r-lib/rlang/issues/1296}{issue 1296}.
 }
 
 \subsection{Using glue syntax in packages}{
