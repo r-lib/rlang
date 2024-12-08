@@ -42,7 +42,8 @@ See also \code{\link[=englue]{englue()}} to string-embrace outside of dynamic do
 g(1 + 1)
 #> [1] "var: 1 + 1"
 }\if{html}{\out{</div>}}
-
+}
+\section{Examples}{
 Technically, \verb{"\{\{"} \link[=topic-defuse]{defuses} a function argument, calls \code{\link[=as_label]{as_label()}} on the expression supplied as argument, and inserts the result in the string.
 \subsection{\verb{"\{"} and \verb{"\{\{"}}{
 
@@ -150,3 +151,4 @@ Since rlang does not depend directly on glue, you will have to ensure that glue 
 }\if{html}{\out{</div>}}
 }
 }
+
