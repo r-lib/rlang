@@ -333,7 +333,7 @@ test_that("warnings are resignalled", {
   )
 
   expect_s3_class(cnd, "rlang_warning")
-  expect_true(!is_null(cnd$trace))
+  expect_false(is_null(cnd$trace))
 })
 
 test_that("can call `global_entrace()` in knitted documents", {

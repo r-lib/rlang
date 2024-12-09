@@ -79,8 +79,8 @@ test_that("names are preserved", {
 
   nms <- as.character(1:3)
   x <- set_names(1:3, nms)
-  expect_identical(names(as_double(x)), nms)
-  expect_identical(names(as_list(x)), nms)
+  expect_named(as_double(x), nms)
+  expect_named(as_list(x), nms)
 })
 
 test_that("as_character() support logical NA", {

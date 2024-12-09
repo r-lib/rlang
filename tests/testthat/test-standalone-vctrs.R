@@ -191,27 +191,27 @@ test_that("vec_ptype_common() finalises unspecified type", {
 })
 
 test_that("safe casts work", {
-  expect_equal(vec_cast(NULL, logical()), NULL)
-  expect_equal(vec_cast(TRUE, logical()), TRUE)
-  expect_equal(vec_cast(1L, logical()), TRUE)
-  expect_equal(vec_cast(1, logical()), TRUE)
+  expect_null(vec_cast(NULL, logical()))
+  expect_true(vec_cast(TRUE, logical()))
+  expect_true(vec_cast(1L, logical()))
+  expect_true(vec_cast(1, logical()))
 
-  expect_equal(vec_cast(NULL, integer()), NULL)
+  expect_null(vec_cast(NULL, integer()))
   expect_equal(vec_cast(TRUE, integer()), 1L)
   expect_equal(vec_cast(1L, integer()), 1L)
   expect_equal(vec_cast(1, integer()), 1L)
 
-  expect_equal(vec_cast(NULL, double()), NULL)
+  expect_null(vec_cast(NULL, double()))
   expect_equal(vec_cast(TRUE, double()), 1L)
   expect_equal(vec_cast(1.5, double()), 1.5)
   expect_equal(vec_cast(1.5, double()), 1.5)
 
   expect_equal(vec_cast("", chr()), "")
 
-  expect_equal(vec_cast(NULL, character()), NULL)
+  expect_null(vec_cast(NULL, character()))
   expect_equal(vec_cast(NA, character()), NA_character_)
 
-  expect_equal(vec_cast(NULL, list()), NULL)
+  expect_null(vec_cast(NULL, list()))
   expect_equal(vec_cast(NA, list()), list(NULL))
   expect_equal(vec_cast(list(1L, 2L), list()), list(1L, 2L))
 })
