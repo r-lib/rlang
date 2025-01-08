@@ -1480,9 +1480,7 @@ peek_backtrace_on_error <- function() {
     return(opt)
   }
 
-  if (report_in_progress()) {
-    "branch"
-  } else if (is_interactive()) {
+  if (is_interactive()) {
     "reminder"
   } else {
     "full"
