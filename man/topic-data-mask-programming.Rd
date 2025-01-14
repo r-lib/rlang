@@ -154,9 +154,7 @@ for (var in vars) print(dplyr::summarise(mtcars, mean = mean(.data[[var]])))
 #>    mean
 #>   <dbl>
 #> 1 0.406
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 purrr::map(vars, ~ dplyr::summarise(mtcars, mean =  mean(.data[[.x]])))
 #> [[1]]
 #> # A tibble: 1 x 1
@@ -193,9 +191,7 @@ my_mean(mtcars, am)
 #>    mean
 #>   <dbl>
 #> 1  6.19
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 # Programmable
 my_mean(mtcars, tolower("CYL"))
 #> # A tibble: 1 x 1
@@ -331,17 +327,13 @@ mtcars \%>\% my_mean(cyl, carb)
 #>     cyl  carb
 #>   <dbl> <dbl>
 #> 1  6.19  2.81
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(foo = cyl, bar = carb)
 #> # A tibble: 1 x 2
 #>     foo   bar
 #>   <dbl> <dbl>
 #> 1  6.19  2.81
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(starts_with("c"), mpg:disp)
 #> # A tibble: 1 x 4
 #>     cyl  carb   mpg  disp
