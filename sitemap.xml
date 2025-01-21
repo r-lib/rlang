@@ -1,678 +1,228 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://rlang.r-lib.org/404.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/UQ.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/abort.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/are_na.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/arg_match.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/args_data_masking.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/args_dots_empty.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/args_dots_used.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/args_error_context.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_box.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_closure.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_data_mask.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_environment.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_function.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_label.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_string.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/as_utf8_character.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/bare-type-predicates.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/box.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/bytes-class.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call2.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call_args.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call_fn.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call_inspect.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call_match.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call_modify.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/call_standardise.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/caller_arg.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/catch_cnd.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/check_dots_empty.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/check_dots_empty0.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/check_dots_unnamed.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/check_dots_used.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/check_exclusive.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/check_required.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/child_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/chr_unserialise_unicode.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/cnd.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/cnd_inherits.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/cnd_message.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/cnd_muffle.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/cnd_signal.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/cnd_type.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/defusing-advanced.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dev-notes-dots.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/done.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dot-data.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dots_n.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dots_splice.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dots_values.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/duplicate.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/dyn-dots.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/embrace-operator.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/empty_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/englue.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/enquo.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/entrace.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_bind.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_binding_are_active.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_binding_lock.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_browse.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_bury.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_cache.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_clone.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_depth.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_get.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_has.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_inherits.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_is_user_facing.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_lock.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_names.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_parent.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_poke.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_print.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_unbind.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/env_unlock.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/eval_bare.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/eval_tidy.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/exec.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/expr.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/expr_interp.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/expr_label.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/expr_print.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/exprs_auto_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/f_rhs.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/f_text.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/faq-options.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/ffi_standalone_types_check.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/flatten.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/fn_body.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/fn_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/fn_fmls.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/format_error_bullets.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/format_error_call.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/friendly_type.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/get_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/global_entrace.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/global_handle.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/global_prompt_install.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/glue-operators.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/has_length.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/has_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/hash.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/inherits_any.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/inject.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/injection-operator.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/interrupt.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/invoke.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_call.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_callable.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_condition.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_copyable.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_dictionaryish.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_empty.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_environment.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_expression.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_formula.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_function.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_installed.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_integerish.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_interactive.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_lang.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_named.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_namespace.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_pairlist.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_reference.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_symbol.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_true.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/is_weakref.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/lang.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/last_error.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/last_warnings.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/list2.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/local_bindings.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/local_error_call.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/local_options.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/local_use_cli.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/missing.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/missing_arg.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/names2.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/names_inform_repair.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new-vector.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new_call.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new_formula.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new_function.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new_node.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new_quosure.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new_quosures.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/new_weakref.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/ns_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/ns_registry_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/obj_address.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/on_load.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/op-get-attr.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/op-na-default.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/op-null-default.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/pairlist2.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/parse_expr.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/prim_name.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/qq_show.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/quo_expr.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/quo_label.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/quo_squash.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/quosure-tools.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/raw_deparse_str.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/rep_along.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/return_from.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/rlang-package.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/rlang_backtrace_on_error.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/rlang_error.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/rlib_trace_spec.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/scalar-type-predicates.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/scoped_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/scoped_interactive.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/search_envs.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/seq2.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/set_attrs.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/set_expr.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/set_names.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/splice-operator.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/splice.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/stack-deprecated.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/stack.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/string.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/switch_type.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/sym.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-condition-customisation.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-condition-formatting.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-data-mask-programming.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-data-mask.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-defuse.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-double-evaluation.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-embrace-constants.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-embrace-non-args.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-error-call.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-error-chaining.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-inject-out-of-context.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-inject.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-metaprogramming.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-multiple-columns.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/topic-quosure.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/trace_back.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/try_fetch.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/type-predicates.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/type_of.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/vec_poke_n.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/vector-coercion.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/vector-construction.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/with_env.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/with_handlers.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/wref_key.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/zap.html</loc>
-  </url>
-  <url>
-    <loc>https://rlang.r-lib.org/reference/zap_srcref.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://rlang.r-lib.org/404.html</loc></url>
+<url><loc>https://rlang.r-lib.org/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://rlang.r-lib.org/LICENSE-text.html</loc></url>
+<url><loc>https://rlang.r-lib.org/LICENSE.html</loc></url>
+<url><loc>https://rlang.r-lib.org/authors.html</loc></url>
+<url><loc>https://rlang.r-lib.org/index.html</loc></url>
+<url><loc>https://rlang.r-lib.org/news/index.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/UQ.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/abort.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/are_na.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/arg_match.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/args_data_masking.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/args_dots_empty.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/args_dots_used.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/args_error_context.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_box.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_closure.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_data_mask.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_environment.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_function.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_label.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_name.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_string.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/as_utf8_character.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/bare-type-predicates.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/box.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/bytes-class.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call2.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call_args.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call_fn.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call_inspect.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call_match.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call_modify.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call_name.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/call_standardise.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/caller_arg.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/catch_cnd.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_dots_empty.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_dots_empty0.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_dots_unnamed.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_dots_used.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_exclusive.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_required.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/child_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/chr_unserialise_unicode.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/cnd.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/cnd_inherits.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/cnd_message.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/cnd_muffle.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/cnd_signal.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/cnd_type.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/defusing-advanced.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/dev-notes-dots.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/done.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/dot-data.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/dots_n.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/dots_splice.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/dots_values.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/duplicate.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/dyn-dots.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/embrace-operator.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/empty_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/englue.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/enquo.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/entrace.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_bind.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_binding_are_active.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_binding_lock.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_browse.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_bury.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_cache.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_clone.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_depth.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_get.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_has.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_inherits.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_is_user_facing.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_lock.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_name.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_names.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_parent.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_poke.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_print.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_unbind.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/env_unlock.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/eval_bare.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/eval_tidy.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/exec.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/expr.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/expr_interp.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/expr_label.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/expr_print.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/exprs_auto_name.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/f_rhs.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/f_text.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/faq-options.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/ffi_standalone_types_check.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/flatten.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/fn_body.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/fn_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/fn_fmls.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/format_error_bullets.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/format_error_call.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/friendly_type.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/get_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/global_entrace.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/global_handle.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/global_prompt_install.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/glue-operators.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/has_length.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/has_name.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/hash.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/index.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/inherits_any.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/inject.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/injection-operator.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/interrupt.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/invoke.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_call.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_callable.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_condition.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_copyable.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_dictionaryish.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_empty.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_environment.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_expression.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_formula.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_function.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_installed.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_integerish.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_interactive.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_lang.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_named.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_namespace.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_pairlist.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_reference.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_symbol.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_true.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/is_weakref.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/lang.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/last_error.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/last_warnings.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/list2.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/local_bindings.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/local_error_call.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/local_options.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/local_use_cli.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/missing.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/missing_arg.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/names2.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/names_inform_repair.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new-vector.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new_call.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new_formula.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new_function.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new_node.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new_quosure.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new_quosures.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/new_weakref.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/ns_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/ns_registry_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/obj_address.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/on_load.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/op-get-attr.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/op-na-default.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/op-null-default.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/pairlist2.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/parse_expr.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/prim_name.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/qq_show.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/quo_expr.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/quo_label.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/quo_squash.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/quosure-tools.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/raw_deparse_str.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/rep_along.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/return_from.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/rlang-package.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/rlang_backtrace_on_error.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/rlang_error.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/rlib_trace_spec.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/scalar-type-predicates.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/scoped_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/scoped_interactive.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/search_envs.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/seq2.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/set_attrs.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/set_expr.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/set_names.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/splice-operator.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/splice.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/stack-deprecated.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/stack.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/string.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/switch_type.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/sym.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-condition-customisation.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-condition-formatting.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-data-mask-programming.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-data-mask.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-defuse.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-double-evaluation.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-embrace-constants.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-embrace-non-args.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-error-call.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-error-chaining.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-inject-out-of-context.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-inject.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-metaprogramming.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-multiple-columns.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/topic-quosure.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/trace_back.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/try_fetch.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/type-predicates.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/type_of.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/vec_poke_n.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/vector-coercion.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/vector-construction.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/with_env.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/with_handlers.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/wref_key.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/zap.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/zap_srcref.html</loc></url>
 </urlset>
+
