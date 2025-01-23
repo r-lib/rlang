@@ -129,7 +129,7 @@ map_if <- function(.x, .p, .f, ...) {
 }
 
 compact <- function(.x) {
-  Filter(length, .x)
+  .x[as.logical(lengths(.x))]
 }
 
 transpose <- function(.l) {
