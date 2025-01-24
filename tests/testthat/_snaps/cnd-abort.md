@@ -1397,21 +1397,21 @@
     Output
       <error/rlang_error>
       Error:
-      ! `"f"` must be one of "foo", not "f".
+      ! `"f"` must be "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")))))
     Output
       <error/rlang_error>
       Error:
-      ! `"f"` must be one of "foo", not "f".
+      ! `"f"` must be "foo", not "f".
       i Did you mean "foo"?
     Code
       (expect_error(eval_bare(quote(arg_match0("f", "foo")), env())))
     Output
       <error/rlang_error>
       Error:
-      ! `"f"` must be one of "foo", not "f".
+      ! `"f"` must be "foo", not "f".
       i Did you mean "foo"?
 
 # error_call() and format_error_call() preserve special syntax ops
