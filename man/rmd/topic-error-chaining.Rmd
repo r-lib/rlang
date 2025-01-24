@@ -1,7 +1,9 @@
 ```{r, child = "setup.Rmd", include = FALSE}
 ```
 
-Error chaining is a mechanism for providing contextual information when an error occurs. There are multiple situations in which you might be able to provide context that is helpful to quickly understand the cause or origin of an error:
+Error chaining is a mechanism for providing contextual information when an error occurs. There are multiple situations in which you might be able to provide context that is helpful to quickly understand the cause or origin of an error.
+
+# Context where chaining is useful
 
 - Mentioning the _high level context_ in which a low level error arised. E.g. chaining a low-level HTTP error to a high-level download error.
 

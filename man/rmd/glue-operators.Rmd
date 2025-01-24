@@ -30,6 +30,8 @@ g <- function(x) {
 g(1 + 1)
 ```
 
+# Examples
+
 Technically, `r text("'{{'")` [defuses][topic-defuse] a function argument, calls [as_label()] on the expression supplied as argument, and inserts the result in the string.
 
 

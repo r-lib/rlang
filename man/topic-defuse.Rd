@@ -10,6 +10,9 @@ When a piece of R code is defused, R doesn't return its value like it normally w
 
 Using \code{\link[=expr]{expr()}} we can observe the difference between computing an expression and defusing it:
 
+Evaluation of a defused expression can be resumed at any time with \code{\link[=eval]{eval()}} (see also \code{\link[=eval_tidy]{eval_tidy()}}).
+}
+\section{Example}{
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the result of `1 + 1`
 1 + 1
 #> [1] 2
@@ -18,8 +21,6 @@ Using \code{\link[=expr]{expr()}} we can observe the difference between computin
 expr(1 + 1)
 #> 1 + 1
 }\if{html}{\out{</div>}}
-
-Evaluation of a defused expression can be resumed at any time with \code{\link[=eval]{eval()}} (see also \code{\link[=eval_tidy]{eval_tidy()}}).
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Return the expression `1 + 1`
 e <- expr(1 + 1)
@@ -36,6 +37,7 @@ eval(e, mtcars)
 #> [1] 6.1875
 }\if{html}{\out{</div>}}
 }
+
 \section{Do I need to know about defused expressions?}{
 As a tidyverse user you will rarely need to defuse expressions manually with \code{expr()}, and even more rarely need to resume evaluation with \code{\link[=eval]{eval()}} or \code{\link[=eval_tidy]{eval_tidy()}}. Instead, you call \link[=topic-data-mask]{data-masking} functions which take care of defusing your arguments and resuming them in the context of a data mask.
 
