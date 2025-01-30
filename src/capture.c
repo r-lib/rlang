@@ -4,6 +4,8 @@
 
 #define attribute_hidden
 #define _(string) (string)
+#define RLANG_PRENV(x) TAG(x)
+#define RLANG_PREXPR(x) R_BytecodeExpr(CDR(x))
 
 static Rboolean dotDotVal(SEXP);
 static SEXP capturedot(SEXP, int);
@@ -36,8 +38,8 @@ SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
 
     SEXP expr = x;
     while (TYPEOF(expr) == PROMSXP) {
-        expr_env = PRENV(expr);
-        expr = PREXPR(expr);
+        expr_env = RLANG_PRENV(expr);
+        expr = RLANG_PREXPR(expr);
 
 	if (expr_env == R_NilValue)
 	    break;
@@ -77,7 +79,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 	return value;
     }
 
-    sym = PREXPR(sym);
+    sym = RLANG_PREXPR(sym);
 
     if (TYPEOF(sym) != SYMSXP) {
         UNPROTECT(nProt);
