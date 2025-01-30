@@ -149,8 +149,8 @@ test_that("quo_deparse() indicates quosures with `^`", {
 
 test_that("quosure deparser respects width", {
   x <- quo(foo(quo(!!quo(bar))))
-  expect_identical(length(quo_deparse(x, new_quo_deparser(width = 8L))), 3L)
-  expect_identical(length(quo_deparse(x, new_quo_deparser(width = 9L))), 2L)
+  expect_length(quo_deparse(x, new_quo_deparser(width = 8L)), 3L)
+  expect_length(quo_deparse(x, new_quo_deparser(width = 9L)), 2L)
 })
 
 test_that("quosure predicates work", {

@@ -432,7 +432,7 @@ test_that("r_lgl_which() propagates names", {
 })
 
 test_that("r_lgl_which() handles `NA` when propagation is disabled (#750)", {
-  expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA), FALSE), int(1))
+  expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA), FALSE), 1L)
   expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA, TRUE), FALSE), int(1, 4))
   expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, FALSE, TRUE), FALSE), int(1, 5, 7))
 })
@@ -761,19 +761,19 @@ test_that("alloc_data_frame() creates data frame", {
   expect_equal(nrow(df), 2)
   expect_equal(ncol(df), 3)
   expect_equal(class(df), "data.frame")
-  expect_equal(names(df), c("a", "b", "c"))
+  expect_named(df, c("a", "b", "c"))
   expect_equal(lapply(df, typeof), list(a = "integer", b = "double", c = "character"))
   expect_equal(lapply(df, length), list(a = 2, b = 2, c = 2))
 
   df <- alloc_data_frame(0L, chr(), int())
   expect_equal(nrow(df), 0)
   expect_equal(ncol(df), 0)
-  expect_equal(names(df), chr())
+  expect_named(df, chr())
 
   df <- alloc_data_frame(3L, chr(), int())
   expect_equal(nrow(df), 3)
   expect_equal(ncol(df), 0)
-  expect_equal(names(df), chr())
+  expect_named(df, chr())
 })
 
 test_that("r_list_compact() compacts lists", {
@@ -1007,10 +1007,10 @@ test_that("can get, push, and poke elements", {
   arr <- new_dyn_vector("logical", 3)
   dyn_push_back(arr, TRUE)
   dyn_lgl_push_back(arr, TRUE)
-  expect_equal(dyn_lgl_get(arr, 0L), TRUE)
-  expect_equal(dyn_lgl_get(arr, 1L), TRUE)
+  expect_true(dyn_lgl_get(arr, 0L))
+  expect_true(dyn_lgl_get(arr, 1L))
   dyn_lgl_poke(arr, 0L, FALSE)
-  expect_equal(dyn_lgl_get(arr, 0L), FALSE)
+  expect_false(dyn_lgl_get(arr, 0L))
 
   arr <- new_dyn_vector("integer", 3)
   dyn_push_back(arr, 1L)

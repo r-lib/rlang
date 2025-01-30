@@ -51,7 +51,7 @@ test_that("can take forced dots with `allowForced = FALSE`", {
 test_that("captured dots are only named if names were supplied", {
   fn <- function(...) captureDots()
   expect_null(names(fn(1, 2)))
-  expect_identical(names(fn(a = 1, 2)), c("a", ""))
+  expect_named(fn(a = 1, 2), c("a", ""))
 })
 
 test_that("dots_values() handles forced dots", {
@@ -380,11 +380,11 @@ test_that("names are not mutated after splice box early exit", {
   xs <- list(1)
 
   dots_list(!!!xs, .named = FALSE)
-  expect_equal(names(xs), NULL)
+  expect_null(names(xs))
 
   dots_list(!!!xs, .named = TRUE)
-  expect_equal(names(xs), NULL)
+  expect_null(names(xs))
 
   dots_list(!!!xs, .named = NULL)
-  expect_equal(names(xs), NULL)
+  expect_null(names(xs))
 })

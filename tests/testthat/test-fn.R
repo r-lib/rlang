@@ -18,14 +18,14 @@ test_that("prim_name() extracts names", {
 })
 
 test_that("as_closure() returns closure", {
-  expect_identical(typeof(as_closure(base::list)), "closure")
-  expect_identical(typeof(as_closure("list")), "closure")
+  expect_type(as_closure(base::list), "closure")
+  expect_type(as_closure("list"), "closure")
 })
 
 test_that("as_closure() handles primitive functions", {
   expect_identical(as_closure(`c`)(1, 3, 5), c(1, 3, 5))
-  expect_identical(as_closure(is.null)(1), FALSE)
-  expect_identical(as_closure(is.null)(NULL), TRUE)
+  expect_false(as_closure(is.null)(1))
+  expect_true(as_closure(is.null)(NULL))
 })
 
 test_that("as_closure() supports base-style and purrr-style arguments to binary operators", {
@@ -37,17 +37,17 @@ test_that("as_closure() supports base-style and purrr-style arguments to binary 
   expect_error(and(.x = TRUE, e1 = TRUE), "Can't supply both `e1` and `.x` to binary operator")
   expect_error(and(TRUE, .y = TRUE, e2 = TRUE), "Can't supply both `e2` and `.y` to binary operator")
 
-  expect_identical(and(FALSE, FALSE), FALSE)
-  expect_identical(and(TRUE, FALSE), FALSE)
-  expect_identical(and(FALSE, TRUE), FALSE)
-  expect_identical(and(TRUE, TRUE), TRUE)
+  expect_false(and(FALSE, FALSE))
+  expect_false(and(TRUE, FALSE))
+  expect_false(and(FALSE, TRUE))
+  expect_true(and(TRUE, TRUE))
 
-  expect_identical(and(.y = FALSE, TRUE), FALSE)
-  expect_identical(and(e2 = FALSE, TRUE), FALSE)
-  expect_identical(and(.y = FALSE, e1 = TRUE), FALSE)
-  expect_identical(and(e2 = FALSE, .x = TRUE), FALSE)
-  expect_identical(and(.y = FALSE, TRUE), FALSE)
-  expect_identical(and(e2 = FALSE, TRUE), FALSE)
+  expect_false(and(.y = FALSE, TRUE))
+  expect_false(and(e2 = FALSE, TRUE))
+  expect_false(and(.y = FALSE, e1 = TRUE))
+  expect_false(and(e2 = FALSE, .x = TRUE))
+  expect_false(and(.y = FALSE, TRUE))
+  expect_false(and(e2 = FALSE, TRUE))
 })
 
 test_that("as_closure() supports base-style and purrr-style arguments to versatile operators", {
@@ -80,9 +80,9 @@ test_that("as_closure(`||`) shortcircuits", {
   expect_error(or(), "Must supply `e1` or `.x` to binary operator")
   expect_error(or(FALSE), "Must supply `e2` or `.y` to binary operator")
 
-  expect_identical(or(TRUE), TRUE)
-  expect_identical(or(.x = TRUE), TRUE)
-  expect_identical(or(e1 = TRUE), TRUE)
+  expect_true(or(TRUE))
+  expect_true(or(.x = TRUE))
+  expect_true(or(e1 = TRUE))
 })
 
 test_that("as_closure() handles operators", {
