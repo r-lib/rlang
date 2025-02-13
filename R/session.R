@@ -101,10 +101,7 @@ detect_installed <- function(info) {
 }
 
 is_on_disk <- function(pkg) {
-  # A warning is emitted if the package was removed from disk
-  suppressWarnings(
-    nzchar(system.file(package = pkg))
-  )
+  any(file.exists(file.path(.libPaths(), pkg)))
 }
 
 pkg_version_info <- function(pkg,
