@@ -201,6 +201,16 @@ check_installed <- function(pkg,
                             action = NULL,
                             call = caller_env()) {
   check_dots_empty0(...)
+
+  if (is.null(version)) {
+    loaded <- lapply(pkg, function(x) {
+      nzchar(x) && is.environment(.getNamespace(x))
+    })
+    if (all(as.logical(loaded))) {
+      return(invisible(NULL))
+    }
+  }
+
   check_action(action)
 
   info <- pkg_version_info(pkg, version = version, compare = compare)
