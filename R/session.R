@@ -204,7 +204,7 @@ check_installed <- function(pkg,
 
   if (is.null(version)) {
     loaded <- lapply(pkg, function(x) {
-      nzchar(x) && is.environment(.getNamespace(x))
+      is.character(x) && nzchar(x) && is.environment(.getNamespace(x))
     })
     if (all(as.logical(loaded))) {
       return(invisible(NULL))
