@@ -1,4 +1,3 @@
-
 options(
   error = rlang::entrace,
   rlang_interactive = TRUE,
@@ -13,7 +12,8 @@ options(
 f <- function() g()
 g <- function() h()
 h <- function() {
-  switch(Sys.getenv("rlang_error_kind", unset = "base"),
+  switch(
+    Sys.getenv("rlang_error_kind", unset = "base"),
     base = stop("foo"),
     rlang = rlang::abort("foo")
   )

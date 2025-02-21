@@ -119,7 +119,8 @@ is_expression <- function(x) {
 #' @export
 #' @rdname is_expression
 is_syntactic_literal <- function(x) {
-  switch(typeof(x),
+  switch(
+    typeof(x),
     NULL = {
       TRUE
     },
@@ -411,9 +412,7 @@ expr_print <- function(x, ...) {
 }
 #' @rdname expr_print
 #' @export
-expr_deparse <- function(x,
-                         ...,
-                         width = peek_option("width")) {
+expr_deparse <- function(x, ..., width = peek_option("width")) {
   check_dots_empty0(...)
   deparser <- new_quo_deparser(width = width)
   quo_deparse(x, deparser)

@@ -1,9 +1,12 @@
-line_push <- function(line, text,
-                      sticky = FALSE,
-                      boundary = NULL,
-                      width = NULL,
-                      indent = 0L,
-                      has_colour = FALSE) {
+line_push <- function(
+  line,
+  text,
+  sticky = FALSE,
+  boundary = NULL,
+  width = NULL,
+  indent = 0L,
+  has_colour = FALSE
+) {
   if (!length(line)) {
     return(text)
   }
@@ -60,9 +63,11 @@ trim_leading_spaces <- function(line) {
   sub("^ *", "", line)
 }
 
-new_lines <- function(width = peek_option("width"),
-                      max_elements = 5L,
-                      deparser = sexp_deparse) {
+new_lines <- function(
+  width = peek_option("width"),
+  max_elements = 5L,
+  deparser = sexp_deparse
+) {
   width <- width %||% 60L
   stopifnot(
     is_integerish(width, n = 1),
@@ -108,7 +113,9 @@ new_lines <- function(width = peek_option("width"),
       self
     },
     push_one = function(self, line) {
-      line <- line_push(self$last_line, line,
+      line <- line_push(
+        self$last_line,
+        line,
         sticky = self$next_sticky,
         boundary = self$boundary,
         width = self$width,
@@ -164,7 +171,10 @@ new_lines <- function(width = peek_option("width"),
         node_poke_cadr(status, inc(node_cadr(status)))
       } else {
         self$indent <- self$indent + 2L
-        self$indent_status <- new_node(new_node(FALSE, new_node(0L, NULL)), self$indent_status)
+        self$indent_status <- new_node(
+          new_node(FALSE, new_node(0L, NULL)),
+          self$indent_status
+        )
         self$next_indent_sticky <- TRUE
       }
 
@@ -331,13 +341,18 @@ operand_deparse <- function(x, parent, side, lines) {
   }
 }
 
-binary_op_deparse <- function(x, lines = new_lines(), space = " ", sticky_rhs = FALSE) {
+binary_op_deparse <- function(
+  x,
+  lines = new_lines(),
+  space = " ",
+  sticky_rhs = FALSE
+) {
   # Constructed call without second argument
   if (is_null(node_cddr(x))) {
     return(call_deparse(x, lines))
   }
 
-  outer <- x;
+  outer <- x
   op <- as_string(node_car(x))
 
   x <- node_cdr(x)
@@ -499,7 +514,8 @@ call_deparse <- function(x, lines = new_lines()) {
   car <- node_car(x)
 
   type <- call_delimited_type(car)
-  switch(type,
+  switch(
+    type,
     parens = {
       car <- call("(", car)
       lines$deparse(car)
@@ -524,9 +540,9 @@ call_delimited_type <- function(call) {
     return("none")
   }
 
-  switch (op,
-    `function` =
-      "parens",
+  switch(
+    op,
+    `function` = "parens",
     `while` = ,
     `for` = ,
     `repeat` = ,
@@ -561,8 +577,7 @@ call_delimited_type <- function(call) {
     `!!!` = ,
     `!!` = ,
     `+unary` = ,
-    `-unary` =
-      "backticks",
+    `-unary` = "backticks",
     `$` = ,
     `@` = ,
     `::` = ,
@@ -571,14 +586,14 @@ call_delimited_type <- function(call) {
     `[[` = ,
     `(` = ,
     `{` = ,
-    `{{` =
-      "none",
+    `{{` = "none",
     abort("Internal error: Unexpected operator while deparsing")
   )
 }
 
 op_deparse <- function(op, x, lines) {
-  deparser <- switch (op,
+  deparser <- switch(
+    op,
     `function` = fn_call_deparse,
     `while` = while_deparse,
     `for` = for_deparse,
@@ -620,7 +635,7 @@ op_deparse <- function(op, x, lines) {
     `!!!` = ,
     `!!` = ,
     `+unary` = ,
-    `-unary` =  unary_op_deparse,
+    `-unary` = unary_op_deparse,
     `[` = brackets_deparse,
     `[[` = brackets2_deparse,
     `(` = parens_deparse,
@@ -647,7 +662,8 @@ atom_elements <- function(x) {
   na_pos <- are_na(x) & !is.nan(x)
   elts[na_pos] <- "NA"
 
-  elts[!na_pos] <- switch (typeof(x),
+  elts[!na_pos] <- switch(
+    typeof(x),
     integer = paste0(elts[!na_pos], "L"),
     character = map_chr(elts[!na_pos], deparse),
     elts[!na_pos]
@@ -765,7 +781,8 @@ sexp_deparse <- function(x, lines = new_lines()) {
     return(s3_deparse(x, lines))
   }
 
-  deparser <- switch (typeof(x),
+  deparser <- switch(
+    typeof(x),
     symbol = sym_deparse,
     language = call_deparser(x),
     closure = fn_deparse,
@@ -942,7 +959,8 @@ use_as_label_infix <- function() {
 }
 
 infix_overflows <- function(x) {
-  call_print_type(x) %in% c("infix", "subset") &&
+  call_print_type(x) %in%
+    c("infix", "subset") &&
     length(expr_deparse(x, width = 60)) > 1
 }
 as_label_infix <- function(x) {

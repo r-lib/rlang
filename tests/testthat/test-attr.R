@@ -4,7 +4,11 @@ test_that("names2() takes care of missing values", {
 })
 
 test_that("names2() fails for environments", {
-  expect_error(names2(env()), "Use `env_names()` for environments.", fixed = TRUE)
+  expect_error(
+    names2(env()),
+    "Use `env_names()` for environments.",
+    fixed = TRUE
+  )
 })
 
 test_that("names2<- doesn't add missing values (#1301)", {
@@ -73,7 +77,8 @@ test_that("zap_srcref() removes source references", {
 })
 
 test_that("zap_srcref() handles nested functions (r-lib/testthat#1228)", {
-  with_srcref("
+  with_srcref(
+    "
     factory <- function() {
       function() {
         function() {
@@ -146,7 +151,7 @@ test_that("set_names() recycles names of size 1", {
     rep("", 3)
   )
   expect_named(
-    set_names(1:3, ~ ""),
+    set_names(1:3, ~""),
     rep("", 3)
   )
   expect_equal(
@@ -177,10 +182,12 @@ test_that("zap_srcref() supports expression vectors", {
 test_that("zap_srcref() works on calls", {
   # E.g. srcrefs attached to the call stack
 
-  with_srcref("{
+  with_srcref(
+    "{
     f <- function() g()
     g <- function() sys.call()
-  }")
+  }"
+  )
   call <- f()
 
   expect_null(attributes(zap_srcref(call)))
@@ -188,6 +195,5 @@ test_that("zap_srcref() works on calls", {
 })
 
 test_that("is_dictionaryish return true if is NULL", {
-
   expect_true(is_dictionaryish(NULL))
 })

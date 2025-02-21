@@ -166,7 +166,8 @@ empty_env <- emptyenv
 #' @keywords internal
 #' @export
 ns_env <- function(x = caller_env()) {
-  env <- switch(typeof(x),
+  env <- switch(
+    typeof(x),
     builtin = ,
     special = ns_env("base"),
     closure = topenv(fn_env(x)),
@@ -175,7 +176,10 @@ ns_env <- function(x = caller_env()) {
   )
 
   if (!is_namespace(env)) {
-    stop_input_type(x, "a package name or a function inheriting from a namespace")
+    stop_input_type(
+      x,
+      "a package name or a function inheriting from a namespace"
+    )
   }
 
   env
@@ -188,12 +192,16 @@ ns_imports_env <- function(x = caller_env()) {
 #' @rdname ns_env
 #' @export
 ns_env_name <- function(x = caller_env()) {
-  env <- switch(typeof(x),
+  env <- switch(
+    typeof(x),
     environment = ,
     builtin = ,
     special = ,
     closure = ns_env(x),
-    stop_input_type(x, "an environment or a function inheriting from a namespace")
+    stop_input_type(
+      x,
+      "an environment or a function inheriting from a namespace"
+    )
   )
   unname(getNamespaceName(env))
 }
@@ -241,7 +249,8 @@ env_type <- function(env) {
   }
 }
 friendly_env_type <- function(type) {
-  switch(type,
+  switch(
+    type,
     global = "the global environment",
     empty = "the empty environment",
     base = "the base environment",

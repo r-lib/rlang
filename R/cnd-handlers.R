@@ -16,8 +16,7 @@
 #'   [global_prompt_install()].
 #'
 #' @export
-global_handle <- function(entrace = TRUE,
-                          prompt_install = TRUE) {
+global_handle <- function(entrace = TRUE, prompt_install = TRUE) {
   check_bool(entrace)
   check_bool(prompt_install)
 
@@ -61,8 +60,10 @@ hnd_prompt_install <- function(cnd) {
   }
 
   # Be defensive to avoid weird errors
-  if (!rlang::is_string(cnd$package) ||
-      is.null(findRestart("retry_loadNamespace"))) {
+  if (
+    !rlang::is_string(cnd$package) ||
+      is.null(findRestart("retry_loadNamespace"))
+  ) {
     return(rlang::zap())
   }
 
@@ -334,7 +335,8 @@ catch_cnd <- function(expr, classes = "condition") {
 #' @keywords internal
 #' @export
 cnd_muffle <- function(cnd) {
-  restart <- switch(cnd_type(cnd),
+  restart <- switch(
+    cnd_type(cnd),
     message = "muffleMessage",
     warning = "muffleWarning",
     interrupt = "resume",

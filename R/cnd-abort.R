@@ -259,21 +259,23 @@
 #'
 #' }
 #' @export
-abort <- function(message = NULL,
-                  class = NULL,
-                  ...,
-                  call,
-                  body = NULL,
-                  footer = NULL,
-                  trace = NULL,
-                  parent = NULL,
-                  use_cli_format = NULL,
-                  .inherit = TRUE,
-                  .internal = FALSE,
-                  .file = NULL,
-                  .frame = caller_env(),
-                  .trace_bottom = NULL,
-                  .subclass = deprecated()) {
+abort <- function(
+  message = NULL,
+  class = NULL,
+  ...,
+  call,
+  body = NULL,
+  footer = NULL,
+  trace = NULL,
+  parent = NULL,
+  use_cli_format = NULL,
+  .inherit = TRUE,
+  .internal = FALSE,
+  .file = NULL,
+  .frame = caller_env(),
+  .trace_bottom = NULL,
+  .subclass = deprecated()
+) {
   check_environment(.frame)
 
   .__signal_frame__. <- TRUE
@@ -284,8 +286,10 @@ abort <- function(message = NULL,
   }
 
   if (is_list(maybe_missing(call))) {
-    if (!identical(names(call), c("call", "frame")) &&
-        !identical(names(call), c("", "frame"))) {
+    if (
+      !identical(names(call), c("call", "frame")) &&
+        !identical(names(call), c("", "frame"))
+    ) {
       abort("When a list, `call` must have \"call\" and \"frame\" names.")
     }
     .frame <- call[["frame"]] %||% .frame
@@ -375,14 +379,20 @@ abort <- function(message = NULL,
     parent = parent
   )
 
-  if (is_null(trace) && is_null(parent_trace) && is_null(peek_option("rlang:::disable_trace_capture"))) {
+  if (
+    is_null(trace) &&
+      is_null(parent_trace) &&
+      is_null(peek_option("rlang:::disable_trace_capture"))
+  ) {
     with_options(
       # Prevents infloops when rlang throws during trace capture
       "rlang:::disable_trace_capture" = TRUE,
       "rlang:::visible_bottom" = info$bottom_frame,
       "rlang:::error_frame" = if (is_environment(call)) call else NULL,
       "rlang:::error_arg" = cnd[["arg"]],
-      { trace <- trace_back() }
+      {
+        trace <- trace_back()
+      }
     )
   }
   cnd$trace <- trace
@@ -390,10 +400,7 @@ abort <- function(message = NULL,
   signal_abort(cnd, .file)
 }
 
-abort_context <- function(frame,
-                          rethrowing,
-                          abort_call,
-                          call = caller_env()) {
+abort_context <- function(frame, rethrowing, abort_call, call = caller_env()) {
   calls <- sys.calls()
   frames <- sys.frames()
   parents <- sys.parents()
@@ -414,7 +421,6 @@ abort_context <- function(frame,
   #   handling context (which can be quite complex) in simplified
   #   backtraces.
   if (rethrowing) {
-
     # This iteration through callers may be incorrect in case of
     # intervening frames. Ideally, we'd iterate only over parent frames.
     # This shouldn't be likely to cause issues though.
@@ -557,7 +563,12 @@ calls_setup_loc <- function(calls, frames, handler_loc) {
 
   while (TRUE) {
     calls <- calls[seq_len(top)]
-    setup_loc <- detect_index(calls, is_call, "withCallingHandlers", .right = TRUE)
+    setup_loc <- detect_index(
+      calls,
+      is_call,
+      "withCallingHandlers",
+      .right = TRUE
+    )
 
     if (!setup_loc) {
       return(0L)
@@ -588,23 +599,29 @@ skip_signal_frames <- function(loc, frames) {
 }
 
 is_calling_handler_inlined_call <- function(call) {
-  is_call(call) && length(call) >= 2 && is_function(call[[1]]) && is_condition(call[[2]])
+  is_call(call) &&
+    length(call) >= 2 &&
+    is_function(call[[1]]) &&
+    is_condition(call[[2]])
 }
 is_calling_handler_simple_error_call <- function(call1, call2) {
-  identical(call1, quote(h(simpleError(msg, call)))) && is_call(call2, ".handleSimpleError")
+  identical(call1, quote(h(simpleError(msg, call)))) &&
+    is_call(call2, ".handleSimpleError")
 }
 is_exiting_handler_call <- function(call1, call2) {
   identical(call1, quote(value[[3L]](cond))) && is_call(call2, "tryCatchOne")
 }
 
-cnd_message_info <- function(message,
-                             body,
-                             footer,
-                             env,
-                             cli_opts = NULL,
-                             use_cli_format = NULL,
-                             internal = FALSE,
-                             error_call = caller_env()) {
+cnd_message_info <- function(
+  message,
+  body,
+  footer,
+  env,
+  cli_opts = NULL,
+  use_cli_format = NULL,
+  internal = FALSE,
+  error_call = caller_env()
+) {
   if (internal) {
     check_exclusive(footer, .internal, .require = FALSE, .frame = error_call)
   }
@@ -774,10 +791,12 @@ stop_multiple_body <- function(body, call) {
 #'
 #' @keywords internal
 #' @export
-local_use_cli <- function(...,
-                          format = TRUE,
-                          inline = FALSE,
-                          frame = caller_env()) {
+local_use_cli <- function(
+  ...,
+  format = TRUE,
+  inline = FALSE,
+  frame = caller_env()
+) {
   check_dots_empty0(...)
 
   use_cli <- c(format = format, inline = inline)
@@ -824,7 +843,11 @@ use_cli <- function(env, error_call) {
 # fallback formatting is used. On the other hand, formatting inline
 # parts with cli requires a recent version of cli to be installed.
 check_use_cli_flag <- function(flag, error_call) {
-  if (!is_logical(flag) || !identical(names(flag), c("format", "inline")) || anyNA(flag)) {
+  if (
+    !is_logical(flag) ||
+      !identical(names(flag), c("format", "inline")) ||
+      anyNA(flag)
+  ) {
     abort("`.__rlang_use_cli__.` has unknown format.", call = error_call)
   }
 
@@ -1448,7 +1471,11 @@ format_onerror_backtrace <- function(cnd, opt = peek_backtrace_on_error()) {
   if (opt == "reminder") {
     if (is_interactive()) {
       last_error <- style_rlang_run("last_trace()")
-      reminder <- col_silver(paste0("Run `", last_error, "` to see where the error occurred."))
+      reminder <- col_silver(paste0(
+        "Run `",
+        last_error,
+        "` to see where the error occurred."
+      ))
     } else {
       reminder <- NULL
     }
@@ -1494,7 +1521,8 @@ peek_backtrace_on_error_report <- function() {
 }
 
 peek_backtrace_on_warning_report <- function() {
-  opt <- peek_backtrace_on_error_opt("rlang_backtrace_on_warning_report") %||% "none"
+  opt <- peek_backtrace_on_error_opt("rlang_backtrace_on_warning_report") %||%
+    "none"
 
   if (is_string(opt, "reminder")) {
     options(rlang_backtrace_on_warning_report = "none")

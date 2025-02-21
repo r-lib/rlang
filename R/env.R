@@ -157,7 +157,8 @@ as_environment <- function(x, parent = NULL) {
     return(pkg_env(x))
   }
 
-  switch(typeof(x),
+  switch(
+    typeof(x),
     NULL = empty_env(),
     environment = x,
     logical = ,
@@ -364,7 +365,8 @@ is_empty_env <- function(env) {
 #' default <- env()
 #' identical(get_env(f, default), default)
 get_env <- function(env, default = NULL) {
-  out <- switch(typeof(env),
+  out <- switch(
+    typeof(env),
     environment = env,
     definition = ,
     language = if (is_formula(env)) attr(env, ".Environment"),
@@ -567,8 +569,12 @@ env_unlock <- function(env) {
   msg <- "`env_unlock()` is defunct as of rlang 1.1.5"
 
   old_pkgload_running <-
-    "pkgload" %in% loadedNamespaces() &&
-    some(sys.frames(), function(env) identical(topenv(env), ns_env("pkgload"))) &&
+    "pkgload" %in%
+    loadedNamespaces() &&
+    some(
+      sys.frames(),
+      function(env) identical(topenv(env), ns_env("pkgload"))
+    ) &&
     utils::packageVersion("pkgload") <= "1.3.4"
 
   if (old_pkgload_running) {
@@ -769,12 +775,16 @@ str.rlang_envs <- function(object, ...) {
 #'   `env_is_browsed()` (a logical), invisibly.
 #' @export
 env_browse <- function(env, value = TRUE) {
-  abort("`env_browse()` is defunct as of rlang 1.2.0 because R no longer supports it")
+  abort(
+    "`env_browse()` is defunct as of rlang 1.2.0 because R no longer supports it"
+  )
 }
 #' @rdname env_browse
 #' @export
 env_is_browsed <- function(env) {
-  abort("`env_is_browsed()` is defunct as of rlang 1.2.0 because R no longer supports it")
+  abort(
+    "`env_is_browsed()` is defunct as of rlang 1.2.0 because R no longer supports it"
+  )
 }
 
 #' Is frame environment user facing?

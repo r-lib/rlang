@@ -107,10 +107,12 @@ is_on_disk <- function(pkg) {
   )
 }
 
-pkg_version_info <- function(pkg,
-                             version = NULL,
-                             compare = NULL,
-                             call = caller_env()) {
+pkg_version_info <- function(
+  pkg,
+  version = NULL,
+  compare = NULL,
+  call = caller_env()
+) {
   check_pkg_version(pkg, version, compare, call = call)
 
   matches <- grepl(version_regex, pkg)
@@ -193,13 +195,15 @@ as_version_info <- function(pkg, call = caller_env()) {
 #'   missing and outdated packages as a character vector of names.
 #' @inheritParams args_error_context
 #' @export
-check_installed <- function(pkg,
-                            reason = NULL,
-                            ...,
-                            version = NULL,
-                            compare = NULL,
-                            action = NULL,
-                            call = caller_env()) {
+check_installed <- function(
+  pkg,
+  reason = NULL,
+  ...,
+  version = NULL,
+  compare = NULL,
+  action = NULL,
+  call = caller_env()
+) {
   check_dots_empty0(...)
   check_action(action)
 
@@ -279,10 +283,7 @@ check_installed <- function(pkg,
   }
 }
 
-check_pkg_version <- function(pkg,
-                              version,
-                              compare,
-                              call = caller_env()) {
+check_pkg_version <- function(pkg, version, compare, call = caller_env()) {
   if (!is_character2(pkg, missing = FALSE, empty = FALSE)) {
     abort(
       sprintf(
@@ -293,7 +294,9 @@ check_pkg_version <- function(pkg,
     )
   }
 
-  if (!is_null(version) && !is_character2(version, n = length(pkg), empty = FALSE)) {
+  if (
+    !is_null(version) && !is_character2(version, n = length(pkg), empty = FALSE)
+  ) {
     abort(
       sprintf(
         "%s must be `NULL` or a vector of versions the same length as %s.",
@@ -332,12 +335,14 @@ check_action <- function(action, call = caller_env()) {
   }
 }
 
-new_error_package_not_found <- function(pkg,
-                                        version = NULL,
-                                        compare = NULL,
-                                        ...,
-                                        reason = NULL,
-                                        class = NULL) {
+new_error_package_not_found <- function(
+  pkg,
+  version = NULL,
+  compare = NULL,
+  ...,
+  reason = NULL,
+  class = NULL
+) {
   error_cnd(
     class = c(class, "rlib_error_package_not_found"),
     pkg = pkg,
@@ -360,13 +365,16 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
   pkg_enum <- chr_quoted(cnd$pkg, type = "\"")
 
   if (!is_null(version)) {
-    pkg_enum <- list_c(pmap(list(pkg_enum, compare, version), function(p, o, v) {
-      if (is_na(v)) {
-        p
-      } else {
-        sprintf("%s (%s %s)", p, o, v)
+    pkg_enum <- list_c(pmap(
+      list(pkg_enum, compare, version),
+      function(p, o, v) {
+        if (is_na(v)) {
+          p
+        } else {
+          sprintf("%s (%s %s)", p, o, v)
+        }
       }
-    }))
+    ))
   }
 
   pkg_enum <- oxford_comma(pkg_enum, final = "and")
@@ -387,11 +395,13 @@ cnd_header.rlib_error_package_not_found <- function(cnd, ...) {
 signal_package_not_found <- function(cnd) {
   class(cnd) <- vec_remove(class(cnd), "error")
 
-  withRestarts({
-    signalCondition(cnd)
-    FALSE
-  },
-  rlib_restart_package_not_found = function() {
-    TRUE
-  })
+  withRestarts(
+    {
+      signalCondition(cnd)
+      FALSE
+    },
+    rlib_restart_package_not_found = function() {
+      TRUE
+    }
+  )
 }

@@ -1,6 +1,8 @@
-expect_snapshot_trace <- function(trace,
-                                  dir = normalizePath(test_path("..")),
-                                  srcrefs = FALSE) {
+expect_snapshot_trace <- function(
+  trace,
+  dir = normalizePath(test_path("..")),
+  srcrefs = FALSE
+) {
   expect_snapshot({
     "Full"
     print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)

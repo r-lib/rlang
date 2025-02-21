@@ -10,7 +10,10 @@ test_that("args can be specified individually or as list", {
 })
 
 test_that("creates namespaced calls", {
-  expect_identical(call2("fun", foo = quote(baz), .ns = "bar"), quote(bar::fun(foo = baz)))
+  expect_identical(
+    call2("fun", foo = quote(baz), .ns = "bar"),
+    quote(bar::fun(foo = baz))
+  )
 })
 
 test_that("fails with non-callable objects", {
@@ -29,7 +32,10 @@ test_that("call2() preserves empty arguments", {
 
 test_that("call2() requires a symbol when namespace is supplied", {
   expect_identical(call2("foo", .ns = "bar"), quote(bar::foo()))
-  expect_error(call2(function() NULL, .ns = "bar"), "must be a string or symbol")
+  expect_error(
+    call2(function() NULL, .ns = "bar"),
+    "must be a string or symbol"
+  )
   expect_error(call2(quote(foo()), .ns = "bar"), "must be a string or symbol")
 })
 
@@ -113,12 +119,22 @@ test_that("call_match() matches defaults", {
   )
 
   expect_equal(
-    call_match(quote(fn(NULL, foo = TRUE)), fn, dots_expand = FALSE, defaults = TRUE),
+    call_match(
+      quote(fn(NULL, foo = TRUE)),
+      fn,
+      dots_expand = FALSE,
+      defaults = TRUE
+    ),
     expr(fn(a = NULL, b = TRUE, ... = !!pairlist(foo = TRUE), c = FALSE, d = ))
   )
 
   expect_equal(
-    call_match(quote(fn(NULL, foo = TRUE)), fn, dots_expand = FALSE, defaults = FALSE),
+    call_match(
+      quote(fn(NULL, foo = TRUE)),
+      fn,
+      dots_expand = FALSE,
+      defaults = FALSE
+    ),
     quote(fn(a = NULL, ... = !!pairlist(foo = TRUE)))
   )
 })
@@ -136,7 +152,7 @@ test_that("`call_match(dots_expand = TRUE)` handles `...` positional edge cases"
 # Modification ------------------------------------------------------------
 
 test_that("can modify formulas inplace", {
-  expect_identical(call_modify(~matrix(bar), quote(foo)), ~matrix(bar, foo))
+  expect_identical(call_modify(~ matrix(bar), quote(foo)), ~ matrix(bar, foo))
 })
 
 test_that("new args inserted at end", {
@@ -156,29 +172,38 @@ test_that("new args replace old", {
 })
 
 test_that("can modify calls for primitive functions", {
-  expect_identical(call_modify(~list(), foo = "bar"), ~list(foo = "bar"))
+  expect_identical(call_modify(~ list(), foo = "bar"), ~ list(foo = "bar"))
 })
 
 test_that("can modify calls for functions containing dots", {
-  expect_identical(call_modify(~mean(), na.rm = TRUE), ~mean(na.rm = TRUE))
+  expect_identical(call_modify(~ mean(), na.rm = TRUE), ~ mean(na.rm = TRUE))
 })
 
 test_that("accepts unnamed arguments", {
   expect_identical(
-    call_modify(~get(), "foo", envir = "bar", "baz"),
-    ~get("foo", envir = "bar", "baz")
+    call_modify(~ get(), "foo", envir = "bar", "baz"),
+    ~ get("foo", envir = "bar", "baz")
   )
 })
 
 test_that("allows duplicated arguments (#398)", {
-  expect_identical(call_modify(~mean(), na.rm = TRUE, na.rm = FALSE), ~mean(na.rm = FALSE))
-  expect_identical(call_modify(~mean(), TRUE, FALSE), ~mean(TRUE, FALSE))
-  expect_identical(call_modify(~mean(), foo = zap(), foo = zap()), ~mean())
+  expect_identical(
+    call_modify(~ mean(), na.rm = TRUE, na.rm = FALSE),
+    ~ mean(na.rm = FALSE)
+  )
+  expect_identical(call_modify(~ mean(), TRUE, FALSE), ~ mean(TRUE, FALSE))
+  expect_identical(call_modify(~ mean(), foo = zap(), foo = zap()), ~ mean())
 })
 
 test_that("zaps remove arguments", {
   expect_identical(call_modify(quote(foo(bar = )), bar = zap()), quote(foo()))
-  expect_identical_(call_modify(quote(foo(bar = , baz = )), !!!rep_named(c("foo", "bar", "baz"), list(zap()))), quote(foo()))
+  expect_identical_(
+    call_modify(
+      quote(foo(bar = , baz = )),
+      !!!rep_named(c("foo", "bar", "baz"), list(zap()))
+    ),
+    quote(foo())
+  )
 })
 
 test_that("can remove unexisting arguments (#393)", {
@@ -191,11 +216,23 @@ test_that("can add a missing argument", {
 })
 
 test_that("can refer to dots as named argument", {
-  expect_error(call_modify(quote(foo()), ... = NULL), "must be `zap\\(\\)` or empty")
-  expect_error(call_modify(quote(foo()), ... = "foo"), "must be `zap\\(\\)` or empty")
-  expect_identical(call_modify(quote(foo(x, ..., y)), ... = ), quote(foo(x, ..., y)))
+  expect_error(
+    call_modify(quote(foo()), ... = NULL),
+    "must be `zap\\(\\)` or empty"
+  )
+  expect_error(
+    call_modify(quote(foo()), ... = "foo"),
+    "must be `zap\\(\\)` or empty"
+  )
+  expect_identical(
+    call_modify(quote(foo(x, ..., y)), ... = ),
+    quote(foo(x, ..., y))
+  )
   expect_identical(call_modify(quote(foo(x)), ... = ), quote(foo(x, ...)))
-  expect_identical(call_modify(quote(foo(x, ..., y)), ... = zap()), quote(foo(x, y)))
+  expect_identical(
+    call_modify(quote(foo(x, ..., y)), ... = zap()),
+    quote(foo(x, y))
+  )
 })
 
 test_that("can't supply unnamed zaps", {
@@ -203,25 +240,55 @@ test_that("can't supply unnamed zaps", {
 })
 
 test_that("positions are not changed", {
-  expect_identical(call_modify(quote(fn(1)), x = "foo"), quote(fn(1, x = "foo")))
-  expect_identical(call_modify(quote(fn(x = 1)), x = "foo"), quote(fn(x = "foo")))
-  expect_identical(call_modify(quote(fn(1, x = 1)), x = "foo"), quote(fn(1, x = "foo")))
-  expect_identical(call_modify(quote(fn(x = 1, 1)), x = "foo"), quote(fn(x = "foo", 1)))
+  expect_identical(
+    call_modify(quote(fn(1)), x = "foo"),
+    quote(fn(1, x = "foo"))
+  )
+  expect_identical(
+    call_modify(quote(fn(x = 1)), x = "foo"),
+    quote(fn(x = "foo"))
+  )
+  expect_identical(
+    call_modify(quote(fn(1, x = 1)), x = "foo"),
+    quote(fn(1, x = "foo"))
+  )
+  expect_identical(
+    call_modify(quote(fn(x = 1, 1)), x = "foo"),
+    quote(fn(x = "foo", 1))
+  )
 
   expect_identical(call_modify(quote(fn(1)), ... = ), quote(fn(1, ...)))
   expect_identical(call_modify(quote(fn(...)), ... = ), quote(fn(...)))
   expect_identical(call_modify(quote(fn(1, ...)), ... = ), quote(fn(1, ...)))
   expect_identical(call_modify(quote(fn(..., 1)), ... = ), quote(fn(..., 1)))
 
-  expect_identical(call_modify(quote(fn()), 1, x = "foo"), quote(fn(1, x = "foo")))
-  expect_identical(call_modify(quote(fn()), x = 1, x = "foo"), quote(fn(x = "foo")))
-  expect_identical(call_modify(quote(fn()), 1, x = 1, x = "foo"), quote(fn(1, x = "foo")))
-  expect_identical(call_modify(quote(fn()), x = 1, 1, x = "foo"), quote(fn(x = "foo", 1)))
+  expect_identical(
+    call_modify(quote(fn()), 1, x = "foo"),
+    quote(fn(1, x = "foo"))
+  )
+  expect_identical(
+    call_modify(quote(fn()), x = 1, x = "foo"),
+    quote(fn(x = "foo"))
+  )
+  expect_identical(
+    call_modify(quote(fn()), 1, x = 1, x = "foo"),
+    quote(fn(1, x = "foo"))
+  )
+  expect_identical(
+    call_modify(quote(fn()), x = 1, 1, x = "foo"),
+    quote(fn(x = "foo", 1))
+  )
 
   expect_identical(call_modify(quote(fn()), 1, ... = ), quote(fn(1, ...)))
   expect_identical(call_modify(quote(fn()), ... = , ... = ), quote(fn(...)))
-  expect_identical(call_modify(quote(fn()), 1, ... = , ... = ), quote(fn(1, ...)))
-  expect_identical(call_modify(quote(fn()), ... = , 1, ... = ), quote(fn(..., 1)))
+  expect_identical(
+    call_modify(quote(fn()), 1, ... = , ... = ),
+    quote(fn(1, ...))
+  )
+  expect_identical(
+    call_modify(quote(fn()), ... = , 1, ... = ),
+    quote(fn(..., 1))
+  )
 })
 
 test_that("empty quosures are treated as empty args", {
@@ -283,17 +350,21 @@ test_that("call_name() handles namespaced and anonymous calls", {
 })
 
 test_that("call_name() handles formulas", {
-  expect_identical(call_name(~foo(baz)), "foo")
+  expect_identical(call_name(~ foo(baz)), "foo")
 })
 
 test_that("Inlined functions return NULL name", {
   call <- quote(fn())
-  call[[1]] <- function() {}
+  call[[1]] <- function() {
+  }
   expect_null(call_name(call))
 })
 
 test_that("call_args() and call_args_names() work", {
-  expect_equal(call_args(~fn(a, b)), set_names(list(quote(a), quote(b)), c("", "")))
+  expect_equal(
+    call_args(~ fn(a, b)),
+    set_names(list(quote(a), quote(b)), c("", ""))
+  )
   expect_equal(call_args_names(quote(foo(a = , b = ))), c("a", "b"))
 })
 
@@ -384,11 +455,16 @@ test_that("call_print_type() returns correct enum", {
   expect_identical(call_print_type(quote(repeat a)), "special")
   expect_identical(call_print_type(quote(if (a) b)), "special")
   expect_identical(call_print_type(quote((a))), "special")
-  expect_identical(call_print_type(quote({ a })), "special")
+  expect_identical(
+    call_print_type(quote({
+      a
+    })),
+    "special"
+  )
   expect_identical(call_print_type(quote(a[b])), "special")
   expect_identical(call_print_type(quote(a[[b]])), "special")
 
-  expect_identical(call_print_type(quote(a ? b)), "infix")
+  expect_identical(call_print_type(quote(a?b)), "infix")
   expect_identical(call_print_type(quote(a ~ b)), "infix")
   expect_identical(call_print_type(quote(a <- b)), "infix")
   expect_identical(call_print_type(quote(a <<- b)), "infix")
@@ -410,7 +486,7 @@ test_that("call_print_type() returns correct enum", {
   expect_identical(call_print_type(quote(a - b)), "infix")
   expect_identical(call_print_type(quote(a * b)), "infix")
   expect_identical(call_print_type(quote(a / b)), "infix")
-  expect_identical(call_print_type(quote(a ^ b)), "infix")
+  expect_identical(call_print_type(quote(a^b)), "infix")
   expect_identical(call_print_type(quote(a$b)), "infix")
   expect_identical(call_print_type(quote(a@b)), "infix")
   expect_identical(call_print_type(quote(a %% b)), "infix")
@@ -463,11 +539,16 @@ test_that("call_print_fine_type() returns correct enum", {
   expect_identical(call_print_fine_type(quote(repeat a)), "control")
   expect_identical(call_print_fine_type(quote(if (a) b)), "control")
   expect_identical(call_print_fine_type(quote((a))), "delim")
-  expect_identical(call_print_fine_type(quote({ a })), "delim")
+  expect_identical(
+    call_print_fine_type(quote({
+      a
+    })),
+    "delim"
+  )
   expect_identical(call_print_fine_type(quote(a[b])), "subset")
   expect_identical(call_print_fine_type(quote(a[[b]])), "subset")
 
-  expect_identical(call_print_fine_type(quote(a ? b)), "infix")
+  expect_identical(call_print_fine_type(quote(a?b)), "infix")
   expect_identical(call_print_fine_type(quote(a ~ b)), "infix")
   expect_identical(call_print_fine_type(quote(a <- b)), "infix")
   expect_identical(call_print_fine_type(quote(a <<- b)), "infix")
@@ -489,7 +570,7 @@ test_that("call_print_fine_type() returns correct enum", {
   expect_identical(call_print_fine_type(quote(a - b)), "infix")
   expect_identical(call_print_fine_type(quote(a * b)), "infix")
   expect_identical(call_print_fine_type(quote(a / b)), "infix")
-  expect_identical(call_print_fine_type(quote(a ^ b)), "infix")
+  expect_identical(call_print_fine_type(quote(a^b)), "infix")
   expect_identical(call_print_fine_type(quote(a$b)), "infix")
   expect_identical(call_print_fine_type(quote(a@b)), "infix")
   expect_identical(call_print_fine_type(quote(a %% b)), "infix")
@@ -528,8 +609,8 @@ test_that("call_print_fine_type() returns correct enum", {
 test_that("call_name() fails with namespaced objects (#670)", {
   expect_true(TRUE)
   return("Disabled for the 0.3.1 release")
-  expect_error(call_name(~foo::bar), "`call` must be a quoted call")
-  expect_error(call_name(~foo:::bar), "`call` must be a quoted call")
+  expect_error(call_name(~ foo::bar), "`call` must be a quoted call")
+  expect_error(call_name(~ foo:::bar), "`call` must be a quoted call")
 })
 
 test_that("call_ns() retrieves namespaces", {

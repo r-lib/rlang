@@ -17,10 +17,13 @@ test_that("chr_append() appends", {
 })
 
 test_that("r_warn() signals", {
-  expect_warning(regexp = "foo",
-    withCallingHandlers(warning = function(c) expect_null(c$call),
+  expect_warning(
+    regexp = "foo",
+    withCallingHandlers(
+      warning = function(c) expect_null(c$call),
       .Call(ffi_test_r_warn, "foo")
-    ))
+    )
+  )
 })
 
 test_that("r_on_exit() adds deferred expr", {
@@ -78,7 +81,7 @@ test_that("r_which_operator() returns correct tokens", {
   expect_identical(call_parse_type(""), "")
 
   expect_identical(call_parse_type(quote(?a)), "?unary")
-  expect_identical(call_parse_type(quote(a ? b)), "?")
+  expect_identical(call_parse_type(quote(a?b)), "?")
 
   expect_identical(call_parse_type(quote(while (a) b)), "while")
   expect_identical(call_parse_type(quote(for (a in b) b)), "for")
@@ -147,7 +150,7 @@ test_that("r_which_operator() returns correct tokens", {
 
   expect_identical(call_parse_type(quote(a * b)), "*")
   expect_identical(call_parse_type(quote(a / b)), "/")
-  expect_identical(call_parse_type(quote(a ^ b)), "^")
+  expect_identical(call_parse_type(quote(a^b)), "^")
   expect_identical(call_parse_type(quote(a$b)), "$")
   expect_identical(call_parse_type(quote(a@b)), "@")
   expect_identical(call_parse_type(quote(a[b])), "[")
@@ -165,7 +168,12 @@ test_that("r_which_operator() returns correct tokens", {
   expect_identical(call_parse_type(quote(`%%-`(a))), "")
 
   expect_identical(call_parse_type(quote((a))), "(")
-  expect_identical(call_parse_type(quote({ a })), "{")
+  expect_identical(
+    call_parse_type(quote({
+      a
+    })),
+    "{"
+  )
   expect_identical(call_parse_type(quote(`(-`(a))), "")
   expect_identical(call_parse_type(quote(`{-`(a))), "")
 })
@@ -212,13 +220,12 @@ test_that("client library passes tests", {
 
   file.copy(src_path, temp_test_dir, overwrite = TRUE, recursive = TRUE)
   pkg_path <- file.path(temp_test_dir, "rlanglibtest")
-
-
   # We store the library as a zip to avoid VCS noise. Use
   # fixtures/Makefile to regenerate it.
   utils::unzip(zip_file, exdir = file.path(pkg_path, "src"))
 
-  install.packages(pkg_path,
+  install.packages(
+    pkg_path,
     repos = NULL,
     type = "source",
     lib = temp_lib,
@@ -227,7 +234,11 @@ test_that("client library passes tests", {
     quiet = TRUE
   )
 
-  result <- tools::testInstalledPackage("rlanglibtest", lib.loc = temp_lib, types = "test")
+  result <- tools::testInstalledPackage(
+    "rlanglibtest",
+    lib.loc = temp_lib,
+    types = "test"
+  )
   expect_identical(result, 0L)
 })
 
@@ -325,16 +336,12 @@ test_that("r_attrib_set() zaps several elements", {
   expect_identical(attrs1, pairlist(bar = 2, baz = 3))
   expect_true(is_reference(attrs1, node_cdr(attrs)))
   expect_true(is_reference(node_cdr(attrs1), node_cddr(attrs)))
-
-
   out2 <- c_set_attribute(x, "bar", NULL)
   attrs2 <- get_attributes(out2)
 
   expect_identical(attrs2, pairlist(foo = 1, baz = 3))
   expect_false(is_reference(attrs2, attrs))
   expect_true(is_reference(node_cdr(attrs2), node_cddr(attrs)))
-
-
   out3 <- c_set_attribute(x, "baz", NULL)
   attrs3 <- get_attributes(out3)
 
@@ -357,7 +364,13 @@ test_that("can zap non-existing attributes", {
 })
 
 test_that("r_parse()", {
-  expect_equal(.Call(ffi_test_parse, "{ foo; bar }"), quote({ foo; bar }))
+  expect_equal(
+    .Call(ffi_test_parse, "{ foo; bar }"),
+    quote({
+      foo
+      bar
+    })
+  )
   expect_error(.Call(ffi_test_parse, "foo; bar"), "single expression")
   expect_error(.Call(ffi_test_parse, "foo\n bar"), "single expression")
 })
@@ -371,8 +384,9 @@ test_that("r_parse_eval()", {
 test_that("failed parses are printed if `rlang__verbose_errors` is non-NULL", {
   expect_error(
     expect_output(
-      regexp =  "foo; bar",
-      with_options(rlang__verbose_errors = TRUE,
+      regexp = "foo; bar",
+      with_options(
+        rlang__verbose_errors = TRUE,
         .Call(ffi_test_parse, "foo; bar")
       )
     ),
@@ -409,8 +423,14 @@ test_that("r_lgl_sum() handles NA", {
 test_that("r_lgl_which() handles NA", {
   expect_identical(r_lgl_which(lgl(TRUE, FALSE), TRUE), 1L)
   expect_identical(r_lgl_which(lgl(TRUE, FALSE), FALSE), 1L)
-  expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, NA), TRUE), int(1L, NA, NA, 5L, NA))
-  expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, NA), FALSE), int(1L, 5L))
+  expect_identical(
+    r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, NA), TRUE),
+    int(1L, NA, NA, 5L, NA)
+  )
+  expect_identical(
+    r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, NA), FALSE),
+    int(1L, 5L)
+  )
 })
 
 test_that("r_lgl_which() handles empty vectors", {
@@ -434,7 +454,10 @@ test_that("r_lgl_which() propagates names", {
 test_that("r_lgl_which() handles `NA` when propagation is disabled (#750)", {
   expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA), FALSE), int(1))
   expect_identical(r_lgl_which(lgl(TRUE, FALSE, NA, TRUE), FALSE), int(1, 4))
-  expect_identical(r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, FALSE, TRUE), FALSE), int(1, 5, 7))
+  expect_identical(
+    r_lgl_which(lgl(TRUE, NA, FALSE, NA, TRUE, FALSE, TRUE), FALSE),
+    int(1, 5, 7)
+  )
 })
 
 test_that("r_pairlist_rev() reverses destructively", {
@@ -570,8 +593,6 @@ test_that("can put again after del", {
 
   expect_true(dict_put(dict, quote(foo), 2))
   expect_equal(dict_get(dict, quote(foo)), 2)
-
-
   # Used to fail because we deleted whole bucket instead of just a
   # node when this node appeared first in the bucket
 
@@ -733,9 +754,11 @@ test_that("can preserve and unpreserve repeatedly", {
   expect_false(dict_has(dict(), x))
 
   rlang_preserve(x)
-  on.exit(while (dict_has(dict(), x)) {
-    rlang_unpreserve(x)
-  })
+  on.exit(
+    while (dict_has(dict(), x)) {
+      rlang_unpreserve(x)
+    }
+  )
 
   expect_true(dict_has(dict(), x))
 
@@ -762,7 +785,10 @@ test_that("alloc_data_frame() creates data frame", {
   expect_equal(ncol(df), 3)
   expect_equal(class(df), "data.frame")
   expect_equal(names(df), c("a", "b", "c"))
-  expect_equal(lapply(df, typeof), list(a = "integer", b = "double", c = "character"))
+  expect_equal(
+    lapply(df, typeof),
+    list(a = "integer", b = "double", c = "character")
+  )
   expect_equal(lapply(df, length), list(a = 2, b = 2, c = 2))
 
   df <- alloc_data_frame(0L, chr(), int())
@@ -1332,7 +1358,10 @@ local({
 
 test_that("r_stop_internal() mentions expected namespace", {
   fn <- function() {
-    .Call(get("ffi_test_stop_internal", envir = asNamespace("rlang")), "Message.")
+    .Call(
+      get("ffi_test_stop_internal", envir = asNamespace("rlang")),
+      "Message."
+    )
   }
 
   environment(fn) <- ns_env("base")
