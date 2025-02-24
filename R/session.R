@@ -202,6 +202,8 @@ check_installed <- function(pkg,
                             call = caller_env()) {
   check_dots_empty0(...)
 
+  # use package loaded shortcut if version not supplied, otherwise proceed and
+  # check version of package
   if (is.null(version)) {
     loaded <- lapply(pkg, function(x) {
       is.character(x) && nzchar(x) && is.environment(.getNamespace(x))
