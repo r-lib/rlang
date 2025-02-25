@@ -201,6 +201,18 @@ check_installed <- function(pkg,
                             action = NULL,
                             call = caller_env()) {
   check_dots_empty0(...)
+
+  # Fast path. Note that if `version` is supplied, this always falls through to the
+  # more expensive check.
+  if (is.null(version)) {
+    loaded <- lapply(pkg, function(x) {
+      is.character(x) && nzchar(x) && is.environment(.getNamespace(x))
+    })
+    if (all(as.logical(loaded))) {
+      return(invisible(NULL))
+    }
+  }
+
   check_action(action)
 
   info <- pkg_version_info(pkg, version = version, compare = compare)
