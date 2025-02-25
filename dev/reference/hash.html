@@ -148,7 +148,8 @@ used. See <code><a href="https://rdrr.io/r/base/serialize.html" class="external-
 <span class="r-in"><span><span class="va">copying</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Rhome.html" class="external-link">R.home</a></span><span class="op">(</span><span class="st">"doc"</span><span class="op">)</span>, <span class="st">"COPYING"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">hashes</span> <span class="op">&lt;-</span> <span class="fu">hash_file</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">authors</span>, <span class="va">copying</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">hashes</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "75e0b18fa50ddd8296f143c587e3eb43" "cdb3a24318136e74f38209c219ca104b"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "75e0b18fa50ddd8296f143c587e3eb43"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "cdb3a24318136e74f38209c219ca104b"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you need a single hash for multiple files,</span></span></span>
 <span class="r-in"><span><span class="co"># hash the result of `hash_file()`</span></span></span>
