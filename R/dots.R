@@ -1,3 +1,4 @@
+
 #' Dynamic dots features
 #'
 #' @description
@@ -279,6 +280,10 @@ dots_split <- function(...,
 #' Splice values at dots collection time
 #'
 #' @description
+#'
+#' `splice()` is an advanced feature of dynamic dots. It is rarely
+#' needed but can solve performance issues in edge cases.
+#'
 #' The splicing operator `!!!` operates both in values contexts like
 #' [list2()] and [dots_list()], and in metaprogramming contexts like
 #' [expr()], [enquos()], or [inject()]. While the end result looks the
@@ -313,6 +318,10 @@ dots_split <- function(...,
 #' list2(1, splice(xs), 4)
 #' inject(list2(1, splice(xs), 4))
 #' ```
+#'
+#' Note that `splice()` behaves differently than `!!!`. The splicing happens
+#' later and is processed by `list2()` or `dots_list()`. It does not work in any
+#' other tidyeval context than these list collectors.
 #'
 #' @param x A list or vector to splice non-eagerly.
 #' @export
