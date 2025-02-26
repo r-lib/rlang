@@ -51,7 +51,8 @@ skip_if_stale_backtrace <- local({
   current_backtrace_ver <- "1.0.1"
 
   ver <- system.file("backtrace-ver", package = "rlang")
-  has_stale_backtrace <- ver == "" || !identical(readLines(ver), current_backtrace_ver)
+  has_stale_backtrace <- ver == "" ||
+    !identical(readLines(ver), current_backtrace_ver)
 
   function() {
     skip_if(has_stale_backtrace)

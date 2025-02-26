@@ -82,11 +82,7 @@ NULL
 #' # to the handler
 #' with_handlers(cnd_signal(cnd), foo = function(c) "caught!")
 #' tryCatch(cnd_signal(cnd), foo = function(c) "caught!")
-cnd <- function(class,
-                ...,
-                message = "",
-                call = NULL,
-                use_cli_format = NULL) {
+cnd <- function(class, ..., message = "", call = NULL, use_cli_format = NULL) {
   check_required(class)
 
   if (is_environment(call)) {
@@ -106,13 +102,15 @@ cnd <- function(class,
 
 #' @rdname cnd
 #' @export
-error_cnd <- function(class = NULL,
-                      ...,
-                      message = "",
-                      call = NULL,
-                      trace = NULL,
-                      parent = NULL,
-                      use_cli_format = NULL) {
+error_cnd <- function(
+  class = NULL,
+  ...,
+  message = "",
+  call = NULL,
+  trace = NULL,
+  parent = NULL,
+  use_cli_format = NULL
+) {
   if (!is_null(trace) && !inherits(trace, "rlang_trace")) {
     stop_input_type(trace, "`NULL` or an rlang backtrace")
   }
@@ -139,13 +137,15 @@ error_cnd <- function(class = NULL,
     fields
   )
 }
-error_cnd_fields <- function(trace,
-                             parent,
-                             ...,
-                             use_cli_format = NULL,
-                             .subclass = NULL,
-                             `_env` = caller_env(),
-                             `_frame` = caller_env(2)) {
+error_cnd_fields <- function(
+  trace,
+  parent,
+  ...,
+  use_cli_format = NULL,
+  .subclass = NULL,
+  `_env` = caller_env(),
+  `_frame` = caller_env(2)
+) {
   if (!is_null(.subclass)) {
     deprecate_subclass(.subclass, "error_cnd", `_env`)
   }
@@ -161,11 +161,13 @@ error_cnd_fields <- function(trace,
 
 #' @rdname cnd
 #' @export
-warning_cnd <- function(class = NULL,
-                        ...,
-                        message = "",
-                        call = NULL,
-                        use_cli_format = NULL) {
+warning_cnd <- function(
+  class = NULL,
+  ...,
+  message = "",
+  call = NULL,
+  use_cli_format = NULL
+) {
   if (is_environment(call)) {
     call <- error_call(call)
   }
@@ -188,11 +190,13 @@ warning_cnd <- function(class = NULL,
 
 #' @rdname cnd
 #' @export
-message_cnd <- function(class = NULL,
-                        ...,
-                        message = "",
-                        call = NULL,
-                        use_cli_format = NULL) {
+message_cnd <- function(
+  class = NULL,
+  ...,
+  message = "",
+  call = NULL,
+  use_cli_format = NULL
+) {
   if (is_environment(call)) {
     call <- error_call(call)
   }
@@ -213,12 +217,14 @@ message_cnd <- function(class = NULL,
   )
 }
 
-cnd_fields <- function(...,
-                       .subclass = NULL,
-                       `_use_cli_format` = NULL,
-                       `_fn` = "cnd",
-                       `_env` = caller_env(),
-                       `_frame` = caller_env(2)) {
+cnd_fields <- function(
+  ...,
+  .subclass = NULL,
+  `_use_cli_format` = NULL,
+  `_fn` = "cnd",
+  `_env` = caller_env(),
+  `_frame` = caller_env(2)
+) {
   if (!is_null(.subclass)) {
     deprecate_subclass(.subclass, `_fn`, `_env`)
   }
@@ -400,11 +406,13 @@ is_rlang_error <- function(x) {
 }
 
 #' @export
-format.rlang_error <- function(x,
-                               ...,
-                               backtrace = TRUE,
-                               simplify = NULL,
-                               drop = NULL) {
+format.rlang_error <- function(
+  x,
+  ...,
+  backtrace = TRUE,
+  simplify = NULL,
+  drop = NULL
+) {
   simplify <- arg_match_simplify(simplify)
   drop <- arg_match_drop(drop)
 
@@ -442,7 +450,11 @@ format.rlang_error <- function(x,
       out <- paste_line(out, reminder)
     } else if (simplify == "branch") {
       last_trace <- style_rlang_run("last_trace()")
-      reminder <- col_silver(paste0("Run `", last_trace, "` to see the full context."))
+      reminder <- col_silver(paste0(
+        "Run `",
+        last_trace,
+        "` to see the full context."
+      ))
       out <- paste_line(out, reminder)
     }
   }
@@ -466,10 +478,7 @@ summary.rlang_warning <- function(object, ...) {
   print(object, ..., simplify = "none")
 }
 #' @export
-format.rlang_warning <- function(x,
-                                 ...,
-                                 backtrace = TRUE,
-                                 simplify = "none") {
+format.rlang_warning <- function(x, ..., backtrace = TRUE, simplify = "none") {
   cnd_format(x, ..., backtrace = backtrace, simplify = simplify)
 }
 
@@ -484,13 +493,15 @@ cnd_print <- function(x, ...) {
   writeLines(cnd_format(x, ...))
   invisible(x)
 }
-cnd_format <- function(x,
-                       ...,
-                       backtrace = TRUE,
-                       simplify = NULL,
-                       prefix = TRUE,
-                       alert = NULL,
-                       drop = NULL) {
+cnd_format <- function(
+  x,
+  ...,
+  backtrace = TRUE,
+  simplify = NULL,
+  prefix = TRUE,
+  alert = NULL,
+  drop = NULL
+) {
   simplify <- arg_match_simplify(simplify)
   drop <- arg_match_drop(drop)
 
@@ -563,7 +574,8 @@ cnd_format <- function(x,
   }
 
   is_same_trace <- function() {
-    compare <- if (is_null(pending_trace)) last_trace else pending_trace[["trace"]]
+    compare <- if (is_null(pending_trace)) last_trace else
+      pending_trace[["trace"]]
     if (!is_trace(trace) || !is_trace(compare)) {
       return(FALSE)
     }

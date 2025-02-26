@@ -185,13 +185,15 @@ enquo <- function(arg) {
 }
 #' @rdname enquo
 #' @export
-enquos <- function(...,
-                   .named = FALSE,
-                   .ignore_empty = c("trailing", "none", "all"),
-                   .ignore_null = c("none", "all"),
-                   .unquote_names = TRUE,
-                   .homonyms = c("keep", "first", "last", "error"),
-                   .check_assign = FALSE) {
+enquos <- function(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .ignore_null = c("none", "all"),
+  .unquote_names = TRUE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+) {
   quos <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -314,11 +316,14 @@ enexpr <- function(arg) {
 
 #' @rdname defusing-advanced
 #' @export
-exprs <- function(...,
-                  .named = FALSE,
-                  .ignore_empty = c("trailing", "none", "all"),
-                  .unquote_names = TRUE) {
-  .Call(ffi_exprs_interp,
+exprs <- function(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE
+) {
+  .Call(
+    ffi_exprs_interp,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
@@ -329,13 +334,15 @@ exprs <- function(...,
 }
 #' @rdname defusing-advanced
 #' @export
-enexprs <- function(...,
-                   .named = FALSE,
-                   .ignore_empty = c("trailing", "none", "all"),
-                   .ignore_null = c("none", "all"),
-                   .unquote_names = TRUE,
-                   .homonyms = c("keep", "first", "last", "error"),
-                   .check_assign = FALSE) {
+enexprs <- function(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .ignore_null = c("none", "all"),
+  .unquote_names = TRUE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+) {
   endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -357,13 +364,15 @@ ensym <- function(arg) {
 }
 #' @rdname defusing-advanced
 #' @export
-ensyms <- function(...,
-                   .named = FALSE,
-                   .ignore_empty = c("trailing", "none", "all"),
-                   .ignore_null = c("none", "all"),
-                   .unquote_names = TRUE,
-                   .homonyms = c("keep", "first", "last", "error"),
-                   .check_assign = FALSE) {
+ensyms <- function(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .ignore_null = c("none", "all"),
+  .unquote_names = TRUE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+) {
   exprs <- endots(
     call = sys.call(),
     frame_env = parent.frame(),
@@ -392,11 +401,14 @@ quo <- function(expr) {
 }
 #' @rdname defusing-advanced
 #' @export
-quos <- function(...,
-                 .named = FALSE,
-                 .ignore_empty = c("trailing", "none", "all"),
-                 .unquote_names = TRUE) {
-  .Call(ffi_quos_interp,
+quos <- function(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .unquote_names = TRUE
+) {
+  .Call(
+    ffi_quos_interp,
     frame_env = environment(),
     named = .named,
     ignore_empty = .ignore_empty,
@@ -429,17 +441,19 @@ capture_args <- c(
   ".check_assign"
 )
 
-endots <- function(call,
-                   frame_env,
-                   capture_arg,
-                   capture_dots,
-                   named,
-                   ignore_empty,
-                   ignore_null,
-                   unquote_names,
-                   homonyms,
-                   check_assign,
-                   error_call = caller_env()) {
+endots <- function(
+  call,
+  frame_env,
+  capture_arg,
+  capture_dots,
+  named,
+  ignore_empty,
+  ignore_null,
+  unquote_names,
+  homonyms,
+  check_assign,
+  error_call = caller_env()
+) {
   ignore_empty <- arg_match0(
     ignore_empty,
     c("trailing", "none", "all"),
@@ -549,10 +563,12 @@ endots <- function(call,
 #'   for information about name repairing.
 #' @param repair_quiet Whether to inform user about repaired names.
 #' @export
-exprs_auto_name <- function(exprs,
-                            ...,
-                            repair_auto = c("minimal", "unique"),
-                            repair_quiet = FALSE) {
+exprs_auto_name <- function(
+  exprs,
+  ...,
+  repair_auto = c("minimal", "unique"),
+  repair_quiet = FALSE
+) {
   check_dots_empty0(...)
   repair_auto <- arg_match0(repair_auto, c("minimal", "unique"))
 

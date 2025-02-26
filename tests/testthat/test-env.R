@@ -173,7 +173,7 @@ test_that("env() doesn't require uniquely named elements", {
 
 test_that("env_clone() clones an environment", {
   data <- list(a = 1L, b = 2L)
-  env <- env(!!! data)
+  env <- env(!!!data)
   clone <- env_clone(env)
   expect_false(is_reference(env, clone))
   expect_reference(env_parent(env), env_parent(clone))
@@ -204,7 +204,10 @@ test_that("env() accepts one unnamed argument to specify parent", {
 
 test_that("env_parents() stops at the global env by default", {
   env <- env(env(global_env()))
-  expect_identical(env_parents(env), new_environments(list(env_parent(env), global_env())))
+  expect_identical(
+    env_parents(env),
+    new_environments(list(env_parent(env), global_env()))
+  )
 
   rlang_parents <- env_parents(ns_env("rlang"))
   expected <- list(`namespace:base` = ns_env("base"), global = global_env())
@@ -213,7 +216,10 @@ test_that("env_parents() stops at the global env by default", {
 
 test_that("env_parents() always stops at the empty env", {
   expect_identical(env_parents(empty_env()), new_environments(list()))
-  expect_identical(env_parents(pkg_env("base")), new_environments(list(empty_env())))
+  expect_identical(
+    env_parents(pkg_env("base")),
+    new_environments(list(empty_env()))
+  )
 })
 
 test_that("env_parents() stops at the sentinel if supplied", {
@@ -223,7 +229,10 @@ test_that("env_parents() stops at the sentinel if supplied", {
 
 test_that("env_parents() returns a named list", {
   env <- env(structure(env(base_env()), name = "foobar"))
-  expect_identical(names(env_parents(env)), c("foobar", "package:base", "empty"))
+  expect_identical(
+    names(env_parents(env)),
+    c("foobar", "package:base", "empty")
+  )
 })
 
 test_that("can lock environments", {
@@ -251,9 +260,15 @@ test_that("active and promise bindings are pretty-printed", {
 
 test_that("locked environments are pretty-printed", {
   env <- env()
-  expect_output(env_print(env), sprintf("<environment: %s>\n", obj_address(env)))
+  expect_output(
+    env_print(env),
+    sprintf("<environment: %s>\n", obj_address(env))
+  )
   env_lock(env)
-  expect_output(env_print(env), sprintf("<environment: %s> \\[L\\]\n", obj_address(env)))
+  expect_output(
+    env_print(env),
+    sprintf("<environment: %s> \\[L\\]\n", obj_address(env))
+  )
 })
 
 test_that("locked bindings are pretty-printed", {
@@ -440,8 +455,14 @@ test_that("env_coalesce() handles fancy bindings", {
 
   x <- env(x = 1, y = 2)
   y <- env(x = "a", z = "c")
-  env_bind_lazy(y, lazy = { signal("", "lazy"); "lazy-value" })
-  env_bind_active(y, active = function() { signal("", "active"); "active-value" })
+  env_bind_lazy(y, lazy = {
+    signal("", "lazy")
+    "lazy-value"
+  })
+  env_bind_active(y, active = function() {
+    signal("", "active")
+    "active-value"
+  })
 
   env_coalesce(x, y)
 

@@ -29,7 +29,10 @@ test_that("can pluck promise value", {
   fn <- function(x) promise_value("x")
   expect_identical(fn(foo), sym("R_UnboundValue"))
 
-  fn <- function(x) { force(x); promise_value("x") }
+  fn <- function(x) {
+    force(x)
+    promise_value("x")
+  }
   foo <- "foo"
   expect_identical(fn(foo), "foo")
 })

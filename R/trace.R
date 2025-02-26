@@ -140,7 +140,11 @@ trace_back <- function(top = NULL, bottom = NULL) {
 
         # Match arguments so we can fully highlight the faulty input in
         # the backtrace. Preserve srcrefs from original frame call.
-        matched <- call_match(trace$call[[i]], frame_fn(error_frame), defaults = TRUE)
+        matched <- call_match(
+          trace$call[[i]],
+          frame_fn(error_frame),
+          defaults = TRUE
+        )
         attributes(matched) <- attributes(trace$call[[i]])
         trace$call[[i]] <- matched
       }
@@ -153,10 +157,12 @@ trace_back <- function(top = NULL, bottom = NULL) {
   trace
 }
 
-trace_find_bottom <- function(bottom,
-                              frames,
-                              arg = caller_arg(bottom),
-                              call = caller_env()) {
+trace_find_bottom <- function(
+  bottom,
+  frames,
+  arg = caller_arg(bottom),
+  call = caller_env()
+) {
   if (is_null(bottom)) {
     return(seq_len(sys.parent(2L)))
   }
@@ -311,13 +317,15 @@ add_winch_trace <- function(trace) {
 
 # Construction ------------------------------------------------------------
 
-new_trace <- function(call,
-                      parent,
-                      ...,
-                      visible = TRUE,
-                      namespace = na_chr,
-                      scope = na_chr,
-                      class = NULL) {
+new_trace <- function(
+  call,
+  parent,
+  ...,
+  visible = TRUE,
+  namespace = na_chr,
+  scope = na_chr,
+  class = NULL
+) {
   new_trace0(
     call,
     parent,
@@ -328,13 +336,15 @@ new_trace <- function(call,
     class = c(class, "rlang_trace", "rlib_trace")
   )
 }
-new_trace0 <- function(call,
-                       parent,
-                       ...,
-                       visible = TRUE,
-                       namespace = NA,
-                       scope = NA,
-                       class = NULL) {
+new_trace0 <- function(
+  call,
+  parent,
+  ...,
+  visible = TRUE,
+  namespace = NA,
+  scope = NA,
+  class = NULL
+) {
   if (is_pairlist(call)) {
     call <- as.list(call)
   }
@@ -419,13 +429,15 @@ c.rlang_trace <- function(...) {
 }
 
 #' @export
-format.rlang_trace <- function(x,
-                               ...,
-                               simplify = c("none", "branch"),
-                               max_frames = NULL,
-                               dir = getwd(),
-                               srcrefs = NULL,
-                               drop = FALSE) {
+format.rlang_trace <- function(
+  x,
+  ...,
+  simplify = c("none", "branch"),
+  max_frames = NULL,
+  dir = getwd(),
+  srcrefs = NULL,
+  drop = FALSE
+) {
   switch(
     arg_match_simplify(simplify),
     none = trace_format(x, max_frames, dir, srcrefs, drop = drop, ...),
@@ -449,15 +461,12 @@ arg_match_drop <- function(drop) {
 }
 
 deprecate_collapse <- function() {
-  deprecate_warn("`\"collapse\"` is deprecated as of rlang 1.1.0.\nPlease use `\"none\"` instead.")
+  deprecate_warn(
+    "`\"collapse\"` is deprecated as of rlang 1.1.0.\nPlease use `\"none\"` instead."
+  )
 }
 
-trace_format <- function(trace,
-                         max_frames,
-                         dir,
-                         srcrefs,
-                         drop = FALSE,
-                         ...) {
+trace_format <- function(trace, max_frames, dir, srcrefs, drop = FALSE, ...) {
   if (is_false(drop) && length(trace$visible)) {
     trace$visible <- TRUE
   }
@@ -489,9 +498,7 @@ trace_format_branch <- function(trace, max_frames, dir, srcrefs) {
   cli_branch(tree, max = max_frames)
 }
 
-cli_branch <- function(tree,
-                       max = NULL,
-                       style = NULL) {
+cli_branch <- function(tree, max = NULL, style = NULL) {
   lines <- tree$call_text
 
   if (!length(lines)) {
@@ -564,14 +571,18 @@ zip_chr <- function(xs, ys) {
 
 
 #' @export
-print.rlang_trace <- function(x,
-                              ...,
-                              simplify = c("none", "branch"),
-                              max_frames = NULL,
-                              dir = getwd(),
-                              srcrefs = NULL) {
+print.rlang_trace <- function(
+  x,
+  ...,
+  simplify = c("none", "branch"),
+  max_frames = NULL,
+  dir = getwd(),
+  srcrefs = NULL
+) {
   simplify <- arg_match_simplify(simplify)
-  cat_line(format(x, ...,
+  cat_line(format(
+    x,
+    ...,
     simplify = simplify,
     max_frames = max_frames,
     dir = dir,
@@ -580,12 +591,16 @@ print.rlang_trace <- function(x,
   invisible(x)
 }
 #' @export
-summary.rlang_trace <- function(object,
-                                ...,
-                                max_frames = NULL,
-                                dir = getwd(),
-                                srcrefs = NULL) {
-  cat_line(format(object, ...,
+summary.rlang_trace <- function(
+  object,
+  ...,
+  max_frames = NULL,
+  dir = getwd(),
+  srcrefs = NULL
+) {
+  cat_line(format(
+    object,
+    ...,
     simplify = "none",
     max_frames = max_frames,
     dir = dir,
@@ -710,10 +725,7 @@ is_winch_frame <- function(call) {
 
 # Printing ----------------------------------------------------------------
 
-trace_as_tree <- function(trace,
-                          dir = getwd(),
-                          srcrefs = NULL,
-                          drop = FALSE) {
+trace_as_tree <- function(trace, dir = getwd(), srcrefs = NULL, drop = FALSE) {
   root_id <- 0
   root_children <- list(find_children(root_id, trace$parent))
 
@@ -811,11 +823,13 @@ node_type <- function(ns, children) {
 }
 
 # FIXME: Add something like call_deparse_line()
-trace_call_text <- function(call,
-                            namespace,
-                            scope,
-                            error_frame = FALSE,
-                            error_arg = NULL) {
+trace_call_text <- function(
+  call,
+  namespace,
+  scope,
+  error_frame = FALSE,
+  error_arg = NULL
+) {
   if (is_call(call) && is_symbol(call[[1]])) {
     if (scope %in% c("::", ":::") && !is_na(namespace)) {
       call[[1]] <- call(scope, sym(namespace), call[[1]])
@@ -1138,7 +1152,11 @@ theme_error_highlight_test <- list(
   "span.arg" = list(before = "<<ARG ", after = ">>"),
   "span.code" = list(before = "<<CALL ", after = ">>"),
   "span.arg-unquoted" = list(before = "<<ARG ", after = ">>", transform = NULL),
-  "span.code-unquoted" = list(before = "<<CALL ", after = ">>", transform = NULL)
+  "span.code-unquoted" = list(
+    before = "<<CALL ",
+    after = ">>",
+    transform = NULL
+  )
 )
 
 theme_error_arg_highlight_test <- theme_error_highlight_test

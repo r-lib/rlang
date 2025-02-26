@@ -29,7 +29,10 @@ test_that("can create empty vectors", {
 })
 
 test_that("objects are not spliced", {
-  expect_error(lgl(structure(list(TRUE, TRUE), class = "bam")), "Can't splice S3 objects")
+  expect_error(
+    lgl(structure(list(TRUE, TRUE), class = "bam")),
+    "Can't splice S3 objects"
+  )
 })
 
 test_that("explicitly spliced lists are spliced", {
@@ -48,9 +51,15 @@ test_that("splicing uses outer names when scalar", {
 
 test_that("warn when outer names unless input is unnamed scalar atomic", {
   expect_warning(expect_identical(dbl(a = c(1, 2)), c(1, 2)), "Outer names")
-  expect_warning(expect_identical(dbl(list(a = c(1, 2))), c(1, 2)), "Outer names")
+  expect_warning(
+    expect_identical(dbl(list(a = c(1, 2))), c(1, 2)),
+    "Outer names"
+  )
   expect_warning(expect_identical(dbl(a = c(A = 1)), c(A = 1)), "Outer names")
-  expect_warning(expect_identical(dbl(list(a = c(A = 1))), c(A = 1)), "Outer names")
+  expect_warning(
+    expect_identical(dbl(list(a = c(A = 1))), c(A = 1)),
+    "Outer names"
+  )
 })
 
 test_that("warn when spliced lists have outer name", {
@@ -59,14 +68,23 @@ test_that("warn when spliced lists have outer name", {
 
 test_that("list2() doesn't splice bare lists", {
   expect_identical(list2(list(1, 2)), list(list(1, 2)))
-  expect_identical(list2(!!! list(1, 2)), list(1, 2))
+  expect_identical(list2(!!!list(1, 2)), list(1, 2))
 })
 
 test_that("atomic inputs are implicitly coerced", {
-  expect_identical(lgl(10L, FALSE, list(TRUE, 0L, 0)), c(TRUE, FALSE, TRUE, FALSE, FALSE))
-  expect_identical(dbl(10L, 10, TRUE, list(10L, 0, TRUE)), c(10, 10, 1, 10, 0, 1))
+  expect_identical(
+    lgl(10L, FALSE, list(TRUE, 0L, 0)),
+    c(TRUE, FALSE, TRUE, FALSE, FALSE)
+  )
+  expect_identical(
+    dbl(10L, 10, TRUE, list(10L, 0, TRUE)),
+    c(10, 10, 1, 10, 0, 1)
+  )
 
-  expect_error(lgl("foo"), "Can't convert a character vector to a logical vector")
+  expect_error(
+    lgl("foo"),
+    "Can't convert a character vector to a logical vector"
+  )
   expect_error(chr(10), "Can't convert a double vector to a character vector")
 })
 
@@ -77,17 +95,26 @@ test_that("type errors are handled", {
 
 test_that("empty inputs are spliced", {
   expect_identical(lgl(NULL, lgl(), list(NULL, lgl())), lgl())
-  expect_warning(regexp = NA, expect_identical(lgl(a = NULL, a = lgl(), list(a = NULL, a = lgl())), lgl()))
+  expect_warning(
+    regexp = NA,
+    expect_identical(lgl(a = NULL, a = lgl(), list(a = NULL, a = lgl())), lgl())
+  )
 })
 
 test_that("list2() splices names", {
   expect_identical(list2(a = TRUE, b = FALSE), list(a = TRUE, b = FALSE))
-  expect_identical(list2(c(A = TRUE), c(B = FALSE)), list(c(A = TRUE), c(B = FALSE)))
-  expect_identical(list2(a = c(A = TRUE), b = c(B = FALSE)), list(a = c(A = TRUE), b = c(B = FALSE)))
+  expect_identical(
+    list2(c(A = TRUE), c(B = FALSE)),
+    list(c(A = TRUE), c(B = FALSE))
+  )
+  expect_identical(
+    list2(a = c(A = TRUE), b = c(B = FALSE)),
+    list(a = c(A = TRUE), b = c(B = FALSE))
+  )
 })
 
 test_that("ll() is an alias to list2()", {
-  expect_identical(ll(!!! list(1, 2)), list(1, 2))
+  expect_identical(ll(!!!list(1, 2)), list(1, 2))
 })
 
 test_that("vector ctors take names arguments", {

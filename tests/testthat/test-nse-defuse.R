@@ -19,12 +19,12 @@ test_that("dots are interpolated", {
   fn <- function(...) {
     baz <- "baz"
     fn_var <- quo(baz)
-    g(..., toupper(!! fn_var))
+    g(..., toupper(!!fn_var))
   }
   g <- function(...) {
     foo <- "foo"
     g_var <- quo(foo)
-    h(toupper(!! g_var), ...)
+    h(toupper(!!g_var), ...)
   }
   h <- function(...) {
     quos(...)
@@ -34,7 +34,10 @@ test_that("dots are interpolated", {
   var <- quo(bar)
   dots <- fn(toupper(!!var))
 
-  expect_identical(map(dots, deparse), named_list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)"))
+  expect_identical(
+    map(dots, deparse),
+    named_list("~toupper(~foo)", "~toupper(~bar)", "~toupper(~baz)")
+  )
   expect_identical(map(dots, eval_tidy), named_list("FOO", "BAR", "BAZ"))
 })
 
@@ -55,7 +58,7 @@ test_that("dots can be spliced in", {
   fn <- function(...) {
     var <- "var"
     list(
-      out = g(!!! quos(...), bar(baz), !!! list(a = var, b = ~foo)),
+      out = g(!!!quos(...), bar(baz), !!!list(a = var, b = ~foo)),
       env = current_env()
     )
   }
@@ -68,19 +71,22 @@ test_that("dots can be spliced in", {
     quo(foo(bar)),
     set_env(quo(bar(baz)), out$env),
     a = quo("var"),
-    b = set_env(quo(!! with_env(out$env, ~foo)), out$env)
+    b = set_env(quo(!!with_env(out$env, ~foo)), out$env)
   )
   expect_identical(out$out, expected)
 })
 
 test_that("spliced dots are wrapped in formulas", {
   args <- alist(x = var, y = foo(bar))
-  expect_identical(quos(!!! args), quos_list(x = quo(var), y = quo(foo(bar))))
+  expect_identical(quos(!!!args), quos_list(x = quo(var), y = quo(foo(bar))))
 })
 
 test_that("dot names are interpolated", {
   var <- "baz"
-  expect_identical(quos(!!var := foo, !!toupper(var) := bar), quos_list(baz = quo(foo), BAZ = quo(bar)))
+  expect_identical(
+    quos(!!var := foo, !!toupper(var) := bar),
+    quos_list(baz = quo(foo), BAZ = quo(bar))
+  )
   expect_identical(quos(!!var := foo, bar), quos_list(baz = quo(foo), quo(bar)))
 
   var <- quote(baz)
@@ -88,14 +94,14 @@ test_that("dot names are interpolated", {
 })
 
 test_that("corner cases are handled when interpolating dot names", {
-    var <- na_chr
-    expect_identical(names(quos(!!var := NULL)), "NA")
+  var <- na_chr
+  expect_identical(names(quos(!!var := NULL)), "NA")
 
-    var <- NULL
-    expect_snapshot({
-      (expect_error(quos(!!var := NULL)))
-      (expect_error(list2(!!c("a", "b") := NULL)))
-    })
+  var <- NULL
+  expect_snapshot({
+    (expect_error(quos(!!var := NULL)))
+    (expect_error(list2(!!c("a", "b") := NULL)))
+  })
 })
 
 test_that("dots are forwarded to named arguments", {
@@ -104,7 +110,10 @@ test_that("dots are forwarded to named arguments", {
   fn <- function(x) enquo(x)
 
   env <- child_env(current_env())
-  expect_identical(with_env(env, outer(foo(bar))), new_quosure(quote(foo(bar)), env))
+  expect_identical(
+    with_env(env, outer(foo(bar))),
+    new_quosure(quote(foo(bar)), env)
+  )
 })
 
 test_that("pronouns are scoped throughout nested captures", {
@@ -114,22 +123,35 @@ test_that("pronouns are scoped throughout nested captures", {
   data <- list(foo = "bar", baz = "baz")
   baz <- "bazz"
 
-  expect_identical(outer(data, inner(foo, baz)), set_names(list("bar", "baz"), c("", "")))
+  expect_identical(
+    outer(data, inner(foo, baz)),
+    set_names(list("bar", "baz"), c("", ""))
+  )
 })
 
 test_that("Can supply := with LHS even if .named = TRUE", {
-  expect_warning(regexp = NA, expect_identical(
-    quos(!!"nm" := 2, .named = TRUE), quos_list(nm = as_quosure(quote(2), empty_env()))
-  ))
+  expect_warning(
+    regexp = NA,
+    expect_identical(
+      quos(!!"nm" := 2, .named = TRUE),
+      quos_list(nm = as_quosure(quote(2), empty_env()))
+    )
+  )
 })
 
 test_that("Can't supply both `=` and `:=`", {
   expect_error(regexp = "both `=` and `:=`", quos(foobar = !!"nm" := 2))
-  expect_error(regexp = "both `=` and `:=`", quos(foobar = !!"nm" := 2, .named = TRUE))
+  expect_error(
+    regexp = "both `=` and `:=`",
+    quos(foobar = !!"nm" := 2, .named = TRUE)
+  )
 })
 
 test_that("RHS of tidy defs are unquoted", {
-  expect_identical(quos(foo := !!"bar"), quos_list(foo = as_quosure(quote("bar"), empty_env())))
+  expect_identical(
+    quos(foo := !!"bar"),
+    quos_list(foo = as_quosure(quote("bar"), empty_env()))
+  )
 })
 
 test_that("can capture empty list of dots", {
@@ -138,7 +160,7 @@ test_that("can capture empty list of dots", {
 })
 
 test_that("quosures are spliced before serialisation", {
-  quosures <- quos(!! quo(foo(!! quo(bar))), .named = TRUE)
+  quosures <- quos(!!quo(foo(!!quo(bar))), .named = TRUE)
   expect_identical(names(quosures), "foo(bar)")
 })
 
@@ -150,22 +172,35 @@ test_that("missing arguments are captured", {
 
 test_that("empty quosures are forwarded", {
   inner <- function(x) enquo(x)
-  outer <- function(x) inner(!! enquo(x))
+  outer <- function(x) inner(!!enquo(x))
   expect_identical(outer(), quo())
 })
 
 test_that("quos() captures missing arguments", {
-  expect_identical(quos(, , .ignore_empty = "none"), quos_list(quo(), quo()), c("", ""))
+  expect_identical(
+    quos(,, .ignore_empty = "none"),
+    quos_list(quo(), quo()),
+    c("", "")
+  )
 })
 
 test_that("quos() ignores missing arguments", {
-  expect_identical(quos(, , "foo", ), quos_list(quo(), quo(), new_quosure("foo", empty_env())))
-  expect_identical(quos(, , "foo", , .ignore_empty = "all"), quos_list(new_quosure("foo", empty_env())))
+  expect_identical(
+    quos(,, "foo", ),
+    quos_list(quo(), quo(), new_quosure("foo", empty_env()))
+  )
+  expect_identical(
+    quos(,, "foo", , .ignore_empty = "all"),
+    quos_list(new_quosure("foo", empty_env()))
+  )
 })
 
 test_that("quosured literals are forwarded as is", {
-  expect_identical(quo(!! quo(NULL)), new_quosure(NULL, empty_env()))
-  expect_identical(quos(!! quo(10L)), set_names(quos_list(new_quosure(10L, empty_env())), ""))
+  expect_identical(quo(!!quo(NULL)), new_quosure(NULL, empty_env()))
+  expect_identical(
+    quos(!!quo(10L)),
+    set_names(quos_list(new_quosure(10L, empty_env())), "")
+  )
 })
 
 test_that("expr() returns missing argument", {
@@ -190,7 +225,10 @@ test_that("can take forced arguments", {
   }
   expect_error(lapply(1:2, captureArgInfo), "must be an argument name")
 
-  args <- list(list(expr = 1L, env = empty_env()), list(expr = 2L, env = empty_env()))
+  args <- list(
+    list(expr = 1L, env = empty_env()),
+    list(expr = 2L, env = empty_env())
+  )
   expect_identical(lapply(1:2, function(x) captureArgInfo(x)), args)
 })
 
@@ -222,7 +260,10 @@ test_that("can capture arguments that do exist", {
 })
 
 test_that("can capture missing argument", {
-  expect_identical(captureArgInfo(), list(expr = missing_arg(), env = empty_env()))
+  expect_identical(
+    captureArgInfo(),
+    list(expr = missing_arg(), env = empty_env())
+  )
 })
 
 test_that("serialised unicode in `:=` LHS is unserialised", {
@@ -235,7 +276,10 @@ test_that("serialised unicode in `:=` LHS is unserialised", {
 })
 
 test_that("exprs() supports auto-naming", {
-  expect_identical(exprs(foo(bar), b = baz(), .named = TRUE), list(`foo(bar)` = quote(foo(bar)), b = quote(baz())))
+  expect_identical(
+    exprs(foo(bar), b = baz(), .named = TRUE),
+    list(`foo(bar)` = quote(foo(bar)), b = quote(baz()))
+  )
 })
 
 test_that("dots_interp() supports unquoting", {
@@ -246,7 +290,7 @@ test_that("dots_interp() supports unquoting", {
 })
 
 test_that("dots_interp() has no side effect", {
-  f <- function(x) exprs(!! x + 2)
+  f <- function(x) exprs(!!x + 2)
   expect_identical(f(1), named_list(quote(1 + 2)))
   expect_identical(f(2), named_list(quote(2 + 2)))
 })
@@ -296,11 +340,23 @@ test_that("names-unquoting can be switched off", {
   foo <- "foo"
   bar <- "bar"
 
-  expect_identical(exprs(foo := bar, .unquote_names = FALSE), named_list(quote(foo := bar)))
-  expect_identical(exprs(!! foo := !! bar, .unquote_names = FALSE), named_list(quote("foo" := "bar")))
+  expect_identical(
+    exprs(foo := bar, .unquote_names = FALSE),
+    named_list(quote(foo := bar))
+  )
+  expect_identical(
+    exprs(!!foo := !!bar, .unquote_names = FALSE),
+    named_list(quote("foo" := "bar"))
+  )
 
-  expect_identical(quos(foo := bar, .unquote_names = FALSE), quos_list(new_quosure(quote(foo := bar))))
-  expect_identical(quos(!! foo := !! bar, .unquote_names = FALSE), quos_list(new_quosure(quote("foo" := "bar"))))
+  expect_identical(
+    quos(foo := bar, .unquote_names = FALSE),
+    quos_list(new_quosure(quote(foo := bar)))
+  )
+  expect_identical(
+    quos(!!foo := !!bar, .unquote_names = FALSE),
+    quos_list(new_quosure(quote("foo" := "bar")))
+  )
 })
 
 test_that("endots() captures arguments", {
@@ -366,25 +422,31 @@ test_that("endots() supports `.unquote_names`", {
   fn <- function(...) enquos(..., .unquote_names = TRUE)
   expect_identical(fn(!!"foo" := bar), quos(foo = bar))
   fn <- function(...) enquos(..., .unquote_names = FALSE)
-  expect_identical(fn(!!"foo" := bar), quos(!!"foo" := bar, .unquote_names = FALSE))
+  expect_identical(
+    fn(!!"foo" := bar),
+    quos(!!"foo" := bar, .unquote_names = FALSE)
+  )
 
   # enexprs()
   fn <- function(...) enexprs(..., .unquote_names = TRUE)
   expect_identical(fn(!!"foo" := bar), exprs(foo = bar))
   fn <- function(...) enexprs(..., .unquote_names = FALSE)
-  expect_identical(fn(!!"foo" := bar), exprs(!!"foo" := bar, .unquote_names = FALSE))
+  expect_identical(
+    fn(!!"foo" := bar),
+    exprs(!!"foo" := bar, .unquote_names = FALSE)
+  )
 })
 
 test_that("endots() supports `.ignore_empty`", {
   # enquos()
   fn <- function(...) enquos(..., .ignore_empty = "all")
-  expect_identical(fn(, ), quos())
+  expect_identical(fn(,), quos())
   fn <- function(...) enquos(..., .ignore_empty = "trailing")
   expect_identical(fn(foo, ), quos(foo))
 
   # enexprs()
   fn <- function(...) enexprs(..., .ignore_empty = "all")
-  expect_identical(fn(, ), exprs())
+  expect_identical(fn(,), exprs())
   fn <- function(...) enexprs(..., .ignore_empty = "trailing")
   expect_identical(fn(foo, ), exprs(foo))
 })
@@ -437,7 +499,7 @@ test_that("closures are captured with their calling environment", {
 test_that("the missing argument is captured", {
   expect_equal_(
     quos(!!missing_arg(), .ignore_empty = "none"),
-    quos(, ),
+    quos(,),
     ignore_formula_env = TRUE
   )
 
@@ -510,7 +572,10 @@ test_that("enexprs() and enquos() support empty dots", {
 test_that("supplying `!!!` with a name warns", {
   local_options(lifecycle_verbosity = "warning")
   expect_no_warning_(quos(!!!1, 2, !!!NULL))
-  expect_defunct(quos(foo = !!!1, 2, bar = !!!NULL), "Only the operand's names are retained")
+  expect_defunct(
+    quos(foo = !!!1, 2, bar = !!!NULL),
+    "Only the operand's names are retained"
+  )
 })
 
 test_that("ensym() unwraps quosures", {
@@ -662,10 +727,10 @@ test_that("`.named = NULL` yields `NULL` names (#1505)", {
 
 test_that("embraced empty arg are detected consistently (#1421)", {
   fn_quos <- function(cond, ...) {
-    quos_it({{cond}}, ...)
+    quos_it({{ cond }}, ...)
   }
   fn_enquos <- function(cond, ...) {
-    enquos_it({{cond}}, ...)
+    enquos_it({{ cond }}, ...)
   }
 
   quos_it <- function(..., .ignore_empty = "all") {

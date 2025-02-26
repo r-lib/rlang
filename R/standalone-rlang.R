@@ -15,11 +15,9 @@
 #
 # nocov start
 
-
 # These versions of `abort()`, `warn()` and `inform()` are only
 # guaranteed to support "i" and "x" bullets. Other kinds of bullets
 # might fail if rlang is not recent enough.
-
 
 .rlang_compat <- function(fn, try_rlang = TRUE) {
   # Compats that behave the same independently of rlang's presence
@@ -29,9 +27,11 @@
   )
 
   # Only use rlang if it is fully loaded (#1482)
-  if (try_rlang &&
-        requireNamespace("rlang", quietly = TRUE) &&
-        environmentIsLocked(asNamespace("rlang"))) {
+  if (
+    try_rlang &&
+      requireNamespace("rlang", quietly = TRUE) &&
+      environmentIsLocked(asNamespace("rlang"))
+  ) {
     switch(
       fn,
       is_interactive = return(rlang::is_interactive)
@@ -70,6 +70,5 @@
 
   stop(sprintf("Internal error in rlang shims: Unknown function `%s()`.", fn))
 }
-
 
 #nocov end

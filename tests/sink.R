@@ -1,4 +1,3 @@
-
 library(rlang)
 
 # inform() prints to file

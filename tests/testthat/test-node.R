@@ -80,11 +80,12 @@ test_that("pairlist predicates detect pairlists", {
 
 test_that("pairlist2() converts to pairlist", {
   expect_identical_(pairlist2(1, !!!c(2, 3), 4), pairlist(1, 2, 3, 4))
-  expect_identical_(pairlist2(1, !!!mtcars[1:2], 4), pairlist(1, mpg = mtcars$mpg, cyl = mtcars$cyl, 4))
-
-  local_bindings(.env = global_env(),
-    `[[.rlang_foobar` = function(x, i) "foo"
+  expect_identical_(
+    pairlist2(1, !!!mtcars[1:2], 4),
+    pairlist(1, mpg = mtcars$mpg, cyl = mtcars$cyl, 4)
   )
+
+  local_bindings(.env = global_env(), `[[.rlang_foobar` = function(x, i) "foo")
   foobar <- structure(NA, class = "rlang_foobar")
   expect_identical_(pairlist2(1, !!!foobar, 4), pairlist(1, "foo", 4))
 })
@@ -96,11 +97,17 @@ test_that("pairlist2() duplicates spliced pairlists", {
 })
 
 test_that("pairlist2() preserves empty arguments", {
-  expect_identical(pairlist2(1, x = , , 4), pairlist(1, x = missing_arg(), missing_arg(), 4))
+  expect_identical(
+    pairlist2(1, x = , , 4),
+    pairlist(1, x = missing_arg(), missing_arg(), 4)
+  )
 })
 
 test_that("pairlist2() supports splice boxes", {
-  expect_identical(pairlist2(1, splice(list("foo", "bar")), 4), pairlist(1, "foo", "bar", 4))
+  expect_identical(
+    pairlist2(1, splice(list("foo", "bar")), 4),
+    pairlist(1, "foo", "bar", 4)
+  )
 })
 
 test_that("pairlist2() supports empty spliced vectors", {

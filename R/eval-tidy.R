@@ -124,9 +124,9 @@ eval_tidy <- function(expr, data = NULL, env = caller_env()) {
 tilde_eval <- function(...) {
   .External2(
     ffi_tilde_eval,
-    sys.call(),     # Quosure env
-    environment(),  # Unwind-protect env
-    parent.frame()  # Lexical env
+    sys.call(), # Quosure env
+    environment(), # Unwind-protect env
+    parent.frame() # Lexical env
   )
 }
 
@@ -416,7 +416,10 @@ new_data_mask <- function(bottom, top = bottom) {
 data_pronoun_get <- function(x, nm, call) {
   if (!is_string(nm)) {
     abort(
-      sprintf("Must subset the data pronoun with a string, not %s.", obj_type_friendly(nm)),
+      sprintf(
+        "Must subset the data pronoun with a string, not %s.",
+        obj_type_friendly(nm)
+      ),
       call = call
     )
   }
@@ -439,7 +442,10 @@ abort_data_pronoun <- function(nm, call) {
 ctxt_pronoun_get <- function(x, nm, call) {
   if (!is_string(nm)) {
     abort(
-      sprintf("Must subset the context pronoun with a string, not %s.", obj_type_friendly(nm)),
+      sprintf(
+        "Must subset the context pronoun with a string, not %s.",
+        obj_type_friendly(nm)
+      ),
       call = call
     )
   }
@@ -557,7 +563,10 @@ data_pronoun_name <- function(x) {
 }
 stop_fake_data_subset <- function(call) {
   abort(
-    sprintf("Can't subset %s outside of a data mask context.", format_arg(".data")),
+    sprintf(
+      "Can't subset %s outside of a data mask context.",
+      format_arg(".data")
+    ),
     call = mask_top(call, inherit = TRUE)
   )
 }

@@ -91,19 +91,21 @@
 #' functions apply default ANSI colours to these symbols if possible.
 #'
 #' @noRd
-symbol_info   <- function() if (.rlang_cli_has_cli()) cli::symbol$info else "i"
-symbol_cross  <- function() if (.rlang_cli_has_cli()) cli::symbol$cross else "x"
-symbol_tick   <- function() if (.rlang_cli_has_cli()) cli::symbol$tick else "v"
-symbol_bullet <- function() if (.rlang_cli_has_cli()) cli::symbol$bullet else "*"
-symbol_arrow  <- function() if (.rlang_cli_has_cli()) cli::symbol$arrow_right else ">"
-symbol_alert  <- function() "!"
+symbol_info <- function() if (.rlang_cli_has_cli()) cli::symbol$info else "i"
+symbol_cross <- function() if (.rlang_cli_has_cli()) cli::symbol$cross else "x"
+symbol_tick <- function() if (.rlang_cli_has_cli()) cli::symbol$tick else "v"
+symbol_bullet <- function()
+  if (.rlang_cli_has_cli()) cli::symbol$bullet else "*"
+symbol_arrow <- function()
+  if (.rlang_cli_has_cli()) cli::symbol$arrow_right else ">"
+symbol_alert <- function() "!"
 
-ansi_info   <- function() col_blue(symbol_info())
-ansi_cross  <- function() col_red(symbol_cross())
-ansi_tick   <- function() col_green(symbol_tick())
+ansi_info <- function() col_blue(symbol_info())
+ansi_cross <- function() col_red(symbol_cross())
+ansi_tick <- function() col_green(symbol_tick())
 ansi_bullet <- function() col_cyan(symbol_bullet())
-ansi_arrow  <- function() symbol_arrow()
-ansi_alert  <- function() col_yellow(symbol_alert())
+ansi_arrow <- function() symbol_arrow()
+ansi_alert <- function() col_yellow(symbol_alert())
 
 
 #' Apply ANSI styling
@@ -115,49 +117,98 @@ ansi_alert  <- function() col_yellow(symbol_alert())
 #' @param x A string.
 #'
 #' @noRd
-col_black              <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_black(x)) else x
-col_blue               <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_blue(x)) else x
-col_cyan               <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_cyan(x)) else x
-col_green              <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_green(x)) else x
-col_magenta            <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_magenta(x)) else x
-col_red                <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_red(x)) else x
-col_white              <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_white(x)) else x
-col_yellow             <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_yellow(x)) else x
-col_grey               <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_grey(x)) else x
-col_silver             <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_silver(x)) else x
-col_none               <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_none(x)) else x
+col_black <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_black(x)) else x
+col_blue <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_blue(x)) else x
+col_cyan <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_cyan(x)) else x
+col_green <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_green(x)) else x
+col_magenta <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_magenta(x)) else x
+col_red <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_red(x)) else x
+col_white <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_white(x)) else x
+col_yellow <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_yellow(x)) else x
+col_grey <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_grey(x)) else x
+col_silver <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_silver(x)) else x
+col_none <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_none(x)) else x
 
-bg_black               <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_black(x)) else x
-bg_blue                <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_blue(x)) else x
-bg_cyan                <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_cyan(x)) else x
-bg_green               <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_green(x)) else x
-bg_magenta             <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_magenta(x)) else x
-bg_red                 <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_red(x)) else x
-bg_white               <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_white(x)) else x
-bg_yellow              <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_yellow(x)) else x
-bg_none                <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_none(x)) else x
+bg_black <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_black(x)) else x
+bg_blue <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_blue(x)) else x
+bg_cyan <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_cyan(x)) else x
+bg_green <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_green(x)) else x
+bg_magenta <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_magenta(x)) else x
+bg_red <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_red(x)) else x
+bg_white <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_white(x)) else x
+bg_yellow <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_yellow(x)) else x
+bg_none <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_none(x)) else x
 
-style_dim              <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_dim(x)) else x
-style_blurred          <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_blurred(x)) else x
-style_bold             <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_bold(x)) else x
-style_hidden           <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_hidden(x)) else x
-style_inverse          <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_inverse(x)) else x
-style_italic           <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_italic(x)) else x
-style_strikethrough    <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_strikethrough(x)) else x
-style_underline        <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_underline(x)) else x
+style_dim <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_dim(x)) else x
+style_blurred <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_blurred(x)) else x
+style_bold <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_bold(x)) else x
+style_hidden <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_hidden(x)) else x
+style_inverse <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_inverse(x)) else x
+style_italic <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_italic(x)) else x
+style_strikethrough <- function(x)
+  if (.rlang_cli_has_cli())
+    .rlang_cli_unstructure(cli::style_strikethrough(x)) else x
+style_underline <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_underline(x)) else
+    x
 
-style_no_dim           <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_dim(x)) else x
-style_no_blurred       <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_blurred(x)) else x
-style_no_bold          <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_bold(x)) else x
-style_no_hidden        <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_hidden(x)) else x
-style_no_inverse       <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_inverse(x)) else x
-style_no_italic        <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_italic(x)) else x
-style_no_strikethrough <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_strikethrough(x)) else x
-style_no_underline     <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_underline(x)) else x
+style_no_dim <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_dim(x)) else x
+style_no_blurred <- function(x)
+  if (.rlang_cli_has_cli())
+    .rlang_cli_unstructure(cli::style_no_blurred(x)) else x
+style_no_bold <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_bold(x)) else x
+style_no_hidden <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_hidden(x)) else
+    x
+style_no_inverse <- function(x)
+  if (.rlang_cli_has_cli())
+    .rlang_cli_unstructure(cli::style_no_inverse(x)) else x
+style_no_italic <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_italic(x)) else
+    x
+style_no_strikethrough <- function(x)
+  if (.rlang_cli_has_cli())
+    .rlang_cli_unstructure(cli::style_no_strikethrough(x)) else x
+style_no_underline <- function(x)
+  if (.rlang_cli_has_cli())
+    .rlang_cli_unstructure(cli::style_no_underline(x)) else x
 
-style_reset            <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_reset(x)) else x
-style_no_colour        <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_color(x)) else x
-style_no_bg_colour     <- function(x) if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_bg_color(x)) else x
+style_reset <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_reset(x)) else x
+style_no_colour <- function(x)
+  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_color(x)) else
+    x
+style_no_bg_colour <- function(x)
+  if (.rlang_cli_has_cli())
+    .rlang_cli_unstructure(cli::style_no_bg_color(x)) else x
 
 CLI_SUPPORT_HYPERLINK <- "2.2.0"
 CLI_SUPPORT_HYPERLINK_PARAMS <- "3.1.1"
@@ -200,46 +251,48 @@ style_hyperlink <- function(text, url, params = NULL) {
 #' @param x A string.
 #'
 #' @noRd
-mark_emph   <- function(x) .rlang_cli_style_inline(x, "emph", "_%s_")
+mark_emph <- function(x) .rlang_cli_style_inline(x, "emph", "_%s_")
 mark_strong <- function(x) .rlang_cli_style_inline(x, "strong", "*%s*")
-mark_code   <- function(x) .rlang_cli_style_inline(x, "code", "`%s`")
-mark_q      <- function(x) .rlang_cli_style_inline(x, "q", NULL)
-mark_pkg    <- function(x) .rlang_cli_style_inline(x, "pkg", NULL)
-mark_fn     <- function(x) .rlang_cli_style_inline(x, "fn", "`%s()`")
-mark_arg    <- function(x) .rlang_cli_style_inline(x, "arg", "`%s`")
-mark_kbd    <- function(x) .rlang_cli_style_inline(x, "kbd", "[%s]")
-mark_key    <- function(x) .rlang_cli_style_inline(x, "key", "[%s]")
-mark_file   <- function(x) .rlang_cli_style_inline(x, "file", NULL)
-mark_path   <- function(x) .rlang_cli_style_inline(x, "path", NULL)
-mark_email  <- function(x) .rlang_cli_style_inline(x, "email", NULL)
-mark_url    <- function(x) .rlang_cli_style_inline(x, "url", "<%s>")
-mark_var    <- function(x) .rlang_cli_style_inline(x, "var", "`%s`")
+mark_code <- function(x) .rlang_cli_style_inline(x, "code", "`%s`")
+mark_q <- function(x) .rlang_cli_style_inline(x, "q", NULL)
+mark_pkg <- function(x) .rlang_cli_style_inline(x, "pkg", NULL)
+mark_fn <- function(x) .rlang_cli_style_inline(x, "fn", "`%s()`")
+mark_arg <- function(x) .rlang_cli_style_inline(x, "arg", "`%s`")
+mark_kbd <- function(x) .rlang_cli_style_inline(x, "kbd", "[%s]")
+mark_key <- function(x) .rlang_cli_style_inline(x, "key", "[%s]")
+mark_file <- function(x) .rlang_cli_style_inline(x, "file", NULL)
+mark_path <- function(x) .rlang_cli_style_inline(x, "path", NULL)
+mark_email <- function(x) .rlang_cli_style_inline(x, "email", NULL)
+mark_url <- function(x) .rlang_cli_style_inline(x, "url", "<%s>")
+mark_var <- function(x) .rlang_cli_style_inline(x, "var", "`%s`")
 mark_envvar <- function(x) .rlang_cli_style_inline(x, "envvar", "`%s`")
-mark_field  <- function(x) .rlang_cli_style_inline(x, "field", NULL)
+mark_field <- function(x) .rlang_cli_style_inline(x, "field", NULL)
 
 mark_cls <- function(x) {
   fallback <- function(x) sprintf("<%s>", paste0(x, collapse = "/"))
   .rlang_cli_style_inline(x, "cls", fallback)
 }
 
-format_emph   <- function(x) .rlang_cli_format_inline(x, "emph", "%s")
+format_emph <- function(x) .rlang_cli_format_inline(x, "emph", "%s")
 format_strong <- function(x) .rlang_cli_format_inline(x, "strong", "%s")
-format_code   <- function(x) .rlang_cli_format_inline(x, "code", "`%s`")
-format_q      <- function(x) .rlang_cli_format_inline(x, "q", NULL)
-format_pkg    <- function(x) .rlang_cli_format_inline(x, "pkg", NULL)
-format_fn     <- function(x) .rlang_cli_format_inline(x, "fn", "`%s()`")
-format_arg    <- function(x) .rlang_cli_format_inline(x, "arg", "`%s`")
-format_kbd    <- function(x) .rlang_cli_format_inline(x, "kbd", "[%s]")
-format_key    <- function(x) .rlang_cli_format_inline(x, "key", "[%s]")
-format_file   <- function(x) .rlang_cli_format_inline(x, "file", NULL)
-format_path   <- function(x) .rlang_cli_format_inline(x, "path", NULL)
-format_email  <- function(x) .rlang_cli_format_inline(x, "email", NULL)
-format_url    <- function(x) .rlang_cli_format_inline(x, "url", "<%s>")
-format_var    <- function(x) .rlang_cli_format_inline(x, "var", "`%s`")
+format_code <- function(x) .rlang_cli_format_inline(x, "code", "`%s`")
+format_q <- function(x) .rlang_cli_format_inline(x, "q", NULL)
+format_pkg <- function(x) .rlang_cli_format_inline(x, "pkg", NULL)
+format_fn <- function(x) .rlang_cli_format_inline(x, "fn", "`%s()`")
+format_arg <- function(x) .rlang_cli_format_inline(x, "arg", "`%s`")
+format_kbd <- function(x) .rlang_cli_format_inline(x, "kbd", "[%s]")
+format_key <- function(x) .rlang_cli_format_inline(x, "key", "[%s]")
+format_file <- function(x) .rlang_cli_format_inline(x, "file", NULL)
+format_path <- function(x) .rlang_cli_format_inline(x, "path", NULL)
+format_email <- function(x) .rlang_cli_format_inline(x, "email", NULL)
+format_url <- function(x) .rlang_cli_format_inline(x, "url", "<%s>")
+format_var <- function(x) .rlang_cli_format_inline(x, "var", "`%s`")
 format_envvar <- function(x) .rlang_cli_format_inline(x, "envvar", "`%s`")
-format_field  <- function(x) .rlang_cli_format_inline(x, "field", NULL)
-format_href   <- function(x, target = NULL) .rlang_cli_format_inline_link(x, target, "href", "<%s>")
-format_run    <- function(x, target = NULL) .rlang_cli_format_inline_link(x, target, "run", "`%s`")
+format_field <- function(x) .rlang_cli_format_inline(x, "field", NULL)
+format_href <- function(x, target = NULL)
+  .rlang_cli_format_inline_link(x, target, "href", "<%s>")
+format_run <- function(x, target = NULL)
+  .rlang_cli_format_inline_link(x, target, "run", "`%s`")
 
 format_error_arg_highlight <- function(x, quote = TRUE) {
   if (is_true(peek_option("rlang:::trace_test_highlight"))) {
@@ -360,15 +413,31 @@ format_message <- function(x) {
     # against hard-to-detect errors (see #1364), unknown names are
     # silently ignored. This also makes it easier to add new bullet
     # names in the future with forward-compatibility.
-    ifelse(nms == "i", ansi_info(),
-    ifelse(nms == "x", ansi_cross(),
-    ifelse(nms == "v", ansi_tick(),
-    ifelse(nms == "*", ansi_bullet(),
-    ifelse(nms == "!", ansi_alert(),
-    ifelse(nms == ">", ansi_arrow(),
-    ifelse(nms == "", "",
-    ifelse(nms == " ", " ",
-      ""))))))))
+    ifelse(
+      nms == "i",
+      ansi_info(),
+      ifelse(
+        nms == "x",
+        ansi_cross(),
+        ifelse(
+          nms == "v",
+          ansi_tick(),
+          ifelse(
+            nms == "*",
+            ansi_bullet(),
+            ifelse(
+              nms == "!",
+              ansi_alert(),
+              ifelse(
+                nms == ">",
+                ansi_arrow(),
+                ifelse(nms == "", "", ifelse(nms == " ", " ", ""))
+              )
+            )
+          )
+        )
+      )
+    )
   })
 
   bullets <-
@@ -447,9 +516,11 @@ cli_escape <- function(x) {
   )
 
   # Only use rlang if it is fully loaded (#1482)
-  if (try_rlang &&
-        requireNamespace("rlang", quietly = TRUE) &&
-        environmentIsLocked(asNamespace("rlang"))) {
+  if (
+    try_rlang &&
+      requireNamespace("rlang", quietly = TRUE) &&
+      environmentIsLocked(asNamespace("rlang"))
+  ) {
     switch(
       fn,
       is_interactive = return(rlang::is_interactive)

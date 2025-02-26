@@ -19,7 +19,7 @@ test_that("Unicode escapes are always converted to UTF8 characters with env_name
   skip_if_no_utf8_marker()
   with_non_utf8_locale({
     env <- child_env(empty_env())
-    env_bind(env, !! get_alien_lang_string() := NULL)
+    env_bind(env, !!get_alien_lang_string() := NULL)
     expect_identical(env_names(env), get_alien_lang_string())
   })
 })

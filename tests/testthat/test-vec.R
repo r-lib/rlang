@@ -89,7 +89,7 @@ test_that("variadic ctors still work without warnings (#1210)", {
     expect_identical(lgl(1), TRUE)
     expect_identical(int(1), 1L)
     expect_identical(dbl(1), 1.0)
-    expect_identical(cpl(1), 1+0i)
+    expect_identical(cpl(1), 1 + 0i)
     expect_identical(chr(""), "")
   })
 })

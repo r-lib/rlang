@@ -7,9 +7,7 @@
 # * is_utf8_output()
 # * is_latex_output()
 
-cli_tree <- function(data,
-                     root = data$id[[1]],
-                     style = NULL) {
+cli_tree <- function(data, root = data$id[[1]], style = NULL) {
   style <- style %||% cli_box_chars()
   full_emphasis <- every(data$node_type, is_string, "main")
 
@@ -79,7 +77,12 @@ cli_tree <- function(data,
     deemphasise <- deemphasise || !is_string(data$node_type[[num_root]], "main")
 
     for (d in seq_along(children)) {
-      pt(children[[d]], c(n, d), c(mx, length(children)), deemphasise = deemphasise)
+      pt(
+        children[[d]],
+        c(n, d),
+        c(mx, length(children)),
+        deemphasise = deemphasise
+      )
     }
   }
 
@@ -111,17 +114,17 @@ trace_deemph <- function(x) {
 cli_box_chars <- function() {
   if (cli_is_utf8_output()) {
     list(
-      "h" = "\u2500",                   # horizontal
-      "v" = "\u2502",                   # vertical
-      "l" = "\u2514",                   # leaf
-      "j" = "\u251C"                    # junction
+      "h" = "\u2500", # horizontal
+      "v" = "\u2502", # vertical
+      "l" = "\u2514", # leaf
+      "j" = "\u251C" # junction
     )
   } else {
     list(
-      "h" = "-",                        # horizontal
-      "v" = "|",                        # vertical
-      "l" = "\\",                       # leaf
-      "j" = "+"                         # junction
+      "h" = "-", # horizontal
+      "v" = "|", # vertical
+      "l" = "\\", # leaf
+      "j" = "+" # junction
     )
   }
 }

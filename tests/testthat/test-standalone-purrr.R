@@ -19,8 +19,14 @@ test_that("map2 functions work", {
 
 test_that("imap works", {
   expect_equal(imap(c("a", "b"), list), list(list("a", 1L), list("b", 2L)))
-  expect_equal(imap(c(x = "a", y = "b"), list), list(x = list("a", "x"), y = list("b", "y")))
-  expect_equal(imap(c(x = "a", "b"), list), list(x = list("a", "x"), list("b", "")))
+  expect_equal(
+    imap(c(x = "a", y = "b"), list),
+    list(x = list("a", "x"), y = list("b", "y"))
+  )
+  expect_equal(
+    imap(c(x = "a", "b"), list),
+    list(x = list("a", "x"), list("b", ""))
+  )
 })
 
 test_that("pmap works", {
@@ -31,7 +37,7 @@ test_that("predicate based functions work", {
   x <- list(1, 2)
   expect_equal(keep(x, ~ sum(.x) > 1), list(2))
   expect_equal(discard(x, ~ sum(.x) > 1), list(1))
-  expect_equal(map_if(x, ~ sum(.x) > 1, ~ 10), list(1, 10))
+  expect_equal(map_if(x, ~ sum(.x) > 1, ~10), list(1, 10))
 
   expect_true(every(x, ~ .x > 0))
   expect_false(every(x, ~ .x < 0))
@@ -57,20 +63,26 @@ test_that("transpose() handles empty list", {
 
 test_that("transpose() handles incongruent names consistently with purrr (#1346)", {
   x <- list(
-    needles = list(a = 1, b = 2), 
+    needles = list(a = 1, b = 2),
     condition = c("<", ">")
   )
-  expect_equal(transpose(x), list(
-    a = list(needles = 1, condition = "<"),
-    b = list(needles = 2, condition = ">")
-  ))
+  expect_equal(
+    transpose(x),
+    list(
+      a = list(needles = 1, condition = "<"),
+      b = list(needles = 2, condition = ">")
+    )
+  )
 
   x <- list(
     needles = list(a = 1, b = 2),
     condition = c(c = "<", d = ">")
   )
-  expect_equal(transpose(x), list(
-    a = list(needles = 1, condition = NULL),
-    b = list(needles = 2, condition = NULL)
-  ))
+  expect_equal(
+    transpose(x),
+    list(
+      a = list(needles = 1, condition = NULL),
+      b = list(needles = 2, condition = NULL)
+    )
+  )
 })

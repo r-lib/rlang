@@ -24,13 +24,15 @@ expect_no_message_ <- function(object, ...) {
 catch_wngs <- function(expr) {
   wngs <- list()
 
-  withCallingHandlers({
-    expr
-  },
-  warning = function(wng) {
-    wngs <<- c(wngs, list(wng))
-    invokeRestart("muffleWarning")
-  })
+  withCallingHandlers(
+    {
+      expr
+    },
+    warning = function(wng) {
+      wngs <<- c(wngs, list(wng))
+      invokeRestart("muffleWarning")
+    }
+  )
 
   wngs
 }
@@ -44,18 +46,20 @@ catch_cnds <- function(expr) {
   msgs <- list()
 
   err <- tryCatch(
-    withCallingHandlers({
-      force(expr)
-      NULL
-    },
-    message = function(msg) {
-      msgs <<- c(msgs, list(msg))
-      invokeRestart("muffleMessage")
-    },
-    warning = function(wng) {
-      wngs <<- c(wngs, list(wng))
-      invokeRestart("muffleWarning")
-    }),
+    withCallingHandlers(
+      {
+        force(expr)
+        NULL
+      },
+      message = function(msg) {
+        msgs <<- c(msgs, list(msg))
+        invokeRestart("muffleMessage")
+      },
+      warning = function(wng) {
+        wngs <<- c(wngs, list(wng))
+        invokeRestart("muffleWarning")
+      }
+    ),
     error = identity
   )
 
@@ -79,7 +83,12 @@ skip_silently <- function(reason, env = caller_env()) {
 }
 
 expect_data_pronoun_error <- function(object, regexp = NULL, ...) {
-  expect_error(object, regexp, ..., class = "rlang_error_data_pronoun_not_found")
+  expect_error(
+    object,
+    regexp,
+    ...,
+    class = "rlang_error_data_pronoun_not_found"
+  )
 }
 
 expect_defunct <- function(object, ...) {

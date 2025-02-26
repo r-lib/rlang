@@ -71,9 +71,7 @@ validate_index <- function(i, n) {
 #'
 #' @keywords internal
 #' @export
-vec_poke_n <- function(x, start, y,
-                       from = 1L,
-                       n = length(y)) {
+vec_poke_n <- function(x, start, y, from = 1L, n = length(y)) {
   stopifnot(
     is_integerish(start),
     is_integerish(from),
@@ -83,9 +81,7 @@ vec_poke_n <- function(x, start, y,
 }
 #' @rdname vec_poke_n
 #' @export
-vec_poke_range <- function(x, start, y,
-                           from = 1L,
-                           to = length(y) - from + 1L) {
+vec_poke_range <- function(x, start, y, from = 1L, to = length(y) - from + 1L) {
   stopifnot(
     is_integerish(start),
     is_integerish(from),
