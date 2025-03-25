@@ -5,8 +5,7 @@
 # rlang 1.0.0: 2022-01
 # rlang 1.1.0: 2023-02
 
-
-#  Deprecated in rlang 1.1.0
+#  Deprecated in rlang 1.1.0
 
 # rlang 1.1.0: silent deprecation.
 
@@ -220,11 +219,13 @@ squash_if <- function(x, predicate = is_spliced) {
 #' @inheritParams dots_list
 #' @keywords internal
 #' @export
-dots_splice <- function(...,
-                        .ignore_empty = c("trailing", "none", "all"),
-                        .preserve_empty = FALSE,
-                        .homonyms = c("keep", "first", "last", "error"),
-                        .check_assign = FALSE) {
+dots_splice <- function(
+  ...,
+  .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+) {
   deprecate_soft("`dots_splice()` is deprecated as of rlang 1.1.0.")
   dots <- .Call(
     ffi_dots_flat_list,
@@ -240,7 +241,7 @@ dots_splice <- function(...,
   dots
 }
 
-#  Deprecated in rlang 1.0.0
+#  Deprecated in rlang 1.0.0
 
 # Silently deprecated for now
 # - `with_env()` is used in dplyr (unit test) and purrr.
@@ -307,9 +308,9 @@ locally <- function(expr) {
 }
 
 
-#  Soft-deprecated in rlang 0.4.0
+#  Soft-deprecated in rlang 0.4.0
 
-##  Types
+##  Types
 
 #' Base type of an object
 #'
@@ -480,8 +481,7 @@ friendly_type <- function(type) {
 # rlang 0.4.0: Soft-deprecation
 # rlang 1.1.0: Deprecation
 
-
-##  Eval
+##  Eval
 
 #' Invoke a function with a list of arguments
 #'
@@ -492,8 +492,13 @@ friendly_type <- function(type) {
 #' @param .fn,args,...,.env,.bury `r lifecycle::badge("deprecated")`
 #' @export
 #' @keywords internal
-invoke <- function(.fn, .args = list(), ...,
-                   .env = caller_env(), .bury = c(".fn", "")) {
+invoke <- function(
+  .fn,
+  .args = list(),
+  ...,
+  .env = caller_env(),
+  .bury = c(".fn", "")
+) {
   # rlang 0.4.0: Soft-deprecation
   # rlang 1.0.0: Deprecation
   deprecate_warn(c(
@@ -507,11 +512,9 @@ invoke <- function(.fn, .args = list(), ...,
     if (is_scalar_character(.fn)) {
       .fn <- env_get(.env, .fn, inherit = TRUE)
     }
-    call <- call2(.fn, !!! args)
+    call <- call2(.fn, !!!args)
     return(.External2(ffi_eval, call, .env))
   }
-
-
   if (!is_character(.bury, 2L)) {
     abort("`.bury` must be a character vector of length 2")
   }
@@ -520,21 +523,21 @@ invoke <- function(.fn, .args = list(), ...,
 
   buried_nms <- paste0(arg_prefix, seq_along(args))
   buried_args <- set_names(args, buried_nms)
-  .env <- env_bury(.env, !!! buried_args)
+  .env <- env_bury(.env, !!!buried_args)
   args <- set_names(buried_nms, names(args))
   args <- syms(args)
 
   if (is_function(.fn)) {
-    env_bind(.env, !! fn_nm := .fn)
+    env_bind(.env, !!fn_nm := .fn)
     .fn <- fn_nm
   }
 
-  call <- call2(.fn, !!! args)
+  call <- call2(.fn, !!!args)
   .External2(ffi_eval, call, .env)
 }
 
 
-##  Casting
+##  Casting
 
 #' Coerce an object to a base type
 #'
@@ -644,10 +647,13 @@ invoke <- function(.fn, .args = list(), ...,
 #' @name vector-coercion
 NULL
 signal_deprecated_cast <- function(fn, user_env = caller_env(2)) {
-  deprecate_warn(user_env = user_env, c(
-    sprintf("`%s()` is deprecated as of rlang 0.4.0", fn),
-    "Please use `vctrs::vec_cast()` instead."
-  ))
+  deprecate_warn(
+    user_env = user_env,
+    c(
+      sprintf("`%s()` is deprecated as of rlang 0.4.0", fn),
+      "Please use `vctrs::vec_cast()` instead."
+    )
+  )
 }
 #' @rdname vector-coercion
 #' @export
@@ -683,10 +689,7 @@ as_character <- function(x, encoding = NULL) {
 #' @export
 as_list <- function(x) {
   signal_deprecated_cast("as_list")
-  switch_type(x,
-    environment = env_as_list(x),
-    vec_as_list(x)
-  )
+  switch_type(x, environment = env_as_list(x), vec_as_list(x))
 }
 env_as_list <- function(x) {
   names_x <- names(x)
@@ -694,7 +697,9 @@ env_as_list <- function(x) {
   set_names(x, .Call(ffi_unescape_character, names_x))
 }
 vec_as_list <- function(x) {
-  coerce_type_vec(x, vec_type_friendly(list()),
+  coerce_type_vec(
+    x,
+    vec_type_friendly(list()),
     logical = ,
     integer = ,
     double = ,
@@ -702,37 +707,60 @@ vec_as_list <- function(x) {
     character = ,
     complex = ,
     raw = as_base_type(x, as.list),
-    list = { attributes(x) <- NULL; x }
+    list = {
+      attributes(x) <- NULL
+      x
+    }
   )
 }
 
 legacy_as_logical <- function(x) {
-  coerce_type_vec(x, vec_type_friendly(lgl()),
-    logical = { attributes(x) <- NULL; x },
+  coerce_type_vec(
+    x,
+    vec_type_friendly(lgl()),
+    logical = {
+      attributes(x) <- NULL
+      x
+    },
     integer = as_base_type(x, as.logical),
     double = as_integerish_type(x, as.logical, lgl())
   )
 }
 legacy_as_integer <- function(x) {
-  coerce_type_vec(x, vec_type_friendly(int()),
+  coerce_type_vec(
+    x,
+    vec_type_friendly(int()),
     logical = as_base_type(x, as.integer),
-    integer = { attributes(x) <- NULL; x },
+    integer = {
+      attributes(x) <- NULL
+      x
+    },
     double = as_integerish_type(x, as.integer, int(), value = FALSE)
   )
 }
 legacy_as_double <- function(x) {
-  coerce_type_vec(x, vec_type_friendly(dbl()),
+  coerce_type_vec(
+    x,
+    vec_type_friendly(dbl()),
     logical = ,
     integer = as_base_type(x, as.double),
-    double = { attributes(x) <- NULL; x }
+    double = {
+      attributes(x) <- NULL
+      x
+    }
   )
 }
 legacy_as_complex <- function(x) {
-  coerce_type_vec(x, vec_type_friendly(cpl()),
+  coerce_type_vec(
+    x,
+    vec_type_friendly(cpl()),
     logical = ,
     integer = ,
     double = as_base_type(x, as.complex),
-    complex = { attributes(x) <- NULL; x }
+    complex = {
+      attributes(x) <- NULL
+      x
+    }
   )
 }
 legacy_as_character <- function(x, encoding = NULL) {
@@ -803,7 +831,7 @@ vec_coerce <- function(x, type) {
 }
 
 
-#  Stack and frames  -------------------------------------------------
+#  Stack and frames  -------------------------------------------------
 
 # 2022-01: https://github.com/tidyverse/purrr/issues/851
 
@@ -860,7 +888,7 @@ new_frame <- function(x) {
 }
 
 
-#  Tidy eval  --------------------------------------------------------
+#  Tidy eval  --------------------------------------------------------
 
 #' Squash a quosure
 #'
@@ -919,7 +947,7 @@ UQS <- function(x) {
 }
 
 
-#  Expressions  ------------------------------------------------------
+#  Expressions  ------------------------------------------------------
 
 #' Create a call
 #'
@@ -1019,7 +1047,8 @@ call_fn <- function(call, env = caller_env()) {
     abort_call_input_type("call")
   }
 
-  switch(call_type(expr),
+  switch(
+    call_type(expr),
     recursive = abort("`call` does not call a named or inlined function"),
     inlined = node_car(expr),
     named = ,
@@ -1030,8 +1059,7 @@ call_fn <- function(call, env = caller_env()) {
 # rlang 0.4.11: silent deprecation
 # rlang 1.1.0: soft-deprecation
 
-
-#  Environments  -----------------------------------------------------
+#  Environments  -----------------------------------------------------
 
 # 2022-01: https://github.com/r-lib/conflicted/issues/65
 
@@ -1081,7 +1109,7 @@ is_scoped <- function(nm) {
 }
 
 
-#  Attributes  -------------------------------------------------------
+#  Attributes  -------------------------------------------------------
 
 #' Add attributes to an object
 #'
@@ -1117,7 +1145,7 @@ set_attrs_null <- list(NULL)
 names(set_attrs_null) <- ""
 
 
-#  Conditions --------------------------------------------------------
+#  Conditions --------------------------------------------------------
 
 # 1.0.0: Silently deprecated. Used in recipes (in a deprecated function).
 # 1.1.0: soft-deprecated
@@ -1173,11 +1201,14 @@ exiting <- function(handler) {
     "Handlers are now treated as exiting by default."
   ))
   handler <- as_function(handler)
-  structure(handler, class = c("rlang_handler_exiting", "rlang_handler", "function"))
+  structure(
+    handler,
+    class = c("rlang_handler_exiting", "rlang_handler", "function")
+  )
 }
 
 
-#  Scoped_
+#  Scoped_
 
 # rlang 0.4.2: Silent deprecation.
 # rlang 1.0.0: Soft deprecation.

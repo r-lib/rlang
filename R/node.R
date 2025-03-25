@@ -151,7 +151,7 @@ is_node_list <- function(x) {
 
 # Shallow copy of node trees
 node_tree_clone <- function(x) {
-  .Call(ffi_node_tree_clone, x);
+  .Call(ffi_node_tree_clone, x)
 }
 
 node_walk <- function(.x, .f, ...) {

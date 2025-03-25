@@ -368,11 +368,13 @@ env_has <- function(env = caller_env(), nms, inherit = FALSE) {
 #'
 #' # You can also avoid an error by supplying a default value:
 #' env_get(env, "foo", default = "FOO")
-env_get <- function(env = caller_env(),
-                    nm,
-                    default,
-                    inherit = FALSE,
-                    last = empty_env()) {
+env_get <- function(
+  env = caller_env(),
+  nm,
+  default,
+  inherit = FALSE,
+  last = empty_env()
+) {
   check_environment(env)
   check_environment(last)
 
@@ -391,11 +393,13 @@ env_get <- function(env = caller_env(),
 }
 #' @rdname env_get
 #' @export
-env_get_list <- function(env = caller_env(),
-                         nms,
-                         default,
-                         inherit = FALSE,
-                         last = empty_env()) {
+env_get_list <- function(
+  env = caller_env(),
+  nms,
+  default,
+  inherit = FALSE,
+  last = empty_env()
+) {
   check_environment(env)
   check_environment(last)
   .Call(
@@ -446,11 +450,13 @@ stop_env_get_missing <- function(nm) {
 #' @seealso [env_bind()] for binding multiple elements. [env_cache()]
 #'   for a variant of `env_poke()` designed to cache values.
 #' @export
-env_poke <- function(env = caller_env(),
-                     nm,
-                     value,
-                     inherit = FALSE,
-                     create = !inherit) {
+env_poke <- function(
+  env = caller_env(),
+  nm,
+  value,
+  inherit = FALSE,
+  create = !inherit
+) {
   check_environment(env)
   invisible(.Call(
     ffi_env_poke,
@@ -631,10 +637,7 @@ env_binding_are_active <- function(env, nms = NULL) {
 env_binding_are_lazy <- function(env, nms = NULL) {
   env_binding_are_type(env, nms, 1L)
 }
-env_binding_are_type <- function(env,
-                                 nms,
-                                 type,
-                                 error_call = caller_env()) {
+env_binding_are_type <- function(env, nms, type, error_call = caller_env()) {
   check_environment(env, call = error_call)
 
   nms <- env_binding_validate_names(env, nms, call = error_call)

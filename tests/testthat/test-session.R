@@ -18,8 +18,14 @@ test_that("is_installed() checks minimal versions", {
     is_installed(c("rlang", "testthat"), version = "0.1")
   })
   expect_true(is_installed(c("rlang", "testthat"), version = c("0.1", "0.1")))
-  expect_false(is_installed(c("rlang", "testthat"), version = c("100.1", "0.1")))
-  expect_false(is_installed(c("rlang", "testthat"), version = c("0.1", "100.1")))
+  expect_false(is_installed(
+    c("rlang", "testthat"),
+    version = c("100.1", "0.1")
+  ))
+  expect_false(is_installed(
+    c("rlang", "testthat"),
+    version = c("0.1", "100.1")
+  ))
   expect_false(is_installed(c("rlang", "testthis"), version = c("0.1", "0.1")))
 
   expect_true(is_installed(c("rlang", "testthat"), version = chr(NA, NA)))
@@ -41,7 +47,11 @@ test_that("check_installed() checks minimal versions", {
     check_installed("rlangFoo", version = "1.0")
     check_installed(c("rlangFoo", "rlangBar"), version = c("1.0", NA))
     check_installed(c("rlangFoo", "rlangBar"), version = c(NA, "2.0"))
-    check_installed(c("rlangFoo", "rlangBar"), "to proceed.", version = c("1.0", "2.0"))
+    check_installed(
+      c("rlangFoo", "rlangBar"),
+      "to proceed.",
+      version = c("1.0", "2.0")
+    )
     check_installed(c("rlangFoo (>= 1.0)", "rlangBar (> 2.0)"), "to proceed.")
   })
 })
@@ -66,7 +76,11 @@ test_that("pnf error is validated", {
   }
   expect_pnf(new_error_package_not_found("foo"), "foo", NULL)
   expect_pnf(new_error_package_not_found("foo", "1.0"), "foo", "1.0")
-  expect_pnf(new_error_package_not_found(c("foo", "bar"), c("1.0", "1.0")), c("foo", "bar"), c("1.0", "1.0"))
+  expect_pnf(
+    new_error_package_not_found(c("foo", "bar"), c("1.0", "1.0")),
+    c("foo", "bar"),
+    c("1.0", "1.0")
+  )
 
   expect_error(
     new_error_package_not_found(chr()),
@@ -143,29 +157,38 @@ test_that("pkg_version_info() parses info", {
   pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "pkg (== 2.1)")
   out <- pkg_version_info(pkg, NULL)
 
-  expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz", "pkg"),
-    cmp = c(">=", NA, ">", "=="),
-    ver = c("1.0", NA, "3.0", "2.1")
-  ))
+  expect_equal(
+    out,
+    data_frame(
+      pkg = c("foo", "bar", "baz", "pkg"),
+      cmp = c(">=", NA, ">", "=="),
+      ver = c("1.0", NA, "3.0", "2.1")
+    )
+  )
 
   pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux", "dplyr (== 2.1)")
   out <- pkg_version_info(pkg, c(NA, "2.0", NA, NA, NA))
 
-  expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz", "quux", "dplyr"),
-    cmp = c(">=", ">=", ">", NA, "=="),
-    ver = c("1.0", "2.0", "3.0", NA, "2.1")
-  ))
+  expect_equal(
+    out,
+    data_frame(
+      pkg = c("foo", "bar", "baz", "quux", "dplyr"),
+      cmp = c(">=", ">=", ">", NA, "=="),
+      ver = c("1.0", "2.0", "3.0", NA, "2.1")
+    )
+  )
 
   pkg <- c("foo (>= 1.0)", "bar", "baz (> 3.0)", "quux", "shiny (== 3.0)")
   out <- pkg_version_info(pkg, c(NA, "2.0", NA, "4.0", NA))
 
-  expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz", "quux", "shiny"),
-    cmp = c(">=", ">=", ">", ">=", "=="),
-    ver = c("1.0", "2.0", "3.0", "4.0", "3.0")
-  ))
+  expect_equal(
+    out,
+    data_frame(
+      pkg = c("foo", "bar", "baz", "quux", "shiny"),
+      cmp = c(">=", ">=", ">", ">=", "=="),
+      ver = c("1.0", "2.0", "3.0", "4.0", "3.0")
+    )
+  )
 
   expect_snapshot(error = TRUE, cnd_class = TRUE, {
     pkg_version_info("foo (1.0)")
@@ -178,13 +201,20 @@ test_that("pkg_version_info() supports `cmp`", {
   local_error_call(call("caller"))
 
   pkg <- c("foo", "bar", "baz", "shiny")
-  out <- pkg_version_info(pkg, c("1.0", "2.0", "3.0", "3.1"), c(NA, NA, "<", "=="))
+  out <- pkg_version_info(
+    pkg,
+    c("1.0", "2.0", "3.0", "3.1"),
+    c(NA, NA, "<", "==")
+  )
 
-  expect_equal(out, data_frame(
-    pkg = c("foo", "bar", "baz", "shiny"),
-    cmp = c(">=", ">=", "<", "=="),
-    ver = c("1.0", "2.0", "3.0", "3.1")
-  ))
+  expect_equal(
+    out,
+    data_frame(
+      pkg = c("foo", "bar", "baz", "shiny"),
+      cmp = c(">=", ">=", "<", "=="),
+      ver = c("1.0", "2.0", "3.0", "3.1")
+    )
+  )
 
   expect_snapshot(error = TRUE, cnd_class = TRUE, {
     pkg_version_info(c("foo", "bar", "baz"), NULL, c(NA, NA, ">="))

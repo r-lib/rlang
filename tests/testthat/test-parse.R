@@ -1,6 +1,15 @@
 test_that("parse_quo() etc return quosures", {
-  expect_identical(parse_quo("foo(bar)", "base"), set_env(quo(foo(bar)), base_env()))
-  expect_identical(parse_quos("foo(bar)\n mtcars", "base"), new_quosures(list(set_env(quo(foo(bar)), base_env()), set_env(quo(mtcars), base_env()))))
+  expect_identical(
+    parse_quo("foo(bar)", "base"),
+    set_env(quo(foo(bar)), base_env())
+  )
+  expect_identical(
+    parse_quos("foo(bar)\n mtcars", "base"),
+    new_quosures(list(
+      set_env(quo(foo(bar)), base_env()),
+      set_env(quo(mtcars), base_env())
+    ))
+  )
 })
 
 test_that("temporary connections are closed", {
@@ -29,7 +38,10 @@ test_that("parse_exprs() and parse_quos() handle character vectors", {
 })
 
 test_that("parse_exprs() requires connections or character vectors", {
-  expect_error(parse_exprs(env()), "must be a character vector or an R connection")
+  expect_error(
+    parse_exprs(env()),
+    "must be a character vector or an R connection"
+  )
 })
 
 test_that("parse_exprs() and parse_quos() support empty input", {
@@ -53,7 +65,13 @@ test_that("parse_exprs() preserves names (#808)", {
 
 test_that("parse_expr() supports vectors of lines (#1540)", {
   lines <- c("{", "  a", "  b", "}")
-  expect_equal(parse_expr(lines), quote({ a; b }))
+  expect_equal(
+    parse_expr(lines),
+    quote({
+      a
+      b
+    })
+  )
 
   lines <- c("a", "b")
   expect_error(parse_expr(lines), "exactly 1 expression")

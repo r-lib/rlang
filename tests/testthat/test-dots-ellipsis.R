@@ -63,17 +63,44 @@ test_that("can control the action (deprecated)", {
     check(action = action)
   }
 
-  expect_error(f(abort, check_dots_used, xy = 4), class = "rlib_error_dots_unused")
-  expect_warning(f(warn, check_dots_used, xy = 4), class = "rlib_error_dots_unused")
-  expect_message(f(inform, check_dots_used, xy = 4), class = "rlib_error_dots_unused")
+  expect_error(
+    f(abort, check_dots_used, xy = 4),
+    class = "rlib_error_dots_unused"
+  )
+  expect_warning(
+    f(warn, check_dots_used, xy = 4),
+    class = "rlib_error_dots_unused"
+  )
+  expect_message(
+    f(inform, check_dots_used, xy = 4),
+    class = "rlib_error_dots_unused"
+  )
 
-  expect_error(f(abort, check_dots_unnamed, xy = 4), class = "rlib_error_dots_named")
-  expect_warning(f(warn, check_dots_unnamed, xy = 4), class = "rlib_error_dots_named")
-  expect_message(f(inform, check_dots_unnamed, xy = 4), class = "rlib_error_dots_named")
+  expect_error(
+    f(abort, check_dots_unnamed, xy = 4),
+    class = "rlib_error_dots_named"
+  )
+  expect_warning(
+    f(warn, check_dots_unnamed, xy = 4),
+    class = "rlib_error_dots_named"
+  )
+  expect_message(
+    f(inform, check_dots_unnamed, xy = 4),
+    class = "rlib_error_dots_named"
+  )
 
-  expect_error(f(abort, check_dots_empty, xy = 4), class = "rlib_error_dots_nonempty")
-  expect_warning(f(warn, check_dots_empty, xy = 4), class = "rlib_error_dots_nonempty")
-  expect_message(f(inform, check_dots_empty, xy = 4), class = "rlib_error_dots_nonempty")
+  expect_error(
+    f(abort, check_dots_empty, xy = 4),
+    class = "rlib_error_dots_nonempty"
+  )
+  expect_warning(
+    f(warn, check_dots_empty, xy = 4),
+    class = "rlib_error_dots_nonempty"
+  )
+  expect_message(
+    f(inform, check_dots_empty, xy = 4),
+    class = "rlib_error_dots_nonempty"
+  )
 })
 
 test_that("warn if unused dots", {
@@ -112,7 +139,10 @@ test_that("expression contents are mentioned", {
     f("foo")
     f(foo)
     inject(f(!!letters))
-    f(a = { 1; 2 })
+    f(a = {
+      1
+      2
+    })
     f(a = toupper(letters))
   })
 })

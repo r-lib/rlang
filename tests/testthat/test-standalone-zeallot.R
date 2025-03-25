@@ -1,4 +1,3 @@
-
 test_that("LHS must be a list of symbols wrapped in `c()`", {
   expect_error(
     foo %<-% list(1),

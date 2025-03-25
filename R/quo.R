@@ -242,10 +242,7 @@ new_quosures <- function(x) {
   if (!is_list(x) || !every(x, is_quosure)) {
     abort("Expected a list of quosures")
   }
-  structure(x,
-    class = c("quosures", "list"),
-    names = names2(x)
-  )
+  structure(x, class = c("quosures", "list"), names = names2(x))
 }
 #' @rdname new_quosures
 #' @export
@@ -497,14 +494,9 @@ quo_squash_impl <- function(x, parent = NULL, warn = FALSE) {
 
 #' @export
 print.quosure <- function(x, ...) {
-  cat_line(.trailing = FALSE,
-    style_bold("<quosure>"),
-    "expr: "
-  )
+  cat_line(.trailing = FALSE, style_bold("<quosure>"), "expr: ")
   quo_print(x)
-  cat_line(.trailing = FALSE,
-    "env:  "
-  )
+  cat_line(.trailing = FALSE, "env:  ")
 
   env <- quo_get_env(x)
   quo_env_print(env)
@@ -545,7 +537,10 @@ as.character.quosure <- function(x, ...) {
 # Create a circular list of colours. This infloops if printed in the REPL!
 new_quo_palette <- function() {
   last_node <- new_node(open_cyan, NULL)
-  palette <- new_node(open_blue, new_node(open_green, new_node(open_magenta, last_node)))
+  palette <- new_node(
+    open_blue,
+    new_node(open_green, new_node(open_magenta, last_node))
+  )
   node_poke_cdr(last_node, palette)
 
   # First node has no colour
@@ -574,16 +569,19 @@ quo_deparse <- function(x, lines = new_quo_deparser()) {
   lines$get_lines()
 }
 
-new_quo_deparser <- function(width = peek_option("width"),
-                             max_elements = 5L,
-                             crayon = has_ansi()) {
+new_quo_deparser <- function(
+  width = peek_option("width"),
+  max_elements = 5L,
+  crayon = has_ansi()
+) {
   lines <- new_lines(
     width = width,
     max_elements = max_elements,
     deparser = quo_deparse
   )
 
-  child_r6lite(lines,
+  child_r6lite(
+    lines,
     has_colour = crayon,
 
     quo_envs = list(),
@@ -752,4 +750,3 @@ c.quosure <- function(..., recursive = FALSE) {
 
   new_quosures(out)
 }
-

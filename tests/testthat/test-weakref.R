@@ -3,7 +3,7 @@ test_that("weakref with key and no value allows key to be GC'd", {
   # value).
   k <- env()
   w_finalized <- FALSE
-  w <- new_weakref(key = k, finalizer = function(e)  w_finalized <<- TRUE)
+  w <- new_weakref(key = k, finalizer = function(e) w_finalized <<- TRUE)
 
   expect_identical(wref_key(w), k)
   expect_identical(wref_value(w), NULL)
@@ -20,18 +20,24 @@ test_that("key keeps value alive", {
   # Key and value: key keeps value alive
   k <- env()
   k_finalized <- FALSE
-  reg.finalizer(k, function(e) { k_finalized <<- TRUE })
+  reg.finalizer(k, function(e) {
+    k_finalized <<- TRUE
+  })
 
   v <- env()
   v$x <- "hello"
   v_finalized <- FALSE
-  reg.finalizer(v, function(e) { v_finalized <<- TRUE })
+  reg.finalizer(v, function(e) {
+    v_finalized <<- TRUE
+  })
 
   w_finalized <- FALSE
   w <- new_weakref(
     key = k,
     value = v,
-    finalizer = function(e) { w_finalized <<- TRUE }
+    finalizer = function(e) {
+      w_finalized <<- TRUE
+    }
   )
   expect_identical(wref_key(w), k)
   expect_identical(wref_value(w), v)

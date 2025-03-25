@@ -44,7 +44,8 @@ test_that("deprecate_soft() warns when called from package being tested", {
   reset_warning_verbosity("rlang_test")
 
   withr::local_envvar(c("TESTTHAT_PKG" = "rlang"))
-  depr <- function() deprecate_soft("warns from package being tested", id = "rlang_test")
+  depr <- function()
+    deprecate_soft("warns from package being tested", id = "rlang_test")
   expect_warning(depr(), "warns from")
   expect_warning(depr(), "warns from")
 })
@@ -80,7 +81,9 @@ test_that("can promote lifecycle warnings to errors", {
 
 test_that("can enable warnings and errors with `with_` helpers", {
   expect_defunct(with_lifecycle_errors(deprecate_soft("foo")), "foo")
-  expect_no_warning(with_lifecycle_warnings(with_lifecycle_silence(deprecate_warn("foo"))))
+  expect_no_warning(with_lifecycle_warnings(with_lifecycle_silence(deprecate_warn(
+    "foo"
+  ))))
 
   # FIXME: Is this a bug in lifecycle?
   expect_no_warning(with_lifecycle_warnings(deprecate_soft("foo")))

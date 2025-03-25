@@ -454,7 +454,6 @@ test_that("ptype is finalised", {
 })
 
 test_that("vec_recycle_common() throws appropriate errors", {
-
   expect_error(
     vec_recycle_common(list(a = 1:2), size = 1),
     "Inputs can't be recycled to `size`."
@@ -463,5 +462,4 @@ test_that("vec_recycle_common() throws appropriate errors", {
     vec_recycle_common(list(a = 1:2, b = 1:3)),
     "Inputs can't be recycled to a common size."
   )
-
 })
