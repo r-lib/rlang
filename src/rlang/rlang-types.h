@@ -114,8 +114,16 @@ struct r_lazy {
     FREE(1);                                    \
   } while (0)
 
-
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 
+#define RLANG_FRAME(x) CAR(x)
+#define RLANG_HASHTAB(x) TAG(x)
+#define RLANG_PRENV(x) TAG(x)
+#define RLANG_PREXPR(x) R_BytecodeExpr(CDR(x))
+#define RLANG_PRVALUE(x) CAR(x)
+#define RLANG_SET_ENCLOS(x, v) SETCDR(x, v)
+#define RLANG_SET_FORMALS(x, v) SETCAR(x, v)
+#define RLANG_SET_BODY(x, v) SETCDR(x, v)
+#define RLANG_SET_CLOENV(x, v) SET_TAG(x, v)
 
 #endif

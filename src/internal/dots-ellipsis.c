@@ -53,7 +53,7 @@ bool ellipsis_promise_forced(r_obj* x) {
   if (r_typeof(x) != R_TYPE_promise) {
     return true;
   } else {
-    return PRVALUE(x) != r_syms.unbound;
+    return RLANG_PRVALUE(x) != r_syms.unbound;
   }
 }
 r_obj* ffi_ellipsis_promise_forced(r_obj* x) {
