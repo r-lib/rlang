@@ -21,7 +21,7 @@ Condition formatting is a set of operations applied to raw inputs for error mess
 While the rlang package embeds rudimentary formatting routines, the main formatting engine is implemented in the [cli package](https://cli.r-lib.org/).
 
 
-## Formatting messages with cli
+# Formatting messages with cli
 
 By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the [cli package](https://cli.r-lib.org/) by using [cli::cli_abort()], [cli::cli_warn()], and [cli::cli_inform()] instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long `!` bullet is broken with an indented newline:
 
@@ -53,7 +53,7 @@ inform_marbles(2)
 ```
 
 
-## Transitioning from `abort()` to `cli_abort()`
+# Transitioning from `abort()` to `cli_abort()`
 
 If you plan to mass-rename calls from `abort()` to `cli::cli_abort()`, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly [unexpected behaviour](https://xkcd.com/327/).
 
@@ -70,7 +70,7 @@ cli::cli_abort("Can't handle input {.code {user_input}}.")
 ```
 
 
-## Enabling cli formatting globally
+# Enabling cli formatting globally
 
 To enable cli formatting for all `abort()` calls in your namespace, call [local_use_cli()] in the `onLoad` hook of your package. Using [on_load()] (make sure to call [run_on_load()] in your hook):
 

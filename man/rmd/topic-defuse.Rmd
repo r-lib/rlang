@@ -5,6 +5,10 @@ When a piece of R code is defused, R doesn't return its value like it normally w
 
 Using [expr()] we can observe the difference between computing an expression and defusing it:
 
+Evaluation of a defused expression can be resumed at any time with [eval()] (see also [eval_tidy()]).
+
+# Example
+
 ```{r, comment = "#>", collapse = TRUE}
 # Return the result of `1 + 1`
 1 + 1
@@ -12,8 +16,6 @@ Using [expr()] we can observe the difference between computing an expression and
 # Return the expression `1 + 1`
 expr(1 + 1)
 ```
-
-Evaluation of a defused expression can be resumed at any time with [eval()] (see also [eval_tidy()]).
 
 ```{r, comment = "#>", collapse = TRUE}
 # Return the expression `1 + 1`

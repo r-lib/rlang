@@ -26,8 +26,8 @@ See the \href{https://style.tidyverse.org/error-messages.html}{tidyverse error s
 }
 
 While the rlang package embeds rudimentary formatting routines, the main formatting engine is implemented in the \href{https://cli.r-lib.org/}{cli package}.
-\subsection{Formatting messages with cli}{
-
+}
+\section{Formatting messages with cli}{
 By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the \href{https://cli.r-lib.org/}{cli package} by using \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[cli:cli_abort]{cli::cli_inform()}} instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long \code{!} bullet is broken with an indented newline:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::global_entrace(class = "errorr")
@@ -56,8 +56,7 @@ inform_marbles(2)
 }\if{html}{\out{</div>}}
 }
 
-\subsection{Transitioning from \code{abort()} to \code{cli_abort()}}{
-
+\section{Transitioning from \code{abort()} to \code{cli_abort()}}{
 If you plan to mass-rename calls from \code{abort()} to \code{cli::cli_abort()}, be careful if you assemble error messages from user inputs. If these individual pieces contain cli or glue syntax, this will result in hard-to-debug errors and possibly \href{https://xkcd.com/327/}{unexpected behaviour}.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{user_input <- "\{base::stop('Wrong message.', call. = FALSE)\}"
@@ -77,8 +76,7 @@ cli::cli_abort("Can't handle input \{.code \{user_input\}\}.")
 }\if{html}{\out{</div>}}
 }
 
-\subsection{Enabling cli formatting globally}{
-
+\section{Enabling cli formatting globally}{
 To enable cli formatting for all \code{abort()} calls in your namespace, call \code{\link[=local_use_cli]{local_use_cli()}} in the \code{onLoad} hook of your package. Using \code{\link[=on_load]{on_load()}} (make sure to call \code{\link[=run_on_load]{run_on_load()}} in your hook):
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{on_load(local_use_cli())
@@ -91,5 +89,5 @@ Enabling cli formatting in \code{abort()} is useful for:
 \item Creating error conditions with \code{error_cnd()}. These condition messages will be automatically formatted with cli as well.
 }
 }
-}
+
 \keyword{internal}
