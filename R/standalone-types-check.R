@@ -193,6 +193,7 @@ check_number_decimal <- function(x,
     ...,
     exit_code = exit_code,
     allow_decimal = TRUE,
+    vector = FALSE,
     min = min,
     max = max,
     allow_na = allow_na,
@@ -231,6 +232,7 @@ check_number_whole <- function(x,
     ...,
     exit_code = exit_code,
     allow_decimal = FALSE,
+    vector = FALSE,
     min = min,
     max = max,
     allow_na = allow_na,
@@ -244,6 +246,7 @@ check_number_whole <- function(x,
                              ...,
                              exit_code,
                              allow_decimal,
+                             vector,
                              min,
                              max,
                              allow_na,
@@ -254,6 +257,10 @@ check_number_whole <- function(x,
     what <- "a number"
   } else {
     what <- "a whole number"
+  }
+
+  if (vector) {
+    what <- sprintf("%s vector")
   }
 
   if (exit_code == IS_NUMBER_oob) {
@@ -540,6 +547,45 @@ check_data_frame <- function(x,
     x,
     "a data frame",
     ...,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_numbers_decimal <- function(x,
+                                  ...,
+                                  min = NULL,
+                                  max = NULL,
+                                  allow_infinite = TRUE,
+                                  allow_na = FALSE,
+                                  allow_null = FALSE,
+                                  arg = caller_arg(x),
+                                  call = caller_env()) {
+  if (missing(x)) {
+    exit_code <- IS_NUMBER_false
+  } else if (0 == (exit_code <- max(map_dbl(x, \(x) .standalone_types_check_dot_call(
+    ffi_standalone_check_number_1.0.7,
+    x,
+    allow_decimal = TRUE,
+    min,
+    max,
+    allow_infinite,
+    allow_na,
+    allow_null
+  ))))) {
+    return(invisible(NULL))
+  }
+
+  .stop_not_number(
+    x,
+    ...,
+    exit_code = exit_code,
+    allow_decimal = TRUE,
+    vector = TRUE,
+    min = min,
+    max = max,
+    allow_na = allow_na,
     allow_null = allow_null,
     arg = arg,
     call = call

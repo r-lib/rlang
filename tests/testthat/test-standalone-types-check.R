@@ -203,3 +203,13 @@ test_that("`check_data_frame()` checks", {
     err(checker(list(data.frame(), data.frame()), check_data_frame, allow_null = TRUE))
   })
 })
+
+test_that("`check_numbers_decimal` checks", {
+  expect_null(check_numbers_decimal(c(10, 5.5)))
+  expect_null(check_numbers_decimal(c(10L, 50L)))
+
+  expect_snapshot({
+    err(checker(, check_numbers_decimal))
+    err(checker("10", check_numbers_decimal, allow_na = TRUE, allow_null = TRUE))
+  })
+})
