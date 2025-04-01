@@ -95,22 +95,30 @@ expect_defunct <- function(object, ...) {
   expect_error(object, class = "defunctError")
 }
 
-catch_error <- function(expr) {
-  catch_cnd(expr, "error")
+# Workaround for snapshot inconsistencies that started to appear between
+# `test()` and `check()`. The helpers environment is now treated differently and
+# causes backtrace snapshot failures.
+with_base <- function(fn) {
+  environment(fn) <- baseenv()
+  fn
 }
-catch_warning <- function(expr) {
-  catch_cnd(expr, "warning")
-}
-catch_message <- function(expr) {
-  catch_cnd(expr, "message")
-}
+
+catch_error <- with_base(function(expr) {
+  rlang::catch_cnd(expr, "error")
+})
+catch_warning <- with_base(function(expr) {
+  rlang::catch_cnd(expr, "warning")
+})
+catch_message <- with_base(function(expr) {
+  rlang::catch_cnd(expr, "message")
+})
 
 # https://github.com/r-lib/testthat/issues/1371
 expect_warning2 <- catch_warning
 
-err <- function(...) {
-  (expect_error(...))
-}
+err <- with_base(function(...) {
+  (testthat::expect_error(...))
+})
 
 local_unexport_signal_abort <- function(frame = caller_env()) {
   local_bindings(
