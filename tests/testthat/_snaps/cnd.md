@@ -5,7 +5,7 @@
     Output
       Error in `h()`:
       ! dispatched!
-      Run `rlang::last_trace()` to see where the error occurred.
+      Run `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
@@ -31,7 +31,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -56,7 +56,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -88,7 +88,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -121,7 +121,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -151,7 +151,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | <<\-rlang::catch_cnd(expr, "error")>>
         3. |   <<+-rlang::eval_bare(...)>>
         4. |   <<+-base::tryCatch(...)>>
@@ -180,7 +180,7 @@
       ! Low-level message
       ---
       Backtrace:
-        1. rlang:::catch_error(a())
+        1. catch_error(a())
         9. rlang (local) a()
        10. rlang (local) b()
        11. rlang (local) c()
@@ -214,7 +214,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)

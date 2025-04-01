@@ -1290,7 +1290,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f(1))
+        1. +-catch_error(f(1))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1312,7 +1312,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(wrapper())
+        1. +-catch_error(wrapper())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1342,7 +1342,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1366,7 +1366,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1389,7 +1389,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1412,7 +1412,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1436,7 +1436,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1458,7 +1458,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f(arg = "bbbbbbbbbbbb"))
+        1. +-catch_error(f(arg = "bbbbbbbbbbbb"))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1480,7 +1480,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -1502,7 +1502,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f(arg = "x"))
+        1. +-catch_error(f(arg = "x"))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)

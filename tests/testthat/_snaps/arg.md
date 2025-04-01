@@ -213,7 +213,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f("f"))
+        1. +-catch_error(f("f"))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)

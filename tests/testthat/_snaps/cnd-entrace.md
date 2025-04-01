@@ -5,7 +5,7 @@
     Output
       Error in h() : foo
       Calls: f -> g -> h
-      Run `rlang::last_trace()` to see where the error occurred.
+      Run `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.
       <error/rlang_error>
       Error:
       ! foo
@@ -29,7 +29,7 @@
     Output
       Error in `h()`:
       ! foo
-      Run `rlang::last_trace()` to see where the error occurred.
+      Run `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.
       <error/rlang_error>
       Error in `h()`:
       ! foo
@@ -39,7 +39,7 @@
        1. \-global f()
        2.   \-global g()
        3.     \-global h()
-      Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
+      Run ]8;;x-r-run:rlang::last_trace(drop = FALSE)rlang::last_trace(drop = FALSE)]8;; to see 1 hidden frame.
       <error/rlang_error>
       Error in `h()`:
       ! foo
@@ -49,7 +49,7 @@
        1. \-global f()
        2.   \-global g()
        3.     \-global h()
-      Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
+      Run ]8;;x-r-run:rlang::last_trace(drop = FALSE)rlang::last_trace(drop = FALSE)]8;; to see 1 hidden frame.
 
 # can supply handler environment as `bottom`
 
