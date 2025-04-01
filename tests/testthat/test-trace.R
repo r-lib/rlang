@@ -320,7 +320,12 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
     error = function(err) trace <<- trace_back(e)
   ))
 
-  expect_snapshot_trace(trace)
+  if (getRversion() >= "4.5") {
+    variant <- "4.5_and_older"
+  } else {
+    variant <- "old"
+  }
+  expect_snapshot_trace(trace, variant = variant)
 })
 
 test_that("can print degenerate backtraces", {
