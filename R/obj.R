@@ -89,10 +89,10 @@ vec_alloc <- function(type, n) {
 
 # Note that the C-level function has inverted arguments
 find_var <- function(env, sym) {
-  .Call(ffi_find_var, env, sym);
+  .Call(ffi_find_var, env, sym)
 }
 find_var_in_frame <- function(env, sym) {
-  .Call(ffi_find_var, env, sym);
+  .Call(ffi_find_var, env, sym)
 }
 
 chr_get <- function(x, i = 0L) {

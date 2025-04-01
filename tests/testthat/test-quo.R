@@ -108,28 +108,31 @@ test_that("can capture optimised constants", {
 })
 
 test_that("quosures are spliced", {
-  q <- quo(foo(!! quo(bar), !! quo(baz(!! quo(baz), 3))))
+  q <- quo(foo(!!quo(bar), !!quo(baz(!!quo(baz), 3))))
   expect_identical(quo_text(q), "foo(bar, baz(baz, 3))")
 
-  q <- expr_interp(~foo::bar(!! function(x) ...))
+  q <- expr_interp(~ foo::bar(!!function(x) ...))
   expect_identical(f_text(q), "foo::bar(function (x) \n...)")
 
-  q <- quo(!! quo(!! quo(foo(!! quo(!! quo(bar(!! quo(!! quo(!! quo(baz))))))))))
+  q <- quo(!!quo(!!quo(foo(!!quo(!!quo(bar(!!quo(!!quo(!!quo(baz))))))))))
   expect_identical(quo_text(q), "foo(bar(baz))")
 })
 
 test_that("formulas are not spliced", {
-  expect_identical(quo_text(quo(~foo(~bar))), "~foo(~bar)")
+  expect_identical(quo_text(quo(~ foo(~bar))), "~foo(~bar)")
 })
 
 test_that("splicing does not affect original quosure", {
-  f <- ~foo(~bar)
+  f <- ~ foo(~bar)
   quo_text(f)
-  expect_identical(f, ~foo(~bar))
+  expect_identical(f, ~ foo(~bar))
 })
 
 test_that("as_quosure() doesn't convert functions", {
-  expect_identical(as_quosure(base::mean), set_env(quo(!! base::mean), empty_env()))
+  expect_identical(
+    as_quosure(base::mean),
+    set_env(quo(!!base::mean), empty_env())
+  )
 })
 
 test_that("as_quosure() coerces formulas", {
@@ -138,11 +141,14 @@ test_that("as_quosure() coerces formulas", {
 
 test_that("quo_squash() warns", {
   expect_warning(regexp = NA, quo_squash(quo(foo), warn = TRUE))
-  expect_warning(quo_squash(quo(list(!! quo(foo))), warn = TRUE), "inner quosure")
+  expect_warning(
+    quo_squash(quo(list(!!quo(foo))), warn = TRUE),
+    "inner quosure"
+  )
 })
 
 test_that("quo_deparse() indicates quosures with `^`", {
-  x <- quo(list(!! quo(NULL), !! quo(foo())))
+  x <- quo(list(!!quo(NULL), !!quo(foo())))
   ctxt <- new_quo_deparser(crayon = FALSE)
   expect_identical(quo_deparse(x, ctxt), "^list(^NULL, ^foo())")
 })
@@ -186,7 +192,10 @@ test_that("new_quosures() and as_quosures() return named lists", {
 
 test_that("as_quosures() applies default environment", {
   out <- as_quosures(list(quote(foo), quote(bar)), env = base_env())
-  exp <- quos_list(new_quosure(quote(foo), base_env()), new_quosure(quote(bar), base_env()))
+  exp <- quos_list(
+    new_quosure(quote(foo), base_env()),
+    new_quosure(quote(bar), base_env())
+  )
   expect_identical(out, exp)
 })
 
@@ -292,11 +301,11 @@ test_that("quosure attributes are cloned (#1142)", {
 test_that("quo_squash() supports nested missing args", {
   expect_equal(
     quo_squash(expr(foo(!!quo()))),
-    quote(foo(, ))[1:2]
+    quote(foo(,))[1:2]
   )
   expect_equal(
     quo_squash(expr(foo(bar(!!quo(), !!quo())))),
-    quote(foo(bar(, )))
+    quote(foo(bar(,)))
   )
 
   expect_equal(quo_squash(missing_arg()), missing_arg())

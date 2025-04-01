@@ -68,7 +68,9 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
 
   if (prefix) {
     # Skip child errors that have empty messages and calls
-    while (!length(msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE))) {
+    while (
+      !length(msg <- cnd_message_format_prefixed(cnd, ..., parent = FALSE))
+    ) {
       parent <- cnd[["parent"]]
       if (is_condition(parent)) {
         cnd <- parent
@@ -84,7 +86,11 @@ cnd_message <- function(cnd, ..., inherit = TRUE, prefix = FALSE) {
 
   # Parent messages are always prefixed
   while (is_condition(cnd <- cnd$parent)) {
-    parent_msg <- cnd_message_format_prefixed(cnd, parent = TRUE, warning = warning)
+    parent_msg <- cnd_message_format_prefixed(
+      cnd,
+      parent = TRUE,
+      warning = warning
+    )
     msg <- paste_line(msg, parent_msg)
   }
 
@@ -215,11 +221,13 @@ exec_cnd_method <- function(name, cnd, ...) {
 }
 
 
-cnd_message_format_prefixed <- function(cnd,
-                                        ...,
-                                        parent = FALSE,
-                                        alert = NULL,
-                                        warning = FALSE) {
+cnd_message_format_prefixed <- function(
+  cnd,
+  ...,
+  parent = FALSE,
+  alert = NULL,
+  warning = FALSE
+) {
   type <- cnd_type(cnd)
 
   if (is_null(alert)) {

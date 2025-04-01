@@ -63,7 +63,10 @@ test_that("%@% has replacement version", {
 })
 
 test_that("%@% works with S4 objects (#207)", {
-  .Person <- setClass("Person", slots = c(name = "character", species = "character"))
+  .Person <- setClass(
+    "Person",
+    slots = c(name = "character", species = "character")
+  )
   fievel <- .Person(name = "Fievel", species = "mouse")
 
   expect_identical(fievel %@% name, "Fievel")

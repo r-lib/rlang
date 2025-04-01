@@ -112,7 +112,7 @@ test_that("Ops.rlib_bytes() works with arithmetic operators", {
   expect_equal(x - 100, bytes2(c(0, 100, 200)))
   expect_equal(x * 100, bytes2(c(10000, 20000, 30000)))
   expect_equal(x / 2, bytes2(c(50, 100, 150)))
-  expect_equal(x ^ 2, bytes2(c(10000, 40000, 90000)))
+  expect_equal(x^2, bytes2(c(10000, 40000, 90000)))
   expect_equal(bytes2("1Mb") + "1000Kb", bytes2("2Mb"))
 })
 

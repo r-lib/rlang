@@ -1,4 +1,3 @@
-
 #' Dynamic dots features
 #'
 #' @description
@@ -216,12 +215,14 @@ list3 <- function(...) {
 #' # There is no warning if the assignment is wrapped in braces.
 #' # This requires users to be explicit about their intent:
 #' my_list({ a <- 1 })
-dots_list <- function(...,
-                      .named = FALSE,
-                      .ignore_empty = c("trailing", "none", "all"),
-                      .preserve_empty = FALSE,
-                      .homonyms = c("keep", "first", "last", "error"),
-                      .check_assign = FALSE) {
+dots_list <- function(
+  ...,
+  .named = FALSE,
+  .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+) {
   .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -234,12 +235,14 @@ dots_list <- function(...,
   )
 }
 
-dots_split <- function(...,
-                       .n_unnamed = NULL,
-                       .ignore_empty = c("trailing", "none", "all"),
-                       .preserve_empty = FALSE,
-                       .homonyms = c("keep", "first", "last", "error"),
-                       .check_assign = FALSE) {
+dots_split <- function(
+  ...,
+  .n_unnamed = NULL,
+  .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+) {
   dots <- .Call(
     ffi_dots_list,
     frame_env = environment(),
@@ -364,11 +367,13 @@ print.rlang_box_splice <- function(x, ...) {
 #'
 #' # Flatten the objects marked as spliced:
 #' flatten_if(dots, is_spliced)
-dots_values <- function(...,
-                        .ignore_empty = c("trailing", "none", "all"),
-                        .preserve_empty = FALSE,
-                        .homonyms = c("keep", "first", "last", "error"),
-                        .check_assign = FALSE) {
+dots_values <- function(
+  ...,
+  .ignore_empty = c("trailing", "none", "all"),
+  .preserve_empty = FALSE,
+  .homonyms = c("keep", "first", "last", "error"),
+  .check_assign = FALSE
+) {
   .External(
     ffi_dots_values,
     env = environment(),

@@ -102,7 +102,12 @@ test_that("`check_number_decimal()` checks", {
     err(checker(int(), check_number_decimal, allow_na = TRUE))
     err(checker(na_dbl, check_number_decimal))
     err(checker(na_int, check_number_decimal))
-    err(checker(10:11, check_number_decimal, allow_na = TRUE, allow_null = TRUE))
+    err(checker(
+      10:11,
+      check_number_decimal,
+      allow_na = TRUE,
+      allow_null = TRUE
+    ))
     err(checker(Inf, check_number_decimal, allow_infinite = FALSE))
     err(checker(-Inf, check_number_decimal, allow_infinite = FALSE))
     err(checker(10, min = NA, check_number_decimal))
@@ -200,6 +205,10 @@ test_that("`check_data_frame()` checks", {
   expect_snapshot({
     err(checker(, check_data_frame))
     err(checker(NULL, check_data_frame))
-    err(checker(list(data.frame(), data.frame()), check_data_frame, allow_null = TRUE))
+    err(checker(
+      list(data.frame(), data.frame()),
+      check_data_frame,
+      allow_null = TRUE
+    ))
   })
 })

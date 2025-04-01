@@ -28,12 +28,14 @@
 #' # Throws an informative error for mismatches:
 #' try(fn("b"))
 #' try(fn("baz"))
-arg_match <- function(arg,
-                      values = NULL,
-                      ...,
-                      multiple = FALSE,
-                      error_arg = caller_arg(arg),
-                      error_call = caller_env()) {
+arg_match <- function(
+  arg,
+  values = NULL,
+  ...,
+  multiple = FALSE,
+  error_arg = caller_arg(arg),
+  error_call = caller_env()
+) {
   check_dots_empty0(...)
 
   arg_expr <- enexpr(arg)
@@ -99,10 +101,12 @@ arg_match_multi <- function(arg, values, error_arg, error_call) {
 #' fn1()
 #' fn2("bar")
 #' try(fn3("zoo"))
-arg_match0 <- function(arg,
-                       values,
-                       arg_nm = caller_arg(arg),
-                       error_call = caller_env()) {
+arg_match0 <- function(
+  arg,
+  values,
+  arg_nm = caller_arg(arg),
+  error_call = caller_env()
+) {
   .External(ffi_arg_match0, arg, values, environment())
 }
 
@@ -192,9 +196,7 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
 #' # Succeeds
 #' f(NULL)
 #' @export
-check_required <- function(x,
-                           arg = caller_arg(x),
-                           call = caller_env()) {
+check_required <- function(x, arg = caller_arg(x), call = caller_env()) {
   if (!missing(x)) {
     return(invisible(TRUE))
   }
@@ -255,10 +257,12 @@ chr_quoted <- function(chr, type = "`") {
 #' }
 #' f()
 #' @export
-check_exclusive <- function(...,
-                            .require = TRUE,
-                            .frame = caller_env(),
-                            .call = .frame) {
+check_exclusive <- function(
+  ...,
+  .require = TRUE,
+  .frame = caller_env(),
+  .call = .frame
+) {
   args <- enexprs(..., .named = TRUE)
   if (length(args) < 2) {
     abort("Must supply at least two arguments.")

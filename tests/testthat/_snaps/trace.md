@@ -4,10 +4,10 @@
       print(trace, dir = dir)
     Output
           x
-       1. \-rlang (local) i() at test-trace.R:25:3
+       1. \-rlang (local) i() at test-trace.R:27:3
        2.   \-rlang (local) j(i) at test-trace.R:18:8
-       3.     \-rlang (local) k(i) at test-trace.R:19:22
-       4.       \-rlang (local) l(i) at test-trace.R:22:5
+       3.     \-rlang (local) k(i) at test-trace.R:20:5
+       4.       \-rlang (local) l(i) at test-trace.R:24:5
     Code
       cat("\n")
     Output
@@ -25,8 +25,8 @@
     Output
            x
         1. \-rlang (local) f()
-        2.   \-rlang (local) g() at test-trace.R:49:21
-        3.     +-base::tryCatch(h(), foo = identity, bar = identity) at test-trace.R:50:21
+        2.   \-rlang (local) g() at test-trace.R:52:5
+        3.     +-base::tryCatch(h(), foo = identity, bar = identity) at test-trace.R:55:5
         4.     | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
         5.     |   +-base (local) tryCatchOne(...)
         6.     |   | \-base (local) doTryCatch(return(expr), name, parentenv, handler)
@@ -34,12 +34,12 @@
         8.     |     \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
         9.     |       \-base (local) doTryCatch(return(expr), name, parentenv, handler)
        10.     \-rlang (local) h()
-       11.       +-base::tryCatch(i(), baz = identity) at test-trace.R:51:21
+       11.       +-base::tryCatch(i(), baz = identity) at test-trace.R:58:5
        12.       | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
        13.       |   \-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
        14.       |     \-base (local) doTryCatch(return(expr), name, parentenv, handler)
        15.       \-rlang (local) i()
-       16.         +-base::tryCatch(trace_back(e, bottom = 0)) at test-trace.R:52:21
+       16.         +-base::tryCatch(trace_back(e, bottom = 0)) at test-trace.R:61:5
        17.         | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
        18.         \-rlang::trace_back(e, bottom = 0)
     Code
@@ -48,8 +48,8 @@
     Output
            x
         1. \-rlang (local) f()
-        2.   \-rlang (local) g() at test-trace.R:49:21
-        3.     +<<-base::tryCatch(h(), foo = identity, bar = identity) at test-trace.R:50:21>>
+        2.   \-rlang (local) g() at test-trace.R:52:5
+        3.     +<<-base::tryCatch(h(), foo = identity, bar = identity) at test-trace.R:55:5>>
         4.     | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
         5.     |   <<+-base (local) tryCatchOne(...)>>
         6.     |   <<| \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
@@ -57,7 +57,7 @@
         8.     |     <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
         9.     |       <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
        10.     \-rlang (local) h()
-       11.       +<<-base::tryCatch(i(), baz = identity) at test-trace.R:51:21>>
+       11.       +<<-base::tryCatch(i(), baz = identity) at test-trace.R:58:5>>
        12.       | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
        13.       |   <<\-base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])>>
        14.       |     <<\-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
@@ -68,7 +68,7 @@
     Output
         1. rlang (local) f()
         2. rlang (local) g()
-             at test-trace.R:49:21
+             at test-trace.R:52:5
        10. rlang (local) h()
        15. rlang (local) i()
 
@@ -80,12 +80,12 @@
     Output
            x
         1. \-rlang (local) f()
-        2.   +-base::eval(quote(eval(quote(g())))) at test-trace.R:61:8
+        2.   +-base::eval(quote(eval(quote(g())))) at test-trace.R:68:8
         3.   | \-base::eval(quote(eval(quote(g()))))
         4.   +-base::eval(quote(g()))
         5.   | \-base::eval(quote(g()))
         6.   \-rlang (local) g()
-        7.     +-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) at test-trace.R:62:8
+        7.     +-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) at test-trace.R:69:8
         8.     | \-base (local) tryCatchList(expr, classes, parentenv, handlers)
         9.     |   +-base (local) tryCatchOne(...)
        10.     |   | \-base (local) doTryCatch(return(expr), name, parentenv, handler)
@@ -101,12 +101,12 @@
     Output
            x
         1. \-rlang (local) f()
-        2.   +<<-base::eval(quote(eval(quote(g())))) at test-trace.R:61:8>>
+        2.   +<<-base::eval(quote(eval(quote(g())))) at test-trace.R:68:8>>
         3.   | <<\-base::eval(quote(eval(quote(g()))))>>
         4.   +<<-base::eval(quote(g()))>>
         5.   | <<\-base::eval(quote(g()))>>
         6.   \-rlang (local) g()
-        7.     +<<-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) at test-trace.R:62:8>>
+        7.     +<<-base::tryCatch(eval(quote(h())), foo = identity, bar = identity) at test-trace.R:69:8>>
         8.     | <<\-base (local) tryCatchList(expr, classes, parentenv, handlers)>>
         9.     |   <<+-base (local) tryCatchOne(...)>>
        10.     |   <<| \-base (local) doTryCatch(return(expr), name, parentenv, handler)>>
@@ -796,14 +796,14 @@
       summary(trace0)
     Output
            x
-        1. \-rlang (local) f(0) at test-trace.R:417:3
-        2.   +-base::identity(identity(g(n))) at test-trace.R:413:8
+        1. \-rlang (local) f(0) at test-trace.R:428:3
+        2.   +-base::identity(identity(g(n))) at test-trace.R:424:8
         3.   +-base::identity(g(n))
         4.   \-rlang (local) g(n)
-        5.     +-base::identity(identity(h(n))) at test-trace.R:414:8
+        5.     +-base::identity(identity(h(n))) at test-trace.R:425:8
         6.     +-base::identity(h(n))
         7.     \-rlang (local) h(n)
-        8.       +-base::identity(identity(trace_back(e, bottom = n))) at test-trace.R:415:8
+        8.       +-base::identity(identity(trace_back(e, bottom = n))) at test-trace.R:426:8
         9.       +-base::identity(trace_back(e, bottom = n))
        10.       \-rlang::trace_back(e, bottom = n)
     Code
@@ -816,11 +816,11 @@
       summary(trace1)
     Output
           x
-       1. \-rlang (local) f(1) at test-trace.R:418:3
-       2.   +-base::identity(identity(g(n))) at test-trace.R:413:8
+       1. \-rlang (local) f(1) at test-trace.R:429:3
+       2.   +-base::identity(identity(g(n))) at test-trace.R:424:8
        3.   +-base::identity(g(n))
        4.   \-rlang (local) g(n)
-       5.     +-base::identity(identity(h(n))) at test-trace.R:414:8
+       5.     +-base::identity(identity(h(n))) at test-trace.R:425:8
        6.     +-base::identity(h(n))
        7.     \-rlang (local) h(n)
     Code
@@ -833,8 +833,8 @@
       summary(trace2)
     Output
           x
-       1. \-rlang (local) f(2) at test-trace.R:419:3
-       2.   +-base::identity(identity(g(n))) at test-trace.R:413:8
+       1. \-rlang (local) f(2) at test-trace.R:430:3
+       2.   +-base::identity(identity(g(n))) at test-trace.R:424:8
        3.   +-base::identity(g(n))
        4.   \-rlang (local) g(n)
     Code
@@ -847,7 +847,7 @@
       summary(trace3)
     Output
           x
-       1. \-rlang (local) f(3) at test-trace.R:420:3
+       1. \-rlang (local) f(3) at test-trace.R:431:3
 
 # caught error does not display backtrace in knitted files
 

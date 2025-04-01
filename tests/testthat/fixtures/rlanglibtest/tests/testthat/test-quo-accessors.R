@@ -16,5 +16,8 @@ test_that("r_quo_get_expr() gets expression", {
   expect_identical(r_quo_get_expr(quo), rlang::quo_get_expr(quo))
   expect_identical(r_quo_get_env(quo), rlang::quo_get_env(quo))
   expect_identical(r_quo_set_expr(quo, NULL), rlang::quo_set_expr(quo, NULL))
-  expect_identical(r_quo_set_env(quo, rlang::empty_env()), rlang::quo_set_env(quo, rlang::empty_env()))
+  expect_identical(
+    r_quo_set_env(quo, rlang::empty_env()),
+    rlang::quo_set_env(quo, rlang::empty_env())
+  )
 })

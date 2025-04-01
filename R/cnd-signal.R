@@ -1,4 +1,4 @@
- #' Signal a condition object
+#' Signal a condition object
 #'
 #' @description
 #'
@@ -65,7 +65,9 @@ cnd_signal <- function(cnd, ...) {
         info <- abort_context(frame, rethrowing = !is_null(cnd$parent))
         with_options(
           "rlang:::visible_bottom" = info$bottom_frame,
-          { cnd$trace <- trace_back() }
+          {
+            cnd$trace <- trace_back()
+          }
         )
       }
       signal_abort(cnd)
@@ -90,17 +92,19 @@ cnd_signal <- function(cnd, ...) {
 #'   recurring conditions. This argument must be supplied if
 #'   `.frequency` is not set to `"always"`.
 #' @export
-warn <- function(message = NULL,
-                 class = NULL,
-                 ...,
-                 body = NULL,
-                 footer = NULL,
-                 parent = NULL,
-                 use_cli_format = NULL,
-                 .inherit = NULL,
-                 .frequency = c("always", "regularly", "once"),
-                 .frequency_id = NULL,
-                 .subclass = deprecated()) {
+warn <- function(
+  message = NULL,
+  class = NULL,
+  ...,
+  body = NULL,
+  footer = NULL,
+  parent = NULL,
+  use_cli_format = NULL,
+  .inherit = NULL,
+  .frequency = c("always", "regularly", "once"),
+  .frequency_id = NULL,
+  .subclass = deprecated()
+) {
   message <- validate_signal_args(message, class, NULL, .subclass, "warn")
 
   message_info <- cnd_message_info(
@@ -115,7 +119,14 @@ warn <- function(message = NULL,
   use_cli_format <- message_info$use_cli_format
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
-  if (!needs_signal(.frequency, .frequency_id, warning_freq_env, "rlib_warning_verbosity")) {
+  if (
+    !needs_signal(
+      .frequency,
+      .frequency_id,
+      warning_freq_env,
+      "rlib_warning_verbosity"
+    )
+  ) {
     return(invisible(NULL))
   }
 
@@ -146,18 +157,20 @@ warn <- function(message = NULL,
 }
 #' @rdname abort
 #' @export
-inform <- function(message = NULL,
-                   class = NULL,
-                   ...,
-                   body = NULL,
-                   footer = NULL,
-                   parent = NULL,
-                   use_cli_format = NULL,
-                   .inherit = NULL,
-                   .file = NULL,
-                   .frequency = c("always", "regularly", "once"),
-                   .frequency_id = NULL,
-                   .subclass = deprecated()) {
+inform <- function(
+  message = NULL,
+  class = NULL,
+  ...,
+  body = NULL,
+  footer = NULL,
+  parent = NULL,
+  use_cli_format = NULL,
+  .inherit = NULL,
+  .file = NULL,
+  .frequency = c("always", "regularly", "once"),
+  .frequency_id = NULL,
+  .subclass = deprecated()
+) {
   message <- message %||% ""
 
   validate_signal_args(message, class, NULL, .subclass, "inform")
@@ -174,7 +187,14 @@ inform <- function(message = NULL,
   use_cli_format <- message_info$use_cli_format
 
   .frequency <- arg_match0(.frequency, c("always", "regularly", "once"))
-  if (!needs_signal(.frequency, .frequency_id, message_freq_env, "rlib_message_verbosity")) {
+  if (
+    !needs_signal(
+      .frequency,
+      .frequency_id,
+      message_freq_env,
+      "rlib_message_verbosity"
+    )
+  ) {
     return(invisible(NULL))
   }
 
@@ -210,10 +230,7 @@ inform <- function(message = NULL,
 }
 #' @rdname abort
 #' @export
-signal <- function(message = "",
-                   class,
-                   ...,
-                   .subclass = deprecated()) {
+signal <- function(message = "", class, ..., .subclass = deprecated()) {
   validate_signal_args(message, class, NULL, .subclass, "signal")
 
   message <- .rlang_cli_format_fallback(message)
@@ -236,9 +253,11 @@ default_message_file <- function() {
     return(opt)
   }
 
-  if ((is_interactive() || is_rstudio()) &&
+  if (
+    (is_interactive() || is_rstudio()) &&
       sink.number("output") == 0 &&
-      sink.number("message") == 2) {
+      sink.number("message") == 2
+  ) {
     stdout()
   } else {
     stderr()
@@ -286,12 +305,14 @@ interrupt <- function() {
   .Call(ffi_interrupt)
 }
 
-validate_signal_args <- function(message,
-                                 class,
-                                 call,
-                                 subclass,
-                                 fn,
-                                 env = caller_env()) {
+validate_signal_args <- function(
+  message,
+  class,
+  call,
+  subclass,
+  fn,
+  env = caller_env()
+) {
   local_error_call("caller")
 
   if (!is_missing(subclass)) {
@@ -329,10 +350,7 @@ validate_signal_args <- function(message,
 warning_freq_env <- new.env(parent = emptyenv())
 message_freq_env <- new.env(parent = emptyenv())
 
-needs_signal <- function(frequency,
-                         id,
-                         env,
-                         opt) {
+needs_signal <- function(frequency, id, env, opt) {
   local_error_call("caller")
 
   switch(

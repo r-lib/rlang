@@ -52,9 +52,18 @@ test_that("names_as_unique() strips positional suffixes, re-applies as needed", 
 
   expect_equal(names_as_unique("a...1"), "a")
   expect_equal(names_as_unique(c("a...2", "a")), c("a...1", "a...2"))
-  expect_equal(names_as_unique(c("a...3", "a", "a")), c("a...1", "a...2", "a...3"))
-  expect_equal(names_as_unique(c("a...2", "a", "a")), c("a...1", "a...2", "a...3"))
-  expect_equal(names_as_unique(c("a...2", "a...2", "a...2")), c("a...1", "a...2", "a...3"))
+  expect_equal(
+    names_as_unique(c("a...3", "a", "a")),
+    c("a...1", "a...2", "a...3")
+  )
+  expect_equal(
+    names_as_unique(c("a...2", "a", "a")),
+    c("a...1", "a...2", "a...3")
+  )
+  expect_equal(
+    names_as_unique(c("a...2", "a...2", "a...2")),
+    c("a...1", "a...2", "a...3")
+  )
 })
 
 test_that("names_as_unique() is idempotent", {
@@ -102,11 +111,17 @@ test_that("names_as_unique() handles encodings", {
 
 test_that("names_inform_repair() signals classed messages", {
   local_options(rlib_message_verbosity = "default")
-  expect_message(names_inform_repair("x", "y"), class = "rlib_message_name_repair")
+  expect_message(
+    names_inform_repair("x", "y"),
+    class = "rlib_message_name_repair"
+  )
 })
 
 test_that("names_inform_repair() can be silenced by `rlib_name_repair_verbosity`", {
-  local_options(rlib_message_verbosity = "default", rlib_name_repair_verbosity = "quiet")
+  local_options(
+    rlib_message_verbosity = "default",
+    rlib_name_repair_verbosity = "quiet"
+  )
   expect_message(names_inform_repair("x", "y"), NA)
 })
 
