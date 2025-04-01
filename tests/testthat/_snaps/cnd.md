@@ -5,7 +5,7 @@
     Output
       Error in `h()`:
       ! dispatched!
-      Run `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.
+      Run `rlang::last_trace()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)

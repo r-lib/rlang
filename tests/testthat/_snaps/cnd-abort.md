@@ -15,7 +15,7 @@
     Output
       Error in `h()`:
       ! Error message
-      Run `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.
+      Run `rlang::last_trace()` to see where the error occurred.
       Execution halted
     Code
       cat_line(default_non_interactive)
@@ -75,7 +75,7 @@
     Output
       Error in `h()`:
       ! Error message
-      Run `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.
+      Run `rlang::last_trace()` to see where the error occurred.
       Execution halted
     Code
       cat_line(rethrown_non_interactive)
@@ -143,7 +143,7 @@
       ! bar
       Caused by error in `h()`:
       ! foo
-      Run `]8;;x-r-run:rlang::last_trace()rlang::last_trace()]8;;` to see where the error occurred.
+      Run `rlang::last_trace()` to see where the error occurred.
       Execution halted
     Code
       cat_line(non_interactive)
