@@ -245,14 +245,7 @@ There may be more than one contextual error in an error chain, but there is alwa
 <span><span class="co">#&gt; Error in `my_verb()`:</span></span>
 <span><span class="co">#&gt; ! Must supply a vector.</span></span></code></pre><p></p></div>
 <p>When a low-level error is overtaken, it is good practice to store it in the high-level error object, so that it can be inspected for debugging purposes. In the snippet above, we stored it in the <code>error</code> field. Here is one way of accessing the original error by subsetting the object returned by <code><a href="last_error.html">last_error()</a></code>:</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">error</span></span>
-<span><span class="co">#&gt; &lt;error/vctrs_error_scalar_type&gt;</span></span>
-<span><span class="co">#&gt; Error in `my_verb()`:</span></span>
-<span><span class="co">#&gt; ! `expr` must be a vector, not an environment.</span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Backtrace:</span></span>
-<span><span class="co">#&gt;     x</span></span>
-<span><span class="co">#&gt;  1. \-rlang (local) my_verb(env())</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">error</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="case-study-mapping-with-chained-errors">Case study: Mapping with chained errors<a class="anchor" aria-label="anchor" href="#case-study-mapping-with-chained-errors"></a></h2>

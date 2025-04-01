@@ -173,56 +173,6 @@ This works well when abort() is called directly within the failing function. How
 
     </div>
     <div class="section level2">
-    <h2 id="side-benefit-backtrace-trimming">Side benefit: backtrace trimming<a class="anchor" aria-label="anchor" href="#side-benefit-backtrace-trimming"></a></h2>
-    <p>Another benefit of passing <code><a href="stack.html">caller_env()</a></code> as <code>call</code> is that it allows <code><a href="abort.html">abort()</a></code> to automatically hide the error helpers</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">their_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">error_helper1</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">error_helper1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">error_helper2</span><span class="op">(</span>call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">error_helper2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">use_call</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span>
-<span><span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `error_helper2()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;error/rlang_error&gt;</span></span>
-<span><span class="co">#&gt; Error in `error_helper2()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Backtrace:</span></span>
-<span><span class="co">#&gt;     x</span></span>
-<span><span class="co">#&gt;  1. \-rlang (local) their_function()</span></span>
-<span><span class="co">#&gt;  2.   \-rlang (local) error_helper1()</span></span>
-<span><span class="co">#&gt;  3.     \-rlang (local) error_helper2(call = call)</span></span>
-<span><span class="co">#&gt; Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.</span></span></code></pre><p></p></div>
-<p>With the correct <code>call</code>, the backtrace is much simpler and lets the user focus on the part of the stack that is relevant to them:</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
-<span><span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `their_function()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;error/rlang_error&gt;</span></span>
-<span><span class="co">#&gt; Error in `their_function()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Backtrace:</span></span>
-<span><span class="co">#&gt;     x</span></span>
-<span><span class="co">#&gt;  1. \-rlang (local) their_function()</span></span>
-<span><span class="co">#&gt; Run rlang::last_trace(drop = FALSE) to see 3 hidden frames.</span></span></code></pre><p></p></div>
-    </div>
-    <div class="section level2">
     <h2 id="testthat-workflow">testthat workflow<a class="anchor" aria-label="anchor" href="#testthat-workflow"></a></h2>
     <p>Error snapshots are the main way of checking that the correct error call is included in an error message. However you'll need to opt into a new testthat display for warning and error snapshots. With the new display, these are printed by rlang, including the <code>call</code> field. This makes it easy to monitor the full appearance of warning and error messages as they are displayed to users.</p>
 <p>This display is not applied to all packages yet. With testthat 3.1.2, depend explicitly on rlang &gt;= 1.0.0 to opt in. Starting from testthat 3.1.3, depending on rlang, no matter the version, is sufficient to opt in. In the future, the new display will be enabled for all packages.</p>
