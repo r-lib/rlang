@@ -29,8 +29,10 @@
 #include "vec-chr.c"
 #include "vec-lgl.c"
 #include "vendor.c"
-#include "walk.c"
 
+#ifdef RLANG_USE_PRIVATE_ACCESSORS
+  #include "walk.c"
+#endif
 
 // Allows long vectors to be indexed with doubles
 r_ssize r_arg_as_ssize(r_obj* n, const char* arg) {
