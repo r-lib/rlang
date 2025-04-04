@@ -417,6 +417,10 @@ test_that("env_poke() zaps (#1012)", {
 })
 
 test_that("env_poke() doesn't warn when unrepresentable characters are serialised", {
+  if (is_windows && getRversion() < "4.2") {
+    return()
+  }
+
   with_non_utf8_locale({
     e <- env(empty_env())
     nm <- get_alien_lang_string()
