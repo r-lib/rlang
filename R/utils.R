@@ -368,3 +368,5 @@ pkg_url_bug <- function(pkg) {
 
   NULL
 }
+
+is_windows <- tolower(.Platform$OS.type) == "windows"

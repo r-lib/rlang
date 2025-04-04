@@ -405,5 +405,5 @@ vec_resize <- function(x, n) {
 # walk.c
 
 sexp_iterate <- function(x, fn) {
-  do.call(".Call", list(ffi_sexp_iterate, x, fn))
+  do.call(".Call", list(get("ffi_sexp_iterate"), x, fn))
 }

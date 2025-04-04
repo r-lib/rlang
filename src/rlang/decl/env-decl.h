@@ -32,6 +32,9 @@ r_obj* env2list_call;
 static
 r_obj* list2env_call;
 
+static
+r_obj* missing_prim;
+
 #if R_VERSION < R_Version(4, 0, 0)
 static
 r_obj* env_as_list_compat(r_obj* env, r_obj* out);
