@@ -1,5 +1,5 @@
 Package: rlang
-Version: 1.1.4.9000
+Version: 1.1.5.9000
 Title: Functions for Base Types and Core R and 'Tidyverse' Features
 Description: A toolbox for working with base types, core R features
   like the condition system, and core 'Tidyverse' features like tidy
@@ -8,12 +8,12 @@ Authors@R: c(
     person("Lionel", "Henry", ,"lionel@posit.co", c("aut", "cre")),
     person("Hadley", "Wickham", ,"hadley@posit.co", "aut"),
     person(given = "mikefc",
-           email = "mikefc@coolbutuseless.com", 
-           role = "cph", 
+           email = "mikefc@coolbutuseless.com",
+           role = "cph",
            comment = "Hash implementation based on Mike's xxhashlite"),
     person(given = "Yann",
            family = "Collet",
-           role = "cph", 
+           role = "cph",
            comment = "Author of the embedded xxHash library"),
     person(given = "Posit, PBC", role = c("cph", "fnd"))
     )
@@ -41,7 +41,7 @@ Suggests:
     usethis,
     vctrs (>= 0.2.3),
     withr
-Enhances: 
+Enhances:
     winch
 Encoding: UTF-8
 RoxygenNote: 7.3.2
