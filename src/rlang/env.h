@@ -7,6 +7,7 @@
 #include "cnd.h"
 #include "globals.h"
 #include "obj.h"
+#include "rlang.h"
 #include "sym.h"
 
 #define RLANG_USE_R_EXISTS (R_VERSION < R_Version(4, 2, 0))
@@ -59,6 +60,9 @@ r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
 }
 
 #if R_VERSION < R_Version(4, 5, 0)
+// Compatibility implementation for `R_getVar()`:
+// - Throws if not found
+// - Evaluates promises
 static inline
 r_obj* r_env_get(r_obj* env, r_obj* sym) {
   r_obj* out = r_env_find(env, sym);
@@ -66,8 +70,9 @@ r_obj* r_env_get(r_obj* env, r_obj* sym) {
   if (out == r_syms.unbound) {
     r_abort("object '%s' not found", r_sym_c_string(sym));
   }
+
   if (r_typeof(out) == R_TYPE_promise) {
-    Rf_eval(out, env);
+    return Rf_eval(out, env);
   }
 
   return out;
