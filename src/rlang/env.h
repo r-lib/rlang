@@ -59,10 +59,12 @@ r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
   return Rf_findVar(sym, env);
 }
 
-#if R_VERSION < R_Version(4, 5, 0)
-// Compatibility implementation for `R_getVar()`:
-// - Throws if not found
-// - Evaluates promises
+#if 1 || R_VERSION < R_Version(4, 5, 0)
+// We currently can't use `R_getVar()` which:
+// 1. Throws if not found
+// 2. Throws if argument is the missing arg
+// 3. Evaluates promises
+// Our operators have to return missing arguments.
 static inline
 r_obj* r_env_get(r_obj* env, r_obj* sym) {
   r_obj* out = r_env_find(env, sym);
