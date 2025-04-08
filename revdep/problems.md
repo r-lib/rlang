@@ -1,14 +1,14 @@
-# eiCompare
+# codebookr
 
 <details>
 
-* Version: 3.0.4
-* GitHub: https://github.com/RPVote/eiCompare
-* Source code: https://github.com/cran/eiCompare
-* Date/Publication: 2023-08-31 13:30:02 UTC
-* Number of recursive dependencies: 147
+* Version: 0.1.8
+* GitHub: https://github.com/brad-cannell/codebookr
+* Source code: https://github.com/cran/codebookr
+* Date/Publication: 2024-02-19 08:20:08 UTC
+* Number of recursive dependencies: 83
 
-Run `revdepcheck::cloud_details(, "eiCompare")` for more info
+Run `revdepcheck::cloud_details(, "codebookr")` for more info
 
 </details>
 
@@ -20,47 +20,120 @@ Run `revdepcheck::cloud_details(, "eiCompare")` for more info
     Running the tests in ‘tests/testthat.R’ failed.
     Complete output:
       > library(testthat)
-      > library(eiCompare)
-      Loading required package: eiPack
-      Loading required package: ei
-      Loading required package: wru
+      > library(codebookr)
       > 
-      > test_check("eiCompare")
-    ...
-      } else {
-          stop()
-      }`: argument is of length zero
-      Backtrace:
-          ▆
-       1. └─eiCompare::wru_predict_race_wrapper(...) at test_wru_predict_race_wrapper.R:19:3
+      > test_check("codebookr")
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 103 ]
       
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 75 ]
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Failure ('test-cb_add_summary_stats.R:338:3'): The num_to_cat argument is working as expected ──
+      class(cb_add_summary_stats(study, "three_cats", num_to_cat = 2)) not equal to c("summary_numeric", "tbl_df", "tbl", "data.frame").
+      1/4 mismatches
+      x[1]: "summary_few_cats"
+      y[1]: "summary_numeric"
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 103 ]
       Error: Test failures
       Execution halted
     ```
 
-*   checking re-building of vignette outputs ... ERROR
+# Haplin
+
+<details>
+
+* Version: 7.3.2
+* GitHub: NA
+* Source code: https://github.com/cran/Haplin
+* Date/Publication: 2024-08-20 14:30:14 UTC
+* Number of recursive dependencies: 65
+
+Run `revdepcheck::cloud_details(, "Haplin")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
     ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘bisg.Rmd’ using rmarkdown
-    
-    Quitting from lines 164-175 [unnamed-chunk-16] (bisg.Rmd)
-    Error: processing vignette 'bisg.Rmd' failed with diagnostics:
-    no applicable method for 'tbl_vars' applied to an object of class "NULL"
-    --- failed re-building ‘bisg.Rmd’
-    
-    --- re-building ‘ei.Rmd’ using rmarkdown
-    --- finished re-building ‘ei.Rmd’
+      installed size is  5.4Mb
+      sub-directories of 1Mb or more:
+        R         1.5Mb
+        extdata   3.0Mb
+    ```
+
+# keras
+
+<details>
+
+* Version: 2.15.0
+* GitHub: https://github.com/rstudio/keras
+* Source code: https://github.com/cran/keras
+* Date/Publication: 2024-04-20 05:42:42 UTC
+* Number of recursive dependencies: 79
+
+Run `revdepcheck::cloud_details(, "keras")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.4Mb
+      sub-directories of 1Mb or more:
+        R      1.5Mb
+        doc    2.0Mb
+        help   1.5Mb
+    ```
+
+# pivottabler
+
+<details>
+
+* Version: 1.5.5
+* GitHub: https://github.com/cbailiss/pivottabler
+* Source code: https://github.com/cran/pivottabler
+* Date/Publication: 2023-10-01 16:20:02 UTC
+* Number of recursive dependencies: 83
+
+Run `revdepcheck::cloud_details(, "pivottabler")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  7.2Mb
+      sub-directories of 1Mb or more:
+        R      2.0Mb
+        data   4.0Mb
+    ```
+
+## In both
+
+*   checking Rd files ... NOTE
+    ```
+    checkRd: (-1) PivotDataGroup.Rd:78: Lost braces; missing escapes or markup?
+        78 | for the data group caption, default "{values}".}
+           |                                      ^
+    checkRd: (-1) PivotDataGroup.Rd:244: Lost braces; missing escapes or markup?
+       244 | for the data group caption, default "{values}".}
+           |                                      ^
+    checkRd: (-1) PivotDataGroup.Rd:581: Lost braces; missing escapes or markup?
+       581 | for the data group caption, default "{values}".}
+           |                                      ^
+    checkRd: (-1) PivotDataGroup.Rd:764: Lost braces; missing escapes or markup?
     ...
-    Quitting from lines 235-263 [performance_analysis] (performance_analysis.Rmd)
-    Error: processing vignette 'performance_analysis.Rmd' failed with diagnostics:
-    No columns selected for aggregation.
-    --- failed re-building ‘performance_analysis.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘bisg.Rmd’ ‘performance_analysis.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+           |          ^
+    checkRd: (-1) PivotTable.Rd:1060: Lost braces; missing escapes or markup?
+      1060 | for the data group caption, default "{values}".}
+           |                                      ^
+    checkRd: (-1) PivotTable.Rd:1189: Lost braces; missing escapes or markup?
+      1189 | default "{value}".}
+           |          ^
+    checkRd: (-1) PivotTable.Rd:1808: Lost braces; missing escapes or markup?
+      1808 | `function(v, cell) { if(isTRUE(v>0.8)) return("green") }`.\cr
+           |                    ^
     ```
 
