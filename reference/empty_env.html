@@ -11,7 +11,7 @@ search path (see search_envs())."><meta property="og:image" content="https://rla
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,9 +58,9 @@ search path (see search_envs())."><meta property="og:image" content="https://rla
     <li><h6 class="dropdown-header" data-toc-skip>Notes</h6></li>
     <li><a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a></li>
   </ul></li>
-      </ul><ul class="navbar-nav"><li class="nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Release notes</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a></li>
@@ -69,6 +69,8 @@ search path (see search_envs())."><meta property="og:image" content="https://rla
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/rlang/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -78,7 +80,7 @@ search path (see search_envs())."><meta property="og:image" content="https://rla
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get the empty environment</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.5/R/env-special.R" class="external-link"><code>R/env-special.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/env-special.R" class="external-link"><code>R/env-special.R</code></a></small>
       <div class="d-none name"><code>empty_env.Rd</code></div>
     </div>
 
@@ -98,7 +100,7 @@ search path (see <code><a href="search_envs.html">search_envs()</a></code>).</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create environments with nothing in scope:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="child_env.html">child_env</a></span><span class="op">(</span><span class="fu">empty_env</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55b1c829fbe0&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x562bcecc8670&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

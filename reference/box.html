@@ -17,7 +17,7 @@ the value matches a predicate."><meta property="og:image" content="https://rlang
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,9 +64,9 @@ the value matches a predicate."><meta property="og:image" content="https://rlang
     <li><h6 class="dropdown-header" data-toc-skip>Notes</h6></li>
     <li><a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a></li>
   </ul></li>
-      </ul><ul class="navbar-nav"><li class="nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Release notes</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a></li>
@@ -75,6 +75,8 @@ the value matches a predicate."><meta property="og:image" content="https://rlang
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/rlang/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -84,7 +86,7 @@ the value matches a predicate."><meta property="og:image" content="https://rlang
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Box a value</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.5/R/s3.R" class="external-link"><code>R/s3.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/s3.R" class="external-link"><code>R/s3.R</code></a></small>
       <div class="d-none name"><code>box.Rd</code></div>
     </div>
 
@@ -140,29 +142,29 @@ or vector of classes passed to <code><a href="inherits_any.html">inherits_all()<
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">unbox</span><span class="op">(</span><span class="va">boxed</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># as_box() avoids double-boxing:</span></span></span>
 <span class="r-in"><span><span class="va">boxed2</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_box.html">as_box</a></span><span class="op">(</span><span class="va">boxed</span>, <span class="st">"mybox"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">boxed2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mybox"     "rlang_box"</span>
 <span class="r-in"><span><span class="fu">unbox</span><span class="op">(</span><span class="va">boxed2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compare to:</span></span></span>
 <span class="r-in"><span><span class="va">boxed_boxed</span> <span class="op">&lt;-</span> <span class="fu">new_box</span><span class="op">(</span><span class="va">boxed</span>, <span class="st">"mybox"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">boxed_boxed</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mybox"     "rlang_box"</span>
@@ -170,8 +172,8 @@ or vector of classes passed to <code><a href="inherits_any.html">inherits_all()<
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mybox"     "rlang_box"</span>
 <span class="r-in"><span><span class="fu">unbox</span><span class="op">(</span><span class="fu">unbox</span><span class="op">(</span><span class="va">boxed_boxed</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18] "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use `as_box_if()` with a predicate if you need to ensure a box</span></span></span>
 <span class="r-in"><span><span class="co"># only for a subset of values:</span></span></span>

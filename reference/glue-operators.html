@@ -121,7 +121,6 @@ list2(!!x := 1)
 #&amp;gt; [1] 1
 
 Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of =.
-As we are now moving away from !! for common tasks, we are considering enabling glue strings with = and superseding := usage. Track the progress of this change in issue 1296.
 
 
 
@@ -254,7 +253,6 @@ list2(!!x := 1)
 #&amp;gt; [1] 1
 
 Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of =.
-As we are now moving away from !! for common tasks, we are considering enabling glue strings with = and superseding := usage. Track the progress of this change in issue 1296.
 
 
 
@@ -273,7 +271,7 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -320,9 +318,9 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
     <li><h6 class="dropdown-header" data-toc-skip>Notes</h6></li>
     <li><a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a></li>
   </ul></li>
-      </ul><ul class="navbar-nav"><li class="nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Release notes</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a></li>
@@ -331,6 +329,8 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/rlang/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -340,7 +340,7 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Name injection with <code>"{"</code> and <code>"{{"</code></h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.5/R/nse-inject.R" class="external-link"><code>R/nse-inject.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/nse-inject.R" class="external-link"><code>R/nse-inject.R</code></a></small>
       <div class="d-none name"><code>glue-operators.Rd</code></div>
     </div>
 
@@ -458,7 +458,6 @@ usethis::use_package(&quot;glue&quot;, &quot;Imports&quot;)
 <span><span class="co">#&gt; $name</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre><p></p></div>
 <p>Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of <code>=</code>.</p>
-<p>As we are now moving away from <code><a href="injection-operator.html">!!</a></code> for common tasks, we are considering enabling glue strings with <code>=</code> and superseding <code>:=</code> usage. Track the progress of this change in <a href="https://github.com/r-lib/rlang/issues/1296" class="external-link">issue 1296</a>.</p>
 </div>
 
 <div class="section">

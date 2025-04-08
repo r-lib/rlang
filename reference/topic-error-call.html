@@ -25,7 +25,7 @@ This works well when abort() is called directly within the failing function. How
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,9 +72,9 @@ This works well when abort() is called directly within the failing function. How
     <li><h6 class="dropdown-header" data-toc-skip>Notes</h6></li>
     <li><a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a></li>
   </ul></li>
-      </ul><ul class="navbar-nav"><li class="nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Release notes</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a></li>
@@ -83,6 +83,8 @@ This works well when abort() is called directly within the failing function. How
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/rlang/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -92,7 +94,7 @@ This works well when abort() is called directly within the failing function. How
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Including function calls in error messages</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.5/R/topic-errors.R" class="external-link"><code>R/topic-errors.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/topic-errors.R" class="external-link"><code>R/topic-errors.R</code></a></small>
       <div class="d-none name"><code>topic-error-call.Rd</code></div>
     </div>
 
@@ -169,56 +171,6 @@ This works well when abort() is called directly within the failing function. How
 <span><span class="co">#&gt; ! `my_arg` must be a string.</span></span></code></pre><p></p></div>
 </div>
 
-    </div>
-    <div class="section level2">
-    <h2 id="side-benefit-backtrace-trimming">Side benefit: backtrace trimming<a class="anchor" aria-label="anchor" href="#side-benefit-backtrace-trimming"></a></h2>
-    <p>Another benefit of passing <code><a href="stack.html">caller_env()</a></code> as <code>call</code> is that it allows <code><a href="abort.html">abort()</a></code> to automatically hide the error helpers</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">their_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">error_helper1</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">error_helper1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">error_helper2</span><span class="op">(</span>call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">error_helper2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span> <span class="op">=</span> <span class="fu"><a href="../reference/stack.html">caller_env</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">use_call</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span>, call <span class="op">=</span> <span class="va">call</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="../reference/abort.html">abort</a></span><span class="op">(</span><span class="st">"Can't do this"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span></span>
-<span><span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `error_helper2()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;error/rlang_error&gt;</span></span>
-<span><span class="co">#&gt; Error in `error_helper2()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Backtrace:</span></span>
-<span><span class="co">#&gt;     x</span></span>
-<span><span class="co">#&gt;  1. \-rlang (local) their_function()</span></span>
-<span><span class="co">#&gt;  2.   \-rlang (local) error_helper1()</span></span>
-<span><span class="co">#&gt;  3.     \-rlang (local) error_helper2(call = call)</span></span>
-<span><span class="co">#&gt; Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.</span></span></code></pre><p></p></div>
-<p>With the correct <code>call</code>, the backtrace is much simpler and lets the user focus on the part of the stack that is relevant to them:</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="va">use_call</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span></span>
-<span><span class="fu">their_function</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `their_function()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span></code></pre><p></p></div>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="../reference/last_error.html">last_error</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;error/rlang_error&gt;</span></span>
-<span><span class="co">#&gt; Error in `their_function()`:</span></span>
-<span><span class="co">#&gt; ! Can't do this</span></span>
-<span><span class="co">#&gt; ---</span></span>
-<span><span class="co">#&gt; Backtrace:</span></span>
-<span><span class="co">#&gt;     x</span></span>
-<span><span class="co">#&gt;  1. \-rlang (local) their_function()</span></span>
-<span><span class="co">#&gt; Run rlang::last_trace(drop = FALSE) to see 3 hidden frames.</span></span></code></pre><p></p></div>
     </div>
     <div class="section level2">
     <h2 id="testthat-workflow">testthat workflow<a class="anchor" aria-label="anchor" href="#testthat-workflow"></a></h2>

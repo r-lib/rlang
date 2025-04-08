@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,9 +54,9 @@
     <li><h6 class="dropdown-header" data-toc-skip>Notes</h6></li>
     <li><a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a></li>
   </ul></li>
-      </ul><ul class="navbar-nav"><li class="active nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Release notes</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a></li>
@@ -65,6 +65,8 @@
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/rlang/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -74,12 +76,17 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.5/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/r-lib/rlang/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.5" id="rlang-115">rlang 1.1.5<a class="anchor" aria-label="anchor" href="#rlang-115"></a></h2><p class="text-muted">CRAN release: 2025-01-17</p>
-<ul><li>We now report full backtraces during knitting (<a href="https://github.com/r-lib/rlang/issues/1769" class="external-link">#1769</a>).</li>
+<h2 class="pkg-version" data-toc-text="1.1.6" id="rlang-116">rlang 1.1.6<a class="anchor" aria-label="anchor" href="#rlang-116"></a></h2>
+<ul><li><p>Fixes for CRAN checks.</p></li>
+<li><p>Progress towards making rlang conformant with the public C API of R.</p></li>
+<li><p><code><a href="../reference/env_browse.html">env_browse()</a></code> and <code><a href="../reference/env_browse.html">env_is_browsed()</a></code> are now defunct as they require an API that is no longer available to packages (<a href="https://github.com/r-lib/rlang/issues/1727" class="external-link">#1727</a>).</p></li>
+<li><p>The SEXP iterator of the rlang C library (used in r-lib/memtools) is now behind a feature flag because it requires private API accessors. Compile rlang with <code>-DRLANG_USE_PRIVATE_ACCESSORS</code> to enable it.</p></li>
+<li><p><code><a href="../reference/env_unlock.html">env_unlock()</a></code> is now defunct because recent versions of R no long make it possible to unlock an environment (<a href="https://github.com/r-lib/rlang/issues/1705" class="external-link">#1705</a>). Make sure to use an up-to-date version of pkgload (&gt;= 1.4.0) following this change.</p></li>
+<li><p><code><a href="../reference/is_dictionaryish.html">is_dictionaryish()</a></code> now will return TRUE for NULL (<a href="https://github.com/ilovemane" class="external-link">@ilovemane</a>, <a href="https://github.com/r-lib/rlang/issues/1712" class="external-link">#1712</a>).</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.4" id="rlang-114">rlang 1.1.4<a class="anchor" aria-label="anchor" href="#rlang-114"></a></h2><p class="text-muted">CRAN release: 2024-06-04</p>

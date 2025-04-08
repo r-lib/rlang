@@ -21,7 +21,7 @@ have the same endianness and are using the same R version."><meta property="og:i
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,9 +68,9 @@ have the same endianness and are using the same R version."><meta property="og:i
     <li><h6 class="dropdown-header" data-toc-skip>Notes</h6></li>
     <li><a class="dropdown-item" href="../reference/topic-condition-customisation.html">Customising condition messages</a></li>
   </ul></li>
-      </ul><ul class="navbar-nav"><li class="nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">News</button>
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Release notes</h6></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news"><li><h6 class="dropdown-header" data-toc-skip>Releases</h6></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/blog/2020/02/glue-strings-and-tidy-eval/">Version 0.4.3</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/06/rlang-0-4-0/">Version 0.4.0</a></li>
     <li><a class="external-link dropdown-item" href="https://www.tidyverse.org/articles/2019/01/rlang-0-3-1/">Version 0.3.1</a></li>
@@ -79,6 +79,8 @@ have the same endianness and are using the same R version."><meta property="og:i
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../news/index.html">Changelog</a></li>
   </ul></li>
+      </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-lib/rlang/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
@@ -88,7 +90,7 @@ have the same endianness and are using the same R version."><meta property="og:i
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Hashing</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.5/R/hash.R" class="external-link"><code>R/hash.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/hash.R" class="external-link"><code>R/hash.R</code></a></small>
       <div class="d-none name"><code>hash.Rd</code></div>
     </div>
 
@@ -146,7 +148,8 @@ used. See <code><a href="https://rdrr.io/r/base/serialize.html" class="external-
 <span class="r-in"><span><span class="va">copying</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Rhome.html" class="external-link">R.home</a></span><span class="op">(</span><span class="st">"doc"</span><span class="op">)</span>, <span class="st">"COPYING"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">hashes</span> <span class="op">&lt;-</span> <span class="fu">hash_file</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">authors</span>, <span class="va">copying</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">hashes</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "75e0b18fa50ddd8296f143c587e3eb43" "cdb3a24318136e74f38209c219ca104b"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "75e0b18fa50ddd8296f143c587e3eb43"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "cdb3a24318136e74f38209c219ca104b"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you need a single hash for multiple files,</span></span></span>
 <span class="r-in"><span><span class="co"># hash the result of `hash_file()`</span></span></span>
