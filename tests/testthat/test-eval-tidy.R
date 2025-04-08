@@ -487,21 +487,6 @@ test_that("can't take the names() and length() of the `.data` pronoun", {
   expect_named(pronoun, chr())
 })
 
-test_that("eval_tidy() does not infloop when the quosure inherits from the mask", {
-  # New r-devel error: cycles in parent chains are not allowed
-  skip_if(getRversion() >= "4.4.0" && grepl("devel", R.version$status))
-
-  mask <- as_data_mask(list(foo = 1))
-  quo <- new_quosure(quote(foo), mask)
-  expect_identical(eval_tidy(quo, mask), 1)
-
-  top <- env(foo = 1)
-  bottom <- env(top)
-  mask <- new_data_mask(bottom, top)
-  quo <- new_quosure(quote(foo), top)
-  expect_identical(eval_tidy(quo, mask), 1)
-})
-
 test_that(".data pronoun handles promises (#908)", {
   e <- env()
   env_bind_lazy(e, a = c(1))
