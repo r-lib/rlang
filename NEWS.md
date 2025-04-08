@@ -1,4 +1,8 @@
-# rlang (development version)
+# rlang 1.1.6
+
+* Fixes for CRAN checks.
+
+* Progress towards making rlang conformant with the public C API of R.
 
 * `env_browse()` and `env_is_browsed()` are now defunct as they require an API
   that is no longer available to packages (#1727).
