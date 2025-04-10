@@ -272,3 +272,8 @@ test_that("check_installed() and is_installed() support character vectors", {
   expect_true(is_installed(chr()))
   expect_null(check_installed(chr()))
 })
+
+test_that("is_installed() works with pkgload-loaded packages", {
+  local_package(name = "rlangtestpkg")
+  expect_true(is_installed("rlangtestpkg"))
+})

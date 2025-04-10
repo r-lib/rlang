@@ -101,7 +101,23 @@ detect_installed <- function(info) {
 }
 
 is_on_disk <- function(pkg) {
-  any(file.exists(file.path(.libPaths(), pkg)))
+  system_file(pkg) != ""
+}
+
+system_file <- function(pkg) {
+  # Important for this to be first because packages loaded with pkgload
+  # will have a different path than the one in `.libPaths()` (if any).
+  if (isNamespaceLoaded(pkg)) {
+    return(.getNamespaceInfo(asNamespace(pkg), "path"))
+  }
+
+  for (path in file.path(.libPaths(), pkg)) {
+    if (file.exists(path)) {
+      return(path)
+    }
+  }
+
+  ""
 }
 
 pkg_version_info <- function(
