@@ -4,21 +4,29 @@ test_that("cnd_entrace() entraces conditions properly", {
     g <- function() h()
     h <- function() signaller(arg)
 
-    handlers <- rep_named(classes, alist(function(cnd) {
-      cnd <- cnd_entrace(cnd)
-      cnd_signal(cnd)
-    }))
-    env_bind_lazy(current_env(), do = catcher(withCallingHandlers(f(), !!!handlers)))
+    handlers <- rep_named(
+      classes,
+      alist(function(cnd) {
+        cnd <- cnd_entrace(cnd)
+        cnd_signal(cnd)
+      })
+    )
+    env_bind_lazy(
+      current_env(),
+      do = catcher(withCallingHandlers(f(), !!!handlers))
+    )
 
     do
   }
 
-  expect_cnd_trace <- function(signaller,
-                               catcher,
-                               arg,
-                               native = NULL,
-                               classes = "error",
-                               abort = FALSE) {
+  expect_cnd_trace <- function(
+    signaller,
+    catcher,
+    arg,
+    native = NULL,
+    classes = "error",
+    abort = FALSE
+  ) {
     err <- with_cnd_entrace(signaller, catcher, arg, classes = classes)
 
     trace <- err$trace
@@ -64,19 +72,45 @@ test_that("cnd_entrace() entraces conditions properly", {
 
   expect_cnd_trace(base::stop, catch_error, "")
   expect_cnd_trace(base::stop, catch_error, cnd("error"))
-  expect_cnd_trace(function(msg) errorcall(NULL, msg), catch_error, "", "errorcall")
+  expect_cnd_trace(
+    function(msg) errorcall(NULL, msg),
+    catch_error,
+    "",
+    "errorcall"
+  )
   expect_cnd_trace(abort, catch_error, "", abort = TRUE)
 
   expect_cnd_trace(base::warning, catch_warning, "", classes = "warning")
-  expect_cnd_trace(base::warning, catch_warning, cnd("warning"), classes = "warning")
-  expect_cnd_trace(function(msg) warningcall(NULL, msg), catch_warning, "", "warningcall", classes = "warning")
+  expect_cnd_trace(
+    base::warning,
+    catch_warning,
+    cnd("warning"),
+    classes = "warning"
+  )
+  expect_cnd_trace(
+    function(msg) warningcall(NULL, msg),
+    catch_warning,
+    "",
+    "warningcall",
+    classes = "warning"
+  )
   expect_cnd_trace(warn, catch_warning, "", classes = "warning")
 
   expect_cnd_trace(base::message, catch_message, "", classes = "message")
-  expect_cnd_trace(base::message, catch_message, cnd("message"), classes = "message")
+  expect_cnd_trace(
+    base::message,
+    catch_message,
+    cnd("message"),
+    classes = "message"
+  )
   expect_cnd_trace(inform, catch_message, "", classes = "message")
 
-  expect_cnd_trace(base::signalCondition, catch_cnd, cnd("foo"), classes = "condition")
+  expect_cnd_trace(
+    base::signalCondition,
+    catch_cnd,
+    cnd("foo"),
+    classes = "condition"
+  )
 })
 
 test_that("signal context is detected", {
@@ -97,23 +131,50 @@ test_that("signal context is detected", {
     )
   }
 
-  expect_equal(signal_info("error", base::stop, ""), list("stop_message", quote(f())))
-  expect_equal(signal_info("error", base::stop, cnd("error")), list("stop_condition", quote(f())))
-  expect_equal(signal_info("error", function(msg) errorcall(NULL, msg), ""), list("stop_native", quote(errorcall(NULL, msg))))
+  expect_equal(
+    signal_info("error", base::stop, ""),
+    list("stop_message", quote(f()))
+  )
+  expect_equal(
+    signal_info("error", base::stop, cnd("error")),
+    list("stop_condition", quote(f()))
+  )
+  expect_equal(
+    signal_info("error", function(msg) errorcall(NULL, msg), ""),
+    list("stop_native", quote(errorcall(NULL, msg)))
+  )
 
   # No longer works since we switched to signalCondition approach
   # expect_equal(signal_info(abort, "")[[1]], "stop_rlang")
 
-  expect_equal(signal_info("warning", base::warning, ""), list("warning_message", quote(f())))
-  expect_equal(signal_info("warning", base::warning, cnd("warning")), list("warning_condition", quote(f())))
-  expect_equal(signal_info("warning", function(msg) warningcall(NULL, msg), ""), list("warning_native", quote(warningcall(NULL, msg))))
+  expect_equal(
+    signal_info("warning", base::warning, ""),
+    list("warning_message", quote(f()))
+  )
+  expect_equal(
+    signal_info("warning", base::warning, cnd("warning")),
+    list("warning_condition", quote(f()))
+  )
+  expect_equal(
+    signal_info("warning", function(msg) warningcall(NULL, msg), ""),
+    list("warning_native", quote(warningcall(NULL, msg)))
+  )
   expect_equal(signal_info("warning", warn, "")[[1]], "warning_rlang")
 
-  expect_equal(signal_info("message", base::message, ""), list("message", quote(f())))
-  expect_equal(signal_info("message", base::message, cnd("message")), list("message", quote(f())))
+  expect_equal(
+    signal_info("message", base::message, ""),
+    list("message", quote(f()))
+  )
+  expect_equal(
+    signal_info("message", base::message, cnd("message")),
+    list("message", quote(f()))
+  )
   expect_equal(signal_info("message", inform, "")[[1]], "message_rlang")
 
-  expect_equal(signal_info("condition", base::signalCondition, cnd("foo")), list("condition", quote(f())))
+  expect_equal(
+    signal_info("condition", base::signalCondition, cnd("foo")),
+    list("condition", quote(f()))
+  )
 
   # Warnings won't be promoted if `condition` is handled. We need to
   # handle `error` instead.
@@ -170,7 +231,11 @@ test_that("entrace() preserves exit status in non-interactive sessions (#1052, r
   skip_if(getRversion() < "3.3")
 
   # This also tests for empty backtraces
-  out <- Rscript(shQuote(c("--vanilla", "-e", 'options(error = rlang::entrace); stop("An error")')))
+  out <- Rscript(shQuote(c(
+    "--vanilla",
+    "-e",
+    'options(error = rlang::entrace); stop("An error")'
+  )))
   expect_false(out$status == 0L)
 
   code <- '{
@@ -231,26 +296,31 @@ test_that("can supply handler environment as `bottom`", {
 test_that("can set `entrace()` as a global handler", {
   skip_if_not_installed("base", "4.0.0")
 
-  expect_snapshot_output(run('{
+  expect_snapshot_output(run(
+    '{
     suppressMessages(testthat::local_reproducible_output())
     rlang::global_entrace()
     f <- function() g()
     g <- function() h()
     h <- function() 1 + ""
     f()
-  }'))
+  }'
+  ))
 
   # Indirected case for developers of rlang
-  expect_snapshot_output(run('{
+  expect_snapshot_output(run(
+    '{
     suppressMessages(testthat::local_reproducible_output())
     globalCallingHandlers(error = function(...) rlang::entrace(..., bottom = environment()))
     f <- function() g()
     g <- function() h()
     h <- function() 1 + ""
     f()
-  }'))
+  }'
+  ))
 
-  expect_snapshot_output(run('{
+  expect_snapshot_output(run(
+    '{
     suppressMessages(testthat::local_reproducible_output())
     rlang::global_entrace()
     f <- function() { warning("foo"); message("FOO"); g() }
@@ -268,20 +338,23 @@ test_that("can set `entrace()` as a global handler", {
 
     writeLines("\\n> summary(rlang::last_messages(1))")
     summary(rlang::last_messages(1))
-  }'))
+  }'
+  ))
 })
 
 test_that("can set `entrace()` as a global handler (older R)", {
   skip_if(getRversion() >= "4.0", )
 
-  expect_snapshot_output(run('{
+  expect_snapshot_output(run(
+    '{
     suppressMessages(testthat::local_reproducible_output())
     rlang::global_entrace()
     f <- function() g()
     g <- function() h()
     h <- function() 1 + ""
     f()
-  }'))
+  }'
+  ))
 })
 
 test_that("errors are saved by `entrace()`", {
@@ -313,7 +386,10 @@ test_that("only the first n warnings are entraced (#1473)", {
     h <- function() warning("foo")
 
     try_fetch(
-      warning = function(cnd) { entrace(cnd); zap() },
+      warning = function(cnd) {
+        entrace(cnd)
+        zap()
+      },
       for (i in 1:5) f()
     )
 
@@ -338,12 +414,16 @@ test_that("warnings are resignalled", {
 
 test_that("can call `global_entrace()` in knitted documents", {
   local_options(
-    rlang_backtrace_on_error_report = peek_option("rlang_backtrace_on_error_report"),
-    rlang_backtrace_on_warning_report = peek_option("rlang_backtrace_on_warning_report")
+    rlang_backtrace_on_error_report = peek_option(
+      "rlang_backtrace_on_error_report"
+    ),
+    rlang_backtrace_on_warning_report = peek_option(
+      "rlang_backtrace_on_warning_report"
+    )
   )
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
-  skip_if(!rmarkdown::pandoc_available())
+  skip_if_not(rmarkdown::pandoc_available())
 
   entrace_lines <- render_md("test-entrace.Rmd", env = current_env())
 

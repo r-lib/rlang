@@ -104,10 +104,12 @@ caller_env2 <- function(n = 1, error_call = caller_env()) {
   sys.frame(parent)
 }
 
-sys_parent <- function(n,
-                       patch_eval = FALSE,
-                       frame = caller_env(),
-                       error_call = caller_env()) {
+sys_parent <- function(
+  n,
+  patch_eval = FALSE,
+  frame = caller_env(),
+  error_call = caller_env()
+) {
   parents <- sys_parents(frame = frame)
   if (n > length(parents)) {
     msg <- sprintf(
@@ -150,7 +152,9 @@ sys_parents <- function(frame = caller_env(), match_oldest = TRUE) {
   # of the oldest frame instead of the youngest. We fix this here when
   # requested to be consistent with `parent.frame()`.
   frames <- as.list(sys.frames())
-  remaining_dups <- which(duplicated(frames) | duplicated(frames, fromLast = TRUE))
+  remaining_dups <- which(
+    duplicated(frames) | duplicated(frames, fromLast = TRUE)
+  )
 
   while (length(remaining_dups)) {
     dups <- which(map_lgl(frames, identical, frames[[remaining_dups[[1]]]]))

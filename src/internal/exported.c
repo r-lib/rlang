@@ -476,13 +476,6 @@ r_obj* ffi_env_poke_parent(r_obj* env, r_obj* new_parent) {
   return env;
 }
 
-r_obj* ffi_env_frame(r_obj* env) {
-  return FRAME(env);
-}
-r_obj* ffi_env_hash_table(r_obj* env) {
-  return HASHTAB(env);
-}
-
 r_obj* ffi_env_inherits(r_obj* env, r_obj* ancestor) {
   return r_lgl(r_env_inherits(env, ancestor, r_envs.empty));
 }
@@ -1031,6 +1024,16 @@ r_obj* protect_missing(r_obj* x) {
   }
 }
 
+r_obj* ffi_has_private_accessors(void) {
+#ifdef RLANG_USE_PRIVATE_ACCESSORS
+  return r_true;
+#else
+  return r_false;
+#endif
+}
+
+#ifdef RLANG_USE_PRIVATE_ACCESSORS
+
 // [[ register() ]]
 r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {
   struct r_dyn_array* p_out = r_new_dyn_vector(R_TYPE_list, 256);
@@ -1089,3 +1092,5 @@ r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {
   FREE(3);
   return r_dyn_unwrap(p_out);
 }
+
+#endif

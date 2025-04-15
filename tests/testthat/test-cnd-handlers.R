@@ -14,8 +14,8 @@ test_that("try_fetch() catches or declines values", {
 })
 
 test_that("try_fetch() checks inputs", {
-  expect_snapshot({
-    (expect_error(try_fetch(NULL, function(...) NULL)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    try_fetch(NULL, function(...) NULL)
   })
   expect_true(try_fetch(TRUE))
 })

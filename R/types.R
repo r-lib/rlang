@@ -401,9 +401,6 @@ type_of_ <- function(x) {
 #' # These objects that can only be changed with side effect are not
 #' # copyable:
 #' is_copyable(env)
-#'
-#' structure(base::list, foo = "bar")
-#' str(base::list)
 is_copyable <- function(x) {
   switch(typeof(x),
     NULL = ,

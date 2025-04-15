@@ -31,7 +31,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -56,7 +56,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -88,7 +88,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -121,7 +121,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -151,7 +151,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | <<\-rlang::catch_cnd(expr, "error")>>
         3. |   <<+-rlang::eval_bare(...)>>
         4. |   <<+-base::tryCatch(...)>>
@@ -180,7 +180,7 @@
       ! Low-level message
       ---
       Backtrace:
-        1. rlang:::catch_error(a())
+        1. catch_error(a())
         9. rlang (local) a()
        10. rlang (local) b()
        11. rlang (local) c()
@@ -214,7 +214,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(a())
+        1. +-catch_error(a())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -503,21 +503,18 @@
 # cnd ctors check arguments
 
     Code
-      (expect_error(warning_cnd(class = list())))
-    Output
-      <error/rlang_error>
+      warning_cnd(class = list())
+    Condition <rlang_error>
       Error in `warning_cnd()`:
       ! `class` must be a character vector, not a list.
     Code
-      (expect_error(error_cnd(class = list())))
-    Output
-      <error/rlang_error>
+      error_cnd(class = list())
+    Condition <rlang_error>
       Error in `error_cnd()`:
       ! `class` must be a character vector, not a list.
     Code
-      (expect_error(message_cnd(message = 1)))
-    Output
-      <error/rlang_error>
+      message_cnd(message = 1)
+    Condition <rlang_error>
       Error in `message_cnd()`:
       ! `message` must be a character vector, not the number 1.
 

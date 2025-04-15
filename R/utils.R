@@ -1,10 +1,12 @@
 deprecated <- function() missing_arg()
 
-abort_coercion <- function(x,
-                           to_type,
-                           x_type = NULL,
-                           arg = NULL,
-                           call = caller_env()) {
+abort_coercion <- function(
+  x,
+  to_type,
+  x_type = NULL,
+  arg = NULL,
+  call = caller_env()
+) {
   if (is_null(x_type)) {
     if (is_vector(x)) {
       x_type <- vec_type_friendly(x)
@@ -43,19 +45,19 @@ paste_line <- function(..., .trailing = FALSE) {
   }
 }
 
-open_red     <- function() if (has_ansi()) open_style("red")
-open_blue    <- function() if (has_ansi()) open_style("blue")
-open_green   <- function() if (has_ansi()) open_style("green")
-open_yellow  <- function() if (has_ansi()) open_style("yellow")
+open_red <- function() if (has_ansi()) open_style("red")
+open_blue <- function() if (has_ansi()) open_style("blue")
+open_green <- function() if (has_ansi()) open_style("green")
+open_yellow <- function() if (has_ansi()) open_style("yellow")
 open_magenta <- function() if (has_ansi()) open_style("magenta")
-open_cyan    <- function() if (has_ansi()) open_style("cyan")
-open_bold    <- function() if (has_ansi()) open_style("bold")
+open_cyan <- function() if (has_ansi()) open_style("cyan")
+open_bold <- function() if (has_ansi()) open_style("bold")
 close_colour <- function() if (has_ansi()) "\u001b[39m"
 close_italic <- function() if (has_ansi()) "\u001b[23m"
-close_bold   <- function() if (has_ansi()) close_style("bold")
+close_bold <- function() if (has_ansi()) close_style("bold")
 
-open_yellow_italic   <- function() if (has_ansi()) "\u001b[33m\u001b[3m"
-open_blurred_italic  <- function() if (has_ansi()) "\u001b[2m\u001b[3m"
+open_yellow_italic <- function() if (has_ansi()) "\u001b[33m\u001b[3m"
+open_blurred_italic <- function() if (has_ansi()) "\u001b[2m\u001b[3m"
 close_blurred_italic <- function() if (has_ansi()) "\u001b[23m\u001b[22m"
 
 
@@ -76,33 +78,33 @@ strip_style <- function(x) {
 }
 
 codes <- list(
-  reset =           c(0L, 0L),
-  bold =            c(1L, 22L),
-  blurred =         c(2L, 22L),
-  italic =          c(3L, 23L),
-  underline =       c(4L, 24L),
-  inverse =         c(7L, 27L),
-  hidden =          c(8L, 28L),
-  strikethrough =   c(9L, 29L),
+  reset = c(0L, 0L),
+  bold = c(1L, 22L),
+  blurred = c(2L, 22L),
+  italic = c(3L, 23L),
+  underline = c(4L, 24L),
+  inverse = c(7L, 27L),
+  hidden = c(8L, 28L),
+  strikethrough = c(9L, 29L),
 
-  black =           c(30L, 39L),
-  red =             c(31L, 39L),
-  green =           c(32L, 39L),
-  yellow =          c(33L, 39L),
-  blue =            c(34L, 39L),
-  magenta =         c(35L, 39L),
-  cyan =            c(36L, 39L),
-  white =           c(37L, 39L),
-  silver =          c(90L, 39L),
+  black = c(30L, 39L),
+  red = c(31L, 39L),
+  green = c(32L, 39L),
+  yellow = c(33L, 39L),
+  blue = c(34L, 39L),
+  magenta = c(35L, 39L),
+  cyan = c(36L, 39L),
+  white = c(37L, 39L),
+  silver = c(90L, 39L),
 
-  bgBlack =         c(40L, 49L),
-  bgRed =           c(41L, 49L),
-  bgGreen =         c(42L, 49L),
-  bgYellow =        c(43L, 49L),
-  bgBlue =          c(44L, 49L),
-  bgMagenta =       c(45L, 49L),
-  bgCyan =          c(46L, 49L),
-  bgWhite =         c(47L, 49L)
+  bgBlack = c(40L, 49L),
+  bgRed = c(41L, 49L),
+  bgGreen = c(42L, 49L),
+  bgYellow = c(43L, 49L),
+  bgBlue = c(44L, 49L),
+  bgMagenta = c(45L, 49L),
+  bgCyan = c(46L, 49L),
+  bgWhite = c(47L, 49L)
 )
 
 
@@ -161,7 +163,7 @@ on_load({
 
 style_dim_soft <- function(x) {
   if (cli::num_ansi_colors() >= 256) {
-    crayon::make_style(grDevices::grey(0.6), colors =  256)(x)
+    crayon::make_style(grDevices::grey(0.6), colors = 256)(x)
   } else {
     col_silver(x)
   }
@@ -203,7 +205,8 @@ stop_internal_c_lib <- function(file, line, call, message, frame) {
         "In file %s at line %d.",
         format_file(file),
         line
-      ))
+      )
+    )
   }
   if (!is_installed("winch") && is_interactive()) {
     message <- c(
@@ -269,9 +272,7 @@ path_trim_prefix <- function(path, n) {
   }
 }
 
-browser <- function(...,
-                    skipCalls = 0,
-                    frame = parent.frame()) {
+browser <- function(..., skipCalls = 0, frame = parent.frame()) {
   if (!identical(stdout(), getConnection(1))) {
     sink(getConnection(1))
     withr::defer(sink(), envir = frame)
@@ -367,3 +368,5 @@ pkg_url_bug <- function(pkg) {
 
   NULL
 }
+
+is_windows <- tolower(.Platform$OS.type) == "windows"

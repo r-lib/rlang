@@ -4,7 +4,12 @@ test_that("new_function equivalent to regular function", {
   }
   attr(f1, "srcref") <- NULL
 
-  f2 <- new_function(alist(x = a + b, y =), quote({x + y}))
+  f2 <- new_function(
+    alist(x = a + b, y = ),
+    quote({
+      x + y
+    })
+  )
 
   expect_equal(f1, f2)
 
@@ -34,8 +39,14 @@ test_that("as_closure() supports base-style and purrr-style arguments to binary 
   expect_error(and(), "Must supply `e1` or `.x` to binary operator")
   expect_error(and(TRUE), "Must supply `e2` or `.y` to binary operator")
 
-  expect_error(and(.x = TRUE, e1 = TRUE), "Can't supply both `e1` and `.x` to binary operator")
-  expect_error(and(TRUE, .y = TRUE, e2 = TRUE), "Can't supply both `e2` and `.y` to binary operator")
+  expect_error(
+    and(.x = TRUE, e1 = TRUE),
+    "Can't supply both `e1` and `.x` to binary operator"
+  )
+  expect_error(
+    and(TRUE, .y = TRUE, e2 = TRUE),
+    "Can't supply both `e2` and `.y` to binary operator"
+  )
 
   expect_identical(and(FALSE, FALSE), FALSE)
   expect_identical(and(TRUE, FALSE), FALSE)
@@ -56,8 +67,14 @@ test_that("as_closure() supports base-style and purrr-style arguments to versati
   expect_error(minus(), "Must supply `e1` or `.x` to binary operator")
   expect_error(minus(.y = 3), "Must supply `e1` or `.x` to binary operator")
 
-  expect_error(minus(.x = 3, e1 = 1), "Can't supply both `e1` and `.x` to binary operator")
-  expect_error(minus(0, .y = 3, e2 = 1), "Can't supply both `e2` and `.y` to binary operator")
+  expect_error(
+    minus(.x = 3, e1 = 1),
+    "Can't supply both `e1` and `.x` to binary operator"
+  )
+  expect_error(
+    minus(0, .y = 3, e2 = 1),
+    "Can't supply both `e2` and `.y` to binary operator"
+  )
 
   expect_identical(minus(3), -3)
   expect_identical(minus(e1 = 3), -3)
@@ -139,7 +156,10 @@ test_that("as_function() handles strings", {
 })
 
 test_that("fn_fmls_syms() unnames `...`", {
-  expect_identical(fn_fmls_syms(lapply), list(X = quote(X), FUN = quote(FUN), quote(...)))
+  expect_identical(
+    fn_fmls_syms(lapply),
+    list(X = quote(X), FUN = quote(FUN), quote(...))
+  )
 })
 
 test_that("fn_fmls_syms() works with functions of zero arguments", {
@@ -188,8 +208,20 @@ test_that("assignment methods preserve attributes", {
 
 test_that("fn_body() requires a closure to extract body", {
   expect_error(fn_body(c), "`fn` must be an R function")
-  expect_equal(fn_body(function() { NULL }), quote({ NULL }))
-  expect_equal(fn_body(function() NULL), quote({ NULL }))
+  expect_equal(
+    fn_body(function() {
+      NULL
+    }),
+    quote({
+      NULL
+    })
+  )
+  expect_equal(
+    fn_body(function() NULL),
+    quote({
+      NULL
+    })
+  )
 })
 
 test_that("fn_env() requires a function to extract env", {
@@ -218,7 +250,10 @@ test_that("quosures converted to functions ignore their arguments", {
 test_that("as_function() supports nested quosures", {
   quo <- local({
     lhs <- "quux"
-    rhs <- local({ rhs <- "hunoz"; quo(rhs) })
+    rhs <- local({
+      rhs <- "hunoz"
+      quo(rhs)
+    })
     quo(paste(lhs, !!rhs))
   })
 
@@ -227,7 +262,12 @@ test_that("as_function() supports nested quosures", {
 })
 
 test_that("fn_body() always returns a `{` block", {
-  expect_equal(fn_body(function() "foo"), quote({ "foo" }))
+  expect_equal(
+    fn_body(function() "foo"),
+    quote({
+      "foo"
+    })
+  )
 })
 
 test_that("as_function() adds a class to lambda functions", {
@@ -241,7 +281,8 @@ test_that("fn_env() returns base namespace for primitives", {
 })
 
 test_that("as_closure() wrappers dispatch properly", {
-  local_bindings(.env = global_env(),
+  local_bindings(
+    .env = global_env(),
     as.character.foobar = function(...) "dispatched!"
   )
   x <- structure(list(), class = "foobar")
@@ -286,12 +327,15 @@ test_that("as_function() creates functions that respect visibility", {
   f <- as_function(~ invisible(1))
   expect_invisible(f())
 
-  f <- as_function(~ 1)
+  f <- as_function(~1)
   expect_visible(f())
 })
 
 test_that("as_function() with a quosure can be serialised", {
-  fn <- as_function(local({ a <- 10; quo(a) }))
+  fn <- as_function(local({
+    a <- 10
+    quo(a)
+  }))
   blob <- serialize(fn, NULL)
   expect_equal(
     eval_tidy(fn),
@@ -314,24 +358,24 @@ test_that("as_function() has nice errors", {
     as_function(my_arg)
   }
 
-  expect_snapshot({
-    (expect_error(as_function(1)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    as_function(1)
 
-    (expect_error(as_function(1, arg = "foo")))
+    as_function(1, arg = "foo")
 
-    (expect_error(my_function(1 + 2)))
+    my_function(1 + 2)
 
-    (expect_error(my_function(1)))
+    my_function(1)
 
-    (expect_error(my_function(a ~ b)))
+    my_function(a ~ b)
   })
 })
 
 test_that("check inputs in function accessors", {
-  expect_snapshot({
-    (expect_error(fn_fmls(1)))
-    (expect_error(fn_body(1)))
-    (expect_error(fn_env(1)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    fn_fmls(1)
+    fn_body(1)
+    fn_env(1)
   })
 })
 

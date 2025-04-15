@@ -144,7 +144,7 @@ my_verb(env())
 
 When a low-level error is overtaken, it is good practice to store it in the high-level error object, so that it can be inspected for debugging purposes. In the snippet above, we stored it in the `error` field. Here is one way of accessing the original error by subsetting the object returned by `last_error()`:
 
-```{r}
+```{r, eval = FALSE}
 rlang::last_error()$error
 ```
 

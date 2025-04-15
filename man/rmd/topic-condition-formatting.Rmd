@@ -14,7 +14,7 @@ Condition formatting is a set of operations applied to raw inputs for error mess
   ))
   ```
 
-  See the [tidyverse error style guide](https://style.tidyverse.org/error-messages.html) for more about this style of error messaging.
+  See the [tidyverse error style guide](https://style.tidyverse.org/errors.html) for more about this style of error messaging.
 
 - Applying style (emphasis, boldness, ...) and colours to message elements.
 

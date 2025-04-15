@@ -1,1 +1,3 @@
-Fixes the r-devel error. I will need more time to look into the private API notes.
+Fixes R-devel issues.
+
+Progress towards C API conformance.

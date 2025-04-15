@@ -28,8 +28,5 @@ env
 # These objects that can only be changed with side effect are not
 # copyable:
 is_copyable(env)
-
-structure(base::list, foo = "bar")
-str(base::list)
 }
 \keyword{internal}

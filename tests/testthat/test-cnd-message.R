@@ -1,6 +1,9 @@
 test_that("format_error_bullets() formats bullets depending on names", {
   expect_equal(format_error_bullets(c("foo", "bar")), "* foo\n* bar")
-  expect_equal(format_error_bullets(c(i = "foo", "*" = "baz", x = "bar", v = "bam")), "i foo\n* baz\nx bar\nv bam")
+  expect_equal(
+    format_error_bullets(c(i = "foo", "*" = "baz", x = "bar", v = "bam")),
+    "i foo\n* baz\nx bar\nv bam"
+  )
   expect_equal(format_error_bullets(c(i = "foo", u = "bar")), "i foo\nbar")
   expect_equal(format_error_bullets(chr()), chr())
 })
@@ -64,9 +67,9 @@ test_that("can override header, body, and footer methods with fields", {
   expect_message(
     message(message_cnd(
       "rlang_foobar",
-      header = ~ "header",
-      body = ~ "body",
-      footer = ~ "footer"
+      header = ~"header",
+      body = ~"body",
+      footer = ~"footer"
     )),
     "header\nbody\nfooter",
     class = "rlang_foobar"
@@ -83,7 +86,11 @@ test_that("can override header, body, and footer methods with fields", {
   )
 
   expect_error(
-    stop(error_cnd("rlang_foobar", message = "header", body = ~ format_error_bullets("body"))),
+    stop(error_cnd(
+      "rlang_foobar",
+      message = "header",
+      body = ~ format_error_bullets("body")
+    )),
     "header\n* body",
     fixed = TRUE,
     class = "rlang_foobar"
@@ -203,25 +210,29 @@ cli::test_that_cli("format_error_bullets() generates bullets", {
   })
 })
 
-cli::test_that_cli(configs = c("plain", "fancy"), "can use cli syntax in `cnd_message()` methods", {
-  local_methods(
-    cnd_header.rlang_foobar = function(cnd, ...) {
-      cli::format_inline("Header: {.emph {cnd$field}}")
-    },
-    cnd_body.rlang_foobar = function(cnd, ...) {
-      c("i" = cli::format_inline("Bullet: {.emph {cnd$field}}"))
-    },
-    cnd_footer.rlang_foobar = function(cnd, ...) {
-      c("_" = cli::format_inline("i" = "Footer: {.emph {cnd$field}}"))
-    }
-  )
-  cnd <- error_cnd(
-    "rlang_foobar",
-    field = "User { {field}.",
-    use_cli_format = TRUE
-  )
-  expect_snapshot(cnd_message(cnd))
-})
+cli::test_that_cli(
+  configs = c("plain", "fancy"),
+  "can use cli syntax in `cnd_message()` methods",
+  {
+    local_methods(
+      cnd_header.rlang_foobar = function(cnd, ...) {
+        cli::format_inline("Header: {.emph {cnd$field}}")
+      },
+      cnd_body.rlang_foobar = function(cnd, ...) {
+        c("i" = cli::format_inline("Bullet: {.emph {cnd$field}}"))
+      },
+      cnd_footer.rlang_foobar = function(cnd, ...) {
+        c("_" = cli::format_inline("i" = "Footer: {.emph {cnd$field}}"))
+      }
+    )
+    cnd <- error_cnd(
+      "rlang_foobar",
+      field = "User { {field}.",
+      use_cli_format = TRUE
+    )
+    expect_snapshot(cnd_message(cnd))
+  }
+)
 
 test_that("prefix takes call into account", {
   expect_snapshot({
@@ -249,10 +260,12 @@ test_that("long prefixes cause a line break", {
 test_that("prefixes include srcrefs", {
   withr::local_envvar("TESTTHAT" = "")
 
-  eval_parse("{
+  eval_parse(
+    "{
     f <- function() g()
     g <- function() abort('Foo.')
-  }")
+  }"
+  )
 
   src_file <- g %@% srcref %@% srcfile
   src_file$filename <- "/foo/bar/baz/myfile.R"
@@ -321,9 +334,9 @@ test_that("parent errors prints with bullets in all cases", {
     )
   }
 
-  expect_snapshot({
-    (expect_error(f(TRUE)))
-    (expect_error(f(FALSE)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(TRUE)
+    f(FALSE)
   })
 })
 
@@ -459,11 +472,28 @@ test_that("as.character() and conditionMessage() methods for errors, warnings, a
 })
 
 test_that("multiline operator calls are preserved", {
-  err <- function(expr) error_cnd(message = "This is the error message.", call = enexpr(expr))
+  err <- function(expr)
+    error_cnd(message = "This is the error message.", call = enexpr(expr))
 
-  expect_snapshot_output(err(1 + ("veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long" + "veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long")))
-  expect_snapshot_output(err({ 1; 2 } + { 2; 3 }))
-  expect_snapshot_output(err(x[{ 1; 2 }]))
+  expect_snapshot_output(err(
+    1 +
+      ("veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long" +
+        "veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery_long")
+  ))
+  expect_snapshot_output(err(
+    {
+      1
+      2
+    } +
+      {
+        2
+        3
+      }
+  ))
+  expect_snapshot_output(err(x[{
+    1
+    2
+  }]))
 })
 
 test_that("eval_tidy() is not mentioned in calls", {
@@ -489,10 +519,12 @@ test_that("can disable srcrefs in call formatting", {
   withr::local_envvar(c("TESTTHAT" = "false"))
   local_options(rlang_call_format_srcrefs = FALSE)
 
-  with_srcref("{
+  with_srcref(
+    "{
     f <- function() { g() }
     g <- function() abort('foo')
-  }")
+  }"
+  )
 
   expect_snapshot(err(f()))
 })
@@ -536,12 +568,15 @@ test_that("`cnd_message(prefix = TRUE)` propagates warning style across parent e
 test_that("arguments are highlighted but code spans are not", {
   local_options("rlang:::trace_test_highlight" = TRUE)
 
-  err <- error_cnd(header = function(cnd) sprintf(
-    "%s - %s - %s",
-    format_arg("arg1"),
-    format_code("code"),
-    format_arg("arg2")
-  ))
+  err <- error_cnd(
+    header = function(cnd)
+      sprintf(
+        "%s - %s - %s",
+        format_arg("arg1"),
+        format_code("code"),
+        format_arg("arg2")
+      )
+  )
 
   expect_snapshot({
     with_error_arg_highlight(

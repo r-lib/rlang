@@ -1,9 +1,9 @@
 #' Check that all dots have been used
 #'
-#' When `...` arguments are passed to methods, it is assumed there
-#' method will match and use these arguments. If this isn't the case,
-#' this often indicates a programming error. Call `check_dots_used()`
-#' to fail with an error when unused arguments are detected.
+#' When `...` arguments are passed to a method, the method should match
+#' and use these arguments. If this isn't the case, this often indicates
+#' a programming error. Call `check_dots_used()` to fail with an error when
+#' unused arguments are detected.
 #'
 #' @param error An optional error handler passed to [try_fetch()]. Use
 #'   this e.g. to demote an error into a warning.
@@ -53,10 +53,12 @@
 #' fn()
 #'
 #' @export
-check_dots_used <- function(env = caller_env(),
-                            call = caller_env(),
-                            error = NULL,
-                            action = deprecated()) {
+check_dots_used <- function(
+  env = caller_env(),
+  call = caller_env(),
+  error = NULL,
+  action = deprecated()
+) {
   # Capture frame environment before `caller_env()` exits (#1448)
   force(call)
 
@@ -104,10 +106,12 @@ check_dots <- function(env = caller_env(), error, action, call) {
 #' f(1, 2, 3, foofy = 4)
 #'
 #' try(f(1, 2, 3, foof = 4))
-check_dots_unnamed <- function(env = caller_env(),
-                               error = NULL,
-                               call = caller_env(),
-                               action = abort) {
+check_dots_unnamed <- function(
+  env = caller_env(),
+  error = NULL,
+  call = caller_env(),
+  action = abort
+) {
   if (.Call(ffi_has_dots_unnamed, env)) {
     return()
   }
@@ -165,10 +169,12 @@ check_dots_unnamed <- function(env = caller_env(),
 #' f(1, foofy = 4)
 #'
 #' @export
-check_dots_empty <- function(env = caller_env(),
-                             error = NULL,
-                             call = caller_env(),
-                             action = abort) {
+check_dots_empty <- function(
+  env = caller_env(),
+  error = NULL,
+  call = caller_env(),
+  action = abort
+) {
   dots <- ellipsis_dots(env)
   n <- length(dots)
 
@@ -218,17 +224,19 @@ check_dots_empty0 <- function(..., call = caller_env()) {
   }
 }
 
-action_dots <- function(error,
-                        action,
-                        message,
-                        dots_i,
-                        env,
-                        class = NULL,
-                        note = NULL,
-                        ...) {
+action_dots <- function(
+  error,
+  action,
+  message,
+  dots_i,
+  env,
+  class = NULL,
+  note = NULL,
+  ...
+) {
   if (is_missing(action)) {
     action <- abort
-  } else  {
+  } else {
     # Silently deprecated for now
     paste_line(
       "The `action` argument of ellipsis functions is deprecated as of rlang 1.0.0.",

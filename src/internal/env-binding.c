@@ -27,6 +27,8 @@ r_obj* ffi_env_get(r_obj* env,
   return env_get_sym(env, sym, c_inherit, last, closure_env);
 }
 
+// This util is a little more complex than it would be by calling `getVar()`
+// directly because it evaluates `default` lazily
 static
 r_obj* env_get_sym(r_obj* env,
                    r_obj* sym,
@@ -37,25 +39,19 @@ r_obj* env_get_sym(r_obj* env,
     r_abort("`last` must be an environment.");
   }
 
-  r_obj* out;
+  bool unbound;
   if (inherit) {
     if (last == r_null) {
-      out = r_env_find_anywhere(env, sym);
+      unbound = !r_env_has_anywhere(env, sym);
     } else {
-      out = r_env_find_until(env, sym, last);
+      unbound = !r_env_has_until(env, sym, last);
     }
   } else {
-    out = r_env_find(env, sym);
+    unbound = !r_env_has(env, sym);
   }
 
-  if (r_typeof(out) == R_TYPE_promise) {
-    KEEP(out);
-    out = r_eval(out, r_envs.empty);
-    FREE(1);
-  }
-
-  if (out == r_syms.unbound) {
-    if (r_env_find(closure_env, r_sym("default")) == r_missing_arg) {
+  if (unbound) {
+    if (r_env_has_missing(closure_env, r_sym("default"))) {
       struct r_pair args[] = {
         { r_sym("nm"), KEEP(r_str_as_character(r_sym_string(sym))) }
       };
@@ -67,10 +63,18 @@ r_obj* env_get_sym(r_obj* env,
       r_stop_unreachable();
     }
 
-    out = r_eval(r_sym("default"), closure_env);
+    return r_eval(r_sym("default"), closure_env);
   }
 
-  return out;
+  if (inherit) {
+    if (last == r_null) {
+      return r_env_get_anywhere(env, sym);
+    } else {
+      return r_env_get_until(env, sym, last);
+    }
+  } else {
+    return r_env_get(env, sym);
+  }
 }
 
 r_obj* ffi_env_get_list(r_obj* env,
@@ -145,42 +149,46 @@ static void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* value, r_obj* eval_env)
 static void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env);
 static r_obj* env_get(r_obj* env, r_obj* sym);
 
-r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* inherit, r_obj* create) {
+r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* ffi_inherit, r_obj* ffi_create) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
   if (!r_is_string(nm)) {
     r_abort("`nm` must be a string.");
   }
-  if (!r_is_bool(inherit)) {
+  if (!r_is_bool(ffi_inherit)) {
     r_abort("`inherit` must be a logical value.");
   }
-  if (!r_is_bool(create)) {
+  if (!r_is_bool(ffi_create)) {
     r_abort("`create` must be a logical value.");
   }
 
-  bool c_inherit = r_lgl_get(inherit, 0);
-  bool c_create = r_lgl_get(create, 0);
+  bool inherit = r_lgl_get(ffi_inherit, 0);
+  bool create = r_lgl_get(ffi_create, 0);
   r_obj* sym = r_str_as_symbol(r_chr_get(nm, 0));
 
-  r_obj* old;
-  if (c_inherit) {
-    old = r_env_find_anywhere(env, sym);
+  bool unbound;
+  if (inherit) {
+    unbound = !r_env_has_anywhere(env, sym);
   } else {
-    old = r_env_find(env, sym);
+    unbound = !r_env_has(env, sym);
   }
 
-  bool absent = (old == r_syms.unbound);
-  if (absent) {
-    if (!c_create) {
+  r_obj* old;
+  if (unbound) {
+    if (!create) {
       r_abort("Can't find existing binding in `env` for \"%s\".",
               r_sym_c_string(sym));
     }
     old = rlang_zap;
+  } else if (inherit) {
+    old = r_env_get_anywhere(env, sym);
+  } else {
+    old = r_env_get(env, sym);
   }
   KEEP(old);
 
-  if (c_inherit && !absent) {
+  if (inherit && !unbound) {
     while (env != r_envs.empty) {
       if (r_env_has(env, sym)) {
         break;
@@ -322,17 +330,13 @@ void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env) {
 
 static
 r_obj* env_get(r_obj* env, r_obj* sym) {
-  r_obj* out = r_env_find(env, sym);
-
-  if (out == r_syms.unbound) {
+  if (!r_env_has(env, sym)) {
     return rlang_zap;
   }
 
-  if (r_typeof(out) == R_TYPE_promise) {
-    KEEP(out);
-    out = r_eval(out, r_envs.base);
-    FREE(1);
+  if (r_env_has_missing(env, sym)) {
+    return r_missing_arg;
   }
 
-  return out;
+  return r_env_get(env, sym);
 }

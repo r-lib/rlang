@@ -297,7 +297,7 @@ NULL
 #' ```
 #'
 #' Equivalently you could enable `!!!` explicitly with [inject()].
-#' 
+#'
 #' ```{r, comment = "#>", collapse = TRUE}
 #' inject(n_args(!!!mtcars))
 #' ```
@@ -444,10 +444,12 @@ NULL
 #' as_label(letters)
 #'
 #' @export
-englue <- function(x,
-                   env = caller_env(),
-                   error_call = current_env(),
-                   error_arg = "x") {
+englue <- function(
+  x,
+  env = caller_env(),
+  error_call = current_env(),
+  error_arg = "x"
+) {
   check_string(x, arg = error_arg, call = error_call)
   glue_embrace(x, env = env)
 }
@@ -528,7 +530,7 @@ glue_first_pass_eval <- function(text, env) {
 #'
 #' qq_show(list2(!!!1:3))
 #' ```
-#' 
+#'
 #' It is especially useful inside functions to reveal what an injected
 #' expression looks like:
 #'

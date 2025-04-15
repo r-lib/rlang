@@ -39,8 +39,8 @@ test_that("sys_parents() removes infloop values", {
 
   # g() is called by f() which is called by global because the calling
   # env is not on the stack
-  expect_equal(parents[[n - 1]], 0)  # f()
-  expect_equal(parents[[n]], n - 1)  # g()
+  expect_equal(parents[[n - 1]], 0) # f()
+  expect_equal(parents[[n]], n - 1) # g()
 })
 
 test_that("current_fn() and caller_fn() work", {

@@ -1,12 +1,22 @@
 # rlang (development version)
 
+# rlang 1.1.6
+
+* Fixes for CRAN checks.
+
+* Progress towards making rlang conformant with the public C API of R.
+
 * `env_browse()` and `env_is_browsed()` are now defunct as they require an API
   that is no longer available to packages (#1727).
+
+* The SEXP iterator of the rlang C library (used in r-lib/memtools) is now
+  behind a feature flag because it requires private API accessors. Compile
+  rlang with `-DRLANG_USE_PRIVATE_ACCESSORS` to enable it.
 
 * `env_unlock()` is now defunct because recent versions of R no long
   make it possible to unlock an environment (#1705). Make sure to use an
   up-to-date version of pkgload (>= 1.4.0) following this change.
-  
+
 * `is_dictionaryish()` now will return TRUE for NULL (@ilovemane, #1712).
 
 

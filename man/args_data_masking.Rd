@@ -31,7 +31,7 @@ It's what allows you to type (e.g.) \code{filter(diamonds, x == 0 & y == 0 & z =
 instead of \code{diamonds[diamonds$x == 0 & diamonds$y == 0 & diamonds$z == 0, ]}.
 }
 
-\section{Indirection}{
+\section{Indirection in wrapper functions}{
 The main challenge of data masking arises when you introduce some
 indirection, i.e. instead of directly typing the name of a variable you
 want to supply it in a function argument or character vector.

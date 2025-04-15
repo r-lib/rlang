@@ -29,8 +29,10 @@
 #include "vec-chr.c"
 #include "vec-lgl.c"
 #include "vendor.c"
-#include "walk.c"
 
+#ifdef RLANG_USE_PRIVATE_ACCESSORS
+  #include "walk.c"
+#endif
 
 // Allows long vectors to be indexed with doubles
 r_ssize r_arg_as_ssize(r_obj* n, const char* arg) {
@@ -94,19 +96,6 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_obj(ns);
   r_init_library_globals(ns);
 
-  r_init_rlang_ns_env();
-  r_init_library_arg();
-  r_init_library_call();
-  r_init_library_cnd();
-  r_init_library_dyn_array();
-  r_init_library_env();
-  r_init_library_eval();
-  r_init_library_fn();
-  r_init_library_quo();
-  r_init_library_session();
-  r_init_library_sym();
-  r_init_library_stack();
-
   shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
   r_preserve(shared_x_env);
 
@@ -115,6 +104,19 @@ r_obj* r_init_library(r_obj* ns) {
 
   shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
   r_preserve(shared_xyz_env);
+
+  r_init_library_sym();
+  r_init_library_eval();
+  r_init_library_env();
+  r_init_rlang_ns_env();
+  r_init_library_arg();
+  r_init_library_call();
+  r_init_library_cnd();
+  r_init_library_dyn_array();
+  r_init_library_fn();
+  r_init_library_quo();
+  r_init_library_session();
+  r_init_library_stack();
 
   // Return a SEXP so the init function can be called from R
   return r_null;

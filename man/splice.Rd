@@ -16,6 +16,9 @@ is_spliced_bare(x)
 \item{x}{A list or vector to splice non-eagerly.}
 }
 \description{
+\code{splice()} is an advanced feature of dynamic dots. It is rarely
+needed but can solve performance issues in edge cases.
+
 The splicing operator \verb{!!!} operates both in values contexts like
 \code{\link[=list2]{list2()}} and \code{\link[=dots_list]{dots_list()}}, and in metaprogramming contexts like
 \code{\link[=expr]{expr()}}, \code{\link[=enquos]{enquos()}}, or \code{\link[=inject]{inject()}}. While the end result looks the
@@ -47,4 +50,8 @@ of \verb{!!!}:
 list2(1, splice(xs), 4)
 inject(list2(1, splice(xs), 4))
 }\if{html}{\out{</div>}}
+
+Note that \code{splice()} behaves differently than \verb{!!!}. The splicing happens
+later and is processed by \code{list2()} or \code{dots_list()}. It does not work in any
+other tidyeval context than these list collectors.
 }

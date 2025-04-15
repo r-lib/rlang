@@ -4,7 +4,7 @@ test_that("error if dots not used", {
     x + y
   }
 
-  expect_error(f(1, 2), NA)
+  expect_no_error(f(1, 2))
   expect_error(f(1, 2, 3), class = "rlib_error_dots_unused")
 })
 
@@ -17,10 +17,10 @@ test_that("error if dots not used by another function", {
     x * g(...)
   }
 
-  expect_error(f(x = 10, a = 1), NA)
+  expect_no_error(f(x = 10, a = 1))
 
-  expect_snapshot({
-    (expect_error(f(x = 10, c = 3), class = "rlib_error_dots_unused"))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(x = 10, c = 3)
   })
 })
 
@@ -31,13 +31,13 @@ test_that("error if dots named", {
 
   expect_null(f(1))
 
-  expect_error(f(xyz = 1), NA)
-  expect_error(f(1, 2, 3), NA)
-  expect_error(f(1, 2, 3, xyz = 4), NA)
+  expect_no_error(f(xyz = 1))
+  expect_no_error(f(1, 2, 3))
+  expect_no_error(f(1, 2, 3, xyz = 4))
   expect_error(f(1, 2, 3, xy = 4), class = "rlib_error_dots_named")
 
-  expect_snapshot({
-    (expect_error(f(1, 2, 3, xy = 4, x = 5), class = "rlib_error_dots_named"))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(1, 2, 3, xy = 4, x = 5)
   })
 })
 
@@ -49,12 +49,12 @@ test_that("error if if dots not empty", {
     check_dots_empty0(...)
   }
 
-  expect_error(f(xyz = 1), NA)
-  expect_error(f0(xyz = 1), NA)
+  expect_no_error(f(xyz = 1))
+  expect_no_error(f0(xyz = 1))
 
-  expect_snapshot({
-    (expect_error(f(xy = 4), class = "rlib_error_dots_nonempty"))
-    (expect_error(f0(xy = 4), class = "rlib_error_dots_nonempty"))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(xy = 4)
+    f0(xy = 4)
   })
 })
 
@@ -63,17 +63,44 @@ test_that("can control the action (deprecated)", {
     check(action = action)
   }
 
-  expect_error(f(abort, check_dots_used, xy = 4), class = "rlib_error_dots_unused")
-  expect_warning(f(warn, check_dots_used, xy = 4), class = "rlib_error_dots_unused")
-  expect_message(f(inform, check_dots_used, xy = 4), class = "rlib_error_dots_unused")
+  expect_error(
+    f(abort, check_dots_used, xy = 4),
+    class = "rlib_error_dots_unused"
+  )
+  expect_warning(
+    f(warn, check_dots_used, xy = 4),
+    class = "rlib_error_dots_unused"
+  )
+  expect_message(
+    f(inform, check_dots_used, xy = 4),
+    class = "rlib_error_dots_unused"
+  )
 
-  expect_error(f(abort, check_dots_unnamed, xy = 4), class = "rlib_error_dots_named")
-  expect_warning(f(warn, check_dots_unnamed, xy = 4), class = "rlib_error_dots_named")
-  expect_message(f(inform, check_dots_unnamed, xy = 4), class = "rlib_error_dots_named")
+  expect_error(
+    f(abort, check_dots_unnamed, xy = 4),
+    class = "rlib_error_dots_named"
+  )
+  expect_warning(
+    f(warn, check_dots_unnamed, xy = 4),
+    class = "rlib_error_dots_named"
+  )
+  expect_message(
+    f(inform, check_dots_unnamed, xy = 4),
+    class = "rlib_error_dots_named"
+  )
 
-  expect_error(f(abort, check_dots_empty, xy = 4), class = "rlib_error_dots_nonempty")
-  expect_warning(f(warn, check_dots_empty, xy = 4), class = "rlib_error_dots_nonempty")
-  expect_message(f(inform, check_dots_empty, xy = 4), class = "rlib_error_dots_nonempty")
+  expect_error(
+    f(abort, check_dots_empty, xy = 4),
+    class = "rlib_error_dots_nonempty"
+  )
+  expect_warning(
+    f(warn, check_dots_empty, xy = 4),
+    class = "rlib_error_dots_nonempty"
+  )
+  expect_message(
+    f(inform, check_dots_empty, xy = 4),
+    class = "rlib_error_dots_nonempty"
+  )
 })
 
 test_that("warn if unused dots", {
@@ -84,8 +111,8 @@ test_that("warn if unused dots", {
   safe_median.numeric <- function(x, ..., na.rm = TRUE) {
     stats::median(x, na.rm = na.rm)
   }
-  expect_error(safe_median(1:10), NA)
-  expect_error(safe_median(1:10, na.rm = TRUE), NA)
+  expect_no_error(safe_median(1:10))
+  expect_no_error(safe_median(1:10, na.rm = TRUE))
   expect_error(safe_median(1:10, y = 1), class = "rlib_error_dots_unused")
 })
 
@@ -112,7 +139,10 @@ test_that("expression contents are mentioned", {
     f("foo")
     f(foo)
     inject(f(!!letters))
-    f(a = { 1; 2 })
+    f(a = {
+      1
+      2
+    })
     f(a = toupper(letters))
   })
 })
@@ -131,7 +161,7 @@ test_that("check_dots_empty() allows trailing missing arg (#1390)", {
 
   expect_null(fn(a = 1, ))
 
-  expect_snapshot({
-    (expect_error(fn(a = 1, b = )))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    fn(a = 1, b = )
   })
 })
