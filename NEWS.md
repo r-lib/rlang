@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `arg_match()` now throws better error messages if `multiple = TRUE` or if a single value is allowed (@olivroy, #1635, #1682).
+
 # rlang 1.1.6
 
 * Fixes for CRAN checks.
