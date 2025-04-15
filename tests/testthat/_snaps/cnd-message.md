@@ -209,18 +209,16 @@
 # parent errors prints with bullets in all cases
 
     Code
-      (expect_error(f(TRUE)))
-    Output
-      <error/rlang_error>
+      f(TRUE)
+    Condition <rlang_error>
       Error in `f()`:
       ! Wrapper
       Caused by error in `f()`:
       ! Header
       i Bullet
     Code
-      (expect_error(f(FALSE)))
-    Output
-      <error/rlang_error>
+      f(FALSE)
+    Condition <rlang_error>
       Error in `f()`:
       ! Wrapper
       Caused by error in `f()`:

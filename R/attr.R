@@ -122,7 +122,6 @@ is_dictionaryish <- function(x) {
 }
 
 
-
 #' Does an object have an element with this name?
 #'
 #' This function returns a logical value that indicates if a data

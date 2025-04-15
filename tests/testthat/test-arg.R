@@ -10,21 +10,19 @@ test_that("matches arg", {
 
 test_that("gives an error with more than one arg", {
   # Interpolates `values` in the error message (#1545)
-  expect_snapshot(
-    (expect_error(arg_match0_wrapper(c("bar", "fun"), c("bar", "baz"))))
-  )
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    arg_match0_wrapper(c("bar", "fun"), c("bar", "baz"))
+  })
 })
 
 test_that("gives error with different than rearranged arg vs value", {
   f <- function(myarg = c("foo", "bar", "fun")) {
     arg_match(myarg, c("fun", "bar"))
   }
-  expect_snapshot_error(
+  expect_snapshot(error = TRUE, {
     f()
-  )
-  expect_snapshot_error(
     arg_match0_wrapper(c("foo", "foo"), c("foo", "bar"), arg_nm = "x")
-  )
+  })
 })
 
 test_that("gives no error with rearranged arg vs value", {
@@ -55,20 +53,20 @@ test_that("`arg_match()` has informative error messages", {
     arg_match0_wrapper(...)
   }
 
-  expect_snapshot({
-    (expect_error(arg_match_wrapper("continuuos", c("discrete", "continuous"), "my_arg")))
-    (expect_error(arg_match_wrapper("fou", c("bar", "foo"), "my_arg")))
-    (expect_error(arg_match_wrapper("fu", c("ba", "fo"), "my_arg")))
-    (expect_error(arg_match_wrapper("baq", c("foo", "baz", "bas"), "my_arg")))
-    (expect_error(arg_match_wrapper("", character(), "my_arg")))
-    (expect_error(arg_match_wrapper("fo", "foo", quote(f()))))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    arg_match_wrapper("continuuos", c("discrete", "continuous"), "my_arg")
+    arg_match_wrapper("fou", c("bar", "foo"), "my_arg")
+    arg_match_wrapper("fu", c("ba", "fo"), "my_arg")
+    arg_match_wrapper("baq", c("foo", "baz", "bas"), "my_arg")
+    arg_match_wrapper("", character(), "my_arg")
+    arg_match_wrapper("fo", "foo", quote(f()))
   })
 })
 
 test_that("`arg_match()` provides no suggestion when the edit distance is too large", {
-  expect_snapshot({
-    (expect_error(arg_match0_wrapper("foobaz", c("fooquxs", "discrete"), "my_arg")))
-    (expect_error(arg_match0_wrapper("a", c("b", "c"), "my_arg")))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    arg_match0_wrapper("foobaz", c("fooquxs", "discrete"), "my_arg")
+    arg_match0_wrapper("a", c("b", "c"), "my_arg")
   })
 })
 
@@ -80,11 +78,11 @@ test_that("`arg_match()` finds a match even with small possible typos", {
 })
 
 test_that("`arg_match()` makes case-insensitive match", {
-  expect_snapshot({
-    (expect_error(arg_match0_wrapper("a", c("A", "B"), "my_arg"), "Did you mean \"A\"?"))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    arg_match0_wrapper("a", c("A", "B"), "my_arg")
 
     # Case-insensitive match is done after case-sensitive
-    (expect_error(arg_match0_wrapper("aa", c("AA", "aA"), "my_arg"), "Did you mean \"aA\"?"))
+    arg_match0_wrapper("aa", c("AA", "aA"), "my_arg")
   })
 })
 
@@ -215,12 +213,12 @@ test_that("check_required() checks argument is supplied (#1118)", {
   f <- function(x) check_required(x)
   g <- function(y) f(y)
 
-  expect_error(f(NULL), NA)
-  expect_error(g(NULL), NA)
+  expect_no_error(f(NULL))
+  expect_no_error(g(NULL))
 
-  expect_snapshot({
-    (expect_error(f()))
-    (expect_error(g()))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f()
+    g()
   })
 })
 
@@ -234,14 +232,14 @@ test_that("arg_match() supports symbols and scalar strings", {
     "foo"
   )
 
-  expect_snapshot({
-    (expect_error(arg_match0_wrapper(chr_get("fo", 0L), c("bar", "foo"), "my_arg")))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    arg_match0_wrapper(chr_get("fo", 0L), c("bar", "foo"), "my_arg")
   })
 })
 
 test_that("arg_match() requires an argument symbol", {
   wrapper <- function() arg_match("foo")
-  expect_snapshot((expect_error(wrapper())))
+  expect_snapshot(wrapper(), error = TRUE, cnd_class = TRUE)
 })
 
 test_that("can match multiple arguments", {
@@ -253,17 +251,17 @@ test_that("can match multiple arguments", {
   expect_equal(my_wrapper(c("foo", "baz")), c("foo", "baz"))
   expect_equal(my_wrapper(chr()), chr())
 
-  expect_snapshot({
-    (expect_error(my_wrapper("ba")))
-    (expect_error(my_wrapper(c("foo", "ba"))))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    my_wrapper("ba")
+    my_wrapper(c("foo", "ba"))
   })
 })
 
 test_that("arg_match0() defuses argument", {
   fn <- function(arg) arg_match0(arg, c("bar", "baz"))
-  expect_snapshot({
-    (expect_error(fn("foo")))
-    (expect_error(arg_match0("foo", c("bar", "baz"))))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    fn("foo")
+    arg_match0("foo", c("bar", "baz"))
   })
 })
 
@@ -273,18 +271,18 @@ test_that("check_exclusive works", {
   h <- function() check_exclusive(foo())
 
   # Internal errors
-  expect_snapshot({
-    (expect_error(f()))
-    (expect_error(g()))
-    (expect_error(h()))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f()
+    g()
+    h()
   })
 
   f <- function(foo, bar = NULL, ...) check_exclusive(foo, bar, ...)
   g <- function(foo, bar = NULL, baz, ...) check_exclusive(foo, bar, baz, ...)
 
   # Zero arguments supplied
-  expect_snapshot({
-    (expect_error(f()))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f()
   })
   expect_equal(f(.require = FALSE), "")
 
@@ -293,12 +291,12 @@ test_that("check_exclusive works", {
   expect_equal(f(, NULL), "bar")
 
   # Multiple arguments supplied
-  expect_snapshot({
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
     "All arguments supplied"
-    (expect_error(g(foo, bar, baz)))
+    g(foo, bar, baz)
 
     "Some arguments supplied"
-    (expect_error(g(foo, bar)))
+    g(foo, bar)
   })
 })
 
@@ -306,9 +304,9 @@ test_that("arg_match() mentions correct call if wrong type is supplied (#1388)",
   f <- function(my_arg) arg_match0(my_arg, "a")
   g <- function(my_arg) arg_match(my_arg, "a")
 
-  expect_snapshot({
-    (expect_error(f(1)))
-    (expect_error(g(1)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(1)
+    g(1)
   })
 })
 
@@ -326,9 +324,9 @@ test_that("arg_match() backtrace highlights call and arg", {
 test_that("arg_match() supports `NA` (#1519)", {
   f <- function(x = c("a", "b")) arg_match(x)
 
-  expect_snapshot({
-    (expect_error(f(NA)))
-    (expect_error(f(na_chr)))
-    (expect_error(f(chr())))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(NA)
+    f(na_chr)
+    f(chr())
   })
 })

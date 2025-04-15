@@ -16,7 +16,10 @@ test_that("predicates match definitions", {
 test_that("can bypass string serialisation", {
   bar <- chr(list("cafe", string(c(0x63, 0x61, 0x66, 0xE9))))
   Encoding(bar) <- "latin1"
-  bytes <- list(bytes(c(0x63, 0x61, 0x66, 0x65)), bytes(c(0x63, 0x61, 0x66, 0xE9)))
+  bytes <- list(
+    bytes(c(0x63, 0x61, 0x66, 0x65)),
+    bytes(c(0x63, 0x61, 0x66, 0xE9))
+  )
   expect_identical(map(bar, charToRaw), bytes)
   expect_identical(Encoding(bar[[2]]), "latin1")
 })
@@ -67,24 +70,24 @@ test_that("is_finite handles numeric types", {
 })
 
 test_that("check finiteness", {
-  expect_true(    is_double(dbl(1, 2), finite = TRUE))
-  expect_true(   is_complex(cpl(1, 2), finite = TRUE))
+  expect_true(is_double(dbl(1, 2), finite = TRUE))
+  expect_true(is_complex(cpl(1, 2), finite = TRUE))
   expect_true(is_integerish(dbl(1, 2), finite = TRUE))
 
-  expect_false(    is_double(dbl(1, 2), finite = FALSE))
-  expect_false(   is_complex(cpl(1, 2), finite = FALSE))
+  expect_false(is_double(dbl(1, 2), finite = FALSE))
+  expect_false(is_complex(cpl(1, 2), finite = FALSE))
   expect_false(is_integerish(dbl(1, 2), finite = FALSE))
 
-  expect_false(    is_double(dbl(1, Inf), finite = TRUE))
-  expect_false(   is_complex(cpl(1, Inf), finite = TRUE))
+  expect_false(is_double(dbl(1, Inf), finite = TRUE))
+  expect_false(is_complex(cpl(1, Inf), finite = TRUE))
   expect_false(is_integerish(dbl(1, Inf), finite = TRUE))
 
-  expect_true(    is_double(dbl(1, Inf), finite = FALSE))
-  expect_true(   is_complex(cpl(1, Inf), finite = FALSE))
+  expect_true(is_double(dbl(1, Inf), finite = FALSE))
+  expect_true(is_complex(cpl(1, Inf), finite = FALSE))
   expect_true(is_integerish(dbl(1, Inf), finite = FALSE))
 
-  expect_true(    is_double(dbl(-Inf, Inf), finite = FALSE))
-  expect_true(   is_complex(cpl(-Inf, Inf), finite = FALSE))
+  expect_true(is_double(dbl(-Inf, Inf), finite = FALSE))
+  expect_true(is_complex(cpl(-Inf, Inf), finite = FALSE))
   expect_true(is_integerish(dbl(-Inf, Inf), finite = FALSE))
 })
 
@@ -98,7 +101,8 @@ test_that("scalar predicates heed type and length", {
   expect_true_false(is_scalar_list, list(1), list(1, 2), logical(1))
   expect_true_false(is_scalar_atomic, logical(1), logical(2), list(1))
   expect_true_false(is_scalar_vector, list(1), list(1, 2), quote(x))
-  expect_true_false(is_scalar_vector, logical(1), logical(2), function() {})
+  expect_true_false(is_scalar_vector, logical(1), logical(2), function() {
+  })
   expect_true_false(is_scalar_integer, integer(1), integer(2), double(1))
   expect_true_false(is_scalar_double, double(1), double(2), integer(1))
   expect_true_false(is_scalar_character, character(1), character(2), logical(1))
@@ -115,7 +119,6 @@ test_that("is_integerish() supports large numbers (#578)", {
 
   expect_false(is_integerish(2^52 + 1))
   expect_false(is_integerish(-2^52 - 1))
-
 
   expect_false(is_integerish(2^50 - 0.1))
   expect_false(is_integerish(2^49 - 0.05))
@@ -139,10 +142,10 @@ test_that("is_string() matches on string", {
 
 test_that("is_string2() matches on `empty`", {
   # Input checking
-  expect_snapshot({
-    (expect_error(is_string2("foo", empty = 1)))
-    (expect_error(is_string2("foo", empty = NA)))
-    (expect_error(is_string2("foo", "foo", empty = TRUE)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    is_string2("foo", empty = 1)
+    is_string2("foo", empty = NA)
+    is_string2("foo", "foo", empty = TRUE)
   })
 
   expect_true(is_string2("foo", empty = NULL))

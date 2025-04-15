@@ -52,8 +52,10 @@
 #' handlers like [recover()]. Also this causes a conflict with IDE
 #' handlers (e.g. in RStudio).
 #' @export
-global_entrace <- function(enable = TRUE,
-                           class = c("error", "warning", "message")) {
+global_entrace <- function(
+  enable = TRUE,
+  class = c("error", "warning", "message")
+) {
   check_bool(enable)
   class <- arg_match(class, multiple = TRUE)
 
@@ -351,7 +353,9 @@ entrace_handle_top <- function(trace) {
   from_stop <- is_call(stop_call, "stop", ns = c("", "base"))
 
   # No need to do anything for rlang errors
-  if (from_stop && (is_trace(cnd$trace) || is_true(cnd$rlang$internal$entraced))) {
+  if (
+    from_stop && (is_trace(cnd$trace) || is_true(cnd$rlang$internal$entraced))
+  ) {
     return(entrace_exit())
   }
 

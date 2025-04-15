@@ -102,67 +102,6 @@ my_function(NA)
 }
 }
 
-\section{Side benefit: backtrace trimming}{
-Another benefit of passing \code{caller_env()} as \code{call} is that it allows \code{abort()} to automatically hide the error helpers
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function() \{
-  their_function()
-\}
-their_function <- function() \{
-  error_helper1()
-\}
-
-error_helper1 <- function(call = caller_env()) \{
-  error_helper2(call = call)
-\}
-error_helper2 <- function(call = caller_env()) \{
-  if (use_call) \{
-    abort("Can't do this", call = call)
-  \} else \{
-    abort("Can't do this")
-  \}
-\}
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- FALSE
-their_function()
-#> Error in `error_helper2()`:
-#> ! Can't do this
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
-#> <error/rlang_error>
-#> Error in `error_helper2()`:
-#> ! Can't do this
-#> ---
-#> Backtrace:
-#>     x
-#>  1. \\-rlang (local) their_function()
-#>  2.   \\-rlang (local) error_helper1()
-#>  3.     \\-rlang (local) error_helper2(call = call)
-#> Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
-}\if{html}{\out{</div>}}
-
-With the correct \code{call}, the backtrace is much simpler and lets the user focus on the part of the stack that is relevant to them:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- TRUE
-their_function()
-#> Error in `their_function()`:
-#> ! Can't do this
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
-#> <error/rlang_error>
-#> Error in `their_function()`:
-#> ! Can't do this
-#> ---
-#> Backtrace:
-#>     x
-#>  1. \\-rlang (local) their_function()
-#> Run rlang::last_trace(drop = FALSE) to see 3 hidden frames.
-}\if{html}{\out{</div>}}
-}
-
 \section{testthat workflow}{
 Error snapshots are the main way of checking that the correct error call is included in an error message. However you'll need to opt into a new testthat display for warning and error snapshots. With the new display, these are printed by rlang, including the \code{call} field. This makes it easy to monitor the full appearance of warning and error messages as they are displayed to users.
 

@@ -2,9 +2,15 @@ local_unexport_signal_abort()
 
 test_that("error_cnd() checks its fields", {
   expect_no_error(error_cnd(trace = NULL))
-  expect_error(error_cnd(trace = env()), "`trace` must be `NULL` or an rlang backtrace")
+  expect_error(
+    error_cnd(trace = env()),
+    "`trace` must be `NULL` or an rlang backtrace"
+  )
   expect_no_error(error_cnd(parent = NULL))
-  expect_error(error_cnd(parent = env()), "`parent` must be `NULL` or a condition object")
+  expect_error(
+    error_cnd(parent = env()),
+    "`parent` must be `NULL` or a condition object"
+  )
 })
 
 test_that("can use conditionMessage() method in subclasses of rlang errors", {
@@ -26,7 +32,8 @@ test_that("can use conditionMessage() method in subclasses of rlang errors", {
 })
 
 test_that("rlang_error.print() calls cnd_message() methods", {
-  local_bindings(.env = global_env(),
+  local_bindings(
+    .env = global_env(),
     cnd_header.foobar = function(cnd, ...) cnd$foobar_msg
   )
   local_options(
@@ -46,7 +53,8 @@ test_that("rlang_error.print() calls cnd_message() methods", {
 # tryCatch() instead of wCH() causes distinct overlapping traces
 test_that("Overlapping backtraces are printed separately", {
   # Test low-level error can use conditionMessage()
-  local_bindings(.env = global_env(),
+  local_bindings(
+    .env = global_env(),
     cnd_header.foobar = function(c, ...) c$foobar_msg
   )
 
@@ -165,8 +173,8 @@ test_that("calls are consistently displayed on rethrow (#1240)", {
       expr = force(expr),
       error = function(cnd) {
         rlang::abort(
-          message = "Problem while executing step.", 
-          call = call(step_name), 
+          message = "Problem while executing step.",
+          call = call(step_name),
           parent = cnd
         )
       }
@@ -331,10 +339,10 @@ test_that("warnings and messages have `summary()` methods", {
 })
 
 test_that("cnd ctors check arguments", {
-  expect_snapshot({
-    (expect_error(warning_cnd(class = list())))
-    (expect_error(error_cnd(class = list())))
-    (expect_error(message_cnd(message = 1)))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    warning_cnd(class = list())
+    error_cnd(class = list())
+    message_cnd(message = 1)
   })
 })
 

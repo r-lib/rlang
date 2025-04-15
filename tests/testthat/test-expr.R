@@ -8,9 +8,12 @@ test_that("always returns single string", {
 })
 
 test_that("can truncate lines", {
-  out <- expr_text(quote({
-    a + b
-  }), nlines = 2)
+  out <- expr_text(
+    quote({
+      a + b
+    }),
+    nlines = 2
+  )
   expect_equal(out, "{\n...")
 })
 
@@ -31,8 +34,19 @@ test_that("converts atomics to strings", {
 })
 
 test_that("expr_label() truncates blocks", {
-  expect_identical(expr_label(quote({ a + b })), "`{ ... }`")
-  expect_identical(expr_label(expr(function() { a; b })), "`function() ...`")
+  expect_identical(
+    expr_label(quote({
+      a + b
+    })),
+    "`{ ... }`"
+  )
+  expect_identical(
+    expr_label(expr(function() {
+      a
+      b
+    })),
+    "`function() ...`"
+  )
 })
 
 test_that("expr_label() truncates long calls", {
@@ -54,7 +68,13 @@ test_that("expr_name() with symbols, calls, and literals", {
   expect_identical(expr_name(1L), "1")
   expect_identical(expr_name("foo"), "foo")
   expect_identical(expr_name(function() NULL), "function () ...")
-  expect_identical(expr_name(expr(function() { a; b })), "function() ...")
+  expect_identical(
+    expr_name(expr(function() {
+      a
+      b
+    })),
+    "function() ..."
+  )
   expect_identical(expr_name(NULL), "NULL")
   expect_error(expr_name(1:2), "must be")
   expect_error(expr_name(env()), "must be")
@@ -92,7 +112,7 @@ test_that("is_expression() detects non-parsable parse trees", {
 
 test_that("is_expression() supports missing arguments", {
   expect_false(is_expression(missing_arg()))
-  expect_false(is_expression(quote(foo(, ))))
+  expect_false(is_expression(quote(foo(,))))
 })
 
 test_that("is_expression() supports quoted functions (#1499)", {
@@ -103,6 +123,10 @@ test_that("is_expression() detects attributes (#1475)", {
   x <- structure(quote(foo()), attr = TRUE)
   expect_false(is_expression(x))
   expect_false(is_expression(expr(call(!!x))))
-  expect_true(is_expression(quote({ NULL })))
-  expect_true(is_expression(quote(function() { NULL })))
+  expect_true(is_expression(quote({
+    NULL
+  })))
+  expect_true(is_expression(quote(function() {
+    NULL
+  })))
 })

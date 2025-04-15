@@ -60,9 +60,7 @@
 #
 # nocov start
 
-check_downstream <- function(ver,
-                             ...,
-                             info = NULL) {
+check_downstream <- function(ver, ..., info = NULL) {
   env <- topenv(parent.frame())
   if (!isNamespace(env)) {
     stop("`check_downstream()` must be called from a namespace.", call. = FALSE)
@@ -141,12 +139,14 @@ check_downstream <- function(ver,
   c(pkg = dep[[1]], min = ver)
 }
 
-.rlang_downstream_check <- function(pkg,
-                                    pkg_ver,
-                                    deps,
-                                    info,
-                                    deps_key = as.character(stats::runif(1)),
-                                    env = parent.frame()) {
+.rlang_downstream_check <- function(
+  pkg,
+  pkg_ver,
+  deps,
+  info,
+  deps_key = as.character(stats::runif(1)),
+  env = parent.frame()
+) {
   isFALSE <- function(x) {
     is.logical(x) && length(x) == 1L && !is.na(x) && !x
   }
@@ -215,7 +215,9 @@ check_downstream <- function(ver,
   inform <- .rlang_downstream_compat("inform")
   is_interactive <- .rlang_downstream_compat("is_interactive")
 
-  if (!is_interactive() || !is.null(getOption("rlang:::no_downstream_prompt"))) {
+  if (
+    !is_interactive() || !is.null(getOption("rlang:::no_downstream_prompt"))
+  ) {
     warn(header)
     return(FALSE)
   }
@@ -239,7 +241,9 @@ check_downstream <- function(ver,
   inform(c(header, prompt))
 
   if (utils::menu(c("Yes", "No")) != 1) {
-    inform("Set `options(rlib_downstream_check = FALSE)` to disable this prompt.")
+    inform(
+      "Set `options(rlib_downstream_check = FALSE)` to disable this prompt."
+    )
     return(FALSE)
   }
 
@@ -261,11 +265,18 @@ check_downstream <- function(ver,
     url <- "https://github.com/jennybc/what-they-forgot/issues/62"
     c(
       i = sprintf("Please update %s to the latest version.", pkg),
-      i = sprintf("Updating packages on Windows requires precautions:\n  <%s>", url)
+      i = sprintf(
+        "Updating packages on Windows requires precautions:\n  <%s>",
+        url
+      )
     )
   } else {
     c(
-      i = sprintf("Please update %s with `install.packages(\"%s\")` and restart R.", pkg, pkg)
+      i = sprintf(
+        "Please update %s with `install.packages(\"%s\")` and restart R.",
+        pkg,
+        pkg
+      )
     )
   }
 }
@@ -299,9 +310,11 @@ check_downstream <- function(ver,
   )
 
   # Only use rlang if it is fully loaded (#1482)
-  if (try_rlang &&
-        requireNamespace("rlang", quietly = TRUE) &&
-        environmentIsLocked(asNamespace("rlang"))) {
+  if (
+    try_rlang &&
+      requireNamespace("rlang", quietly = TRUE) &&
+      environmentIsLocked(asNamespace("rlang"))
+  ) {
     switch(
       fn,
       is_interactive = return(rlang::is_interactive)
@@ -364,6 +377,5 @@ check_downstream <- function(ver,
 
   cache
 }
-
 
 #nocov end

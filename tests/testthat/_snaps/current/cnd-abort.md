@@ -126,7 +126,7 @@
       Backtrace:
            x
         1. +-base::print(err(ff()))
-        2. +-rlang:::err(ff())
+        2. +-err(ff())
         3. | \-testthat::expect_error(...)
         4. |   \-testthat:::expect_condition_matching(...)
         5. |     \-testthat:::quasi_capture(...)
@@ -159,7 +159,7 @@
       Backtrace:
            x
         1. +-base::print(err(ff()))
-        2. +-rlang:::err(ff())
+        2. +-err(ff())
         3. | \-testthat::expect_error(...)
         4. |   \-testthat:::expect_condition_matching(...)
         5. |     \-testthat:::quasi_capture(...)
@@ -190,7 +190,7 @@
       Backtrace:
            x
         1. +-base::print(err(ff()))
-        2. +-rlang:::err(ff())
+        2. +-err(ff())
         3. | \-testthat::expect_error(...)
         4. |   \-testthat:::expect_condition_matching(...)
         5. |     \-testthat:::quasi_capture(...)
@@ -219,7 +219,7 @@
       Backtrace:
            x
         1. +-base::print(err(ff()))
-        2. +-rlang:::err(ff())
+        2. +-err(ff())
         3. | \-testthat::expect_error(...)
         4. |   \-testthat:::expect_condition_matching(...)
         5. |     \-testthat:::quasi_capture(...)
@@ -253,7 +253,7 @@
       Backtrace:
            x
         1. +-base::print(err(ff()))
-        2. +-rlang:::err(ff())
+        2. +-err(ff())
         3. | \-testthat::expect_error(...)
         4. |   \-testthat:::expect_condition_matching(...)
         5. |     \-testthat:::quasi_capture(...)

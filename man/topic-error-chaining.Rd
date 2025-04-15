@@ -159,13 +159,6 @@ my_verb(env())
 When a low-level error is overtaken, it is good practice to store it in the high-level error object, so that it can be inspected for debugging purposes. In the snippet above, we stored it in the \code{error} field. Here is one way of accessing the original error by subsetting the object returned by \code{last_error()}:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()$error
-#> <error/vctrs_error_scalar_type>
-#> Error in `my_verb()`:
-#> ! `expr` must be a vector, not an environment.
-#> ---
-#> Backtrace:
-#>     x
-#>  1. \\-rlang (local) my_verb(env())
 }\if{html}{\out{</div>}}
 }
 

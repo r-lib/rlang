@@ -1,7 +1,10 @@
-expect_snapshot_trace <- function(trace,
-                                  dir = normalizePath(test_path("..")),
-                                  srcrefs = FALSE) {
-  expect_snapshot({
+expect_snapshot_trace <- function(
+  trace,
+  dir = normalizePath(test_path("..")),
+  srcrefs = FALSE,
+  ...
+) {
+  expect_snapshot(..., x = {
     "Full"
     print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
     "Focused"

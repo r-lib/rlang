@@ -25,10 +25,10 @@ this e.g. to demote an error into a warning.}
 \item{action}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \description{
-When \code{...} arguments are passed to methods, it is assumed there
-method will match and use these arguments. If this isn't the case,
-this often indicates a programming error. Call \code{check_dots_used()}
-to fail with an error when unused arguments are detected.
+When \code{...} arguments are passed to a method, the method should match
+and use these arguments. If this isn't the case, this often indicates
+a programming error. Call \code{check_dots_used()} to fail with an error when
+unused arguments are detected.
 }
 \details{
 In packages, document \code{...} with this standard tag:

@@ -101,51 +101,6 @@ my_function(NA)
 ```
 
 
-# Side benefit: backtrace trimming
-
-Another benefit of passing `caller_env()` as `call` is that it allows `abort()` to automatically hide the error helpers
-
-```{r}
-my_function <- function() {
-  their_function()
-}
-their_function <- function() {
-  error_helper1()
-}
-
-error_helper1 <- function(call = caller_env()) {
-  error_helper2(call = call)
-}
-error_helper2 <- function(call = caller_env()) {
-  if (use_call) {
-    abort("Can't do this", call = call)
-  } else {
-    abort("Can't do this")
-  }
-}
-```
-
-```{r, error = TRUE}
-use_call <- FALSE
-their_function()
-```
-
-```{r}
-rlang::last_error()
-```
-
-With the correct `call`, the backtrace is much simpler and lets the user focus on the part of the stack that is relevant to them:
-
-```{r, error = TRUE}
-use_call <- TRUE
-their_function()
-```
-
-```{r}
-rlang::last_error()
-```
-
-
 # testthat workflow
 
 Error snapshots are the main way of checking that the correct error call is included in an error message. However you'll need to opt into a new testthat display for warning and error snapshots. With the new display, these are printed by rlang, including the `call` field. This makes it easy to monitor the full appearance of warning and error messages as they are displayed to users.

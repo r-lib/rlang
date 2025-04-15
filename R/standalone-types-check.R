@@ -66,13 +66,23 @@
 
 .standalone_types_check_dot_call <- .Call
 
-check_bool <- function(x,
-                       ...,
-                       allow_na = FALSE,
-                       allow_null = FALSE,
-                       arg = caller_arg(x),
-                       call = caller_env()) {
-  if (!missing(x) && .standalone_types_check_dot_call(ffi_standalone_is_bool_1.0.7, x, allow_na, allow_null)) {
+check_bool <- function(
+  x,
+  ...,
+  allow_na = FALSE,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (
+    !missing(x) &&
+      .standalone_types_check_dot_call(
+        ffi_standalone_is_bool_1.0.7,
+        x,
+        allow_na,
+        allow_null
+      )
+  ) {
     return(invisible(NULL))
   }
 
@@ -87,13 +97,15 @@ check_bool <- function(x,
   )
 }
 
-check_string <- function(x,
-                         ...,
-                         allow_empty = TRUE,
-                         allow_na = FALSE,
-                         allow_null = FALSE,
-                         arg = caller_arg(x),
-                         call = caller_env()) {
+check_string <- function(
+  x,
+  ...,
+  allow_empty = TRUE,
+  allow_na = FALSE,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     is_string <- .rlang_check_is_string(
       x,
@@ -117,10 +129,7 @@ check_string <- function(x,
   )
 }
 
-.rlang_check_is_string <- function(x,
-                                   allow_empty,
-                                   allow_na,
-                                   allow_null) {
+.rlang_check_is_string <- function(x, allow_empty, allow_na, allow_null) {
   if (is_string(x)) {
     if (allow_empty || !is_string(x, "")) {
       return(TRUE)
@@ -138,11 +147,13 @@ check_string <- function(x,
   FALSE
 }
 
-check_name <- function(x,
-                       ...,
-                       allow_null = FALSE,
-                       arg = caller_arg(x),
-                       call = caller_env()) {
+check_name <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     is_string <- .rlang_check_is_string(
       x,
@@ -170,27 +181,32 @@ IS_NUMBER_true <- 0
 IS_NUMBER_false <- 1
 IS_NUMBER_oob <- 2
 
-check_number_decimal <- function(x,
-                                 ...,
-                                 min = NULL,
-                                 max = NULL,
-                                 allow_infinite = TRUE,
-                                 allow_na = FALSE,
-                                 allow_null = FALSE,
-                                 arg = caller_arg(x),
-                                 call = caller_env()) {
+check_number_decimal <- function(
+  x,
+  ...,
+  min = NULL,
+  max = NULL,
+  allow_infinite = TRUE,
+  allow_na = FALSE,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (missing(x)) {
     exit_code <- IS_NUMBER_false
-  } else if (0 == (exit_code <- .standalone_types_check_dot_call(
-    ffi_standalone_check_number_1.0.7,
-    x,
-    allow_decimal = TRUE,
-    min,
-    max,
-    allow_infinite,
-    allow_na,
-    allow_null
-  ))) {
+  } else if (
+    0 ==
+      (exit_code <- .standalone_types_check_dot_call(
+        ffi_standalone_check_number_1.0.7,
+        x,
+        allow_decimal = TRUE,
+        min,
+        max,
+        allow_infinite,
+        allow_na,
+        allow_null
+      ))
+  ) {
     return(invisible(NULL))
   }
 
@@ -208,27 +224,32 @@ check_number_decimal <- function(x,
   )
 }
 
-check_number_whole <- function(x,
-                               ...,
-                               min = NULL,
-                               max = NULL,
-                               allow_infinite = FALSE,
-                               allow_na = FALSE,
-                               allow_null = FALSE,
-                               arg = caller_arg(x),
-                               call = caller_env()) {
+check_number_whole <- function(
+  x,
+  ...,
+  min = NULL,
+  max = NULL,
+  allow_infinite = FALSE,
+  allow_na = FALSE,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (missing(x)) {
     exit_code <- IS_NUMBER_false
-  } else if (0 == (exit_code <- .standalone_types_check_dot_call(
-    ffi_standalone_check_number_1.0.7,
-    x,
-    allow_decimal = FALSE,
-    min,
-    max,
-    allow_infinite,
-    allow_na,
-    allow_null
-  ))) {
+  } else if (
+    0 ==
+      (exit_code <- .standalone_types_check_dot_call(
+        ffi_standalone_check_number_1.0.7,
+        x,
+        allow_decimal = FALSE,
+        min,
+        max,
+        allow_infinite,
+        allow_na,
+        allow_null
+      ))
+  ) {
     return(invisible(NULL))
   }
 
@@ -246,16 +267,18 @@ check_number_whole <- function(x,
   )
 }
 
-.stop_not_number <- function(x,
-                             ...,
-                             exit_code,
-                             allow_decimal,
-                             min,
-                             max,
-                             allow_na,
-                             allow_null,
-                             arg,
-                             call) {
+.stop_not_number <- function(
+  x,
+  ...,
+  exit_code,
+  allow_decimal,
+  min,
+  max,
+  allow_na,
+  allow_null,
+  arg,
+  call
+) {
   if (allow_decimal) {
     what <- "a number"
   } else {
@@ -288,11 +311,13 @@ check_number_whole <- function(x,
   )
 }
 
-check_symbol <- function(x,
-                         ...,
-                         allow_null = FALSE,
-                         arg = caller_arg(x),
-                         call = caller_env()) {
+check_symbol <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_symbol(x)) {
       return(invisible(NULL))
@@ -313,11 +338,13 @@ check_symbol <- function(x,
   )
 }
 
-check_arg <- function(x,
-                      ...,
-                      allow_null = FALSE,
-                      arg = caller_arg(x),
-                      call = caller_env()) {
+check_arg <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_symbol(x)) {
       return(invisible(NULL))
@@ -338,11 +365,13 @@ check_arg <- function(x,
   )
 }
 
-check_call <- function(x,
-                       ...,
-                       allow_null = FALSE,
-                       arg = caller_arg(x),
-                       call = caller_env()) {
+check_call <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_call(x)) {
       return(invisible(NULL))
@@ -363,11 +392,13 @@ check_call <- function(x,
   )
 }
 
-check_environment <- function(x,
-                              ...,
-                              allow_null = FALSE,
-                              arg = caller_arg(x),
-                              call = caller_env()) {
+check_environment <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_environment(x)) {
       return(invisible(NULL))
@@ -388,11 +419,13 @@ check_environment <- function(x,
   )
 }
 
-check_function <- function(x,
-                           ...,
-                           allow_null = FALSE,
-                           arg = caller_arg(x),
-                           call = caller_env()) {
+check_function <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_function(x)) {
       return(invisible(NULL))
@@ -413,11 +446,13 @@ check_function <- function(x,
   )
 }
 
-check_closure <- function(x,
-                          ...,
-                          allow_null = FALSE,
-                          arg = caller_arg(x),
-                          call = caller_env()) {
+check_closure <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_closure(x)) {
       return(invisible(NULL))
@@ -438,11 +473,13 @@ check_closure <- function(x,
   )
 }
 
-check_formula <- function(x,
-                          ...,
-                          allow_null = FALSE,
-                          arg = caller_arg(x),
-                          call = caller_env()) {
+check_formula <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is_formula(x)) {
       return(invisible(NULL))
@@ -468,14 +505,15 @@ check_formula <- function(x,
 
 # TODO: Figure out what to do with logical `NA` and `allow_na = TRUE`
 
-check_character <- function(x,
-                            ...,
-                            allow_empty = TRUE,
-                            allow_na = TRUE,
-                            allow_null = FALSE,
-                            arg = caller_arg(x),
-                            call = caller_env()) {
-
+check_character <- function(
+  x,
+  ...,
+  allow_empty = TRUE,
+  allow_na = TRUE,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     problematic <- !allow_empty && length(x) == 0L
     if (!problematic && is_character(x)) {
@@ -505,13 +543,15 @@ check_character <- function(x,
   )
 }
 
-check_logical <- function(x,
-                          ...,
-                          allow_empty = TRUE,
-                          allow_na = TRUE,
-                          allow_null = FALSE,
-                          arg = caller_arg(x),
-                          call = caller_env()) {
+check_logical <- function(
+  x,
+  ...,
+  allow_empty = TRUE,
+  allow_na = TRUE,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (!allow_na && anyNA(x)) {
       abort(
@@ -541,11 +581,13 @@ check_logical <- function(x,
   )
 }
 
-check_data_frame <- function(x,
-                             ...,
-                             allow_null = FALSE,
-                             arg = caller_arg(x),
-                             call = caller_env()) {
+check_data_frame <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   if (!missing(x)) {
     if (is.data.frame(x)) {
       return(invisible(NULL))

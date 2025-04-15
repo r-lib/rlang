@@ -29,7 +29,6 @@
 #
 # nocov start
 
-
 # Construction ------------------------------------------------------------
 
 # Constructs data frames inheriting from `"tbl"`. This allows the
@@ -39,10 +38,7 @@ data_frame <- function(...) {
   new_data_frame(df_list(...), .class = "tbl")
 }
 
-new_data_frame <- function(.x = list(),
-                           ...,
-                           .size = NULL,
-                           .class = NULL) {
+new_data_frame <- function(.x = list(), ..., .size = NULL, .class = NULL) {
   n_cols <- length(.x)
   if (n_cols != 0 && is.null(names(.x))) {
     stop("Columns must be named.", call. = FALSE)
@@ -289,7 +285,8 @@ vec_cast <- function(x, to) {
 
   stop_incompatible_cast <- function(x, to) {
     stop(
-      sprintf("Can't convert <%s> to <%s>.",
+      sprintf(
+        "Can't convert <%s> to <%s>.",
         .rlang_vctrs_typeof(x),
         .rlang_vctrs_typeof(to)
       ),
@@ -361,8 +358,11 @@ vec_cast <- function(x, to) {
 
   df_cast <- function(x, to) {
     # Check for extra columns
-    if (length(setdiff(names(x), names(to))) > 0 ) {
-      stop("Can't convert data frame because of missing columns.", call. = FALSE)
+    if (length(setdiff(names(x), names(to))) > 0) {
+      stop(
+        "Can't convert data frame because of missing columns.",
+        call. = FALSE
+      )
     }
 
     # Avoid expensive [.data.frame method
@@ -460,9 +460,11 @@ vec_ptype <- function(x) {
 vec_ptype2 <- function(x, y) {
   stop_incompatible_type <- function(x, y) {
     stop(
-      sprintf("Can't combine types <%s> and <%s>.",
+      sprintf(
+        "Can't combine types <%s> and <%s>.",
         .rlang_vctrs_typeof(x),
-        .rlang_vctrs_typeof(y)),
+        .rlang_vctrs_typeof(y)
+      ),
       call. = FALSE
     )
   }
@@ -663,6 +665,5 @@ vec_is_unspecified <- function(x) {
 
   NULL
 }
-
 
 # nocov end

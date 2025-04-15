@@ -24,3 +24,4 @@
 ^\.vscode$
 ^compile_commands\.json$
 .*\.clangd$
+^[\.]?air\.toml$

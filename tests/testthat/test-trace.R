@@ -16,7 +16,9 @@ test_that("tree printing only changes deliberately", {
   e <- environment()
 
   i <- function(i) j(i)
-  j <- function(i) { k(i) }
+  j <- function(i) {
+    k(i)
+  }
   k <- function(i) {
     NULL
     l(i)
@@ -46,16 +48,21 @@ test_that("can print tree with collapsed branches", {
   dir <- normalizePath(test_path(".."))
   e <- environment()
 
-  f <- function() { g() }
-  g <- function() { tryCatch(h(), foo = identity, bar = identity) }
-  h <- function() { tryCatch(i(), baz = identity) }
-  i <- function() { tryCatch(trace_back(e, bottom = 0)) }
+  f <- function() {
+    g()
+  }
+  g <- function() {
+    tryCatch(h(), foo = identity, bar = identity)
+  }
+  h <- function() {
+    tryCatch(i(), baz = identity)
+  }
+  i <- function() {
+    tryCatch(trace_back(e, bottom = 0))
+  }
   trace <- eval(quote(f()))
 
-  expect_snapshot_trace(trace,
-    dir = dir,
-    srcrefs = TRUE
-  )
+  expect_snapshot_trace(trace, dir = dir, srcrefs = TRUE)
 
   # With multiple siblings
   f <- function() eval(quote(eval(quote(g()))))
@@ -63,10 +70,7 @@ test_that("can print tree with collapsed branches", {
   h <- function() trace_back(e)
   trace <- eval(quote(f()))
 
-  expect_snapshot_trace(trace,
-    dir = dir,
-    srcrefs = TRUE
-  )
+  expect_snapshot_trace(trace, dir = dir, srcrefs = TRUE)
 })
 
 test_that("trace_simplify_branch() extracts last branch", {
@@ -122,7 +126,8 @@ test_that("trace picks up option `rlang_trace_top_env` for trimming trace", {
   e <- current_env()
   f1 <- function() trace_back()
   f2 <- function() trace_back(e)
-  with_options(rlang_trace_top_env = current_env(),
+  with_options(
+    rlang_trace_top_env = current_env(),
     expect_identical(trace_length(f1()), trace_length(f2()))
   )
 })
@@ -172,7 +177,10 @@ test_that("long backtrace branches are truncated", {
     print(trace, simplify = "branch", max_frames = 1, srcrefs = FALSE)
   })
 
-  expect_error(print(trace, simplify = "none", max_frames = 5), "currently only supported with")
+  expect_error(
+    print(trace, simplify = "none", max_frames = 5),
+    "currently only supported with"
+  )
 })
 
 test_that("eval() frames are collapsed", {
@@ -243,7 +251,7 @@ test_that("combinations of incomplete and leading pipes collapse properly", {
   trace <- F(NA) %>% T()
   expect_snapshot_trace(trace)
 
-  trace <- F(NA) %>% F() %>%  T()
+  trace <- F(NA) %>% F() %>% T()
   expect_snapshot_trace(trace)
 })
 
@@ -320,7 +328,12 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
     error = function(err) trace <<- trace_back(e)
   ))
 
-  expect_snapshot_trace(trace)
+  if (getRversion() >= "4.5") {
+    variant <- "4.5_and_older"
+  } else {
+    variant <- "old"
+  }
+  expect_snapshot_trace(trace, variant = variant)
 })
 
 test_that("can print degenerate backtraces", {
@@ -378,7 +391,10 @@ test_that("unexported functions have `:::` prefix", {
 
   # Should be installed as part of the C API tests
   skip_if_not_installed("rlanglibtest")
-  test_trace_unexported_child <- env_get(ns_env("rlanglibtest"), "test_trace_unexported_child")
+  test_trace_unexported_child <- env_get(
+    ns_env("rlanglibtest"),
+    "test_trace_unexported_child"
+  )
 
   e <- current_env()
   f <- function() test_trace_unexported_child(e)
@@ -434,7 +450,8 @@ test_that("can trim layers of backtraces", {
   e <- current_env()
   f <- function(n) identity(identity(g(n)))
   g <- function(n) identity(identity(h(n)))
-  h <- function(n) identity(identity(trace_back(e, bottom = caller_env(n - 1L))))
+  h <- function(n)
+    identity(identity(trace_back(e, bottom = caller_env(n - 1L))))
 
   trace1_env <- f(1)
   trace2_env <- f(2)
@@ -452,7 +469,7 @@ test_that("fails when `bottom` is not on the stack", {
 test_that("caught error does not display backtrace in knitted files", {
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
-  skip_if(!rmarkdown::pandoc_available())
+  skip_if_not(rmarkdown::pandoc_available())
 
   local_options(
     rlang_backtrace_on_error = NULL,
@@ -512,7 +529,7 @@ test_that("can slice backtrace", {
   )
 
   exp <- new_trace(alist(a(), c()), c(0L, 0L))
-  
+
   expect_identical(
     trace_slice(trace, c(1, 3)),
     exp
@@ -532,7 +549,7 @@ test_that("can bind backtraces", {
 
   expect_equal(trace_bind(), new_trace(list(), int()))
   expect_equal(trace_bind(trace1), trace1)
-  
+
   trace2 <- new_trace(alist(foo(), bar(), baz()), c(0L, 1L, 1L))
   out <- trace_bind(trace1, trace2)
 
@@ -632,10 +649,13 @@ test_that("can format empty traces", {
 
 test_that("backtrace is formatted with sources (#1396)", {
   file <- tempfile("my_source", fileext = ".R")
-  with_srcref(file = file, "
+  with_srcref(
+    file = file,
+    "
     f <- function() g()
     g <- function() abort('foo')
-  ")
+  "
+  )
   err <- catch_cnd(f(), "error")
 
   rlang_cli_local_hyperlinks()
@@ -734,19 +754,23 @@ test_that("namespaced calls are highlighted", {
 })
 
 test_that("can highlight long lists of arguments in backtrace (#1456)", {
-  f <- function(...) g(
-    aaaaaaaaaaaa = aaaaaaaaaaaa,
-    bbbbbbbbbbbb = bbbbbbbbbbbb,
-    cccccccccccc = cccccccccccc,
-    dddddddddddd = dddddddddddd,
-    eeeeeeeeeeee = eeeeeeeeeeee,
+  f <- function(...)
+    g(
+      aaaaaaaaaaaa = aaaaaaaaaaaa,
+      bbbbbbbbbbbb = bbbbbbbbbbbb,
+      cccccccccccc = cccccccccccc,
+      dddddddddddd = dddddddddddd,
+      eeeeeeeeeeee = eeeeeeeeeeee,
+      ...
+    )
+  g <- function(
+    aaaaaaaaaaaa,
+    bbbbbbbbbbbb,
+    cccccccccccc,
+    dddddddddddd,
+    eeeeeeeeeeee,
     ...
-  )
-  g <- function(aaaaaaaaaaaa,
-                bbbbbbbbbbbb,
-                cccccccccccc,
-                dddddddddddd,
-                eeeeeeeeeeee, ...) {
+  ) {
     rlang::abort("foo", ...)
   }
 
@@ -762,10 +786,14 @@ test_that("can highlight long lists of arguments in backtrace (#1456)", {
 })
 
 test_that("can highlight multi-line arguments in backtrace (#1456)", {
-  f <- function(...) g(x = {
-    a
-    b
-  }, ...)
+  f <- function(...)
+    g(
+      x = {
+        a
+        b
+      },
+      ...
+    )
   g <- function(x, ...) {
     rlang::abort("foo", ...)
   }
