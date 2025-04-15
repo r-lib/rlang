@@ -179,7 +179,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -200,7 +200,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -225,7 +225,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -250,7 +250,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(f())
+        1. +-catch_error(f())
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -277,7 +277,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -300,7 +300,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -323,7 +323,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -346,7 +346,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -372,7 +372,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -400,7 +400,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -428,7 +428,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -456,7 +456,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -487,7 +487,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -520,7 +520,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -553,7 +553,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -586,7 +586,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -622,7 +622,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -652,7 +652,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -682,7 +682,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -712,7 +712,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -745,7 +745,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -772,7 +772,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -799,7 +799,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -826,7 +826,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -856,7 +856,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -888,7 +888,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -920,7 +920,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -952,7 +952,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -987,7 +987,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1010,7 +1010,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1033,7 +1033,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1056,7 +1056,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1082,7 +1082,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1110,7 +1110,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1138,7 +1138,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1166,7 +1166,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1197,7 +1197,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1230,7 +1230,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = TRUE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = TRUE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = TRUE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1263,7 +1263,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = TRUE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = TRUE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = TRUE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1296,7 +1296,7 @@
       Backtrace:
            x
         1. +-base::print(catch_error(high1(chain = FALSE, stop_helper = FALSE)))
-        2. +-rlang:::catch_error(high1(chain = FALSE, stop_helper = FALSE))
+        2. +-catch_error(high1(chain = FALSE, stop_helper = FALSE))
         3. | \-rlang::catch_cnd(expr, "error")
         4. |   +-rlang::eval_bare(...)
         5. |   +-base::tryCatch(...)
@@ -1724,7 +1724,7 @@
       Backtrace:
            x
         1. +-base::print(err(foo()))
-        2. +-rlang:::err(foo())
+        2. +-err(foo())
         3. | \-testthat::expect_error(...)
         4. |   \-testthat:::expect_condition_matching(...)
         5. |     \-testthat:::quasi_capture(...)

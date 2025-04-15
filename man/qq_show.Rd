@@ -26,9 +26,7 @@ evaluated by R:
 #> 
 #> [[3]]
 #> [1] 3
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 qq_show(list2(!!!1:3))
 #> list2(1L, 2L, 3L)
 }\if{html}{\out{</div>}}

@@ -54,7 +54,7 @@ In both cases, the default error call is not very helpful to the end user becaus
 #> ! Unimplemented
 }\if{html}{\out{</div>}}
 
-To fix this, let \code{abort()} knows about the function that it is throwing the error for by passing the corresponding function environment as \code{call} argument:
+To fix this, let \code{abort()} know about the function that it is throwing the error for by passing the corresponding function environment as the \code{call} argument:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{stop_my_class <- function(message, call = caller_env()) \{
   abort(message, class = "my_class", call = call)
@@ -100,67 +100,6 @@ my_function(NA)
 #> ! `my_arg` must be a string.
 }\if{html}{\out{</div>}}
 }
-}
-
-\section{Side benefit: backtrace trimming}{
-Another benefit of passing \code{caller_env()} as \code{call} is that it allows \code{abort()} to automatically hide the error helpers
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{my_function <- function() \{
-  their_function()
-\}
-their_function <- function() \{
-  error_helper1()
-\}
-
-error_helper1 <- function(call = caller_env()) \{
-  error_helper2(call = call)
-\}
-error_helper2 <- function(call = caller_env()) \{
-  if (use_call) \{
-    abort("Can't do this", call = call)
-  \} else \{
-    abort("Can't do this")
-  \}
-\}
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- FALSE
-their_function()
-#> Error in `error_helper2()`:
-#> ! Can't do this
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
-#> <error/rlang_error>
-#> Error in `error_helper2()`:
-#> ! Can't do this
-#> ---
-#> Backtrace:
-#>     x
-#>  1. \\-rlang (local) their_function()
-#>  2.   \\-rlang (local) error_helper1()
-#>  3.     \\-rlang (local) error_helper2(call = call)
-#> Run rlang::last_trace(drop = FALSE) to see 1 hidden frame.
-}\if{html}{\out{</div>}}
-
-With the correct \code{call}, the backtrace is much simpler and let the user focus on the part of the stack that is relevant to them:
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{use_call <- TRUE
-their_function()
-#> Error in `their_function()`:
-#> ! Can't do this
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::last_error()
-#> <error/rlang_error>
-#> Error in `their_function()`:
-#> ! Can't do this
-#> ---
-#> Backtrace:
-#>     x
-#>  1. \\-rlang (local) their_function()
-#> Run rlang::last_trace(drop = FALSE) to see 3 hidden frames.
-}\if{html}{\out{</div>}}
 }
 
 \section{testthat workflow}{

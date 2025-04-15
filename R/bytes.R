@@ -121,13 +121,13 @@ byte_units <- c(
   'B' = 1,
   'k' = 1000,
   'K' = 1000,
-  'M' = 1000 ^ 2,
-  'G' = 1000 ^ 3,
-  'T' = 1000 ^ 4,
-  'P' = 1000 ^ 5,
-  'E' = 1000 ^ 6,
-  'Z' = 1000 ^ 7,
-  'Y' = 1000 ^ 8
+  'M' = 1000^2,
+  'G' = 1000^3,
+  'T' = 1000^4,
+  'P' = 1000^5,
+  'E' = 1000^6,
+  'Z' = 1000^7,
+  'Y' = 1000^8
 )
 
 captures <- function(x, m) {
@@ -227,7 +227,7 @@ max.rlib_bytes <- function(x, ...) {
 
 #' @export
 # Adapted from Ops.numeric_version
-Ops.rlib_bytes <- function (e1, e2) {
+Ops.rlib_bytes <- function(e1, e2) {
   if (nargs() == 1L) {
     abort(sprintf("unary `%s` not defined for <rlib_bytes> objects", .Generic))
   }

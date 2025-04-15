@@ -17,6 +17,7 @@ indefinite article.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 \code{friendly_type()} is deprecated. Please use the
-\code{standalone-friendly-type.R} file instead.
+\code{standalone-obj-type.R} file instead. You can import it
+in your package with \code{usethis::use_standalone("r-lib/rlang", "obj-type")}.
 }
 \keyword{internal}

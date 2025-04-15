@@ -1,27 +1,43 @@
 test_that("interpolation does not recurse over spliced arguments", {
-  var2 <- quote({foo; !! stop(); bar})
-  expr_var2 <- tryCatch(expr(list(!!! var2)), error = identity)
+  var2 <- quote({
+    foo
+    !!stop()
+    bar
+  })
+  expr_var2 <- tryCatch(expr(list(!!!var2)), error = identity)
   expect_false(inherits(expr_var2, "error"))
 })
 
 test_that("formulas containing unquote operators are interpolated", {
   var1 <- quo(foo)
-  var2 <- local({ foo <- "baz"; quo(foo) })
+  var2 <- local({
+    foo <- "baz"
+    quo(foo)
+  })
 
-  f <- expr_interp(~list(!!var1, !!var2))
-  expect_identical(f, new_formula(NULL, call2("list", as_quosure(var1), as_quosure(var2))))
+  f <- expr_interp(~ list(!!var1, !!var2))
+  expect_identical(
+    f,
+    new_formula(NULL, call2("list", as_quosure(var1), as_quosure(var2)))
+  )
 })
 
 test_that("interpolation is carried out in the right environment", {
-  f <- local({ foo <- "foo"; ~!!foo })
+  f <- local({
+    foo <- "foo"
+    ~ !!foo
+  })
   expect_identical(expr_interp(f), new_formula(NULL, "foo", env = f_env(f)))
 })
 
 test_that("interpolation now revisits unquoted formulas", {
-  f <- ~list(!!~!!stop("should not interpolate within formulas"))
+  f <- ~ list(!!~ !!stop("should not interpolate within formulas"))
   f <- expr_interp(f)
   # This used to be idempotent:
-  expect_error(expect_false(identical(expr_interp(f), f)), "interpolate within formulas")
+  expect_error(
+    expect_false(identical(expr_interp(f), f)),
+    "interpolate within formulas"
+  )
 })
 
 test_that("formulas are not treated as quosures", {
@@ -32,7 +48,7 @@ test_that("formulas are not treated as quosures", {
 
 test_that("unquote operators are always in scope", {
   env <- child_env("base", foo = "bar")
-  f <- with_env(env, ~(!!foo))
+  f <- with_env(env, ~ (!!foo))
   expect_identical(expr_interp(f), new_formula(NULL, "bar", env))
 })
 
@@ -40,31 +56,31 @@ test_that("can interpolate in specific env", {
   foo <- "bar"
   env <- child_env(NULL, foo = "foo")
 
-  expanded <- expr_interp(~!!foo)
+  expanded <- expr_interp(~ !!foo)
   expect_identical(expanded, set_env(~"bar"))
 
-  expanded <- expr_interp(~!!foo, env)
+  expanded <- expr_interp(~ !!foo, env)
   expect_identical(expanded, set_env(~"foo"))
 })
 
 test_that("can qualify operators with namespace", {
-    expect_identical(quo(other::UQ(toupper("a"))), quo(other::"A"))
-    expect_identical(quo(x$UQ(toupper("a"))), quo(x$"A"))
+  expect_identical(quo(other::UQ(toupper("a"))), quo(other::"A"))
+  expect_identical(quo(x$UQ(toupper("a"))), quo(x$"A"))
 })
 
 test_that("unquoting is frame-consistent", {
-  defun <- quote(!! function() NULL)
+  defun <- quote(!!function() NULL)
   env <- child_env("base")
   expect_identical(fn_env(expr_interp(defun, env)), env)
 })
 
 test_that("unquoted quosure has S3 class", {
-  quo <- quo(!! ~quo)
+  quo <- quo(!!~quo)
   expect_s3_class(quo, "quosure")
 })
 
 test_that("unquoted quosures are not guarded", {
-  quo <- eval_tidy(quo(quo(!! ~quo)))
+  quo <- eval_tidy(quo(quo(!!~quo)))
   expect_true(is_quosure(quo))
 })
 
@@ -82,17 +98,29 @@ test_that("`!!` binds tightly", {
   expect_identical_(expr(1 * !!2:!!3 + 4), quote(1 * 2:3 + 4))
   expect_identical_(expr(1 + 2 + !!3 * 4 + 5 + 6), quote(1 + 2 + 3 * 4 + 5 + 6))
 
-  expect_identical_(expr(1 + 2 * 3 : !!4 + 5 * 6 + 7), quote(1 + 2 * 3 : 4 + 5 * 6 + 7))
-  expect_identical_(expr(1 + 2 * 3 : !!4 + 5 * 6 + 7 * 8 : !!9 + 10 * 11), quote(1 + 2 * 3 : 4 + 5 * 6 + 7 * 8 : 9 + 10 * 11))
-  expect_identical_(expr(!!1 + !!2 * !!3:!!4 + !!5 * !!6 + !!7 * !!8:!!9 + !!10 * !!11), quote(1 + 2 * 3 : 4 + 5 * 6 + 7 * 8 : 9 + 10 * 11))
+  expect_identical_(
+    expr(1 + 2 * 3:!!4 + 5 * 6 + 7),
+    quote(1 + 2 * 3:4 + 5 * 6 + 7)
+  )
+  expect_identical_(
+    expr(1 + 2 * 3:!!4 + 5 * 6 + 7 * 8:!!9 + 10 * 11),
+    quote(1 + 2 * 3:4 + 5 * 6 + 7 * 8:9 + 10 * 11)
+  )
+  expect_identical_(
+    expr(!!1 + !!2 * !!3:!!4 + !!5 * !!6 + !!7 * !!8:!!9 + !!10 * !!11),
+    quote(1 + 2 * 3:4 + 5 * 6 + 7 * 8:9 + 10 * 11)
+  )
 
-  expect_identical_(expr(!!1 + !!2 + !!3  + !!4), quote(1 + 2 + 3 + 4))
+  expect_identical_(expr(!!1 + !!2 + !!3 + !!4), quote(1 + 2 + 3 + 4))
   expect_identical_(expr(!!1 + !!2 * !!3), quote(1 + 2 * 3))
 
   # Local roots
-  expect_identical_(expr(!!1 + !!2 * !!3  * !!4), quote(1 + 2 * 3 * 4))
+  expect_identical_(expr(!!1 + !!2 * !!3 * !!4), quote(1 + 2 * 3 * 4))
   expect_identical_(expr(1 == 2 + !!3 + 4), quote(1 == 2 + 3 + 4))
-  expect_identical_(expr(!!1 == !!2 + !!3 + !!4 + !!5 * !!6 * !!7), quote(1 == 2 + 3 + 4 + 5 * 6 * 7))
+  expect_identical_(
+    expr(!!1 == !!2 + !!3 + !!4 + !!5 * !!6 * !!7),
+    quote(1 == 2 + 3 + 4 + 5 * 6 * 7)
+  )
   expect_identical_(expr(1 + 2 * 3:!!4:5), quote(1 + 2 * 3:4:5))
 
   expect_identical_(expr(!!1 == !!2), quote(1 == 2))
@@ -104,8 +132,8 @@ test_that("`!!` binds tightly", {
   expect_identical_(expr(!!1 * !!2 > !!3 + !!4), quote(1 * 2 > 3 + 4))
 
   expect_identical_(expr(1 <= !!2), quote(1 <= 2))
-  expect_identical_(expr(1 >= !!2 : 3), quote(1 >= 2 : 3))
-  expect_identical_(expr(1 > !!2 * 3 : 4), quote(1 > 2 * 3 : 4))
+  expect_identical_(expr(1 >= !!2:3), quote(1 >= 2:3))
+  expect_identical_(expr(1 > !!2 * 3:4), quote(1 > 2 * 3:4))
 
   expect_identical_(expr(!!1^2^3), quote(1))
   expect_identical_(expr(!!1^2^3 + 4), quote(1 + 4))
@@ -147,7 +175,7 @@ test_that("`!!` handles binary and unary `-` and `+`", {
 })
 
 test_that("`!!` handles special operators", {
-  expect_identical(expr(!! 1 %>% 2), quote(1 %>% 2))
+  expect_identical(expr(!!1 %>% 2), quote(1 %>% 2))
 })
 
 test_that("LHS of nested `!!` is expanded (#405)", {
@@ -165,7 +193,7 @@ test_that("evaluates contents of `!!`", {
 })
 
 test_that("quosures are not rewrapped", {
-  var <- quo(!! quo(letters))
+  var <- quo(!!quo(letters))
   expect_identical(quo(!!var), quo(letters))
 
   var <- new_quosure(local(~letters), env = child_env(current_env()))
@@ -187,45 +215,54 @@ test_that("UQ() fails if called without argument", {
 # !!! ---------------------------------------------------------------------
 
 test_that("values of `!!!` spliced into expression", {
-  f <- quo(f(a, !!! list(quote(b), quote(c)), d))
+  f <- quo(f(a, !!!list(quote(b), quote(c)), d))
   expect_identical(f, quo(f(a, b, c, d)))
 })
 
 test_that("names within `!!!` are preseved", {
-  f <- quo(f(!!! list(a = quote(b))))
+  f <- quo(f(!!!list(a = quote(b))))
   expect_identical(f, quo(f(a = b)))
 })
 
 test_that("`!!!` handles `{` calls", {
-  expect_identical(quo(list(!!! quote({ foo }))), quo(list(foo)))
+  expect_identical(
+    quo(list(
+      !!!quote({
+        foo
+      })
+    )),
+    quo(list(foo))
+  )
 })
 
 test_that("splicing an empty vector works", {
-  expect_identical(expr_interp(~list(!!! list())), ~list())
-  expect_identical(expr_interp(~list(!!! character(0))), ~list())
-  expect_identical(expr_interp(~list(!!! NULL)), ~list())
+  expect_identical(expr_interp(~ list(!!!list())), ~ list())
+  expect_identical(expr_interp(~ list(!!!character(0))), ~ list())
+  expect_identical(expr_interp(~ list(!!!NULL)), ~ list())
 })
 
 # This fails but doesn't seem needed
 if (FALSE) {
-test_that("serialised unicode in argument names is unserialised on splice", {
-  skip("failing")
-  nms <- with_latin1_locale({
-    exprs <- exprs("\u5e78" := 10)
-    quos <- quos(!!! exprs)
-    names(quos)
+  test_that("serialised unicode in argument names is unserialised on splice", {
+    skip("failing")
+    nms <- with_latin1_locale({
+      exprs <- exprs("\u5e78" := 10)
+      quos <- quos(!!!exprs)
+      names(quos)
+    })
+    expect_identical(charToRaw(nms), charToRaw("\u5e78"))
+    expect_true(all(chr_encoding(nms) == "UTF-8"))
   })
-  expect_identical(charToRaw(nms), charToRaw("\u5e78"))
-  expect_true(all(chr_encoding(nms) == "UTF-8"))
-})
 }
 
 test_that("can't splice at top level", {
-  expect_error_(expr(!!! letters), "top level")
+  expect_error_(expr(!!!letters), "top level")
 })
 
 test_that("can splice function body even if not a `{` block", {
-  fn <- function(x) { x }
+  fn <- function(x) {
+    x
+  }
   expect_identical(exprs(!!!fn_body(fn)), named_list(quote(x)))
 
   fn <- function(x) x
@@ -234,7 +271,7 @@ test_that("can splice function body even if not a `{` block", {
 
 test_that("splicing a pairlist has no side effect", {
   x <- pairlist(NULL)
-  expr(foo(!!! x, y))
+  expr(foo(!!!x, y))
   expect_identical(x, pairlist(NULL))
 })
 
@@ -246,31 +283,63 @@ test_that("`!!!` works in prefix form", {
 })
 
 test_that("can't use prefix form of `!!!` with qualifying operators", {
-  expect_error_(expr(foo$`!!!`(bar)), "Prefix form of `!!!` can't be used with `\\$`")
-  expect_error_(expr(foo@`!!!`(bar)), "Prefix form of `!!!` can't be used with `@`")
-  expect_error_(expr(foo::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
-  expect_error_(expr(foo:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
-  expect_error_(expr(rlang::`!!!`(bar)), "Prefix form of `!!!` can't be used with `::`")
-  expect_error_(expr(rlang:::`!!!`(bar)), "Prefix form of `!!!` can't be used with `:::`")
+  expect_error_(
+    expr(foo$`!!!`(bar)),
+    "Prefix form of `!!!` can't be used with `\\$`"
+  )
+  expect_error_(
+    expr(foo@`!!!`(bar)),
+    "Prefix form of `!!!` can't be used with `@`"
+  )
+  expect_error_(
+    expr(foo::`!!!`(bar)),
+    "Prefix form of `!!!` can't be used with `::`"
+  )
+  expect_error_(
+    expr(foo:::`!!!`(bar)),
+    "Prefix form of `!!!` can't be used with `:::`"
+  )
+  expect_error_(
+    expr(rlang::`!!!`(bar)),
+    "Prefix form of `!!!` can't be used with `::`"
+  )
+  expect_error_(
+    expr(rlang:::`!!!`(bar)),
+    "Prefix form of `!!!` can't be used with `:::`"
+  )
 })
 
 test_that("can't supply multiple arguments to `!!!`", {
-  expect_error_(expr(list(`!!!`(1, 2))), "Can't supply multiple arguments to `!!!`")
+  expect_error_(
+    expr(list(`!!!`(1, 2))),
+    "Can't supply multiple arguments to `!!!`"
+  )
   expect_error_(exprs(`!!!`(1, 2)), "Can't supply multiple arguments to `!!!`")
 })
 
 test_that("`!!!` doesn't modify spliced inputs by reference", {
   x <- 1:3
-  quos(!!! x)
+  quos(!!!x)
   expect_identical(x, 1:3)
 
   x <- as.list(1:3)
-  quos(!!! x)
+  quos(!!!x)
   expect_identical(x, as.list(1:3))
 
-  x <- quote({ 1L; 2L; 3L })
-  quos(!!! x)
-  expect_equal(x, quote({ 1L; 2L; 3L }))  # equal because of srcrefs
+  x <- quote({
+    1L
+    2L
+    3L
+  })
+  quos(!!!x)
+  expect_equal(
+    x,
+    quote({
+      1L
+      2L
+      3L
+    })
+  ) # equal because of srcrefs
 })
 
 test_that("exprs() preserves spliced quosures", {
@@ -369,16 +438,24 @@ test_that("!!! calls `[[`", {
 })
 
 test_that("!!! errors on scalar S4 objects without a `[[` method", {
-  .Person <- methods::setClass("Person", slots = c(name = "character", species = "character"))
+  .Person <- methods::setClass(
+    "Person",
+    slots = c(name = "character", species = "character")
+  )
   fievel <- .Person(name = "Fievel", species = "mouse")
   expect_error_(list2(!!!fievel))
 })
 
 test_that("!!! works with scalar S4 objects with a `[[` method defined", {
-  .Person2 <- methods::setClass("Person2", slots = c(name = "character", species = "character"))
+  .Person2 <- methods::setClass(
+    "Person2",
+    slots = c(name = "character", species = "character")
+  )
   fievel <- .Person2(name = "Fievel", species = "mouse")
 
-  methods::setMethod("[[", methods::signature(x = "Person2"),
+  methods::setMethod(
+    "[[",
+    methods::signature(x = "Person2"),
     function(x, i, ...) .Person2(name = x@name, species = x@species)
   )
 
@@ -386,7 +463,11 @@ test_that("!!! works with scalar S4 objects with a `[[` method defined", {
 })
 
 test_that("!!! works with all vector S4 objects", {
-  .Counts <- methods::setClass("Counts", contains = "numeric", slots = c(name = "character"))
+  .Counts <- methods::setClass(
+    "Counts",
+    contains = "numeric",
+    slots = c(name = "character")
+  )
   fievel <- .Counts(c(1, 2), name = "Fievel")
   expect_identical_(list2(!!!fievel), list(1, 2))
 })
@@ -399,10 +480,16 @@ test_that("!!! calls `[[` with vector S4 objects", {
     list(x, y)
   }
 
-  .Belongings <- methods::setClass("Belongings", contains = "list", slots = c(name = "character"))
+  .Belongings <- methods::setClass(
+    "Belongings",
+    contains = "list",
+    slots = c(name = "character")
+  )
   fievel <- .Belongings(list(1, "x"), name = "Fievel")
 
-  methods::setMethod("[[", methods::signature(x = "Belongings"),
+  methods::setMethod(
+    "[[",
+    methods::signature(x = "Belongings"),
     function(x, i, ...) .Belongings(x@.Data[[i]], name = x@name)
   )
 
@@ -460,39 +547,39 @@ test_that("!!! goes through `[[` for record S3 types", {
 # bang ---------------------------------------------------------------
 
 test_that("single ! is not treated as shortcut", {
-  expect_identical(quo(!foo), as_quosure(~!foo))
+  expect_identical(quo(!foo), as_quosure(~ !foo))
 })
 
 test_that("double and triple ! are treated as syntactic shortcuts", {
   var <- local(quo(foo))
-  expect_identical(quo(!! var), as_quosure(var))
-  expect_identical(quo(!! quo(foo)), quo(foo))
-  expect_identical(quo(list(!!! letters[1:3])), quo(list("a", "b", "c")))
+  expect_identical(quo(!!var), as_quosure(var))
+  expect_identical(quo(!!quo(foo)), quo(foo))
+  expect_identical(quo(list(!!!letters[1:3])), quo(list("a", "b", "c")))
 })
 
 test_that("`!!` works in prefixed calls", {
   var <- quo(cyl)
-  expect_identical(expr_interp(~mtcars$`!!`(quo_squash(var))), ~mtcars$cyl)
-  expect_identical(expr_interp(~foo$`!!`(quote(bar))), ~foo$bar)
-  expect_identical(expr_interp(~base::`!!`(quote(list))()), ~base::list())
+  expect_identical(expr_interp(~ mtcars$`!!`(quo_squash(var))), ~ mtcars$cyl)
+  expect_identical(expr_interp(~ foo$`!!`(quote(bar))), ~ foo$bar)
+  expect_identical(expr_interp(~ base::`!!`(quote(list))()), ~ base::list())
 })
 
 test_that("one layer of parentheses around !! is removed", {
   foo <- "foo"
-  expect_identical(expr((!! foo)), "foo")
-  expect_identical(expr(((!! foo))), quote(("foo")))
+  expect_identical(expr((!!foo)), "foo")
+  expect_identical(expr(((!!foo))), quote(("foo")))
 
-  expect_identical(expr((!! foo) + 1), quote("foo" + 1))
-  expect_identical(expr(((!! foo)) + 1), quote(("foo") + 1))
+  expect_identical(expr((!!foo) + 1), quote("foo" + 1))
+  expect_identical(expr(((!!foo)) + 1), quote(("foo") + 1))
 
-  expect_identical(expr((!! sym(foo))(bar)), quote(foo(bar)))
-  expect_identical(expr(((!! sym(foo)))(bar)), quote((foo)(bar)))
+  expect_identical(expr((!!sym(foo))(bar)), quote(foo(bar)))
+  expect_identical(expr(((!!sym(foo)))(bar)), quote((foo)(bar)))
 
-  expect_identical(exprs((!! foo), ((!! foo))), named_list("foo", quote(("foo"))))
+  expect_identical(exprs((!!foo), ((!!foo))), named_list("foo", quote(("foo"))))
 })
 
 test_that("parentheses are not removed if there's a tail", {
-  expect_identical(expr((!! "a" + b)), quote(("a" + b)))
+  expect_identical(expr((!!"a" + b)), quote(("a" + b)))
 })
 
 test_that("can use prefix form of `!!` with qualifying operators", {
@@ -539,7 +626,10 @@ test_that("quosures are created for all informative formulas", {
   bar <- local(quo(bar))
 
   interpolated <- local(quo(list(!!foo, !!bar)))
-  expected <- new_quosure(call2("list", as_quosure(foo), as_quosure(bar)), env = get_env(interpolated))
+  expected <- new_quosure(
+    call2("list", as_quosure(foo), as_quosure(bar)),
+    env = get_env(interpolated)
+  )
   expect_identical(interpolated, expected)
 
   interpolated <- quo(!!interpolated)
@@ -550,12 +640,12 @@ test_that("quosures are created for all informative formulas", {
 # dots_values() ------------------------------------------------------
 
 test_that("can unquote-splice symbols", {
-  spliced <- list2(!!! list(quote(`_symbol`)))
+  spliced <- list2(!!!list(quote(`_symbol`)))
   expect_identical(spliced, list(quote(`_symbol`)))
 })
 
 test_that("can unquote symbols", {
-  expect_error_(dots_values(!! quote(.)), "`!!` in a non-quoting function")
+  expect_error_(dots_values(!!quote(.)), "`!!` in a non-quoting function")
 })
 
 
@@ -563,9 +653,15 @@ test_that("can unquote symbols", {
 
 test_that("`:=` unquotes its LHS as name unless `.unquote_names` is FALSE", {
   expect_identical(exprs(a := b), list(a = quote(b)))
-  expect_identical(exprs(a := b, .unquote_names = FALSE), named_list(quote(a := b)))
+  expect_identical(
+    exprs(a := b, .unquote_names = FALSE),
+    named_list(quote(a := b))
+  )
   expect_identical(quos(a := b), quos_list(a = quo(b)))
-  expect_identical(quos(a := b, .unquote_names = FALSE), quos_list(new_quosure(quote(a := b))))
+  expect_identical(
+    quos(a := b, .unquote_names = FALSE),
+    quos_list(new_quosure(quote(a := b)))
+  )
   expect_identical(dots_list(a := NULL), list(a = NULL))
 
   local_lifecycle_silence()
@@ -585,12 +681,14 @@ test_that("`:=` chaining is detected at dots capture", {
 # --------------------------------------------------------------------
 
 test_that("Unquote operators fail when called outside quasiquoted arguments", {
-  expect_qq_error <- function(object) expect_error(object, regexp = "within a defused argument")
+  expect_qq_error <- function(object)
+    expect_error(object, regexp = "within a defused argument")
   expect_qq_error(UQ())
   expect_qq_error(UQS())
   expect_qq_error(`!!`())
 
-  expect_dyn_error <- function(object) expect_error(object, regexp = "within dynamic dots")
+  expect_dyn_error <- function(object)
+    expect_error(object, regexp = "within dynamic dots")
   expect_dyn_error(`!!!`())
   expect_dyn_error(a := b)
 })
@@ -614,7 +712,10 @@ test_that(".data[[ argument is not masked", {
 })
 
 test_that(".data[[ on the LHS of := fails", {
-  expect_error(exprs(.data[["foo"]] := foo), "Can't use the `.data` pronoun on the LHS")
+  expect_error(
+    exprs(.data[["foo"]] := foo),
+    "Can't use the `.data` pronoun on the LHS"
+  )
 })
 
 test_that("it is still possible to use .data[[ in list2()", {
@@ -628,7 +729,10 @@ test_that("can defuse-and-label and interpolate with glue", {
   env_bind_lazy(current_env(), var = letters)
   suffix <- "foo"
 
-  expect_identical(glue_first_pass("{{var}}_{suffix}"), glue::glue("letters_{{suffix}}"))
+  expect_identical(
+    glue_first_pass("{{var}}_{suffix}"),
+    glue::glue("letters_{{suffix}}")
+  )
   expect_identical(glue_embrace("{{var}}_{suffix}"), glue::glue("letters_foo"))
 
   expect_identical(exprs("{{var}}_{suffix}" := 1), exprs(letters_foo = 1))
@@ -647,21 +751,21 @@ test_that("englue() returns a bare string", {
 })
 
 test_that("englue() has good error messages (#1531)", {
-  expect_snapshot({
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
     fn <- function(x) englue(c("a", "b"))
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) englue(env())
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) glue_embrace("{{ x }}_foo")
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) englue("{{ x }}_foo")
-    (expect_error(fn()))
+    fn()
 
     fn <- function(x) list2("{{ x }}_foo" := NULL)
-    (expect_error(fn()))
+    fn()
   })
 })
 
@@ -683,10 +787,10 @@ test_that("can wrap englue() (#1565)", {
   expect_equal(fn(bar), "bar_QUX_FOO")
   expect_equal(my_englue("{'foo'}"), "foo")
 
-  expect_snapshot({
-    (expect_error(my_englue(c("a", "b"))))
-    (expect_error(my_englue(env())))
-    (expect_error(fn()))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    my_englue(c("a", "b"))
+    my_englue(env())
+    fn()
   })
 })
 
@@ -694,15 +798,24 @@ test_that("can wrap englue() (#1565)", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("unquoting with rlang namespace is deprecated", {
-  expect_warning_(exprs(rlang::UQS(1:2)), regexp = "deprecated as of rlang 0.3.0")
-  expect_warning_(quo(list(rlang::UQ(1:2))), regexp = "deprecated as of rlang 0.3.0")
+  expect_warning_(
+    exprs(rlang::UQS(1:2)),
+    regexp = "deprecated as of rlang 0.3.0"
+  )
+  expect_warning_(
+    quo(list(rlang::UQ(1:2))),
+    regexp = "deprecated as of rlang 0.3.0"
+  )
 
   # Old tests
 
   local_lifecycle_silence()
 
   expect_identical(quo(rlang::UQ(toupper("a"))), new_quosure("A", empty_env()))
-  expect_identical(quo(list(rlang::UQS(list(a = 1, b = 2)))), quo(list(a = 1, b = 2)))
+  expect_identical(
+    quo(list(rlang::UQS(list(a = 1, b = 2)))),
+    quo(list(a = 1, b = 2))
+  )
 
   quo <- quo(rlang::UQ(NULL))
   expect_equal(quo, quo(NULL))
@@ -711,7 +824,10 @@ test_that("unquoting with rlang namespace is deprecated", {
   expect_s3_class(quo, "error")
   expect_match(quo$message, "must be called with an argument")
 
-  expect_error_(dots_values(rlang::UQ(quote(.))), "`!!` in a non-quoting function")
+  expect_error_(
+    dots_values(rlang::UQ(quote(.))),
+    "`!!` in a non-quoting function"
+  )
 })
 
 test_that("splicing language objects still works", {
@@ -738,12 +854,23 @@ test_that("{{ is a quote-unquote operator", {
   fn <- function(foo) expr(list({{ foo }}))
   expect_identical_(fn(bar), expr(list(!!quo(bar))))
   expect_identical_(expr(list({{ letters }})), expr(list(!!quo(!!letters))))
-  expect_error_(expr(list({{ quote(foo) }})), "must be a symbol")
+  expect_error_(
+    expr(list({
+      {
+        quote(foo)
+      }
+    })),
+    "must be a symbol"
+  )
 })
 
 test_that("{{ only works in quoting functions", {
   expect_error_(
-    list2({{ "foo" }}),
+    list2({
+      {
+        "foo"
+      }
+    }),
     "Can't use `{{` in a non-quoting function",
     fixed = TRUE
   )
@@ -762,23 +889,44 @@ test_that("{{ on the LHS of :=", {
   fn <- function(foo) exprs({{ foo }} := NA)
   expect_identical_(fn(bar), exprs(bar = NA))
 
-  expect_error_(exprs({{ foo() }} := NA), "must be a symbol")
+  expect_error_(
+    exprs(
+      {
+        {
+          foo()
+        }
+      } := NA
+    ),
+    "must be a symbol"
+  )
 })
 
 test_that("can unquote-splice in atomic capture", {
-  expect_identical_(chr("a", !!!c("b", "c"), !!!list("d")), c("a", "b", "c", "d"))
+  expect_identical_(
+    chr("a", !!!c("b", "c"), !!!list("d")),
+    c("a", "b", "c", "d")
+  )
 })
 
 test_that("can unquote-splice multiple times (#771)", {
-  expect_identical(call2("foo", !!!list(1, 2), !!!list(3, 4)), quote(foo(1, 2, 3, 4)))
+  expect_identical(
+    call2("foo", !!!list(1, 2), !!!list(3, 4)),
+    quote(foo(1, 2, 3, 4))
+  )
   expect_identical(list2(!!!list(1, 2), !!!list(3, 4)), list(1, 2, 3, 4))
   expect_identical(exprs(!!!list(1, 2), !!!list(3, 4)), named_list(1, 2, 3, 4))
-  expect_identical(expr(foo(!!!list(1, 2), !!!list(3, 4))), quote(foo(1, 2, 3, 4)))
+  expect_identical(
+    expr(foo(!!!list(1, 2), !!!list(3, 4))),
+    quote(foo(1, 2, 3, 4))
+  )
 })
 
 test_that(".data[[quote(foo)]] creates strings (#836)", {
   expect_identical(expr(call(.data[[quote(foo)]])), quote(call(.data[["foo"]])))
-  expect_identical(expr(call(.data[[!!quote(foo)]])), quote(call(.data[["foo"]])))
+  expect_identical(
+    expr(call(.data[[!!quote(foo)]])),
+    quote(call(.data[["foo"]]))
+  )
 })
 
 test_that(".data[[quo(foo)]] creates strings (#807)", {
@@ -808,8 +956,18 @@ test_that("Unquoted LHS is not recursed into and mutated (#1103)", {
 
 test_that("{{ foo; bar }} is not injected (#1087)", {
   expect_equal_(
-    expr({{ 1 }; NULL}),
-    quote({{ 1 }; NULL})
+    expr({
+      {
+        1
+      }
+      NULL
+    }),
+    quote({
+      {
+        1
+      }
+      NULL
+    })
   )
 })
 
@@ -824,11 +982,11 @@ test_that("englue() works", {
 })
 
 test_that("englue() checks for the size of its result (#1492)", {
-  expect_snapshot({
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
     fn <- function(x) englue("{{ x }} {NULL}")
-    (expect_error(fn(foo)))
+    fn(foo)
 
     fn <- function(x) list2("{{ x }} {NULL}" := NULL)
-    (expect_error(fn(foo)))
+    fn(foo)
   })
 })

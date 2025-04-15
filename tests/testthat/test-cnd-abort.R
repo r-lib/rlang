@@ -56,10 +56,10 @@ test_that("format_onerror_backtrace handles empty and size 1 traces", {
   local_options(rlang_backtrace_on_error = "branch")
 
   trace <- new_trace(list(), int())
-  expect_identical(format_onerror_backtrace(trace), NULL)
+  expect_null(format_onerror_backtrace(trace))
 
   trace <- new_trace(list(quote(foo)), int(0))
-  expect_identical(format_onerror_backtrace(trace), NULL)
+  expect_null(format_onerror_backtrace(trace))
 
   trace <- new_trace(list(quote(foo), quote(bar)), int(0, 1))
   expect_match(format_onerror_backtrace(error_cnd(trace = trace)), "foo.*bar")
@@ -103,13 +103,24 @@ test_that("empty backtraces are not printed", {
   skip_if_stale_backtrace()
 
   run_error_script <- function(envvars = chr()) {
-    run_script(test_path("fixtures", "error-backtrace-empty.R"), envvars = envvars)
+    run_script(
+      test_path("fixtures", "error-backtrace-empty.R"),
+      envvars = envvars
+    )
   }
 
-  branch_depth_0 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=0"))
-  full_depth_0 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=0"))
-  branch_depth_1 <- run_error_script(envvars = c("rlang_backtrace_on_error=branch", "trace_depth=1"))
-  full_depth_1 <- run_error_script(envvars = c("rlang_backtrace_on_error=full", "trace_depth=1"))
+  branch_depth_0 <- run_error_script(
+    envvars = c("rlang_backtrace_on_error=branch", "trace_depth=0")
+  )
+  full_depth_0 <- run_error_script(
+    envvars = c("rlang_backtrace_on_error=full", "trace_depth=0")
+  )
+  branch_depth_1 <- run_error_script(
+    envvars = c("rlang_backtrace_on_error=branch", "trace_depth=1")
+  )
+  full_depth_1 <- run_error_script(
+    envvars = c("rlang_backtrace_on_error=full", "trace_depth=1")
+  )
 
   expect_snapshot({
     cat_line(branch_depth_0)
@@ -249,7 +260,9 @@ local({
     for (j in seq_along(handlers)) {
       case_name <- paste0(
         "Backtrace on rethrow: ",
-        names(throwers)[[i]], " - ", names(handlers)[[j]]
+        names(throwers)[[i]],
+        " - ",
+        names(handlers)[[j]]
       )
       low3 <- throwers[[i]]
       high3 <- handlers[[j]]
@@ -273,20 +286,24 @@ test_that("abort() displays call in error prefix", {
   skip_if_not_installed("rlang", "0.4.11.9001")
 
   expect_snapshot(
-    run("{
+    run(
+      "{
       options(cli.unicode = FALSE, crayon.enabled = FALSE)
       rlang::abort('foo', call = quote(bar(baz)))
-    }")
+    }"
+    )
   )
 
   # errorCondition()
   skip_if_not_installed("base", "3.6.0")
 
   expect_snapshot(
-    run("{
+    run(
+      "{
       options(cli.unicode = FALSE, crayon.enabled = FALSE)
       rlang::cnd_signal(errorCondition('foo', call = quote(bar(baz))))
-    }")
+    }"
+    )
   )
 })
 
@@ -309,8 +326,14 @@ test_that("format_error_arg() formats argument", {
   expect_equal(format_error_arg(chr_get("foo", 0L)), exp)
   expect_equal(format_error_arg(quote(foo())), format_arg("foo()"))
 
-  expect_error(format_error_arg(c("foo", "bar")), "must be a string or an expression")
-  expect_error(format_error_arg(function() NULL), "must be a string or an expression")
+  expect_error(
+    format_error_arg(c("foo", "bar")),
+    "must be a string or an expression"
+  )
+  expect_error(
+    format_error_arg(function() NULL),
+    "must be a string or an expression"
+  )
 })
 
 test_that("local_error_call() works", {
@@ -398,15 +421,17 @@ test_that("error_call() and format_error_call() preserve special syntax ops", {
   expect_snapshot(format_error_call(quote(for (x in y) NULL)))
 
   expect_snapshot(format_error_call(quote(a %||% b)))
-  expect_snapshot(format_error_call(quote(`%||%`())))  # Suboptimal
+  expect_snapshot(format_error_call(quote(`%||%`()))) # Suboptimal
 })
 
 test_that("error_call() preserves srcrefs", {
-  eval_parse("{
+  eval_parse(
+    "{
     f <- function() g()
     g <- function() h()
     h <- function() abort('Foo.')
-  }")
+  }"
+  )
 
   out <- error_call(catch_error(f())$call)
   expect_s3_class(attr(out, "srcref"), "srcref")
@@ -462,7 +487,7 @@ test_that("withCallingHandlers() wrappers don't throw off trace capture on rethr
 })
 
 test_that("headers and body are stored in respective fields", {
-  local_use_cli()  # Just to be explicit
+  local_use_cli() # Just to be explicit
 
   cnd <- catch_cnd(abort(c("a", "b", i = "c")), "error")
   expect_equal(cnd$message, set_names("a", ""))
@@ -538,7 +563,7 @@ test_that("generic call is picked up in methods", {
 test_that("errors are fully displayed (parents, calls) in knitted files", {
   skip_if_not_installed("knitr")
   skip_if_not_installed("rmarkdown")
-  skip_if(!rmarkdown::pandoc_available())
+  skip_if_not(rmarkdown::pandoc_available())
 
   expect_snapshot({
     writeLines(render_md("test-parent-errors.Rmd"))
@@ -601,7 +626,11 @@ test_that("can supply `footer`", {
   local_error_call(call("f"))
   expect_snapshot({
     err(abort("foo", body = c("i" = "bar"), footer = c("i" = "baz")))
-    err(abort("foo", body = function(cnd, ...) c("i" = "bar"), footer = function(cnd, ...) c("i" = "baz")))
+    err(abort(
+      "foo",
+      body = function(cnd, ...) c("i" = "bar"),
+      footer = function(cnd, ...) c("i" = "baz")
+    ))
   })
 })
 
@@ -610,7 +639,11 @@ test_that("can supply `footer` (non-cli case)", {
   local_error_call(call("f"))
   expect_snapshot({
     err(abort("foo", body = c("i" = "bar"), footer = c("i" = "baz")))
-    err(abort("foo", body = function(cnd, ...) c("i" = "bar"), footer = function(cnd, ...) c("i" = "baz")))
+    err(abort(
+      "foo",
+      body = function(cnd, ...) c("i" = "bar"),
+      footer = function(cnd, ...) c("i" = "baz")
+    ))
   })
 })
 
@@ -711,7 +744,8 @@ test_that("`parent = NA` signals a non-chained rethrow", {
 
     "Wrapped handler"
     handler1 <- function(cnd, call = caller_env()) handler2(cnd, call)
-    handler2 <- function(cnd, call) abort(cnd_header(cnd), parent = NA, call = call)
+    handler2 <- function(cnd, call)
+      abort(cnd_header(cnd), parent = NA, call = call)
     hh <- function() {
       withCallingHandlers(
         foo(),
@@ -762,11 +796,12 @@ test_that("if `call` is older than handler caller, use that as bottom", {
   helper <- function(call = caller_env()) {
     try_fetch(
       low_level(call),
-      error = function(cnd) abort(
-        "Problem.",
-        parent = cnd,
-        call = call
-      )
+      error = function(cnd)
+        abort(
+          "Problem.",
+          parent = cnd,
+          call = call
+        )
     )
   }
 
@@ -816,21 +851,25 @@ test_that("base causal errors include full user backtrace", {
 })
 
 test_that("can chain errors at top-level (#1405)", {
-  out <- run_code("
+  out <- run_code(
+    "
     tryCatch(
       error = function(err) rlang::abort('bar', parent = err),
       rlang::abort('foo')
     )
-  ")
+  "
+  )
   expect_true(any(grepl("foo", out$output)))
   expect_true(any(grepl("bar", out$output)))
 
-  out <- run_code("
+  out <- run_code(
+    "
     withCallingHandlers(
       error = function(err) rlang::abort('bar', parent = err),
       rlang::abort('foo')
     )
-  ")
+  "
+  )
   expect_true(any(grepl("foo", out$output)))
   expect_true(any(grepl("bar", out$output)))
 })
@@ -843,7 +882,7 @@ test_that("backtrace_on_error = 'collapse' is deprecated.", {
 
 test_that("can supply header method via `message`", {
   expect_snapshot(error = TRUE, {
-    abort(~ "foo")
+    abort(~"foo")
     abort(function(cnd, ...) "foo")
   })
 
@@ -866,7 +905,10 @@ test_that("newlines are preserved by cli (#1535)", {
 
 test_that("`show.error.messages` is respected by `abort()` (#1630)", {
   run_error_script <- function(envvars = chr()) {
-    run_script(test_path("fixtures", "error-show-messages.R"), envvars = envvars)
+    run_script(
+      test_path("fixtures", "error-show-messages.R"),
+      envvars = envvars
+    )
   }
 
   with_messages <- run_error_script(envvars = c("show_error_messages=TRUE"))

@@ -22,7 +22,10 @@ last_error <- function() {
 
   if (is_null(err)) {
     local_options(rlang_backtrace_on_error = "none")
-    stop("Can't show last error because no error was recorded yet", call. = FALSE)
+    stop(
+      "Can't show last error because no error was recorded yet",
+      call. = FALSE
+    )
   }
 
   err$rlang$internal$from_last_error <- TRUE

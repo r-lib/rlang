@@ -6,37 +6,19 @@ r_obj* rlang_ns_env;
 
 
 r_obj* r_ns_env(const char* pkg) {
-  r_obj* ns = r_env_find(R_NamespaceRegistry, r_sym(pkg));
-  if (ns == r_syms.unbound) {
+  r_obj* pkg_sym = r_sym(pkg);
+  if (!r_env_has(R_NamespaceRegistry, pkg_sym)) {
     r_abort("Can't find namespace `%s`", pkg);
   }
-  return ns;
+
+  return r_env_get(R_NamespaceRegistry, pkg_sym);
 }
 
-static
-r_obj* ns_env_get(r_obj* env, const char* name) {
-  r_obj* obj = KEEP(r_env_find(env, r_sym(name)));
-
-  // Can be a promise to a lazyLoadDBfetch() call
-  if (r_typeof(obj) == R_TYPE_promise) {
-    obj = r_eval(obj, r_envs.empty);
-  }
-  if (obj != r_syms.unbound) {
-    FREE(1);
-    return obj;
-  }
-
-  // Trigger object not found error
-  r_eval(r_sym(name), env);
-  r_stop_unreachable();
-}
 r_obj* r_base_ns_get(const char* name) {
-  return ns_env_get(r_envs.base, name);
+  return r_env_get(r_envs.base, r_sym(name));
 }
-
-
 r_obj* rlang_ns_get(const char* name) {
-  return ns_env_get(rlang_ns_env, name);
+  return r_env_get(rlang_ns_env, r_sym(name));
 }
 
 
@@ -265,27 +247,50 @@ bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
     if (env == ancestor) {
       return true;
     }
-    env = r_env_parent(env);;
+    env = r_env_parent(env);
   }
 
   return env == ancestor;
 }
 
-r_obj* r_env_find_until(r_obj* env, r_obj* sym, r_obj* last) {
+static
+r_obj* env_until(r_obj* env, r_obj* sym, r_obj* last) {
   r_obj* stop = r_envs.empty;
   if (last != r_envs.empty) {
     stop = r_env_parent(last);
   }
 
-  r_obj* out = r_syms.unbound;
-  while (out == r_syms.unbound && env != r_envs.empty && env != stop) {
-    out = r_env_find(env, sym);
-    env = r_env_parent(env);
-  }
+  while (true) {
+    if (env == r_envs.empty || r_env_has(env, sym)) {
+      return env;
+    }
 
-  return out;
+    r_obj* next = r_env_parent(env);
+    if (next == r_envs.empty || next == stop) {
+      return env;
+    }
+
+    env = next;
+  }
 }
 
+r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last) {
+  env = env_until(env, sym, last);
+  return r_env_get(env, sym);
+}
+
+bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last) {
+  env = env_until(env, sym, last);
+  return r_env_has(env, sym);
+}
+
+bool r_env_has_missing(r_obj* env, r_obj* sym) {
+  // That's a special primitive so no need to protect `sym`
+  r_obj* call = KEEP(r_call2(missing_prim, sym));
+  r_obj* out = r_eval(call, env);
+  FREE(1);
+  return r_as_bool(out);
+}
 
 void r_init_rlang_ns_env(void) {
   rlang_ns_env = r_ns_env("rlang");
@@ -299,6 +304,8 @@ void r_init_library_env(void) {
   new_env__parent_node = r_node_cddr(new_env_call);
   new_env__size_node = r_node_cdr(new_env__parent_node);
 #endif
+
+  missing_prim = r_parse_eval("missing", r_envs.base);
 
   env2list_call = r_parse("as.list.environment(x, all.names = TRUE)");
   r_preserve(env2list_call);
@@ -351,3 +358,6 @@ r_obj* env2list_call = NULL;
 
 static
 r_obj* list2env_call = NULL;
+
+static
+r_obj* missing_prim = NULL;

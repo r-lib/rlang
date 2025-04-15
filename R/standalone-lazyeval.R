@@ -36,7 +36,8 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
     return(as_quosure(lazy, env))
   }
 
-  out <- switch(typeof(lazy),
+  out <- switch(
+    typeof(lazy),
     symbol = ,
     language = new_quosure(lazy, env),
     character = {
@@ -52,10 +53,9 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
       }
       new_quosure(lazy, env)
     },
-    list =
-      if (inherits(lazy, "lazy")) {
-        lazy = new_quosure(lazy$expr, lazy$env)
-      }
+    list = if (inherits(lazy, "lazy")) {
+      lazy = new_quosure(lazy$expr, lazy$env)
+    }
   )
 
   if (is_null(out)) {
@@ -84,7 +84,11 @@ compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
 
   named <- have_name(dots)
   if (.named && any(!named)) {
-    nms <- vapply(dots[!named], function(x) expr_text(get_expr(x)), character(1))
+    nms <- vapply(
+      dots[!named],
+      function(x) expr_text(get_expr(x)),
+      character(1)
+    )
     names(dots)[!named] <- nms
   }
 
@@ -93,14 +97,16 @@ compat_lazy_dots <- function(dots, env, ..., .named = FALSE) {
 }
 
 compat_as_lazy <- function(quo) {
-  structure(class = "lazy", list(
-    expr = get_expr(quo),
-    env = get_env(quo)
-  ))
+  structure(
+    class = "lazy",
+    list(
+      expr = get_expr(quo),
+      env = get_env(quo)
+    )
+  )
 }
 compat_as_lazy_dots <- function(...) {
   structure(class = "lazy_dots", lapply(quos(...), compat_as_lazy))
 }
-
 
 # nocov end

@@ -125,9 +125,18 @@ test_that("invoke() buries arguments", {
   local_lifecycle_silence()
 
   expect_identical(invoke(call_inspect, 1:2, 3L), quote(.fn(`1`, `2`, `3`)))
-  expect_identical(invoke("call_inspect", 1:2, 3L), quote(call_inspect(`1`, `2`, `3`)))
-  expect_identical(invoke(call_inspect, 1:2, 3L, .bury = c("foo", "bar")), quote(foo(`bar1`, `bar2`, `bar3`)))
-  expect_identical(invoke(call_inspect, 1:2, 3L, .bury = NULL), as.call(list(call_inspect, 1L, 2L, 3L)))
+  expect_identical(
+    invoke("call_inspect", 1:2, 3L),
+    quote(call_inspect(`1`, `2`, `3`))
+  )
+  expect_identical(
+    invoke(call_inspect, 1:2, 3L, .bury = c("foo", "bar")),
+    quote(foo(`bar1`, `bar2`, `bar3`))
+  )
+  expect_identical(
+    invoke(call_inspect, 1:2, 3L, .bury = NULL),
+    as.call(list(call_inspect, 1L, 2L, 3L))
+  )
 })
 
 test_that("invoke() can be called without arguments", {
@@ -147,7 +156,7 @@ test_that("quo_expr() still works", {
 test_that("call_fn() extracts function", {
   local_lifecycle_silence()
 
-  expect_identical(call_fn(~matrix()), matrix)
+  expect_identical(call_fn(~ matrix()), matrix)
 })
 
 test_that("call_fn() looks up function in `env`", {
@@ -173,8 +182,32 @@ test_that("with_handlers() establishes inplace and exiting handlers", {
   expect_equal(with_handlers(identity(letters), !!!handlers), identity(letters))
   expect_equal(with_handlers(stop(letters), !!!handlers), "caught error")
   expect_equal(with_handlers(message(letters), !!!handlers), "caught message")
-  expect_warning(expect_equal(with_handlers({ warning("warn!"); letters }, !!!handlers), identity(letters)), "warn!")
-  expect_output(expect_equal(with_handlers({ signal("", "foobar"); letters }, !!!handlers), identity(letters)), "foobar")
+  expect_warning(
+    expect_equal(
+      with_handlers(
+        {
+          warning("warn!")
+          letters
+        },
+        !!!handlers
+      ),
+      identity(letters)
+    ),
+    "warn!"
+  )
+  expect_output(
+    expect_equal(
+      with_handlers(
+        {
+          signal("", "foobar")
+          letters
+        },
+        !!!handlers
+      ),
+      identity(letters)
+    ),
+    "foobar"
+  )
 })
 
 test_that("with_handlers() propagates visibility", {
@@ -187,7 +220,10 @@ test_that("with_handlers() propagates visibility", {
 test_that("bare functions are treated as exiting handlers", {
   local_lifecycle_silence()
 
-  expect_identical(with_handlers(abort("foo"), error = function(cnd) "caught"), "caught")
+  expect_identical(
+    with_handlers(abort("foo"), error = function(cnd) "caught"),
+    "caught"
+  )
 })
 
 test_that("with_handlers() supports formula shortcut for lambdas", {
@@ -201,14 +237,41 @@ test_that("can muffle conditions", {
   local_lifecycle_silence()
 
   expect_no_message(
-    expect_identical(with_handlers({ message(""); "foo" }, message = calling(cnd_muffle)), "foo")
+    expect_identical(
+      with_handlers(
+        {
+          message("")
+          "foo"
+        },
+        message = calling(cnd_muffle)
+      ),
+      "foo"
+    )
   )
   expect_no_warning(
-    expect_identical(with_handlers({ warning(""); "foo" }, warning = calling(cnd_muffle)), "foo")
+    expect_identical(
+      with_handlers(
+        {
+          warning("")
+          "foo"
+        },
+        warning = calling(cnd_muffle)
+      ),
+      "foo"
+    )
   )
   cnd_expect_muffle <- calling(function(cnd) {
     expect_s3_class(findRestart("rlang_muffle"), "restart")
     cnd_muffle(cnd)
   })
-  expect_identical(with_handlers({ signal("", "cnd"); "foo" }, cnd = cnd_expect_muffle), "foo")
+  expect_identical(
+    with_handlers(
+      {
+        signal("", "cnd")
+        "foo"
+      },
+      cnd = cnd_expect_muffle
+    ),
+    "foo"
+  )
 })

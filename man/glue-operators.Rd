@@ -11,9 +11,7 @@
 #>     foo
 #>   <dbl>
 #> 1     1
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 foo <- "name"
 tibble::tibble("\{foo\}" := 1)
 #> # A tibble: 1 x 1
@@ -61,9 +59,7 @@ mtcars \%>\% my_mean(cyl)
 #>     cyl
 #>   <dbl>
 #> 1  6.19
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(cyl * am)
 #> # A tibble: 1 x 1
 #>   `cyl * am`
@@ -82,9 +78,7 @@ mtcars \%>\% my_mean(cyl)
 #>    mean
 #>   <dbl>
 #> 1  6.19
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(cyl, name = "cyl")
 #> # A tibble: 1 x 1
 #>     cyl
@@ -99,9 +93,7 @@ Using the wrong operator causes unexpected results:
 list2("\{\{ x \}\}" := 1)
 #> $`"name"`
 #> [1] 1
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 list2("\{x\}" := 1)
 #> $name
 #> [1] 1
@@ -128,9 +120,7 @@ Now the user may supply their own name if needed:
 #>   `cyl * am`
 #>        <dbl>
 #> 1       2.06
-}\if{html}{\out{</div>}}
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{
 mtcars \%>\% my_mean(cyl * am, name = "mean_cyl_am")
 #> # A tibble: 1 x 1
 #>   mean_cyl_am
@@ -150,8 +140,6 @@ list2(!!x := 1)
 }\if{html}{\out{</div>}}
 
 Name-injection with glue operations was an extension of this existing feature and so inherited the same interface. However, there is no technical barrier to using glue strings on the LHS of \code{=}.
-
-As we are now moving away from \code{\link[=injection-operator]{!!}} for common tasks, we are considering enabling glue strings with \code{=} and superseding \verb{:=} usage. Track the progress of this change in \href{https://github.com/r-lib/rlang/issues/1296}{issue 1296}.
 }
 
 \subsection{Using glue syntax in packages}{

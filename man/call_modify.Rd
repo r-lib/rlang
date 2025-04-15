@@ -55,7 +55,7 @@ call_modify(call, trim = 0.1)
 call_modify(call, na.rm = )
 
 # Supply a list of new arguments with `!!!`
-newargs <- list(na.rm = NULL, trim = 0.1)
+newargs <- list(na.rm = zap(), trim = 0.1)
 call <- call_modify(call, !!!newargs)
 call
 
@@ -89,11 +89,11 @@ call_modify(user_call, ncol = 1)
 # subtle implications, for instance you can move an argument to
 # last position by removing it and remapping it:
 call <- quote(foo(bar = , baz))
-call_modify(call, bar = NULL, bar = missing_arg())
+call_modify(call, bar = zap(), bar = missing_arg())
 
 # You can also choose to keep only the first or last homonym
 # arguments:
-args <-  list(bar = NULL, bar = missing_arg())
+args <-  list(bar = zap(), bar = missing_arg())
 call_modify(call, !!!args, .homonyms = "first")
 call_modify(call, !!!args, .homonyms = "last")
 }

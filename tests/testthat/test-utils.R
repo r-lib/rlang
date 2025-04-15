@@ -6,7 +6,9 @@ test_that("locale setters report old locale", {
 
   mbcs <- suppressMessages(poke_latin1_locale())
   suppressMessages(Sys.setlocale("LC_CTYPE", old))
-  expect_true(tolower(mbcs) %in% tolower(c("ja_JP.SJIS", "English_United States.932")))
+  expect_true(
+    tolower(mbcs) %in% tolower(c("ja_JP.SJIS", "English_United States.932"))
+  )
 })
 
 old_digits <- getOption("digits")

@@ -8,7 +8,10 @@ test_that("exprs() captures arguments forwarded with `...`", {
 })
 
 test_that("exprs() captures empty arguments", {
-  expect_identical(exprs(, , .ignore_empty = "none"), set_names(list(missing_arg(), missing_arg()), c("", "")))
+  expect_identical(
+    exprs(,, .ignore_empty = "none"),
+    set_names(list(missing_arg(), missing_arg()), c("", ""))
+  )
 })
 
 test_that("dots are always named", {
@@ -29,7 +32,7 @@ test_that("dots can be spliced", {
   expect_identical(wrapper(!!!list(letters)), list(letters))
 
   local_lifecycle_silence()
-  expect_identical(flatten(dots_values(!!! list(letters))), list(letters))
+  expect_identical(flatten(dots_values(!!!list(letters))), list(letters))
 })
 
 test_that("interpolation by value does not guard formulas", {
@@ -37,7 +40,7 @@ test_that("interpolation by value does not guard formulas", {
 })
 
 test_that("dots names can be unquoted", {
-  expect_identical(dots_values(!! paste0("foo", "bar") := 10), list(foobar = 10))
+  expect_identical(dots_values(!!paste0("foo", "bar") := 10), list(foobar = 10))
 })
 
 test_that("can take forced dots with `allowForced = FALSE`", {
@@ -45,7 +48,10 @@ test_that("can take forced dots with `allowForced = FALSE`", {
     force(..1)
     captureDots()
   }
-  expect_identical(fn(a = letters), pairlist(a = list(expr = letters, env = empty_env())))
+  expect_identical(
+    fn(a = letters),
+    pairlist(a = list(expr = letters, env = empty_env()))
+  )
 })
 
 test_that("captured dots are only named if names were supplied", {
@@ -61,14 +67,17 @@ test_that("dots_values() handles forced dots", {
   }
   expect_identical(fn("foo"), list("foo"))
 
-  expect_identical(lapply(1:2, function(...) dots_values(...)), list(list(1L), list(2L)))
+  expect_identical(
+    lapply(1:2, function(...) dots_values(...)),
+    list(list(1L), list(2L))
+  )
   expect_identical(lapply(1:2, dots_values), list(list(1L), list(2L)))
 })
 
 test_that("empty arguments trigger meaningful error", {
-  expect_snapshot({
-    (expect_error(list2(1, , 3), "empty"))
-    (expect_error(dots_list(1, , 3), "empty"))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    list2(1, , 3)
+    dots_list(1, , 3)
   })
 })
 
@@ -82,28 +91,40 @@ test_that("cleans empty arguments", {
 test_that("doesn't clean named empty argument arguments", {
   expect_error(dots_list(1, a = ), "empty")
   expect_identical(exprs(1, a = ), alist(1, a = ))
-  expect_identical(exprs(1, a = , b = , , .ignore_empty = "all"), alist(1, a = , b = ))
+  expect_identical(
+    exprs(1, a = , b = , , .ignore_empty = "all"),
+    alist(1, a = , b = )
+  )
 })
 
 test_that("capturing dots by value only unquote-splices at top-level", {
-  expect_identical_(dots_list(!!! list(quote(!!! a))), named_list(quote(!!! a)))
-  expect_identical_(dots_list(!!! exprs(!!! 1:3)), named_list(1L, 2L, 3L))
+  expect_identical_(dots_list(!!!list(quote(!!!a))), named_list(quote(!!!a)))
+  expect_identical_(dots_list(!!!exprs(!!!1:3)), named_list(1L, 2L, 3L))
 })
 
 test_that("can't unquote when capturing dots by value", {
-  expect_identical(dots_list(!!! list(!!! TRUE)), named_list(FALSE))
+  expect_identical(dots_list(!!!list(!!!TRUE)), named_list(FALSE))
 })
 
 test_that("can splice NULL value", {
-  expect_identical(dots_list(!!! NULL), named_list())
-  expect_identical(dots_list(1, !!! NULL, 3), named_list(1, 3))
+  expect_identical(dots_list(!!!NULL), named_list())
+  expect_identical(dots_list(1, !!!NULL, 3), named_list(1, 3))
 })
 
 test_that("dots_splice() flattens lists", {
   local_lifecycle_silence()
-  expect_identical(dots_splice(list("a", list("b"), "c"), "d", list("e")), named_list("a", list("b"), "c", "d", "e"))
-  expect_identical(dots_splice(list("a"), !!! list("b"), list("c"), "d"), named_list("a", "b", "c", "d"))
-  expect_identical(dots_splice(list("a"), splice(list("b")), list("c"), "d"), named_list("a", "b", "c", "d"))
+  expect_identical(
+    dots_splice(list("a", list("b"), "c"), "d", list("e")),
+    named_list("a", list("b"), "c", "d", "e")
+  )
+  expect_identical(
+    dots_splice(list("a"), !!!list("b"), list("c"), "d"),
+    named_list("a", "b", "c", "d")
+  )
+  expect_identical(
+    dots_splice(list("a"), splice(list("b")), list("c"), "d"),
+    named_list("a", "b", "c", "d")
+  )
 })
 
 test_that("dots_splice() doesn't squash S3 objects", {
@@ -154,9 +175,12 @@ test_that("can unquote quosures in LHS", {
 
 test_that("can preserve empty arguments", {
   list3 <- function(...) unname(dots_list(..., .preserve_empty = TRUE))
-  expect_identical(list3(, ), list(missing_arg()))
-  expect_identical(list3(, , .ignore_empty = "none"), list(missing_arg(), missing_arg()))
-  expect_identical(list3(, , .ignore_empty = "all"), list())
+  expect_identical(list3(,), list(missing_arg()))
+  expect_identical(
+    list3(,, .ignore_empty = "none"),
+    list(missing_arg(), missing_arg())
+  )
+  expect_identical(list3(,, .ignore_empty = "all"), list())
 })
 
 test_that("forced symbolic objects are not evaluated", {
@@ -250,13 +274,19 @@ test_that("`.homonyms` = 'error' fails with homonyms", {
 
 test_that("`.homonyms` works with spliced arguments", {
   args <- list(a = 1, b = 2, a = 3, a = 4, 5, 6)
-  expect_identical(dots_list(!!!args, .homonyms = "first"), list(a = 1, b = 2, 5, 6))
+  expect_identical(
+    dots_list(!!!args, .homonyms = "first"),
+    list(a = 1, b = 2, 5, 6)
+  )
 
   myexprs <- function(...) enexprs(..., .homonyms = "last")
   expect_identical(myexprs(!!!args), list(b = 2, a = 4, 5, 6))
 
   myquos <- function(...) enquos(..., .homonyms = "first")
-  expect_identical(myquos(!!!args), quos_list(a = quo(1), b = quo(2), quo(5), quo(6)))
+  expect_identical(
+    myquos(!!!args),
+    quos_list(a = quo(1), b = quo(2), quo(5), quo(6))
+  )
 })
 
 test_that("can mix `!!!` and splice boxes", {
@@ -264,16 +294,25 @@ test_that("can mix `!!!` and splice boxes", {
 })
 
 test_that("list2() and dots_values() support splice boxes", {
-  expect_identical(list2(1, splice(c("foo", "bar")), 3), list(1, "foo", "bar", 3))
+  expect_identical(
+    list2(1, splice(c("foo", "bar")), 3),
+    list(1, "foo", "bar", 3)
+  )
 
   local_lifecycle_silence()
-  expect_identical(dots_values(1, splice(c("foo", "bar")), 3), list(1, splice(list("foo", "bar")), 3))
+  expect_identical(
+    dots_values(1, splice(c("foo", "bar")), 3),
+    list(1, splice(list("foo", "bar")), 3)
+  )
 })
 
 test_that("dots_values() doesn't splice", {
   local_lifecycle_silence()
   expect_identical_(dots_values(!!!c(1:3)), list(splice(as.list(1:3))))
-  expect_identical_(dots_values(!!!list("foo", "bar")), list(splice(list("foo", "bar"))))
+  expect_identical_(
+    dots_values(!!!list("foo", "bar")),
+    list(splice(list("foo", "bar")))
+  )
 })
 
 test_that("!!! does not evaluate multiple times (#981)", {

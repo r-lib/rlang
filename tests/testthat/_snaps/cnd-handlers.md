@@ -1,9 +1,8 @@
 # try_fetch() checks inputs
 
     Code
-      (expect_error(try_fetch(NULL, function(...) NULL)))
-    Output
-      <error/rlang_error>
+      try_fetch(NULL, function(...) NULL)
+    Condition <rlang_error>
       Error in `try_fetch()`:
       ! `...` must be named with condition classes.
 
@@ -21,7 +20,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(...)
+        1. +-catch_error(...)
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -49,7 +48,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(...)
+        1. +-catch_error(...)
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -78,7 +77,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(high1(chain = TRUE))
+        1. +-catch_error(high1(chain = TRUE))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -109,7 +108,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(high1(chain = TRUE))
+        1. +-catch_error(high1(chain = TRUE))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -139,7 +138,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(high1(chain = FALSE))
+        1. +-catch_error(high1(chain = FALSE))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)
@@ -168,7 +167,7 @@
       ---
       Backtrace:
            x
-        1. +-rlang:::catch_error(high1(chain = FALSE))
+        1. +-catch_error(high1(chain = FALSE))
         2. | \-rlang::catch_cnd(expr, "error")
         3. |   +-rlang::eval_bare(...)
         4. |   +-base::tryCatch(...)

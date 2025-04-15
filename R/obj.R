@@ -45,12 +45,6 @@ unmark_object <- function(x) {
 true_length <- function(x) {
   .Call(ffi_true_length, x)
 }
-env_frame <- function(x) {
-  .Call(ffi_env_frame, x)
-}
-env_hash_table <- function(x) {
-  .Call(ffi_env_hash_table, x)
-}
 
 promise_expr <- function(name, env = caller_env()) {
   .Call(ffi_promise_expr, name, env)
@@ -89,10 +83,10 @@ vec_alloc <- function(type, n) {
 
 # Note that the C-level function has inverted arguments
 find_var <- function(env, sym) {
-  .Call(ffi_find_var, env, sym);
+  .Call(ffi_find_var, env, sym)
 }
 find_var_in_frame <- function(env, sym) {
-  .Call(ffi_find_var, env, sym);
+  .Call(ffi_find_var, env, sym)
 }
 
 chr_get <- function(x, i = 0L) {

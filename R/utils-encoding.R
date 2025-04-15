@@ -145,7 +145,8 @@ cast_raw <- function(x, call = caller_env()) {
 
 # Used in internal/vec.c
 legacy_as_raw <- function(x) {
-  switch(typeof(x),
+  switch(
+    typeof(x),
     raw = return(x),
     character = if (is_string(x)) return(charToRaw(x))
   )

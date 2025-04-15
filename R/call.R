@@ -118,7 +118,8 @@ call2 <- function(.fn, ..., .ns = NULL) {
 #' # parameters without defaults:
 #' new_function(pairlist2(x = , y = 3 * 6), quote(x * y))
 pairlist2 <- function(...) {
-  .Call(ffi_dots_pairlist,
+  .Call(
+    ffi_dots_pairlist,
     frame_env = environment(),
     named = FALSE,
     ignore_empty = "trailing",
@@ -324,20 +325,16 @@ call_print_fine_type <- function(call) {
     `?unary` = ,
     `!` = ,
     `!!` = ,
-    `!!!` =
-      "prefix",
+    `!!!` = "prefix",
     `function` = ,
     `while` = ,
     `for` = ,
     `repeat` = ,
-    `if` =
-      "control",
+    `if` = "control",
     `(` = ,
-    `{` =
-      "delim",
+    `{` = "delim",
     `[` = ,
-    `[[` =
-      "subset",
+    `[[` = "subset",
     # These operators always print in infix form even if they have
     # more arguments
     `<-` = ,
@@ -346,8 +343,7 @@ call_print_fine_type <- function(call) {
     `::` = ,
     `:::` = ,
     `$` = ,
-    `@` =
-      "infix",
+    `@` = "infix",
     `+` = ,
     `-` = ,
     `?` = ,
@@ -368,12 +364,11 @@ call_print_fine_type <- function(call) {
     `%%` = ,
     `special` = ,
     `:` = ,
-    `^` =
-      if (length(node_cdr(call)) == 2) {
-        "infix"
-      } else {
-        "call"
-      }
+    `^` = if (length(node_cdr(call)) == 2) {
+      "infix"
+    } else {
+      "call"
+    }
   )
 }
 
@@ -523,7 +518,7 @@ call_has_precedence <- function(call, parent_call, side = NULL) {
 #' call_modify(call, na.rm = )
 #'
 #' # Supply a list of new arguments with `!!!`
-#' newargs <- list(na.rm = NULL, trim = 0.1)
+#' newargs <- list(na.rm = zap(), trim = 0.1)
 #' call <- call_modify(call, !!!newargs)
 #' call
 #'
@@ -557,18 +552,20 @@ call_has_precedence <- function(call, parent_call, side = NULL) {
 #' # subtle implications, for instance you can move an argument to
 #' # last position by removing it and remapping it:
 #' call <- quote(foo(bar = , baz))
-#' call_modify(call, bar = NULL, bar = missing_arg())
+#' call_modify(call, bar = zap(), bar = missing_arg())
 #'
 #' # You can also choose to keep only the first or last homonym
 #' # arguments:
-#' args <-  list(bar = NULL, bar = missing_arg())
+#' args <-  list(bar = zap(), bar = missing_arg())
 #' call_modify(call, !!!args, .homonyms = "first")
 #' call_modify(call, !!!args, .homonyms = "last")
-call_modify <- function(.call,
-                        ...,
-                        .homonyms = c("keep", "first", "last", "error"),
-                        .standardise = NULL,
-                        .env = caller_env()) {
+call_modify <- function(
+  .call,
+  ...,
+  .homonyms = c("keep", "first", "last", "error"),
+  .standardise = NULL,
+  .env = caller_env()
+) {
   args <- dots_list(..., .preserve_empty = TRUE, .homonyms = .homonyms)
 
   expr <- get_expr(.call)
@@ -715,12 +712,14 @@ abort_simple_call_input_type <- function(arg, fn, call = caller_env()) {
 #' call_match(quote(fn()), fn)
 #' call_match(quote(fn()), fn, defaults = TRUE)
 #' @export
-call_match <- function(call = NULL,
-                       fn = NULL,
-                       ...,
-                       defaults = FALSE,
-                       dots_env = NULL,
-                       dots_expand = TRUE) {
+call_match <- function(
+  call = NULL,
+  fn = NULL,
+  ...,
+  defaults = FALSE,
+  dots_env = NULL,
+  dots_expand = TRUE
+) {
   check_dots_empty0(...)
 
   if (is_null(call)) {
@@ -840,7 +839,8 @@ call_name <- function(call) {
     return(NULL)
   }
 
-  switch(call_type(call),
+  switch(
+    call_type(call),
     named = as_string(node_car(call)),
     namespaced = as_string(node_cadr(node_cdar(call))),
     NULL

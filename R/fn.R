@@ -217,12 +217,12 @@ fn_body_node <- function(fn) {
 #' partial matching, etc). One practical consequence of the special
 #' way in which primitives are passed arguments is that they
 #' technically do not have formal arguments, and [formals()] will
-#' return `NULL` if called on a primitive function. Finally, primitive 
-#' functions can either take arguments lazily, like R closures do, 
-#' or evaluate them eagerly before being passed on to the C code. 
-#' The former kind of primitives are called "special" in R terminology, 
-#' while the latter is referred to as "builtin". `is_primitive_eager()` 
-#' and `is_primitive_lazy()` allow you to check whether a primitive 
+#' return `NULL` if called on a primitive function. Finally, primitive
+#' functions can either take arguments lazily, like R closures do,
+#' or evaluate them eagerly before being passed on to the C code.
+#' The former kind of primitives are called "special" in R terminology,
+#' while the latter is referred to as "builtin". `is_primitive_eager()`
+#' and `is_primitive_lazy()` allow you to check whether a primitive
 #' function evaluates arguments eagerly or lazily.
 #'
 #' You will also encounter the distinction between primitive and
@@ -325,7 +325,7 @@ fn_env <- function(fn) {
     return(ns_env("base"))
   }
 
-  if(is_closure(fn)) {
+  if (is_closure(fn)) {
     return(environment(fn))
   }
 
@@ -380,11 +380,13 @@ fn_env <- function(fn) {
 #' # Functions created from a formula have a special class:
 #' is_lambda(f)
 #' is_lambda(as_function(function() "foo"))
-as_function <- function(x,
-                        env = global_env(),
-                        ...,
-                        arg = caller_arg(x),
-                        call = caller_env()) {
+as_function <- function(
+  x,
+  env = global_env(),
+  ...,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
   check_dots_empty0(...)
 
   if (is_function(x)) {
@@ -413,7 +415,12 @@ as_function <- function(x,
       abort("Formula must carry an environment.", arg = arg, call = call)
     }
 
-    args <- list(... = missing_arg(), .x = quote(..1), .y = quote(..2), . = quote(..1))
+    args <- list(
+      ... = missing_arg(),
+      .x = quote(..1),
+      .y = quote(..2),
+      . = quote(..1)
+    )
     fn <- new_function(args, f_rhs(x), env)
     fn <- structure(fn, class = c("rlang_lambda_function", "function"))
     return(fn)
@@ -499,7 +506,8 @@ prim_args <- function(fmls) {
 utils::globalVariables(c("!<-", "(<-", "enexpr<-"))
 
 op_as_closure <- function(prim_nm) {
-  switch(prim_nm,
+  switch(
+    prim_nm,
     `<-` = ,
     `<<-` = ,
     `=` = function(.x, .y) {
@@ -541,25 +549,34 @@ op_as_closure <- function(prim_nm) {
       values <- list(...)
       values[[length(values)]]
     },
-    `&`  = new_binary_closure(function(.x, .y) .x & .y),
-    `|`  = new_binary_closure(function(.x, .y) .x | .y),
+    `&` = new_binary_closure(function(.x, .y) .x & .y),
+    `|` = new_binary_closure(function(.x, .y) .x | .y),
     `&&` = new_binary_closure(function(.x, .y) .x && .y),
-    `||` = new_binary_closure(function(.x, .y) .x || .y, shortcircuiting = TRUE),
-    `!`  = function(.x) !.x,
-    `+`  = new_binary_closure(function(.x, .y) if (missing(.y)) .x else .x + .y, versatile = TRUE),
-    `-`  = new_binary_closure(function(.x, .y) if (missing(.y)) -.x else .x - .y, versatile = TRUE),
-    `*`  = new_binary_closure(function(.x, .y) .x * .y),
-    `/`  = new_binary_closure(function(.x, .y) .x / .y),
-    `^`  = new_binary_closure(function(.x, .y) .x ^ .y),
+    `||` = new_binary_closure(
+      function(.x, .y) .x || .y,
+      shortcircuiting = TRUE
+    ),
+    `!` = function(.x) !.x,
+    `+` = new_binary_closure(
+      function(.x, .y) if (missing(.y)) .x else .x + .y,
+      versatile = TRUE
+    ),
+    `-` = new_binary_closure(
+      function(.x, .y) if (missing(.y)) -.x else .x - .y,
+      versatile = TRUE
+    ),
+    `*` = new_binary_closure(function(.x, .y) .x * .y),
+    `/` = new_binary_closure(function(.x, .y) .x / .y),
+    `^` = new_binary_closure(function(.x, .y) .x^.y),
     `%%` = new_binary_closure(function(.x, .y) .x %% .y),
-    `<`  = new_binary_closure(function(.x, .y) .x < .y),
+    `<` = new_binary_closure(function(.x, .y) .x < .y),
     `<=` = new_binary_closure(function(.x, .y) .x <= .y),
-    `>`  = new_binary_closure(function(.x, .y) .x > .y),
+    `>` = new_binary_closure(function(.x, .y) .x > .y),
     `>=` = new_binary_closure(function(.x, .y) .x >= .y),
     `==` = new_binary_closure(function(.x, .y) .x == .y),
     `!=` = new_binary_closure(function(.x, .y) .x != .y),
-    `:`  = new_binary_closure(function(.x, .y) .x : .y),
-    `~`  = function(.x, .y) {
+    `:` = new_binary_closure(function(.x, .y) .x:.y),
+    `~` = function(.x, .y) {
       if (is_missing(substitute(.y))) {
         new_formula(NULL, substitute(.x), caller_env())
       } else {
@@ -580,14 +597,16 @@ op_as_closure <- function(prim_nm) {
     `return` = ,
     `while` = {
       nm <- chr_quoted(prim_nm)
-      abort(paste0("Can't coerce the primitive function ", nm, " to a closure."))
+      abort(paste0(
+        "Can't coerce the primitive function ",
+        nm,
+        " to a closure."
+      ))
     }
   )
 }
 
-new_binary_closure <- function(fn,
-                               versatile = FALSE,
-                               shortcircuiting = FALSE) {
+new_binary_closure <- function(fn, versatile = FALSE, shortcircuiting = FALSE) {
   if (versatile) {
     nodes <- versatile_check_nodes
   } else if (shortcircuiting) {

@@ -8,9 +8,7 @@
 #
 # nocov start
 
-
 check_linked_version <- local({
-
   # Keep in sync with standalone-downstream-deps.R
   howto_reinstall_msg <- function(pkg) {
     os <- tolower(Sys.info()[["sysname"]])
@@ -19,11 +17,18 @@ check_linked_version <- local({
       url <- "https://github.com/jennybc/what-they-forgot/issues/62"
       c(
         i = sprintf("Please update %s to the latest version.", pkg),
-        i = sprintf("Updating packages on Windows requires precautions:\n  <%s>", url)
+        i = sprintf(
+          "Updating packages on Windows requires precautions:\n  <%s>",
+          url
+        )
       )
     } else {
       c(
-        i = sprintf("Please update %s with `install.packages(\"%s\")` and restart R.", pkg, pkg)
+        i = sprintf(
+          "Please update %s with `install.packages(\"%s\")` and restart R.",
+          pkg,
+          pkg
+        )
       )
     }
   }
@@ -48,15 +53,19 @@ check_linked_version <- local({
     header <- sprintf("The %s package is not properly installed.", pkg)
 
     if (nzchar(linked_ver)) {
-      msg <- c(x = sprintf(
-        "The DLL version (%s) does not correspond to the package version (%s).",
-        linked_ver,
-        ver
-      ))
+      msg <- c(
+        x = sprintf(
+          "The DLL version (%s) does not correspond to the package version (%s).",
+          linked_ver,
+          ver
+        )
+      )
     } else {
       # Package does not have a version pointer. This happens when DLL
       # updating fails for the first version that includes the pointer.
-      msg <- c(x = "The DLL version does not correspond to the package version.")
+      msg <- c(
+        x = "The DLL version does not correspond to the package version."
+      )
     }
 
     msg <- c(msg, howto_reinstall_msg(pkg))
@@ -70,6 +79,5 @@ check_linked_version <- local({
     }
   }
 })
-
 
 # nocov end

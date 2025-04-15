@@ -21,7 +21,7 @@ Condition formatting is a set of operations applied to raw inputs for error mess
 #> x A cross bullet
 }\if{html}{\out{</div>}}
 
-See the \href{https://style.tidyverse.org/error-messages.html}{tidyverse error style guide} for more about this style of error messaging.
+See the \href{https://style.tidyverse.org/errors.html}{tidyverse error style guide} for more about this style of error messaging.
 \item Applying style (emphasis, boldness, ...) and colours to message elements.
 }
 

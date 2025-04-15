@@ -20,7 +20,7 @@
 #'   a logical vector as long as the input.
 #'
 #' @details
-#' `is_named()` always returns `TRUE` for empty vectors because 
+#' `is_named()` always returns `TRUE` for empty vectors because
 #'
 #' @examples
 #' # is_named() is a scalar predicate about the whole vector of names:
@@ -110,6 +110,10 @@ detect_void_name <- function(x) {
 is_dictionaryish <- function(x) {
   # 2022-01: Used in many packages. Don't deprecate without a
   # replacement.
+  if (is.null(x)) {
+    return(TRUE)
+  }
+
   if (!length(x)) {
     return(!is.null(x))
   }

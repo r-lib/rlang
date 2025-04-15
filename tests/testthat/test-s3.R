@@ -67,9 +67,9 @@ test_that("as_box_if() ensures boxed value if predicate returns TRUE", {
 
   expect_null(as_box_if(NULL, is_vector, "null_box"))
 
-  expect_snapshot({
-    (expect_error(as_box_if(NULL, ~ 10)))
-    (expect_error(as_box_if(NULL, ~ c(TRUE, FALSE))))
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    as_box_if(NULL, ~10)
+    as_box_if(NULL, ~ c(TRUE, FALSE))
   })
 })
 
@@ -113,5 +113,8 @@ test_that("done() can be empty", {
 test_that("splice box is constructed", {
   box <- splice(list(NA))
   expect_true(is.object(box))
-  expect_identical(box, structure(list(list(NA)), class = c("rlang_box_splice", "rlang_box")))
+  expect_identical(
+    box,
+    structure(list(list(NA)), class = c("rlang_box_splice", "rlang_box"))
+  )
 })
