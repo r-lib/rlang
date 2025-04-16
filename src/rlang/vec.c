@@ -38,7 +38,9 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
     C_TYPE* p_out = DEREF(out);                                 \
                                                                 \
     r_ssize cpy_size = (size > x_size) ? x_size : size;         \
-    memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));              \
+    if (cpy_size > 0) {                                         \
+      memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));            \
+    }                                                           \
                                                                 \
     FREE(1);                                                    \
     return out;                                                 \
