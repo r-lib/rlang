@@ -225,7 +225,7 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
   if (p_state->n_skipped == N_BYTES_SERIALIZATION_INFO) {
     // We've skipped all serialization info bytes.
     // Incoming bytes tell the size of the native encoding string.
-    memcpy(&p_state->n_native_enc, p_input, sizeof(int));
+    r_memcpy(&p_state->n_native_enc, p_input, sizeof(int));
     p_state->n_skipped += n;
     return;
   }

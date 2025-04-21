@@ -33,7 +33,7 @@ r_obj* ffi_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
   r_obj* buf = KEEP(r_alloc_raw(len));
   char* p_buf = (char*) r_raw_begin(buf);
 
-  memcpy(p_buf, s_prefix, len_prefix);
+  r_memcpy(p_buf, s_prefix, len_prefix);
   p_buf += len_prefix;
 
   const char* lookup = "0123456789abcdef";
@@ -44,7 +44,7 @@ r_obj* ffi_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
     *p_buf++ = lookup[value % 16];
   }
 
-  memcpy(p_buf, s_suffix, len_suffix);
+  r_memcpy(p_buf, s_suffix, len_suffix);
   p_buf += len_suffix;
 
   // Invariant: p_buf == r_raw_begin(buf) + len
