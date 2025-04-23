@@ -86,7 +86,7 @@ r_obj* str_unserialise_unicode(r_obj* r_string) {
     // Need to check first if the string has any UTF-8 escapes.
     int orig_len = strlen(re_enc);
     char tmp[orig_len + 1];
-    memcpy(tmp, re_enc, orig_len + 1);
+    r_memcpy(tmp, re_enc, orig_len + 1);
     return unescape_char_to_sexp(tmp);
   } else {
     // The string has been copied so it's safe to use as buffer

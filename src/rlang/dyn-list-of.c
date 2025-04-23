@@ -208,9 +208,9 @@ bool reserve_push_back(struct r_dyn_list_of* p_lof, r_ssize i, void* p_elt) {
   void* p = ((unsigned char*) p_lof->v_reserve) + offset;
 
   if (p_elt) {
-    memcpy(p, p_elt, p_lof->elt_byte_size);
+    r_memcpy(p, p_elt, p_lof->elt_byte_size);
   } else {
-    memset(p, 0, p_lof->elt_byte_size);
+    r_memset(p, 0, p_lof->elt_byte_size);
   }
 
   return true;
@@ -227,7 +227,7 @@ void reserve_move(struct r_dyn_list_of* p_lof, r_ssize i, void* p_elt) {
 
   void* v_new = r_dyn_begin(p_new);
   void* v_old = R_DYN_GET(struct r_pair_ptr_ssize, p_lof->p_arrays, i).ptr;
-  memcpy(v_new, v_old, r_ssize_mult(n, p_lof->elt_byte_size));
+  r_memcpy(v_new, v_old, r_ssize_mult(n, p_lof->elt_byte_size));
 
   p_new->count = n;
 

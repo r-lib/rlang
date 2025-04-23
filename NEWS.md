@@ -1,5 +1,9 @@
 # rlang (development version)
 
+* C code no longer calls `memcpy()` and `memset()` on 0-length R object memory
+  (#1797).
+
+
 # rlang 1.1.6
 
 * Fixes for CRAN checks.

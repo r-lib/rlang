@@ -76,9 +76,9 @@ void r_dyn_push_back(struct r_dyn_array* p_arr,
     r_obj* value = *((r_obj* const *) p_elt);
     p_arr->barrier_set(p_arr->data, loc, value);
   } else if (p_elt) {
-    memcpy(r_dyn_last(p_arr), p_elt, p_arr->elt_byte_size);
+    r_memcpy(r_dyn_last(p_arr), p_elt, p_arr->elt_byte_size);
   } else {
-    memset(r_dyn_last(p_arr), 0, p_arr->elt_byte_size);
+    r_memset(r_dyn_last(p_arr), 0, p_arr->elt_byte_size);
   }
 }
 
