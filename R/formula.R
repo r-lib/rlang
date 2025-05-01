@@ -100,7 +100,7 @@ is_bare_formula <- function(x, scoped = TRUE, lhs = NULL) {
 
 #' Get or set formula components
 #'
-#' `f_rhs` extracts the righthand side, `f_lhs` extracts the lefthand
+#' `f_rhs` extracts the right-hand side, `f_lhs` extracts the left-hand
 #' side, and `f_env` extracts the environment. All functions throw an
 #' error if `f` is not a formula.
 #'

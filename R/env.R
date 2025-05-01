@@ -603,7 +603,7 @@ env_unlock <- function(env) {
 #' * Whether the environment is [locked][env_lock].
 #'
 #' * The bindings in the environment (up to 20 bindings). They are
-#'   printed succintly using `pillar::type_sum()` (if available,
+#'   printed succinctly using `pillar::type_sum()` (if available,
 #'   otherwise uses an internal version of that generic). In addition
 #'   [fancy bindings][env_bind_lazy] (actives and promises) are
 #'   indicated as such.

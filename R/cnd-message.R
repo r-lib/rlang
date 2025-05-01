@@ -389,7 +389,7 @@ on_load({
 #' The bullet formatting for errors follows the idea that sentences in
 #' error messages are best kept short and simple. The best way to
 #' present the information is in the [cnd_body()] method of an error
-#' conditon as a bullet list of simple sentences containing a single
+#' condition as a bullet list of simple sentences containing a single
 #' clause. The info and cross symbols of the bullets provide hints on
 #' how to interpret the bullet relative to the general error issue,
 #' which should be supplied as [cnd_header()].

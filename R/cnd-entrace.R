@@ -115,7 +115,7 @@ environment(hnd_entrace) <- baseenv()
 #' `entrace()` also works as an `option(error = )` handler for
 #' compatibility with versions of R older than 4.0.
 #'
-#' When used as calling handler, rlang trims the handler invokation
+#' When used as calling handler, rlang trims the handler invocation
 #' context from the backtrace.
 #'
 #' @inheritParams trace_back
@@ -155,7 +155,7 @@ entrace <- function(cnd, ..., top = NULL, bottom = NULL) {
     }
   }
 
-  # Remove handler invokation context from the trace
+  # Remove handler invocation context from the trace
   if (is_environment(bottom)) {
     nframe <- eval_bare(quote(base::sys.nframe()), bottom) - 1
     info <- signal_context_info(nframe)

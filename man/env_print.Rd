@@ -16,7 +16,7 @@ This prints:
 \item The \link[=env_label]{label} and the parent label.
 \item Whether the environment is \link[=env_lock]{locked}.
 \item The bindings in the environment (up to 20 bindings). They are
-printed succintly using \code{pillar::type_sum()} (if available,
+printed succinctly using \code{pillar::type_sum()} (if available,
 otherwise uses an internal version of that generic). In addition
 \link[=env_bind_lazy]{fancy bindings} (actives and promises) are
 indicated as such.

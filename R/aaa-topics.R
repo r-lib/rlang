@@ -42,7 +42,7 @@ sprintf_topic_link <- function(id, topic = NULL) {
   html_title <- gsub("{", "\\{", html_title, fixed = TRUE)
   html <- sprintf("\\link[=%s]{%s}", topic, html_title)
 
-  # Link texts can't include curly symbols because the escpaing
+  # Link texts can't include curly symbols because the escaping
   # routine of the Rd-to-TeX translators is broken
   text_title <- gsub("`", "", title)
   text_title <- gsub("{{", "curly-curly", text_title, fixed = TRUE)
