@@ -9,7 +9,7 @@
 #   be a user frame as well when the condition is signalled from C,
 #   e.g. with `Rf_error()`.
 #
-# - Handler frame. This is adjascent to the signal frame but may have
+# - Handler frame. This is adjacent to the signal frame but may have
 #   various intervening frames in between. Mostly this is about
 #   detecting that we rethrowing from a handler.
 #

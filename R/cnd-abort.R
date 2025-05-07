@@ -168,7 +168,7 @@
 #'   output by redirecting `stderr`.
 #'
 #' - If a sink is active (either on output or on messages) messages
-#'   are always streamd to `stderr`.
+#'   are always streamed to `stderr`.
 #'
 #' These exceptions ensure consistency of behaviour in interactive and
 #' non-interactive sessions, and when sinks are active.
@@ -254,7 +254,7 @@
 #' g <- function() {
 #'   f()
 #' }
-#' # Shows that the error occured in `my_function()`
+#' # Shows that the error occurred in `my_function()`
 #' try(g())
 #'
 #' }

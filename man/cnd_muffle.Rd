@@ -23,7 +23,7 @@ being called for that condition.
 \section{Mufflable conditions}{
 
 
-Most conditions signalled by base R are muffable, although the name
+Most conditions signalled by base R are mufflable, although the name
 of the restart varies. cnd_muffle() will automatically call the
 correct restart for you. It is compatible with the following
 conditions:

@@ -34,7 +34,7 @@ Evaluating expressions in the actual frame environment has useful
 practical implications for \code{eval_bare()}:
 \itemize{
 \item \code{return()} calls are evaluated in frame environments that might
-be burried deep in the call stack. This causes a long return that
+be buried deep in the call stack. This causes a long return that
 unwinds multiple frames (triggering the \code{on.exit()} event for
 each frame). By contrast \code{eval()} only returns from the \code{eval()}
 call, one level up.

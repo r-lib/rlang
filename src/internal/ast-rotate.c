@@ -489,7 +489,7 @@ void find_lower_pivot(r_obj* x,
 /**
  * node_list_interp_fixup() - Expansion for binary operators that might need fixup
  *
- * @x A call to a binary operator whith problematic precedence
+ * @x A call to a binary operator with problematic precedence
  *   (between prec(`!`) and prec(`!!`)).
  * @env The environment where to unquote the `!!` target.
  * @parent Needed to handle a mix of unary and binary operators
@@ -559,7 +559,7 @@ void node_list_interp_fixup_rhs(r_obj* rhs,
     info->lower_root = rhs_node;
 
     // There might be a lower pivot, so we need to find it. Also find
-    // the target of unquoting (leftmost leaf whose predecence is
+    // the target of unquoting (leftmost leaf whose precedence is
     // greater than prec(`!!`)) and unquote it.
     info->lower_pivot = info->upper_pivot;
     info->lower_pivot_op = info->upper_pivot_op;
