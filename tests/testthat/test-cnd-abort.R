@@ -414,10 +414,12 @@ test_that("error_call() and format_error_call() preserve special syntax ops", {
   )
   expect_snapshot(format_error_call(quote(1 + 2)))
 
+  # fmt: skip
   expect_equal(
     error_call(quote(for (x in y) NULL)),
     quote(for (x in y) NULL)
   )
+  # fmt: skip
   expect_snapshot(format_error_call(quote(for (x in y) NULL)))
 
   expect_snapshot(format_error_call(quote(a %||% b)))
