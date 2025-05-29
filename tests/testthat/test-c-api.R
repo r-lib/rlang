@@ -83,9 +83,30 @@ test_that("r_which_operator() returns correct tokens", {
   expect_identical(call_parse_type(quote(?a)), "?unary")
   expect_identical(call_parse_type(quote(a?b)), "?")
 
-  expect_identical(call_parse_type(quote(while (a) b)), "while")
-  expect_identical(call_parse_type(quote(for (a in b) b)), "for")
-  expect_identical(call_parse_type(quote(repeat a)), "repeat")
+  expect_identical(
+    call_parse_type(quote(
+      while (a) {
+        b
+      }
+    )),
+    "while"
+  )
+  expect_identical(
+    call_parse_type(quote(
+      for (a in b) {
+        b
+      }
+    )),
+    "for"
+  )
+  expect_identical(
+    call_parse_type(quote(
+      repeat {
+        a
+      }
+    )),
+    "repeat"
+  )
   expect_identical(call_parse_type(quote(if (a) b)), "if")
   expect_identical(call_parse_type(quote(break)), "break")
   expect_identical(call_parse_type(quote(next)), "next")

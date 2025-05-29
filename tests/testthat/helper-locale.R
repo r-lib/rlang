@@ -18,15 +18,17 @@ get_lang_strings <- function() {
 
 get_native_lang_string <- function() {
   lang_strings <- get_lang_strings()
-  if (length(lang_strings$same) == 0)
+  if (length(lang_strings$same) == 0) {
     testthat::skip("No native language string available")
+  }
   lang_strings$same[[1L]]
 }
 
 get_alien_lang_string <- function() {
   lang_strings <- get_lang_strings()
-  if (length(lang_strings$different) == 0)
+  if (length(lang_strings$different) == 0) {
     testthat::skip("No alien language string available")
+  }
   lang_strings$different[[1L]]
 }
 

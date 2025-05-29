@@ -139,6 +139,8 @@ cli_is_utf8_output <- function() {
 }
 
 cli_is_latex_output <- function() {
-  if (!("knitr" %in% loadedNamespaces())) return(FALSE)
+  if (!("knitr" %in% loadedNamespaces())) {
+    return(FALSE)
+  }
   get("is_latex_output", asNamespace("knitr"))()
 }

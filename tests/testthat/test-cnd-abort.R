@@ -743,9 +743,12 @@ test_that("`parent = NA` signals a non-chained rethrow", {
     print(err(ff()))
 
     "Wrapped handler"
-    handler1 <- function(cnd, call = caller_env()) handler2(cnd, call)
-    handler2 <- function(cnd, call)
+    handler1 <- function(cnd, call = caller_env()) {
+      handler2(cnd, call)
+    }
+    handler2 <- function(cnd, call) {
       abort(cnd_header(cnd), parent = NA, call = call)
+    }
     hh <- function() {
       withCallingHandlers(
         foo(),
@@ -796,12 +799,13 @@ test_that("if `call` is older than handler caller, use that as bottom", {
   helper <- function(call = caller_env()) {
     try_fetch(
       low_level(call),
-      error = function(cnd)
+      error = function(cnd) {
         abort(
           "Problem.",
           parent = cnd,
           call = call
         )
+      }
     )
   }
 
