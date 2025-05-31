@@ -61,20 +61,26 @@ r_obj* node_names(r_obj* x) {
 }
 
 r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
-  int n_kept = 0;
-
-  r_obj* dots = KEEP_N(rlang_dots(env), &n_kept);
-
   if (!r_is_vector(x, -1)) {
     r_abort("`x` must be a vector");
   }
 
   if (nm == r_null) {
-    x = set_names_dispatch(x, r_null, env);
-
-    FREE(n_kept);
-    return x;
+    // Fast case for dropping names
+    if (r_is_object(x)) {
+      return set_names_dispatch(x, r_null, env);
+    } else if (r_names(x) != r_null) {
+      x = r_wrap_or_clone(x);
+      r_attrib_poke_names(x, r_null);
+      return x;
+    } else {
+      return x;
+    }
   }
+
+  int n_kept = 0;
+
+  r_obj* dots = KEEP_N(rlang_dots(env), &n_kept);
 
   if (r_is_function(nm) || r_is_formula(nm, -1, -1)) {
     if (r_names(mold) == r_null) {
@@ -85,12 +91,16 @@ r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
 
     nm = KEEP_N(rlang_as_function(nm, env), &n_kept);
     nm = KEEP_N(eval_fn_dots(nm, mold, dots, env), &n_kept);
-  } else {
-    if (r_length(dots) > 0) {
-      nm = KEEP_N(eval_fn_dots(c_fn, nm, dots, env), &n_kept);
-    }
+  } else if (r_length(dots) > 0) {
+    nm = KEEP_N(eval_fn_dots(c_fn, nm, dots, env), &n_kept);
+  }
 
+  if (r_typeof(nm) != R_TYPE_character || r_is_object(nm)) {
     nm = KEEP_N(eval_as_character(nm, env), &n_kept);
+
+    if (r_typeof(nm) != R_TYPE_character) {
+      r_abort("`nm` must be `NULL` or a character vector.");
+    }
   }
 
   r_ssize n;
@@ -98,10 +108,6 @@ r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
     n = length_dispatch(x, env);
   } else {
     n = r_length(x);
-  }
-
-  if (r_typeof(nm) != R_TYPE_character) {
-    r_abort("`nm` must be `NULL` or a character vector.");
   }
 
   r_ssize nm_n = r_length(nm);
@@ -118,11 +124,12 @@ r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
     r_chr_fill(nm, val, n);
   }
 
-  if (!is_character(nm, n, OPTION_BOOL_null, OPTION_BOOL_null)) {
-    r_abort("`nm` must be `NULL` or a character vector the same length as `x`");
+  if (r_is_object(x)) {
+    x = set_names_dispatch(x, nm, env);
+  } else {
+    x = r_wrap_or_clone(x);
+    r_attrib_poke_names(x, nm);
   }
-
-  x = set_names_dispatch(x, nm, env);
 
   FREE(n_kept);
   return x;
@@ -158,9 +165,6 @@ r_obj* names_dispatch(r_obj* x, r_obj* env) {
   return r_eval(names_call, env);
 }
 
-// Use `names<-()` rather than setting names directly with `r_attrib_poke_names()`
-// for genericity and for speed. `names<-()` can shallow duplicate `x`'s
-// attributes using ALTREP wrappers, which is not in R's public API.
 static inline
 r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env) {
   r_env_poke(env, r_syms.dot_x, x);
