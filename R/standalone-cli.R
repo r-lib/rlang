@@ -91,14 +91,24 @@
 #' functions apply default ANSI colours to these symbols if possible.
 #'
 #' @noRd
-symbol_info <- function() if (.rlang_cli_has_cli()) cli::symbol$info else "i"
-symbol_cross <- function() if (.rlang_cli_has_cli()) cli::symbol$cross else "x"
-symbol_tick <- function() if (.rlang_cli_has_cli()) cli::symbol$tick else "v"
-symbol_bullet <- function()
+symbol_info <- function() {
+  if (.rlang_cli_has_cli()) cli::symbol$info else "i"
+}
+symbol_cross <- function() {
+  if (.rlang_cli_has_cli()) cli::symbol$cross else "x"
+}
+symbol_tick <- function() {
+  if (.rlang_cli_has_cli()) cli::symbol$tick else "v"
+}
+symbol_bullet <- function() {
   if (.rlang_cli_has_cli()) cli::symbol$bullet else "*"
-symbol_arrow <- function()
+}
+symbol_arrow <- function() {
   if (.rlang_cli_has_cli()) cli::symbol$arrow_right else ">"
-symbol_alert <- function() "!"
+}
+symbol_alert <- function() {
+  "!"
+}
 
 ansi_info <- function() col_blue(symbol_info())
 ansi_cross <- function() col_red(symbol_cross())
@@ -117,98 +127,167 @@ ansi_alert <- function() col_yellow(symbol_alert())
 #' @param x A string.
 #'
 #' @noRd
-col_black <- function(x)
+col_black <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_black(x)) else x
-col_blue <- function(x)
+}
+col_blue <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_blue(x)) else x
-col_cyan <- function(x)
+}
+col_cyan <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_cyan(x)) else x
-col_green <- function(x)
+}
+col_green <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_green(x)) else x
-col_magenta <- function(x)
+}
+col_magenta <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_magenta(x)) else x
-col_red <- function(x)
+}
+col_red <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_red(x)) else x
-col_white <- function(x)
+}
+col_white <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_white(x)) else x
-col_yellow <- function(x)
+}
+col_yellow <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_yellow(x)) else x
-col_grey <- function(x)
+}
+col_grey <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_grey(x)) else x
-col_silver <- function(x)
+}
+col_silver <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_silver(x)) else x
-col_none <- function(x)
+}
+col_none <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::col_none(x)) else x
+}
 
-bg_black <- function(x)
+bg_black <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_black(x)) else x
-bg_blue <- function(x)
+}
+bg_blue <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_blue(x)) else x
-bg_cyan <- function(x)
+}
+bg_cyan <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_cyan(x)) else x
-bg_green <- function(x)
+}
+bg_green <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_green(x)) else x
-bg_magenta <- function(x)
+}
+bg_magenta <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_magenta(x)) else x
-bg_red <- function(x)
+}
+bg_red <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_red(x)) else x
-bg_white <- function(x)
+}
+bg_white <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_white(x)) else x
-bg_yellow <- function(x)
+}
+bg_yellow <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_yellow(x)) else x
-bg_none <- function(x)
+}
+bg_none <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::bg_none(x)) else x
+}
 
-style_dim <- function(x)
+style_dim <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_dim(x)) else x
-style_blurred <- function(x)
+}
+style_blurred <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_blurred(x)) else x
-style_bold <- function(x)
+}
+style_bold <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_bold(x)) else x
-style_hidden <- function(x)
+}
+style_hidden <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_hidden(x)) else x
-style_inverse <- function(x)
+}
+style_inverse <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_inverse(x)) else x
-style_italic <- function(x)
+}
+style_italic <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_italic(x)) else x
-style_strikethrough <- function(x)
-  if (.rlang_cli_has_cli())
-    .rlang_cli_unstructure(cli::style_strikethrough(x)) else x
-style_underline <- function(x)
-  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_underline(x)) else
+}
+style_strikethrough <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_strikethrough(x))
+  } else {
     x
+  }
+}
+style_underline <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_underline(x))
+  } else {
+    x
+  }
+}
 
-style_no_dim <- function(x)
+style_no_dim <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_dim(x)) else x
-style_no_blurred <- function(x)
-  if (.rlang_cli_has_cli())
-    .rlang_cli_unstructure(cli::style_no_blurred(x)) else x
-style_no_bold <- function(x)
+}
+style_no_blurred <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_blurred(x))
+  } else {
+    x
+  }
+}
+style_no_bold <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_bold(x)) else x
-style_no_hidden <- function(x)
-  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_hidden(x)) else
+}
+style_no_hidden <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_hidden(x))
+  } else {
     x
-style_no_inverse <- function(x)
-  if (.rlang_cli_has_cli())
-    .rlang_cli_unstructure(cli::style_no_inverse(x)) else x
-style_no_italic <- function(x)
-  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_italic(x)) else
+  }
+}
+style_no_inverse <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_inverse(x))
+  } else {
     x
-style_no_strikethrough <- function(x)
-  if (.rlang_cli_has_cli())
-    .rlang_cli_unstructure(cli::style_no_strikethrough(x)) else x
-style_no_underline <- function(x)
-  if (.rlang_cli_has_cli())
-    .rlang_cli_unstructure(cli::style_no_underline(x)) else x
+  }
+}
+style_no_italic <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_italic(x))
+  } else {
+    x
+  }
+}
+style_no_strikethrough <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_strikethrough(x))
+  } else {
+    x
+  }
+}
+style_no_underline <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_underline(x))
+  } else {
+    x
+  }
+}
 
-style_reset <- function(x)
+style_reset <- function(x) {
   if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_reset(x)) else x
-style_no_colour <- function(x)
-  if (.rlang_cli_has_cli()) .rlang_cli_unstructure(cli::style_no_color(x)) else
+}
+style_no_colour <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_color(x))
+  } else {
     x
-style_no_bg_colour <- function(x)
-  if (.rlang_cli_has_cli())
-    .rlang_cli_unstructure(cli::style_no_bg_color(x)) else x
+  }
+}
+style_no_bg_colour <- function(x) {
+  if (.rlang_cli_has_cli()) {
+    .rlang_cli_unstructure(cli::style_no_bg_color(x))
+  } else {
+    x
+  }
+}
 
 CLI_SUPPORT_HYPERLINK <- "2.2.0"
 CLI_SUPPORT_HYPERLINK_PARAMS <- "3.1.1"
@@ -289,10 +368,12 @@ format_url <- function(x) .rlang_cli_format_inline(x, "url", "<%s>")
 format_var <- function(x) .rlang_cli_format_inline(x, "var", "`%s`")
 format_envvar <- function(x) .rlang_cli_format_inline(x, "envvar", "`%s`")
 format_field <- function(x) .rlang_cli_format_inline(x, "field", NULL)
-format_href <- function(x, target = NULL)
+format_href <- function(x, target = NULL) {
   .rlang_cli_format_inline_link(x, target, "href", "<%s>")
-format_run <- function(x, target = NULL)
+}
+format_run <- function(x, target = NULL) {
   .rlang_cli_format_inline_link(x, target, "run", "`%s`")
+}
 
 format_error_arg_highlight <- function(x, quote = TRUE) {
   if (is_true(peek_option("rlang:::trace_test_highlight"))) {

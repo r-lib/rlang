@@ -176,8 +176,12 @@
        16.             \-base::stop("bar")
     Code
       # Wrapped handler
-      handler1 <- (function(cnd, call = caller_env()) handler2(cnd, call))
-      handler2 <- (function(cnd, call) abort(cnd_header(cnd), parent = NA, call = call))
+      handler1 <- (function(cnd, call = caller_env()) {
+        handler2(cnd, call)
+      })
+      handler2 <- (function(cnd, call) {
+        abort(cnd_header(cnd), parent = NA, call = call)
+      })
       hh <- (function() {
         withCallingHandlers(foo(), error = function(cnd) handler1(cnd))
       })

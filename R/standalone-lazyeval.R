@@ -24,7 +24,9 @@ warn_text_se <- function() {
 }
 
 compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
-  if (warn) warn_underscored()
+  if (warn) {
+    warn_underscored()
+  }
 
   if (missing(lazy)) {
     return(quo())
@@ -41,7 +43,9 @@ compat_lazy <- function(lazy, env = caller_env(), warn = TRUE) {
     symbol = ,
     language = new_quosure(lazy, env),
     character = {
-      if (warn) warn_text_se()
+      if (warn) {
+        warn_text_se()
+      }
       parse_quo(lazy[[1]], env)
     },
     logical = ,

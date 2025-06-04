@@ -574,8 +574,11 @@ cnd_format <- function(
   }
 
   is_same_trace <- function() {
-    compare <- if (is_null(pending_trace)) last_trace else
+    compare <- if (is_null(pending_trace)) {
+      last_trace
+    } else {
       pending_trace[["trace"]]
+    }
     if (!is_trace(trace) || !is_trace(compare)) {
       return(FALSE)
     }
