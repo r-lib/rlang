@@ -36,6 +36,7 @@
 # currently no way of finding the setup frame with 100% reliability
 # (there might be several on the stack).
 
+
 f <- function() {
   throw()
 }
@@ -49,7 +50,7 @@ handler_helper <- function() {
 }
 
 
-#  Errors - Calling handlers
+#  Errors - Calling handlers
 
 foo <- function(...) {
   withCallingHandlers(f(), ...)
@@ -72,6 +73,7 @@ foo(error = handle)
 #> >7.   └─global h(simpleError(msg, call))
 #>  8.     └─global handler_helper()
 
+
 ### Condition error
 
 # Setup: 2
@@ -88,6 +90,7 @@ foo(error = handle)
 #> >6. └─global `<fn>`(`<smplErrr>`)
 #>  7.   └─global handler_helper()
 
+
 ### Condition error, simple signal
 
 # Setup: 2
@@ -103,6 +106,7 @@ foo(error = handle)
 #> >5. │     └─base::signalCondition(simpleError("foo"))
 #> >6. └─global `<fn>`(`<smplErrr>`)
 #>  7.   └─global handler_helper()
+
 
 ### Condition error, demoted to warning
 
@@ -122,6 +126,7 @@ foo(error = handle)
 #>   8. │           └─base doWithOneRestart(return(expr), restart)
 #>  >9. └─global `<fn>`(`<smplErrr>`)
 #>  10.   └─global handler_helper()
+
 
 ### Condition error, demoted to message
 
@@ -143,6 +148,7 @@ foo(error = handle)
 #>  10. └─global `<fn>`(`<smplErrr>`)
 #>  11.   └─global handler_helper()
 
+
 ### C-level error
 
 # In this case, the signal frame is a user function.
@@ -161,6 +167,7 @@ foo(error = handle)
 #>  6. └─base::.handleSimpleError(`<fn>`, "foo", base::quote(NULL))
 #> >7.   └─global h(simpleError(msg, call))
 #>  8.     └─global handler_helper()
+
 
 ### Text warning promoted to error
 
@@ -189,6 +196,7 @@ foo(error = handle)
 #> >11.   └─global h(simpleError(msg, call))
 #>  12.     └─global handler_helper()
 
+
 ### Condition warning promoted to error
 
 # Setup: 2
@@ -212,6 +220,7 @@ foo(error = handle)
 #> >10.   └─global h(simpleError(msg, call))
 #>  11.     └─global handler_helper()
 
+
 ### rlang error
 
 # Setup: 2
@@ -230,7 +239,8 @@ foo(error = handle)
 #>  8. └─global `<fn>`(`<rlng_rrr>`)
 #>  9.   └─global handler_helper()
 
-#  Errors - Exiting handlers
+
+#  Errors - Exiting handlers
 
 # This is much easier, all the stacks look the same!
 
