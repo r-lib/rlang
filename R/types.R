@@ -32,7 +32,13 @@ is_list <- function(x, n = NULL) {
   .Call(ffi_is_list, x, n)
 }
 
-parsable_atomic_types <- c("logical", "integer", "double", "complex", "character")
+parsable_atomic_types <- c(
+  "logical",
+  "integer",
+  "double",
+  "complex",
+  "character"
+)
 atomic_types <- c(parsable_atomic_types, "raw")
 #' @export
 #' @rdname type-predicates
@@ -70,11 +76,7 @@ is_complex <- function(x, n = NULL, finite = NULL) {
 is_character <- function(x, n = NULL) {
   .Call(ffi_is_character, x, n, NULL, NULL)
 }
-is_character2 <- function(x,
-                          n = NULL,
-                          ...,
-                          missing = TRUE,
-                          empty = TRUE) {
+is_character2 <- function(x, n = NULL, ..., missing = TRUE, empty = TRUE) {
   check_dots_empty0(...)
 
   # FIXME: Change API at C-level so that `TRUE` means no restriction
@@ -241,7 +243,9 @@ is_bare_integer <- function(x, n = NULL) {
 #' @export
 #' @rdname bare-type-predicates
 is_bare_numeric <- function(x, n = NULL) {
-  if (!is_null(n) && length(x) != n) return(FALSE)
+  if (!is_null(n) && length(x) != n) {
+    return(FALSE)
+  }
   !is.object(x) && typeof(x) %in% c("double", "integer")
 }
 #' @export
@@ -402,15 +406,15 @@ type_of_ <- function(x) {
 #' # copyable:
 #' is_copyable(env)
 is_copyable <- function(x) {
-  switch(typeof(x),
+  switch(
+    typeof(x),
     NULL = ,
     char = ,
     symbol = ,
     special = ,
     builtin = ,
     environment = ,
-    externalptr =
-      FALSE,
+    externalptr = FALSE,
     TRUE
   )
 }
@@ -491,7 +495,8 @@ rlang_type_sum.data.frame <- function(x) class(x)[[1]]
 #' @export
 rlang_type_sum.default <- function(x) {
   if (!is.object(x)) {
-    switch(typeof(x),
+    switch(
+      typeof(x),
       logical = "lgl",
       integer = "int",
       double = "dbl",
@@ -501,12 +506,11 @@ rlang_type_sum.default <- function(x) {
       special = ,
       closure = "fn",
       environment = "env",
-      symbol =
-        if (is_missing(x)) {
-          "missing"
-        } else {
-          "sym"
-        },
+      symbol = if (is_missing(x)) {
+        "missing"
+      } else {
+        "sym"
+      },
       typeof(x)
     )
   } else if (!isS4(x)) {

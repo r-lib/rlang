@@ -689,16 +689,14 @@ test_that("symbols with unicode are deparsed consistently (#691)", {
 
 test_that("formal parameters are backticked if needed", {
   expect_identical(
-    expr_deparse(function(`^`) {
-    }),
+    expr_deparse(function(`^`) {}),
     c("<function(`^`) { }>")
   )
 })
 
 test_that("empty blocks are deparsed on the same line", {
   expect_identical(
-    expr_deparse(quote({
-    })),
+    expr_deparse(quote({})),
     "{ }"
   )
 })
@@ -706,8 +704,7 @@ test_that("empty blocks are deparsed on the same line", {
 test_that("top-level S3 objects are deparsed", {
   skip_on_cran()
   f <- structure(
-    function() {
-    },
+    function() {},
     class = "lambda"
   )
   expect_identical(expr_deparse(f), "<lambda>")
