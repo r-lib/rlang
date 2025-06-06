@@ -355,8 +355,7 @@ test_that("call_name() handles formulas", {
 
 test_that("Inlined functions return NULL name", {
   call <- quote(fn())
-  call[[1]] <- function() {
-  }
+  call[[1]] <- function() {}
   expect_null(call_name(call))
 })
 
