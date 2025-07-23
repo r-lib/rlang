@@ -248,7 +248,7 @@ is_condition <- function(x) {
 #' @rdname is_condition
 #' @export
 is_error <- function(x) {
-  inherits(x, "error")
+  inherits(x, c("error", "try-error"))
 }
 #' @rdname is_condition
 #' @export
