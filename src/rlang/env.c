@@ -108,6 +108,56 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent) {
   return out;
 }
 
+#if R_VERSION >= R_Version(4, 6, 0)
+void r_env_coalesce(r_obj* env, r_obj* from) {
+  r_obj* nms = KEEP(r_env_names(from));
+  r_ssize n = r_length(nms);
+  r_obj* const * v_nms = r_chr_cbegin(nms);
+
+  for (r_ssize i = 0; i < n; ++i) {
+    r_obj* sym = r_str_as_symbol(v_nms[i]);
+
+    if (r_env_has(env, sym)) {
+      // Already in `env`
+      continue;
+    }
+
+    // Otherwise copy it over
+    switch (R_GetBindingType(sym, from)) {
+    case R_BindingTypeUnbound: {
+      r_stop_internal("Got names from `from`");
+    }
+
+    case R_BindingTypeValue:
+    case R_BindingTypeForcedPromise: {
+      r_env_poke(env, sym, r_env_get(from, sym));
+      break;
+    }
+
+    case R_BindingTypeMissing: {
+      R_MakeMissingBinding(sym, env);
+      break;
+    }
+
+    case R_BindingTypeDelayedPromise: {
+      r_obj* promise_expr = R_DelayedPromiseBindingExpression(sym, from);
+      r_obj* promise_env = R_DelayedPromiseBindingEnvironment(sym, from);
+      R_MakeDelayedPromiseBinding(sym, promise_expr, promise_env, env);
+      break;
+    }
+
+    case R_BindingTypeActive: {
+      r_obj* fn = R_ActiveBindingFunction(sym, from);
+      r_env_poke_active(env, sym, fn);
+      break;
+    }
+    }
+  }
+
+  FREE(1);
+}
+
+#else
 void r_env_coalesce(r_obj* env, r_obj* from) {
   r_obj* nms = KEEP(r_env_names(from));
   r_obj* types = KEEP(r_env_binding_types(from, nms));
@@ -140,8 +190,12 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
 
     switch (v_types[i]) {
     case R_ENV_BINDING_TYPE_value:
-    case R_ENV_BINDING_TYPE_promise:
       r_env_poke(env, sym, r_env_find(from, sym));
+      break;
+
+    case R_ENV_BINDING_TYPE_promise:
+      r_obj* promise = r_env_find(from, sym);
+      r_env_poke(env, sym, r_clone(promise));
       break;
 
     case R_ENV_BINDING_TYPE_active: {
@@ -162,24 +216,7 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
   FREE(3);
   return;
 }
-
-static
-void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* nms) {
-  r_ssize n = r_length(nms);
-  r_obj* const * v_nms = r_chr_cbegin(nms);
-
-  for (r_ssize i = 0; i < n; ++i) {
-    r_obj* sym = r_str_as_symbol(v_nms[i]);
-
-    if (r_env_has(env, sym)) {
-      continue;
-    }
-
-    r_env_poke(env, sym, r_env_find(from, sym));
-  }
-
-  return;
-}
+#endif
 
 r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
   parent = parent ? parent : r_envs.empty;

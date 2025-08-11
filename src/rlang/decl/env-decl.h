@@ -39,6 +39,3 @@ r_obj* missing_prim;
 static
 r_obj* env_as_list_compat(r_obj* env, r_obj* out);
 #endif
-
-static
-void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* nms);
