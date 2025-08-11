@@ -11,8 +11,6 @@ enum r_env_binding_type {
   R_ENV_BINDING_TYPE_active
 };
 
-bool r_env_binding_is_promise(r_obj* env, r_obj* sym);
-bool r_env_binding_is_active(r_obj* env, r_obj* sym);
 r_obj* r_env_binding_types(r_obj* env, r_obj* bindings);
 
 
