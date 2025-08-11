@@ -129,7 +129,7 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
     }
 
     case R_BindingTypeValue:
-    case R_BindingTypeForcedPromise: {
+    case R_BindingTypeForced: {
       r_env_poke(env, sym, r_env_get(from, sym));
       break;
     }
@@ -139,10 +139,10 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
       break;
     }
 
-    case R_BindingTypeDelayedPromise: {
-      r_obj* promise_expr = R_DelayedPromiseBindingExpression(sym, from);
-      r_obj* promise_env = R_DelayedPromiseBindingEnvironment(sym, from);
-      R_MakeDelayedPromiseBinding(sym, promise_expr, promise_env, env);
+    case R_BindingTypeDelayed: {
+      r_obj* expr = R_DelayedBindingExpression(sym, from);
+      r_obj* eval_env = R_DelayedBindingEnvironment(sym, from);
+      R_MakeDelayedBinding(sym, expr, eval_env, env);
       break;
     }
 

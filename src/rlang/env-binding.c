@@ -13,7 +13,7 @@ static r_obj* new_binding_types(r_ssize n) {
 static enum r_env_binding_type which_env_binding(r_obj* env, r_obj* sym) {
   switch (R_GetBindingType(sym, env)) {
     case R_BindingTypeActive: return R_ENV_BINDING_TYPE_active;
-    case R_BindingTypeDelayedPromise: return R_ENV_BINDING_TYPE_promise;
+    case R_BindingTypeDelayed: return R_ENV_BINDING_TYPE_promise;
     default: return R_ENV_BINDING_TYPE_value;
   }
 }
