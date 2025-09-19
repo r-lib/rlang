@@ -489,6 +489,12 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a logical vector or `NULL`, not a list.
+    Code
+      err(checker(NA, check_logical, allow_na = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` can't contain NA values.
 
 # non-numeric types are not numbers
 

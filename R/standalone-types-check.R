@@ -9,6 +9,9 @@
 #
 # ## Changelog
 #
+# 2025-09-19:
+# - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
+#
 # 2024-08-15:
 # - `check_character()` gains an `allow_na` argument (@martaalcalde, #1724)
 #
@@ -538,12 +541,20 @@ check_character <- function(
 check_logical <- function(
   x,
   ...,
+  allow_na = TRUE,
   allow_null = FALSE,
   arg = caller_arg(x),
   call = caller_env()
 ) {
   if (!missing(x)) {
     if (is_logical(x)) {
+      if (!allow_na && any(is.na(x))) {
+        abort(
+          sprintf("`%s` can't contain NA values.", arg),
+          arg = arg,
+          call = call
+        )
+      }
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {
