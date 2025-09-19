@@ -84,6 +84,8 @@
 <ul><li>C code no longer calls <code>memcpy()</code> and <code>memset()</code> on 0-length R object memory (<a href="https://github.com/r-lib/rlang/issues/1797" class="external-link">#1797</a>).</li>
 <li>
 <code><a href="../reference/is_expression.html">is_syntactic_literal()</a></code> returns <code>FALSE</code> for objects with attributes, such as <code>array(1)</code> or <code>factor("x")</code> (<a href="https://github.com/r-lib/rlang/issues/1817" class="external-link">#1817</a>, <a href="https://github.com/jonthegeek" class="external-link">@jonthegeek</a>).</li>
+<li>
+<code><a href="../reference/is_expression.html">is_syntactic_literal()</a></code> returns <code>FALSE</code> for negative numbers and complex numbers with negative imaginary components (<a href="https://github.com/r-lib/rlang/issues/1799" class="external-link">#1799</a>, <a href="https://github.com/jonthegeek" class="external-link">@jonthegeek</a>).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.6" id="rlang-116">rlang 1.1.6<a class="anchor" aria-label="anchor" href="#rlang-116"></a></h2><p class="text-muted">CRAN release: 2025-04-11</p>
