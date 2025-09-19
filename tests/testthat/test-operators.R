@@ -77,3 +77,9 @@ test_that("%@% works with S4 objects (#207)", {
   expect_identical(fievel@name, "Bernard")
   expect_identical(fievel@species, "MOUSE")
 })
+
+test_that("%&&% works", {
+  expect_null(NULL %&&% 2)
+  expect_null(1 %&&% NULL)
+  expect_equal(1 %&&% 2, 2)
+})

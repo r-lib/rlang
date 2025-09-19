@@ -336,5 +336,6 @@ reference:
   - subtitle: Operators
     contents:
       - "`%||%`"
+      - "`%&&%`"
       - "`%|%`"
       - "`%@%`"

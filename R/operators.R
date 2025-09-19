@@ -19,6 +19,22 @@ if (exists("%||%", envir = baseenv())) {
   `%||%` <- get("%||%", envir = baseenv())
 }
 
+#' Default value for non-`NULL`
+#'
+#' This infix operator is the conceptual opposite of `%||%`, providing a fallback
+#' only if `x` is defined.
+#'
+#' @param x,y If `x` is NULL, will return `x`; otherwise returns `y`.
+#' @export
+#' @name op-null-continuation
+#' @seealso [op-null-default]
+#' @examples
+#' 1 %&&% 2
+#' NULL %&&% 2
+`%&&%` <- function(x, y) {
+  if (!is_null(x)) y else x
+}
+
 `%|0|%` <- function(x, y) {
   if (!length(x)) y else x
 }
