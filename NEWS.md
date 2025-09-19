@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* New `%&&%` operator that returns RHS when LHS is non-NULL (#1774, @snystrom).
+
 * C code no longer calls `memcpy()` and `memset()` on 0-length R object memory
   (#1797).
 
