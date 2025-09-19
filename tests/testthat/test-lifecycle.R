@@ -44,8 +44,9 @@ test_that("deprecate_soft() warns when called from package being tested", {
   reset_warning_verbosity("rlang_test")
 
   withr::local_envvar(c("TESTTHAT_PKG" = "rlang"))
-  depr <- function()
+  depr <- function() {
     deprecate_soft("warns from package being tested", id = "rlang_test")
+  }
   expect_warning(depr(), "warns from")
   expect_warning(depr(), "warns from")
 })

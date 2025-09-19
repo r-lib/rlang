@@ -6,8 +6,8 @@
 \description{
 Error chaining is a mechanism for providing contextual information when an error occurs. There are multiple situations in which you might be able to provide context that is helpful to quickly understand the cause or origin of an error:
 \itemize{
-\item Mentioning the \emph{high level context} in which a low level error arised. E.g. chaining a low-level HTTP error to a high-level download error.
-\item Mentioning the \emph{pipeline step} in which a user error occured. This is a major use-case for NSE interfaces in the tidyverse, e.g. in dplyr, tidymodels or ggplot2.
+\item Mentioning the \emph{high level context} in which a low level error arose. E.g. chaining a low-level HTTP error to a high-level download error.
+\item Mentioning the \emph{pipeline step} in which a user error occurred. This is a major use-case for NSE interfaces in the tidyverse, e.g. in dplyr, tidymodels or ggplot2.
 \item Mentioning the \emph{iteration context} in which a user error occurred. For instance, the input file when processing documents, or the iteration number or key when running user code in a loop.
 }
 
@@ -87,7 +87,7 @@ If you've read \ifelse{html}{\link[=topic-error-call]{Including function calls i
 \}
 }\if{html}{\out{</div>}}
 
-Now that we've passed the caller environment as \code{call} argument, \code{abort()} automatically picks up the correspondin function call from the execution frame:
+Now that we've passed the caller environment as \code{call} argument, \code{abort()} automatically picks up the corresponding function call from the execution frame:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{my_verb(add(1, ""))
 #> Error in `my_verb()`:
@@ -128,7 +128,7 @@ It is also possible to completely take ownership of a causal error and rethrow i
 \item Hiding causal errors indiscriminately should likely be avoided because it may suppress information about unexpected errors. In general, rethrowing an unchained errors should only be done with specific error classes.
 }
 
-To rethow an error without chaining it, and completely take over the causal error from the user point of view, fetch it with \code{try_fetch()} and throw a new error. The only difference with throwing a chained error is that the \code{parent} argument is set to \code{NA}. You could also omit the \code{parent} argument entirely, but passing \code{NA} lets \code{abort()} know it is rethrowing an error from a handler and that it should hide the corresponding error helpers in the backtrace.
+To rethrow an error without chaining it, and completely take over the causal error from the user point of view, fetch it with \code{try_fetch()} and throw a new error. The only difference with throwing a chained error is that the \code{parent} argument is set to \code{NA}. You could also omit the \code{parent} argument entirely, but passing \code{NA} lets \code{abort()} know it is rethrowing an error from a handler and that it should hide the corresponding error helpers in the backtrace.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{with_own_scalar_errors <- function(expr, call = caller_env()) \{
   try_fetch(

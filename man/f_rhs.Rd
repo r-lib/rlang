@@ -32,9 +32,9 @@ vectors of length 1, a name, or a call). \code{f_env} returns an
 environment.
 }
 \description{
-\code{f_rhs} extracts the righthand side, \code{f_lhs} extracts the lefthand
-side, and \code{f_env} extracts the environment. All functions throw an
-error if \code{f} is not a formula.
+\code{f_rhs} extracts the right-hand side, \code{f_lhs} extracts the left-hand
+side, and \code{f_env} extracts the environment in which the formula was defined.
+All functions throw an error if \code{f} is not a formula.
 }
 \examples{
 f_rhs(~ 1 + 2 + 3)
@@ -46,4 +46,6 @@ f_lhs(~ y)
 f_lhs(x ~ y)
 
 f_env(~ x)
+f <- as.formula("y ~ x", env = new.env())
+f_env(f)
 }

@@ -65,7 +65,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
     char buf[buf_size];
     buf[0] = '\0';
 
-    memcpy(buf, name, size);
+    r_memcpy(buf, name, size);
     int remaining = buf_size - size;
 
     int needed = snprintf(buf + size,

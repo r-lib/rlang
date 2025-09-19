@@ -9,11 +9,12 @@
 #
 # ## Changelog
 #
-# 2024-08-18
+# 2025-09-19
 # - `check_logical()` and `check_character()` gain `allow_empty` to disallow
 #    `logical(0)` and `character(0)` respectively.
 #
-# - `check_logical()` gain `allow_na` to disallow NA values.
+# 2025-09-19:
+# - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
 #
 # 2024-08-15:
 # - `check_character()` gains an `allow_na` argument (@martaalcalde, #1724)
@@ -553,16 +554,16 @@ check_logical <- function(
   call = caller_env()
 ) {
   if (!missing(x)) {
-    if (!allow_na && anyNA(x)) {
-      abort(
-        sprintf("`%s` can't contain NA values.", arg),
-        arg = arg,
-        call = call
-      )
-    }
     problematic <- !allow_empty && length(x) == 0
 
     if (!problematic && is_logical(x)) {
+      if (!allow_na && any(is.na(x))) {
+        abort(
+          sprintf("`%s` can't contain NA values.", arg),
+          arg = arg,
+          call = call
+        )
+      }
       return(invisible(NULL))
     }
     if (allow_null && is_null(x)) {

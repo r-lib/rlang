@@ -390,7 +390,9 @@ test_that("only the first n warnings are entraced (#1473)", {
         entrace(cnd)
         zap()
       },
-      for (i in 1:5) f()
+      for (i in 1:5) {
+        f()
+      }
     )
 
     expect_equal(

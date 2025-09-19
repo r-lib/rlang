@@ -41,7 +41,7 @@ const char* rlang_format_error_arg(r_obj* arg) {
 
   // Uses the vmax protection stack.
   char* out = R_alloc(n, sizeof(char));
-  memcpy(out, arg_str, n);
+  r_memcpy(out, arg_str, n);
 
   FREE(1);
   return out;
@@ -216,7 +216,7 @@ const char* rlang_obj_type_friendly_full(r_obj* x, bool value, bool _length) {
   // Uses the vmax protection stack.
   int n = strlen(out_str) + 1;
   char* out = R_alloc(n, sizeof(char));
-  memcpy(out, out_str, n);
+  r_memcpy(out, out_str, n);
 
   FREE(1);
   return out;

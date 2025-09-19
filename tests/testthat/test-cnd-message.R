@@ -472,8 +472,9 @@ test_that("as.character() and conditionMessage() methods for errors, warnings, a
 })
 
 test_that("multiline operator calls are preserved", {
-  err <- function(expr)
+  err <- function(expr) {
     error_cnd(message = "This is the error message.", call = enexpr(expr))
+  }
 
   expect_snapshot_output(err(
     1 +
@@ -569,13 +570,14 @@ test_that("arguments are highlighted but code spans are not", {
   local_options("rlang:::trace_test_highlight" = TRUE)
 
   err <- error_cnd(
-    header = function(cnd)
+    header = function(cnd) {
       sprintf(
         "%s - %s - %s",
         format_arg("arg1"),
         format_code("code"),
         format_arg("arg2")
       )
+    }
   )
 
   expect_snapshot({

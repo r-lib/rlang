@@ -643,7 +643,7 @@ invoke <- function(
 #' # list without either triggering method dispatch, or changing the
 #' # original environment. as_list() makes it easy:
 #' x <- structure(as_environment(mtcars[1:2]), class = "foobar")
-#' as.list.foobar <- function(x) abort("dont call me")
+#' as.list.foobar <- function(x) abort("don't call me")
 #' as_list(x)
 #' @name vector-coercion
 NULL

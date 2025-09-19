@@ -38,7 +38,7 @@ set_names(1:4, c("a", "b", "c", "d"))
 set_names(1:4, letters[1:4])
 set_names(1:4, "a", "b", "c", "d")
 
-# If the second argument is ommitted a vector is named with itself
+# If the second argument is omitted a vector is named with itself
 set_names(letters[1:5])
 
 # Alternatively you can supply a function
