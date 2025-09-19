@@ -100,6 +100,7 @@ test_that("expressions are deparsed and printed", {
 
 test_that("imaginary numbers with real part are not syntactic", {
   expect_true(is_syntactic_literal(0i))
+  expect_true(is_syntactic_literal(1i))
   expect_true(is_syntactic_literal(na_cpl))
   expect_false(is_syntactic_literal(1 + 1i))
 })
@@ -137,4 +138,10 @@ test_that("arrays are not syntactic", {
 
 test_that("factors are not syntactic", {
   expect_false(is_syntactic_literal(factor("x")))
+})
+
+test_that("negative numbers are not syntactic", {
+  expect_false(is_syntactic_literal(-1))
+  expect_false(is_syntactic_literal(-1L))
+  expect_false(is_syntactic_literal(-1i))
 })
