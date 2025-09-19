@@ -130,3 +130,11 @@ test_that("is_expression() detects attributes (#1475)", {
     NULL
   })))
 })
+
+test_that("arrays are not syntactic", {
+  expect_false(is_syntactic_literal(array(1)))
+})
+
+test_that("factors are not syntactic", {
+  expect_false(is_syntactic_literal(factor("x")))
+})

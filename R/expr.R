@@ -129,7 +129,7 @@ is_syntactic_literal <- function(x) {
     integer = ,
     double = ,
     character = {
-      length(x) == 1
+      length(x) == 1 && is.null(attributes(x))
     },
 
     complex = {
