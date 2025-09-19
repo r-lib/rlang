@@ -27,7 +27,7 @@ if (exists("%||%", envir = baseenv())) {
 #' @param x,y If `x` is NULL, will return `x`; otherwise returns `y`.
 #' @export
 #' @name op-null-continuation
-#' @seealso %||%
+#' @seealso [op-null-default]
 #' @examples
 #' 1 %&&% 2
 #' NULL %&&% 2

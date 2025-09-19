@@ -19,5 +19,5 @@ only if x is defined.
 NULL \%&&\% 2
 }
 \seealso{
-\%||\%
+\link{op-null-default}
 }
