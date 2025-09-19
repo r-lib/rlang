@@ -21,8 +21,8 @@ if (exists("%||%", envir = baseenv())) {
 
 #' Default value for non-`NULL`
 #'
-#' This infix operator is the conceptual opposite of %||%, providing a fallback
-#' only if x is defined.
+#' This infix operator is the conceptual opposite of `%||%`, providing a fallback
+#' only if `x` is defined.
 #'
 #' @param x,y If `x` is NULL, will return `x`; otherwise returns `y`.
 #' @export
