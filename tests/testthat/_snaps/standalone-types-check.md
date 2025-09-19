@@ -501,6 +501,7 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a logical vector, not an empty logical vector.
+    Code
       err(checker(NA, check_logical, allow_na = FALSE))
     Output
       <error/rlang_error>
