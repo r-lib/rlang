@@ -119,27 +119,22 @@ is_expression <- function(x) {
 #' @export
 #' @rdname is_expression
 is_syntactic_literal <- function(x) {
-  switch(
-    typeof(x),
-    NULL = {
-      TRUE
-    },
-
-    logical = ,
-    integer = ,
-    double = ,
-    character = {
-      length(x) == 1 && is.null(attributes(x))
-    },
-
-    complex = {
-      if (length(x) != 1) {
-        return(FALSE)
-      }
-      is_na(x) || Re(x) == 0
-    },
-
-    FALSE
+  is.null(x) || (
+    length(x) == 1 && is.null(attributes(x)) && (
+      is.na(x) || switch(
+        typeof(x),
+        character = ,
+        logical = TRUE,
+        integer = ,
+        double = {
+          x >= 0
+        },
+        complex = {
+          Re(x) == 0 && Im(x) >= 0
+        },
+        FALSE
+      )
+    ) 
   )
 }
 #' @export
