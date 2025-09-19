@@ -11,8 +11,8 @@ x \%&&\% y
 \item{x, y}{If \code{x} is NULL, will return \code{x}; otherwise returns \code{y}.}
 }
 \description{
-This infix operator is the conceptual opposite of \%||\%, providing a fallback
-only if x is defined.
+This infix operator is the conceptual opposite of \verb{\%||\%}, providing a fallback
+only if \code{x} is defined.
 }
 \examples{
 1 \%&&\% 2
