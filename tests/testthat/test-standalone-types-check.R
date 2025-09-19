@@ -84,35 +84,35 @@ test_that("`check_number_whole()` checks", {
   })
 })
 
-test_that("`check_number_decimal()` checks", {
-  expect_null(check_number_decimal(10))
-  expect_null(check_number_decimal(10L))
-  expect_null(check_number_decimal(10.5))
-  expect_null(check_number_decimal(NA, allow_na = TRUE))
-  expect_null(check_number_decimal(na_dbl, allow_na = TRUE))
-  expect_null(check_number_decimal(na_int, allow_na = TRUE))
-  expect_null(check_number_decimal(NULL, allow_null = TRUE))
-  expect_null(check_number_decimal(Inf))
-  expect_null(check_number_decimal(-Inf))
+test_that("`check_number()` checks", {
+  expect_null(check_number(10))
+  expect_null(check_number(10L))
+  expect_null(check_number(10.5))
+  expect_null(check_number(NA, allow_na = TRUE))
+  expect_null(check_number(na_dbl, allow_na = TRUE))
+  expect_null(check_number(na_int, allow_na = TRUE))
+  expect_null(check_number(NULL, allow_null = TRUE))
+  expect_null(check_number(Inf))
+  expect_null(check_number(-Inf))
 
   expect_snapshot({
-    err(checker(, check_number_decimal))
-    err(checker(NA, check_number_decimal))
-    err(checker(NULL, check_number_decimal))
-    err(checker(int(), check_number_decimal, allow_na = TRUE))
-    err(checker(na_dbl, check_number_decimal))
-    err(checker(na_int, check_number_decimal))
+    err(checker(, check_number))
+    err(checker(NA, check_number))
+    err(checker(NULL, check_number))
+    err(checker(int(), check_number, allow_na = TRUE))
+    err(checker(na_dbl, check_number))
+    err(checker(na_int, check_number))
     err(checker(
       10:11,
-      check_number_decimal,
+      check_number,
       allow_na = TRUE,
       allow_null = TRUE
     ))
-    err(checker(Inf, check_number_decimal, allow_infinite = FALSE))
-    err(checker(-Inf, check_number_decimal, allow_infinite = FALSE))
-    err(checker(10, min = NA, check_number_decimal))
-    err(checker(10, min = NaN, check_number_decimal))
-    err(checker(10, max = NaN, check_number_decimal))
+    err(checker(Inf, check_number, allow_infinite = FALSE))
+    err(checker(-Inf, check_number, allow_infinite = FALSE))
+    err(checker(10, min = NA, check_number))
+    err(checker(10, min = NaN, check_number))
+    err(checker(10, max = NaN, check_number))
   })
 })
 
@@ -195,7 +195,7 @@ test_that("`check_logical()` checks", {
 test_that("non-numeric types are not numbers", {
   expect_snapshot({
     (expect_error(check_number_whole(factor("a"))))
-    (expect_error(check_number_decimal(as.Date("2000-01-01"))))
+    (expect_error(check_number(as.Date("2000-01-01"))))
   })
 })
 

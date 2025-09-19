@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-13
+# last-updated: 2025-09-19
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
@@ -11,6 +11,7 @@
 #
 # 2025-09-19:
 # - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
+# - Rename `check_number_decimal()` to `check_number()` (@khusmann, #1714)
 #
 # 2024-08-15:
 # - `check_character()` gains an `allow_na` argument (@martaalcalde, #1724)
@@ -178,7 +179,7 @@ IS_NUMBER_true <- 0
 IS_NUMBER_false <- 1
 IS_NUMBER_oob <- 2
 
-check_number_decimal <- function(
+check_number <- function(
   x,
   ...,
   min = NULL,
