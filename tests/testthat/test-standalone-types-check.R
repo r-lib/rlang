@@ -155,6 +155,50 @@ test_that("`check_environment()` checks", {
   })
 })
 
+test_that("`check_numeric()` checks", {
+  expect_null(check_numeric(0))
+  expect_null(check_numeric(0L))
+  expect_null(check_numeric(na_dbl))
+  expect_null(check_numeric(na_int))
+  expect_null(check_numeric(c(1, NA)))
+  expect_null(check_numeric(double()))
+  expect_null(check_numeric(10.1))
+  expect_null(check_numeric(1:10))
+  expect_null(check_numeric(1:10 + 0.1))
+  expect_null(check_numeric(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker(, check_numeric))
+    err(checker(NULL, check_numeric))
+    err(checker(NA, check_numeric))
+    err(checker("foo", check_numeric))
+    err(checker(list(1, 2), check_numeric, allow_null = TRUE))
+    err(checker(c(1, NA), check_numeric, allow_na = FALSE))
+  })
+})
+
+test_that("`check_numeric_whole()` checks", {
+  expect_null(check_numeric_whole(0))
+  expect_null(check_numeric_whole(0L))
+  expect_null(check_numeric_whole(na_dbl))
+  expect_null(check_numeric_whole(na_int))
+  expect_null(check_numeric_whole(c(1, NA)))
+  expect_null(check_numeric_whole(double()))
+  expect_null(check_numeric_whole(integer()))
+  expect_null(check_numeric_whole(1:10))
+  expect_null(check_numeric_whole(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker(, check_numeric_whole))
+    err(checker(1.1, check_numeric_whole))
+    err(checker(NULL, check_numeric_whole))
+    err(checker(NA, check_numeric_whole))
+    err(checker("foo", check_numeric_whole))
+    err(checker(list(1, 2), check_numeric_whole, allow_null = TRUE))
+    err(checker(c(1, NA), check_numeric_whole, allow_na = FALSE))
+  })
+})
+
 test_that("`check_character()` checks", {
   expect_null(check_character(""))
   expect_null(check_character(na_chr))

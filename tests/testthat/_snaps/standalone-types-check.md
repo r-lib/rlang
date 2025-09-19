@@ -418,6 +418,90 @@
       Error in `checker()`:
       ! `foo` must be an environment or `NULL`, not a list.
 
+# `check_numeric()` checks
+
+    Code
+      err(checker(, check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not absent.
+    Code
+      err(checker(NULL, check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not `NULL`.
+    Code
+      err(checker(NA, check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not `NA`.
+    Code
+      err(checker("foo", check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not the string "foo".
+    Code
+      err(checker(list(1, 2), check_numeric, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector or `NULL`, not a list.
+    Code
+      err(checker(c(1, NA), check_numeric, allow_na = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` can't contain NA values.
+
+# `check_numeric_whole()` checks
+
+    Code
+      err(checker(, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not absent.
+    Code
+      err(checker(1.1, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not the number 1.1.
+    Code
+      err(checker(NULL, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not `NULL`.
+    Code
+      err(checker(NA, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not `NA`.
+    Code
+      err(checker("foo", check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not the string "foo".
+    Code
+      err(checker(list(1, 2), check_numeric_whole, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers or `NULL`, not a list.
+    Code
+      err(checker(c(1, NA), check_numeric_whole, allow_na = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` can't contain NA values.
+
 # `check_character()` checks
 
     Code
