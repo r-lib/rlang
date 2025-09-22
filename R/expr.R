@@ -133,7 +133,12 @@ is_syntactic_literal <- function(x) {
       length(x) == 1 && is.null(attributes(x)) && (is.na(x) || x >= 0)
     },
     complex = {
-      length(x) == 1 && is.null(attributes(x)) && (is.na(x) || (Re(x) == 0 && Im(x) >= 0))
+      length(x) == 1 && 
+        is.null(attributes(x)) && 
+        (
+          (is.na(Re(x)) && is.na(Im(x))) || 
+            (!is.na(x) && Re(x) == 0 && Im(x) >= 0)
+        )
     },
     FALSE
   )
