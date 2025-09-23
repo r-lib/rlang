@@ -147,6 +147,7 @@ test_that("negative numbers are not syntactic", {
 })
 
 test_that("NA + 1i is not syntactic", {
+  skip_if_not_installed("base", "4.4")
   expect_false(is_syntactic_literal(NA + 1i))
   expect_false(is_syntactic_literal(NA - 1i))
 })
