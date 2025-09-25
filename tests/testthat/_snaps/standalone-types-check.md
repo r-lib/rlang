@@ -456,6 +456,12 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` can't contain NA values.
+    Code
+      err(checker(character(0), check_character, allow_empty = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a character vector, not an empty character vector.
 
 # `check_logical()` checks
 
@@ -489,6 +495,12 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a logical vector or `NULL`, not a list.
+    Code
+      err(checker(logical(0), check_logical, allow_empty = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a logical vector, not an empty logical vector.
     Code
       err(checker(NA, check_logical, allow_na = FALSE))
     Output
