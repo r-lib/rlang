@@ -1,14 +1,5 @@
 #include "rlang.h"
-#include "env.h"
 
-
-bool r_env_binding_is_promise(r_obj* env, r_obj* sym) {
-  r_obj* obj = r_env_find(env, sym);
-  return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms.unbound;
-}
-bool r_env_binding_is_active(r_obj* env, r_obj* sym) {
-  return R_BindingIsActive(sym, env);
-}
 
 static r_obj* new_binding_types(r_ssize n) {
   r_obj* types = r_alloc_integer(n);
@@ -20,17 +11,11 @@ static r_obj* new_binding_types(r_ssize n) {
 }
 
 static enum r_env_binding_type which_env_binding(r_obj* env, r_obj* sym) {
-  if (r_env_binding_is_active(env, sym)) {
-    // Check for active bindings first, since promise detection triggers
-    // active bindings through `r_env_find()` (#1376)
-    return R_ENV_BINDING_TYPE_active;
+  switch (R_GetBindingType(sym, env)) {
+    case R_BindingTypeActive: return R_ENV_BINDING_TYPE_active;
+    case R_BindingTypeDelayed: return R_ENV_BINDING_TYPE_promise;
+    default: return R_ENV_BINDING_TYPE_value;
   }
-
-  if (r_env_binding_is_promise(env, sym)) {
-    return R_ENV_BINDING_TYPE_promise;
-  }
-
-  return R_ENV_BINDING_TYPE_value;
 }
 
 static inline r_obj* binding_as_sym(bool list, r_obj* bindings, r_ssize i) {
