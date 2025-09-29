@@ -346,6 +346,7 @@ static const R_ExternalMethodDef externals[] = {
   {"ffi_exec",                          (DL_FUNC) &ffi_exec, 2},
   {"ffi_tilde_eval",                    (DL_FUNC) &ffi_tilde_eval, 3},
   {"ffi_try_fetch",                     (DL_FUNC) &ffi_try_fetch, 1},
+  {"ffi_list2",                         (DL_FUNC) &ffi_list2, 0},
   {NULL, NULL, 0}
 };
 

@@ -985,6 +985,20 @@ r_obj* rlang_env_dots_list(r_obj* env) {
   return out;
 }
 
+// Specialization for maximum performance via two features:
+// - Hardcoding of C defaults so they don't have to be passed down from R
+// - `External2()`, which gives us `frame_env` for free rather than an R level
+//   `environment()` call
+r_obj* ffi_list2(r_obj* call, r_obj* op, r_obj* args, r_obj* frame_env) {
+  return dots_values_impl(frame_env,
+                          r_null,
+                          rlang_objs_trailing,
+                          r_false,
+                          r_true,
+                          rlang_objs_keep,
+                          r_false,
+                          true);
+}
 r_obj* ffi_dots_list(r_obj* frame_env,
                      r_obj* named,
                      r_obj* ignore_empty,
