@@ -31,3 +31,22 @@ test_that("stop_input_type() handles I() in `arg` (#1607)", {
     ))
   })
 })
+
+test_that("stop_input_type() reports 1D arrays differently from vectors", {
+  expect_snapshot({
+    err(checker(
+      array(1),
+      stop_input_type,
+      what = "a double vector",
+      arg = "x"
+    ))
+  })
+  expect_snapshot({
+    err(checker(
+      array(list(1)),
+      stop_input_type,
+      what = "a list",
+      arg = "x"
+    ))
+  })
+})

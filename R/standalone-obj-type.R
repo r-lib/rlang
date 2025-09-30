@@ -8,6 +8,9 @@
 #
 # ## Changelog
 #
+# 2025-09-30:
+# - `obj_type_friendly()` now handles 1D arrays differently from vectors.
+#
 # 2024-02-14:
 # - `obj_type_friendly()` now works for S7 objects.
 #
@@ -183,8 +186,10 @@ vec_type_friendly <- function(x, length = FALSE) {
   }
 
   if (type == "list") {
-    if (n_dim < 2) {
+    if (n_dim == 0) {
       return(add_length("a list"))
+    } else if (n_dim == 1) {
+      return("a list array")
     } else if (is.data.frame(x)) {
       return("a data frame")
     } else if (n_dim == 2) {
@@ -206,8 +211,10 @@ vec_type_friendly <- function(x, length = FALSE) {
     type = paste0("a ", type, " %s")
   )
 
-  if (n_dim < 2) {
+  if (n_dim == 0) {
     kind <- "vector"
+  } else if (n_dim == 1) {
+    kind <- "array"
   } else if (n_dim == 2) {
     kind <- "matrix"
   } else {
