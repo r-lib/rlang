@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-obj-type.R
-# last-updated: 2024-02-14
+# last-updated: 2025-10-02
 # license: https://unlicense.org
 # imports: rlang (>= 1.1.0)
 # ---
