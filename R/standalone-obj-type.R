@@ -8,8 +8,8 @@
 #
 # ## Changelog
 #
-# 2025-09-30:
-# - `obj_type_friendly()` now handles 1D arrays differently from vectors.
+# 2025-10-02:
+# - `obj_type_friendly()` now shows the dimensionality of arrays.
 #
 # 2024-02-14:
 # - `obj_type_friendly()` now works for S7 objects.
@@ -189,13 +189,13 @@ vec_type_friendly <- function(x, length = FALSE) {
     if (n_dim == 0) {
       return(add_length("a list"))
     } else if (n_dim == 1) {
-      return("a list array")
+      return("a list 1D array")
     } else if (is.data.frame(x)) {
       return("a data frame")
     } else if (n_dim == 2) {
       return("a list matrix")
     } else {
-      return("a list array")
+      return(sprintf("a list %sD array", n_dim))
     }
   }
 
@@ -214,11 +214,11 @@ vec_type_friendly <- function(x, length = FALSE) {
   if (n_dim == 0) {
     kind <- "vector"
   } else if (n_dim == 1) {
-    kind <- "array"
+    kind <- "1D array"
   } else if (n_dim == 2) {
     kind <- "matrix"
   } else {
-    kind <- "array"
+    kind <- sprintf("%sD array", n_dim)
   }
   out <- sprintf(type, kind)
 

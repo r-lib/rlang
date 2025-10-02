@@ -50,3 +50,22 @@ test_that("stop_input_type() reports 1D arrays differently from vectors", {
     ))
   })
 })
+
+test_that("stop_input_type() can differentiate between arrays by dimensionality", {
+  expect_snapshot({
+    err(checker(
+      array(1, dim = c(1, 1, 1, 1)),
+      stop_input_type,
+      what = "a double 3D array",
+      arg = "x"
+    ))
+  })
+  expect_snapshot({
+    err(checker(
+      array(list(1), dim = c(1, 1, 1, 1)),
+      stop_input_type,
+      what = "a list 3D array",
+      arg = "x"
+    ))
+  })
+})
