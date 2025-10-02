@@ -188,12 +188,12 @@ vec_type_friendly <- function(x, length = FALSE) {
   if (type == "list") {
     if (n_dim == 0) {
       return(add_length("a list"))
-    } else if (n_dim == 1) {
-      return("a list 1D array")
-    } else if (is.data.frame(x)) {
-      return("a data frame")
     } else if (n_dim == 2) {
-      return("a list matrix")
+      if (is.data.frame(x)) {
+        return("a data frame")
+      } else {
+        return("a list matrix")
+      }
     } else {
       return(sprintf("a list %sD array", n_dim))
     }
@@ -213,8 +213,6 @@ vec_type_friendly <- function(x, length = FALSE) {
 
   if (n_dim == 0) {
     kind <- "vector"
-  } else if (n_dim == 1) {
-    kind <- "1D array"
   } else if (n_dim == 2) {
     kind <- "matrix"
   } else {
