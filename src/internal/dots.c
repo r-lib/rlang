@@ -957,6 +957,8 @@ r_obj* ffi_dots_values(r_obj* args) {
   return out;
 }
 
+// Deprecated
+// Used by vctrs <= 0.6.5, so can't easily remove.
 // [[ export() ]]
 r_obj* rlang_env_dots_values(r_obj* env) {
   return dots_values_impl(env,
@@ -969,6 +971,8 @@ r_obj* rlang_env_dots_values(r_obj* env) {
                           false);
 }
 
+// Deprecated
+// Used by vctrs <= 0.6.5, so can't easily remove.
 // [[ export() ]]
 r_obj* rlang_env_dots_list(r_obj* env) {
   r_obj* out = KEEP(dots_values_impl(env,
@@ -979,6 +983,9 @@ r_obj* rlang_env_dots_list(r_obj* env) {
                                      rlang_objs_keep,
                                      r_false,
                                      true));
+  // Deprecated due to this clone being unnecessary.
+  // `rlang_env_dots_list()` has the exact same defaults as `list2()`, and
+  // `list2()` avoids the clone, so in vctrs we now just use that instead.
   out = r_vec_clone_shared(out);
 
   FREE(1);
