@@ -88,16 +88,7 @@ NULL
 #'
 #' @export
 list2 <- function(...) {
-  .Call(
-    ffi_dots_list,
-    frame_env = environment(),
-    named = NULL,
-    ignore_empty = "trailing",
-    preserve_empty = FALSE,
-    unquote_names = TRUE,
-    homonyms = "keep",
-    check_assign = FALSE
-  )
+  .External2(ffi_list2)
 }
 #' @rdname list2
 #' @usage NULL

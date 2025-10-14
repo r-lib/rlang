@@ -7,6 +7,9 @@
 r_obj* ffi_try_fetch(r_obj* try_fetch_args) {
   r_obj* env = r_node_cadr(try_fetch_args);
 
+  // TODO: `rlang_env_dots_list()` will always clone `handlers`
+  // on the way out, and we could probably avoid that by switching
+  // to or creating another variant that doesn't clone.
   r_obj* handlers = KEEP(rlang_env_dots_list(env));
   r_env_poke(env, rlang_syms.handlers, handlers);
 

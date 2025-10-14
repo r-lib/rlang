@@ -346,6 +346,7 @@ static const R_ExternalMethodDef externals[] = {
   {"ffi_exec",                          (DL_FUNC) &ffi_exec, 2},
   {"ffi_tilde_eval",                    (DL_FUNC) &ffi_tilde_eval, 3},
   {"ffi_try_fetch",                     (DL_FUNC) &ffi_try_fetch, 1},
+  {"ffi_list2",                         (DL_FUNC) &ffi_list2, 0},
   {NULL, NULL, 0}
 };
 
@@ -387,8 +388,6 @@ void R_init_rlang(DllInfo* dll) {
   R_RegisterCCallable("rlang", "rlang_xxh3_64bits",            (DL_FUNC) &XXH3_64bits);
 
   // Maturing
-  R_RegisterCCallable("rlang", "rlang_env_dots_list",          (DL_FUNC) &rlang_env_dots_list);
-  R_RegisterCCallable("rlang", "rlang_env_dots_values",        (DL_FUNC) &rlang_env_dots_values);
   R_RegisterCCallable("rlang", "rlang_is_splice_box",          (DL_FUNC) &is_splice_box);
   R_RegisterCCallable("rlang", "rlang_obj_encode_utf8",        (DL_FUNC) &obj_encode_utf8);
   R_RegisterCCallable("rlang", "rlang_str_as_symbol",          (DL_FUNC) &r_str_as_symbol);
@@ -398,6 +397,10 @@ void R_init_rlang(DllInfo* dll) {
 
   // Experimental
   R_RegisterCCallable("rlang", "rlang_squash_if",              (DL_FUNC) &r_squash_if);
+
+  // Deprecated
+  R_RegisterCCallable("rlang", "rlang_env_dots_list",          (DL_FUNC) &rlang_env_dots_list);
+  R_RegisterCCallable("rlang", "rlang_env_dots_values",        (DL_FUNC) &rlang_env_dots_values);
 
   // Compatibility
   R_RegisterCCallable("rlang", "rlang_as_data_mask",           (DL_FUNC) &ffi_as_data_mask_compat);

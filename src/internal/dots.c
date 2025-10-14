@@ -957,6 +957,8 @@ r_obj* ffi_dots_values(r_obj* args) {
   return out;
 }
 
+// Deprecated
+// Used by vctrs <= 0.6.5, so can't easily remove.
 // [[ export() ]]
 r_obj* rlang_env_dots_values(r_obj* env) {
   return dots_values_impl(env,
@@ -969,6 +971,8 @@ r_obj* rlang_env_dots_values(r_obj* env) {
                           false);
 }
 
+// Deprecated
+// Used by vctrs <= 0.6.5, so can't easily remove.
 // [[ export() ]]
 r_obj* rlang_env_dots_list(r_obj* env) {
   r_obj* out = KEEP(dots_values_impl(env,
@@ -979,12 +983,28 @@ r_obj* rlang_env_dots_list(r_obj* env) {
                                      rlang_objs_keep,
                                      r_false,
                                      true));
+  // Deprecated due to this clone being unnecessary.
+  // `rlang_env_dots_list()` has the exact same defaults as `list2()`, and
+  // `list2()` avoids the clone, so in vctrs we now just use that instead.
   out = r_vec_clone_shared(out);
 
   FREE(1);
   return out;
 }
 
+// Specialization for maximum performance via `External2()`, which is a little
+// faster than `.Call()` and gives us `frame_env` for free rather than needing
+// an R level `environment()` call
+r_obj* ffi_list2(r_obj* call, r_obj* op, r_obj* args, r_obj* frame_env) {
+  return dots_values_impl(frame_env,
+                          r_null,
+                          rlang_objs_trailing,
+                          r_false,
+                          r_true,
+                          rlang_objs_keep,
+                          r_false,
+                          true);
+}
 r_obj* ffi_dots_list(r_obj* frame_env,
                      r_obj* named,
                      r_obj* ignore_empty,
