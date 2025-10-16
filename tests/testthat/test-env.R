@@ -460,8 +460,8 @@ test_that("env_coalesce() handles fancy bindings", {
   expect_equal(x$active, "active-value")
   expect_equal(x$lazy, "lazy-value")
 
-  # `y$lazy` was forced at the same time as `x$lazy`
-  expect_false(env_binding_are_lazy(y, "lazy"))
+  # Forcing `x$lazy` does not force `y$lazy`
+  expect_true(env_binding_are_lazy(y, "lazy"))
 
   expect_condition(
     expect_equal(y$active, "active-value"),
