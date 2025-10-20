@@ -9,7 +9,7 @@ formulas and frames. If called with a missing argument, the
 environment of the current evaluation frame is returned. If you
 call get_env() with an environment, it acts as the identity
 function and the environment is simply returned (this helps
-simplifying code when writing generic functions for environments)."><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><meta name="robots" content="noindex"><script defer data-domain="rlang.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script></head><body>
+simplifying code when writing generic functions for environments)."><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><meta name="robots" content="noindex"><script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-hide-below="1200" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="rlang.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script></head><body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
 
 
@@ -146,13 +146,13 @@ package.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Environment of closure functions:</span></span></span>
 <span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="st">"foo"</span></span></span>
 <span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ca8c12ee50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f4dc5970b8&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or of quosures or formulas:</span></span></span>
 <span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="op">~</span><span class="va">foo</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ca8c12ee50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f4dc5970b8&gt;</span>
 <span class="r-in"><span><span class="fu">get_env</span><span class="op">(</span><span class="fu"><a href="defusing-advanced.html">quo</a></span><span class="op">(</span><span class="va">foo</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ca8c12ee50&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f4dc5970b8&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Provide a default in case the object doesn't bundle an environment.</span></span></span>
@@ -187,7 +187,7 @@ package.</p>
 <span class="r-in"><span><span class="fu">set_env</span><span class="op">(</span><span class="va">fn</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function () </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55ca8ea26018&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x55f4dbd58690&gt;</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu">get_env</span><span class="op">(</span><span class="va">fn</span><span class="op">)</span>, <span class="va">other_env</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span></span></span>
