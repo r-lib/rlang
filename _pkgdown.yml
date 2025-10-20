@@ -9,11 +9,12 @@ template:
 
   includes:
     in_header: |
+      <script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-hide-below="1200" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script>
       <script defer data-domain="rlang.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 
 navbar:
   structure:
-    left:  [reference, tidyeval, metaprog, errors, news]
+    left: [reference, tidyeval, metaprog, errors, news]
   components:
     tidyeval:
       text: Tidy evaluation
@@ -23,14 +24,14 @@ navbar:
         href: reference/topic-data-mask.html
       - text: Data mask programming patterns
         href: reference/topic-data-mask-programming.html
-      - text: ---
+      - text: '---'
 
       - text: Guides
       - text: The data mask ambiguity
         href: reference/topic-data-mask-ambiguity.html
       - text: The double evaluation problem
         href: reference/topic-double-evaluation.html
-      - text: ---
+      - text: '---'
 
       - text: Notes
       - text: What happens if I use injection operators out of context?
@@ -50,12 +51,12 @@ navbar:
         href: reference/topic-metaprogramming.html
       - text: What are quosures and when are they needed?
         href: reference/topic-quosure.html
-      - text: ---
+      - text: '---'
 
       - text: Guides
       - text: Taking multiple columns without `...`
         href: reference/topic-multiple-columns.html
-      - text: ---
+      - text: '---'
 
       - text: Notes
       - text: Why are strings and other constants enquosed in the empty environment?
@@ -71,7 +72,7 @@ navbar:
         href: reference/topic-error-chaining.html
       - text: Formatting messages with cli
         href: reference/topic-condition-formatting.html
-      - text: ---
+      - text: '---'
 
       - text: Notes
       - text: Customising condition messages
@@ -93,249 +94,249 @@ news:
 reference:
   # NSE
 
-  - title: Tidy evaluation
-    desc: >
-      The programmable data-masking framework developed for the
-      tidyverse.
-  - subtitle: Tools
-    contents:
-      - embrace-operator
-      - glue-operators
-      - .data
+- title: Tidy evaluation
+  desc: >
+    The programmable data-masking framework developed for the
+    tidyverse.
+- subtitle: Tools
+  contents:
+  - embrace-operator
+  - glue-operators
+  - .data
 
-  - subtitle: Metaprogramming tools
-    contents:
-      - injection-operator
-      - splice-operator
-      - qq_show
-      - englue
-      - expr
-      - enquo
-      - sym
-      - as_label
-      - as_name
+- subtitle: Metaprogramming tools
+  contents:
+  - injection-operator
+  - splice-operator
+  - qq_show
+  - englue
+  - expr
+  - enquo
+  - sym
+  - as_label
+  - as_name
 
-  - subtitle: Advanced tools
-    contents:
-      - defusing-advanced
-      - eval_tidy
-      - new_data_mask
-
-
-  - title: Function arguments
-
-  - subtitle: Check arguments
-    contents:
-      - arg_match
-      - check_exclusive
-      - check_required
-      - missing_arg
-
-  - subtitle: Check dots
-    contents:
-      - check_dots_empty
-      - check_dots_used
-      - check_dots_unnamed
-
-  - subtitle: Collect dynamic dots
-    desc: >
-      Collect arguments contained in `...` with `!!!` and
-      name-injection support.
-    contents:
-      - dyn-dots
-      - list2
-      - pairlist2
-      - splice
+- subtitle: Advanced tools
+  contents:
+  - defusing-advanced
+  - eval_tidy
+  - new_data_mask
 
 
-  - title: Error handling
+- title: Function arguments
 
-  - subtitle: Signal errors and other conditions
-    contents:
-      - abort
-      - cnd_signal
-      - local_use_cli
+- subtitle: Check arguments
+  contents:
+  - arg_match
+  - check_exclusive
+  - check_required
+  - missing_arg
 
-  - subtitle: Handle errors
-    contents:
-      - global_handle
-      - global_entrace
-      - global_prompt_install
-      - try_fetch
-      - caller_arg
-      - local_error_call
-      - args_error_context
-      - catch_cnd
+- subtitle: Check dots
+  contents:
+  - check_dots_empty
+  - check_dots_used
+  - check_dots_unnamed
 
-  - subtitle: Backtraces
-    contents:
-      - last_error
-      - last_warnings
-      - global_entrace
-      - rlang_backtrace_on_error
-      - trace_back
-
-  - subtitle: Conditions
-    contents:
-      - rlang_error
-      - cnd_message
-      - format_error_bullets
-      - cnd_inherits
+- subtitle: Collect dynamic dots
+  desc: >
+    Collect arguments contained in `...` with `!!!` and
+    name-injection support.
+  contents:
+  - dyn-dots
+  - list2
+  - pairlist2
+  - splice
 
 
-  - title: Session
+- title: Error handling
 
-  - subtitle: State
-    contents:
-      - is_installed
-      - is_interactive
-      - local_options
-      - on_load
-      - faq-options
+- subtitle: Signal errors and other conditions
+  contents:
+  - abort
+  - cnd_signal
+  - local_use_cli
 
-  - subtitle: Search path and namespaces
-    contents:
-      - search_envs
-      - empty_env
-      - is_namespace
-      - ns_env
-      - env_name
+- subtitle: Handle errors
+  contents:
+  - global_handle
+  - global_entrace
+  - global_prompt_install
+  - try_fetch
+  - caller_arg
+  - local_error_call
+  - args_error_context
+  - catch_cnd
 
+- subtitle: Backtraces
+  contents:
+  - last_error
+  - last_warnings
+  - global_entrace
+  - rlang_backtrace_on_error
+  - trace_back
 
-  - title: Defused expressions
-    contents:
-      - parse_expr
-      - expr_print
-      - is_expression
-      - exprs_auto_name
-
-  - subtitle: Evaluate
-    contents:
-      - eval_tidy
-      - eval_bare
-      - exec
-      - inject
-
-  - subtitle: Symbols
-    contents:
-      - sym
-      - syms
-      - is_symbol
-      - as_string
-
-  - subtitle: Calls
-    contents:
-      - call2
-      - is_call
-      - starts_with("call_")
-
-  - subtitle: Quosures
-    contents:
-      - new_quosure
-      - new_quosures
-      - quosure-tools
-      - quo_squash
-
-  - subtitle: Formulas
-    contents:
-      - starts_with("f_")
-      - new_formula
-      - is_formula
-      - is_bare_formula
+- subtitle: Conditions
+  contents:
+  - rlang_error
+  - cnd_message
+  - format_error_bullets
+  - cnd_inherits
 
 
-  - title: Objects
-    contents:
-      - hash
+- title: Session
 
-  - subtitle: Environments
-    contents:
-      - env
-      - env_print
-      - env_parent
-      - env_depth
-      - get_env
-      - env_clone
-      - env_inherits
-      - is_environment
-      - as_environment
-      - caller_env
-      - env_browse
-      - env_is_user_facing
+- subtitle: State
+  contents:
+  - is_installed
+  - is_interactive
+  - local_options
+  - on_load
+  - faq-options
 
-  - subtitle: Stack
-    contents:
-      - caller_env
-      - caller_call
-      - caller_fn
-      - current_env
-      - current_call
-      - current_fn
-      - frame_call
-      - frame_fn
+- subtitle: Search path and namespaces
+  contents:
+  - search_envs
+  - empty_env
+  - is_namespace
+  - ns_env
+  - env_name
 
-  - subtitle: Environment bindings
-    contents:
-      - env_bind
-      - env_unbind
-      - env_poke
-      - env_cache
-      - local_bindings
-      - env_has
-      - env_get
-      - env_names
 
-  - subtitle: Functions
-    contents:
-      - new_function
-      - as_function
-      - is_function
-      - fn_fmls
-      - fn_body
-      - fn_env
-      - as_closure
+- title: Defused expressions
+  contents:
+  - parse_expr
+  - expr_print
+  - is_expression
+  - exprs_auto_name
 
-  - subtitle: S3
-    contents:
-      - inherits_any
-      - zap
-      - as_bytes
-      - new_box
-      - as_box
-      - done
+- subtitle: Evaluate
+  contents:
+  - eval_tidy
+  - eval_bare
+  - exec
+  - inject
 
-  - subtitle: Attributes
-    contents:
-      - set_names
-      - names2
-      - has_name
-      - is_named
-      - zap_srcref
+- subtitle: Symbols
+  contents:
+  - sym
+  - syms
+  - is_symbol
+  - as_string
 
-  - subtitle: Vectors
-    contents:
-      - lgl
-      - list2
-      - rep_along
-      - seq2
+- subtitle: Calls
+  contents:
+  - call2
+  - is_call
+  - starts_with("call_")
 
-  - subtitle: Type predicates
-    contents:
-      - is_list
-      - is_scalar_list
-      - is_bare_list
-      - is_empty
-      - is_integerish
-      - is_true
+- subtitle: Quosures
+  contents:
+  - new_quosure
+  - new_quosures
+  - quosure-tools
+  - quo_squash
 
-  - subtitle: Weak references
-    contents:
-      - matches("weakref")
-      - matches("wref")
+- subtitle: Formulas
+  contents:
+  - starts_with("f_")
+  - new_formula
+  - is_formula
+  - is_bare_formula
 
-  - subtitle: Operators
-    contents:
-      - "`%||%`"
-      - "`%&&%`"
-      - "`%|%`"
-      - "`%@%`"
+
+- title: Objects
+  contents:
+  - hash
+
+- subtitle: Environments
+  contents:
+  - env
+  - env_print
+  - env_parent
+  - env_depth
+  - get_env
+  - env_clone
+  - env_inherits
+  - is_environment
+  - as_environment
+  - caller_env
+  - env_browse
+  - env_is_user_facing
+
+- subtitle: Stack
+  contents:
+  - caller_env
+  - caller_call
+  - caller_fn
+  - current_env
+  - current_call
+  - current_fn
+  - frame_call
+  - frame_fn
+
+- subtitle: Environment bindings
+  contents:
+  - env_bind
+  - env_unbind
+  - env_poke
+  - env_cache
+  - local_bindings
+  - env_has
+  - env_get
+  - env_names
+
+- subtitle: Functions
+  contents:
+  - new_function
+  - as_function
+  - is_function
+  - fn_fmls
+  - fn_body
+  - fn_env
+  - as_closure
+
+- subtitle: S3
+  contents:
+  - inherits_any
+  - zap
+  - as_bytes
+  - new_box
+  - as_box
+  - done
+
+- subtitle: Attributes
+  contents:
+  - set_names
+  - names2
+  - has_name
+  - is_named
+  - zap_srcref
+
+- subtitle: Vectors
+  contents:
+  - lgl
+  - list2
+  - rep_along
+  - seq2
+
+- subtitle: Type predicates
+  contents:
+  - is_list
+  - is_scalar_list
+  - is_bare_list
+  - is_empty
+  - is_integerish
+  - is_true
+
+- subtitle: Weak references
+  contents:
+  - matches("weakref")
+  - matches("wref")
+
+- subtitle: Operators
+  contents:
+  - "`%||%`"
+  - "`%&&%`"
+  - "`%|%`"
+  - "`%@%`"
