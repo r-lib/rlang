@@ -29,7 +29,6 @@ void r_attrib_poke(r_obj* x, r_obj* sym, r_obj* value) {
   Rf_setAttrib(x, sym, value);
 }
 
-r_obj* r_attrib_push(r_obj* x, r_obj* tag, r_obj* value);
 r_obj* r_attrib_set(r_obj* x, r_obj* tag, r_obj* value);
 
 static inline
