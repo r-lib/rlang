@@ -133,8 +133,8 @@ have the same endianness and are using the same R version.</p>
 generates a 128-bit hash. Both are implemented as streaming hashes, which
 generate the hash with minimal extra memory usage.</p>
 <p>For <code>hash()</code>, objects are converted to binary using R's native serialization
-tools. On R &gt;= 3.5.0, serialization version 3 is used, otherwise version 2 is
-used. See <code><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize()</a></code> for more information about the serialization version.</p>
+tools. Serialization version 3 is used. See <code><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize()</a></code> for more
+information about the serialization version.</p>
     </div>
 
     <div class="section level2">
