@@ -25,8 +25,7 @@ LHS. If the RHS already contains bindings with the same name as
 in the LHS, those are kept as is.
 }
 
-Both these functions preserve active bindings and promises (the
-latter are only preserved on R >= 4.0.0).
+Both these functions preserve active bindings and promises.
 }
 \examples{
 # A clone initially contains the same bindings as the original
