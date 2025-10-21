@@ -368,8 +368,6 @@ test_that("env_clone() handles active bindings", {
 })
 
 test_that("env_clone() doesn't force promises", {
-  skip_if_not_installed("base", "4.0.0")
-
   e <- env()
   env_bind_lazy(e, foo = value)
 
@@ -428,8 +426,6 @@ test_that("env_coalesce() merges environments", {
 })
 
 test_that("env_coalesce() handles fancy bindings", {
-  old_r <- getRversion() < "4.0.0"
-
   x <- env(x = 1, y = 2)
   y <- env(x = "a", z = "c")
   env_bind_lazy(y, lazy = {
@@ -443,12 +439,10 @@ test_that("env_coalesce() handles fancy bindings", {
 
   env_coalesce(x, y)
 
-  if (!old_r) {
-    expect_condition(
-      expect_equal(x$lazy, "lazy-value"),
-      class = "lazy"
-    )
-  }
+  expect_condition(
+    expect_equal(x$lazy, "lazy-value"),
+    class = "lazy"
+  )
   expect_condition(
     expect_equal(x$active, "active-value"),
     class = "active"
