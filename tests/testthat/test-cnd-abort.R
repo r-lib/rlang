@@ -294,9 +294,6 @@ test_that("abort() displays call in error prefix", {
     )
   )
 
-  # errorCondition()
-  skip_if_not_installed("base", "3.6.0")
-
   expect_snapshot(
     run(
       "{

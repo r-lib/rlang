@@ -566,9 +566,6 @@ test_that("can bind backtraces", {
 })
 
 test_that("backtraces don't contain inlined objects (#1069, r-lib/testthat#1223)", {
-  # !! deparsing in older R
-  skip_if_not_installed("base", "3.5.0")
-
   local_options(
     rlang_trace_format_srcrefs = FALSE
   )

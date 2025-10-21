@@ -44,52 +44,8 @@ r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
 
 
 r_obj* r_env_as_list(r_obj* env) {
-  r_obj* out = KEEP(eval_with_x(env2list_call, env));
-
-#if R_VERSION < R_Version(4, 0, 0)
-  out = env_as_list_compat(env, out);
-#endif
-
-  FREE(1);
-  return out;
+  return eval_with_x(env2list_call, env);
 }
-
-// On R < 4.0, the active binding function is returned instead of
-// its value. We invoke the active bindings here to get consistent
-// behaviour in all supported R versions.
-#if R_VERSION < R_Version(4, 0, 0)
-r_obj* env_as_list_compat(r_obj* env, r_obj* out) {
-  r_obj* nms = KEEP(r_env_names(env));
-  r_obj* types = KEEP(r_env_binding_types(env, nms));
-
-  if (types == r_null) {
-    FREE(2);
-    return out;
-  }
-
-  r_ssize n = r_length(nms);
-  r_obj* const * p_nms = r_chr_cbegin(nms);
-  const int* p_types = r_int_cbegin(types);
-
-  for (r_ssize i = 0; i < n; ++i) {
-    enum r_env_binding_type type = p_types[i];
-    if (type == R_ENV_BINDING_TYPE_active) {
-      r_ssize fn_idx = r_chr_detect_index(nms, r_str_c_string(p_nms[i]));
-      if (fn_idx < 0) {
-        r_abort("Internal error: Can't find active binding in list");
-      }
-
-      r_obj* fn = r_list_get(out, fn_idx);
-      r_obj* value = r_eval(KEEP(r_call(fn)), r_envs.empty);
-      r_list_poke(out, fn_idx, value);
-      FREE(1);
-    }
-  }
-
-  FREE(2);
-  return out;
-}
-#endif
 
 r_obj* r_env_clone(r_obj* env, r_obj* parent) {
   if (parent == NULL) {
@@ -118,15 +74,6 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
     return;
   }
 
-  // In older R versions there is no way of accessing the function of
-  // an active binding except through env2list. This makes it
-  // impossible to preserve active bindings without forcing promises.
-#if R_VERSION < R_Version(4, 0, 0)
-  r_obj* from_list = KEEP(eval_with_x(env2list_call, from));
-#else
-  KEEP(r_null);
-#endif
-
   r_ssize n = r_length(nms);
   r_obj* const * v_nms = r_chr_cbegin(nms);
   enum r_env_binding_type* v_types = (enum r_env_binding_type*) r_int_begin(types);
@@ -145,21 +92,13 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
       break;
 
     case R_ENV_BINDING_TYPE_active: {
-#if R_VERSION < R_Version(4, 0, 0)
-      r_ssize fn_idx = r_chr_detect_index(nms, r_sym_c_string(sym));
-      if (fn_idx < 0) {
-        r_stop_internal("Can't find active binding in temporary list.");
-      }
-      r_obj* fn = r_list_get(from_list, fn_idx);
-#else
       r_obj* fn = R_ActiveBindingFunction(sym, from);
-#endif
       r_env_poke_active(env, sym, fn);
       break;
     }}
   }
 
-  FREE(3);
+  FREE(2);
   return;
 }
 
@@ -213,18 +152,6 @@ bool r__env_has_anywhere(r_obj* env, r_obj* sym) {
   return r_as_bool(out);
 }
 #endif
-
-#if (R_VERSION < R_Version(4, 0, 0))
-void r__env_unbind(r_obj* env, r_obj* sym) {
-  // Check if binding exists to avoid `rm()` warning
-  if (r_env_has(env, sym)) {
-    r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
-    eval_with_xyz(remove_call, env, nm, r_false);
-    FREE(1);
-  }
-}
-#endif
-
 
 bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
   top = top ? top : r_envs.empty;

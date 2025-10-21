@@ -14,19 +14,13 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
   return out;
 }
 
-#if R_VERSION >= R_Version(3, 4, 0)
-#define HAS_VIRTUAL_SIZE 1
-#else
-#define HAS_VIRTUAL_SIZE 0
-#endif
-
 #define RESIZE(R_TYPE, C_TYPE, CONST_DEREF, DEREF)              \
   do {                                                          \
     r_ssize x_size = r_length(x);                               \
     if (x_size == size) {                                       \
       return x;                                                 \
     }                                                           \
-    if (!ALTREP(x) && size < x_size && HAS_VIRTUAL_SIZE) {      \
+    if (!ALTREP(x) && size < x_size) {                          \
       SETLENGTH(x, size);                                       \
       SET_TRUELENGTH(x, x_size);                                \
       SET_GROWABLE_BIT(x);                                      \
@@ -50,7 +44,7 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
     if (x_size == size) {                                       \
       return x;                                                 \
     }                                                           \
-    if (!ALTREP(x) && size < x_size && HAS_VIRTUAL_SIZE) {      \
+    if (!ALTREP(x) && size < x_size) {                          \
       SETLENGTH(x, size);                                       \
       SET_TRUELENGTH(x, x_size);                                \
       SET_GROWABLE_BIT(x);                                      \

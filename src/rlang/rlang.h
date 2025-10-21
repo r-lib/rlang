@@ -44,7 +44,6 @@ bool _r_use_local_precious_list;
 #include "obj.h"
 #include "globals.h"
 
-#include "altrep.h"
 #include "arg.h"
 #include "attrib.h"
 #include "debug.h"

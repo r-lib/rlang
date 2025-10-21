@@ -14,8 +14,8 @@
 #' generate the hash with minimal extra memory usage.
 #'
 #' For `hash()`, objects are converted to binary using R's native serialization
-#' tools. On R >= 3.5.0, serialization version 3 is used, otherwise version 2 is
-#' used. See [serialize()] for more information about the serialization version.
+#' tools. Serialization version 3 is used. See [serialize()] for more
+#' information about the serialization version.
 #'
 #' @param x An object.
 #'

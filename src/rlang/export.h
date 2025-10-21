@@ -5,12 +5,6 @@
 
 #include "rlang-types.h"
 
-#if (defined(R_VERSION) && R_VERSION < R_Version(3, 4, 0))
-typedef union {void* p; DL_FUNC fn;} fn_ptr;
-r_obj* R_MakeExternalPtrFn(DL_FUNC p, r_obj* tag, r_obj* prot);
-DL_FUNC R_ExternalPtrAddrFn(r_obj* s);
-#endif
-
 typedef DL_FUNC r_void_fn;
 
 static inline

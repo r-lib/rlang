@@ -79,8 +79,6 @@ test_that("cnd_muffle() returns FALSE if the condition is not mufflable", {
 })
 
 test_that("drop_global_handlers() works and is idempotent", {
-  skip_if_not_installed("base", "4.0.0")
-
   code <- '{
     library(testthat)
 

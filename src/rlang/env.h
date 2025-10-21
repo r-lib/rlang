@@ -157,12 +157,7 @@ void r_env_coalesce(r_obj* env, r_obj* from);
 // Silently ignores bindings that are not defined in `env`.
 static inline
 void r_env_unbind(r_obj* env, r_obj* sym) {
-#if (R_VERSION < R_Version(4, 0, 0))
-  void r__env_unbind(r_obj*, r_obj*);
-  r__env_unbind(env, sym);
-#else
   R_removeVarFromFrame(sym, env);
-#endif
 }
 
 static inline

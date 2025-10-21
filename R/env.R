@@ -443,8 +443,7 @@ env_poke_parent <- function(env, new_env) {
 #'   LHS. If the RHS already contains bindings with the same name as
 #'   in the LHS, those are kept as is.
 #'
-#' Both these functions preserve active bindings and promises (the
-#' latter are only preserved on R >= 4.0.0).
+#' Both these functions preserve active bindings and promises.
 #'
 #' @inheritParams get_env
 #' @param parent The parent of the cloned environment.
