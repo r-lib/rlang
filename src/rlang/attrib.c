@@ -1,12 +1,5 @@
 #include "rlang.h"
 
-r_obj* r_attrib_push(r_obj* x, r_obj* tag, r_obj* value) {
-  r_obj* attrs = r_new_node(value, r_attrib(x));
-  r_node_poke_tag(attrs, tag);
-  r_poke_attrib(x, attrs);
-  return attrs;
-}
-
 /**
  * - If `sentinel` is found in the first node: `parent_out` is `r_null`
  * - If `sentinel` is not found: both return value and `parent_out`
