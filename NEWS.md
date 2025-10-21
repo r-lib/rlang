@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* R >=4.0.0 is now required. This is still more permissive than the general tidyverse policy of supporting the [5 most recent versions of R](https://www.tidyverse.org/blog/2019/04/r-version-support/).
+
 * `list2()` is now a little faster (#1837).
 
 * New `%&&%` operator that returns RHS when LHS is non-NULL (#1774, @snystrom).
