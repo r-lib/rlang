@@ -330,7 +330,7 @@ r_obj* sexp_node_cdr(enum r_type type,
                      enum r_sexp_it_relation* p_rel) {
   switch (type) {
   case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_body; return BODY(x);
-  case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_enclos; return ENCLOS(x);
+  case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_enclos; return r_env_parent(x);
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_expr; return PREXPR(x);
   case R_TYPE_pointer:     *p_rel = R_SEXP_IT_RELATION_pointer_prot; return EXTPTR_PROT(x);
   case R_TYPE_pairlist:
