@@ -41,12 +41,6 @@ r_obj* r_env_parent(r_obj* env) {
 #endif
 }
 
-// TODO: C API compliance
-static inline
-void r_env_poke_parent(r_obj* env, r_obj* new_parent) {
-  SET_ENCLOS(env, new_parent);
-}
-
 static inline
 bool r_is_environment(r_obj* x) {
   return TYPEOF(x) == ENVSXP;

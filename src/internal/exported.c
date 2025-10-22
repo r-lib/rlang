@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "env.h"
 #include "internal.h"
 #include "utils.h"
 #include "vec.h"
@@ -453,6 +454,9 @@ r_obj* ffi_lof_arr_push_back(r_obj* lof, r_obj* i, r_obj* value) {
 // env.c
 
 r_obj* ffi_env_poke_parent(r_obj* env, r_obj* new_parent) {
+  // For the R level API, we do our own checks on top of
+  // what `r_env_poke_parent()` (really `base::parent.env<-`)
+  // does to throw better user facing error messages
   if (R_IsNamespaceEnv(env)) {
     r_abort("Can't change the parent of a namespace environment");
   }

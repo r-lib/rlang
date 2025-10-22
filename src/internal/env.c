@@ -1,5 +1,7 @@
 #include <rlang.h>
 
+#include "decl/env-decl.h"
+
 void r_env_unbind_anywhere(r_obj* env, r_obj* sym) {
   while (env != r_envs.empty) {
     if (r_env_has(env, sym)) {
@@ -58,7 +60,18 @@ void r_env_unbind_anywhere_c_string(r_obj* env, const char* name) {
   r_env_unbind_anywhere_c_strings(env, names, 1);
 }
 
+void r_env_poke_parent(r_obj* env, r_obj* new_parent) {
+  r_eval_with_xy(env_poke_parent_call, env, new_parent, r_envs.base);
+}
+
 r_obj* ffi_env_coalesce(r_obj* env, r_obj* from) {
   r_env_coalesce(env, from);
   return r_null;
 }
+
+void rlang_init_env(void) {
+  env_poke_parent_call = r_parse("`parent.env<-`(x, y)");
+  r_preserve(env_poke_parent_call);
+}
+
+static r_obj* env_poke_parent_call = NULL;
