@@ -134,6 +134,10 @@ test_that("zap_srcref() preserves attributes", {
   out <- zap_srcref(fn)
   expect_equal(attributes(out), list(bar = TRUE))
   expect_null(attributes(body(out)))
+
+  # `fn` attributes are not mutated
+  expect_equal(attr(fn, "bar"), TRUE)
+  expect_s3_class(attr(fn, "srcref"), "srcref")
 })
 
 test_that("can zap_srcref() on functions with `[[` methods", {
