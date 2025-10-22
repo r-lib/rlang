@@ -472,7 +472,7 @@ r_obj* ffi_env_poke_parent(r_obj* env, r_obj* new_parent) {
     r_abort("Can't change the parent of the empty environment");
   }
 
-  SET_ENCLOS(env, new_parent);
+  r_env_poke_parent(env, new_parent);
   return env;
 }
 
