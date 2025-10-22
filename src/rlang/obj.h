@@ -65,7 +65,7 @@ void r_unmark_object(r_obj* x) {
 }
 static inline
 bool r_is_object(r_obj* x) {
-  return OBJECT(x);
+  return Rf_isObject(x);
 }
 
 static inline
