@@ -38,10 +38,6 @@ unmark_object <- function(x) {
   invisible(.Call(ffi_unmark_object, x))
 }
 
-true_length <- function(x) {
-  .Call(ffi_true_length, x)
-}
-
 promise_expr <- function(name, env = caller_env()) {
   .Call(ffi_promise_expr, name, env)
 }

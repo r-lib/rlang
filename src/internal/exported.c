@@ -700,9 +700,6 @@ r_obj* ffi_quo_is_null(r_obj* quo) {
 r_obj* ffi_length(r_obj* x) {
   return r_int(r_length(x));
 }
-r_obj* ffi_true_length(r_obj* x) {
-  return r_int(XTRUELENGTH(x));
-}
 
 r_obj* ffi_is_reference(r_obj* x, r_obj* y) {
   return r_lgl(x == y);

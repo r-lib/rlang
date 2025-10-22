@@ -315,7 +315,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_test_stop_internal",           (DL_FUNC) &ffi_test_stop_internal, 1},
   {"ffi_test_sys_call",                (DL_FUNC) &ffi_test_sys_call, 1},
   {"ffi_test_sys_frame",               (DL_FUNC) &ffi_test_sys_frame, 1},
-  {"ffi_true_length",                  (DL_FUNC) &ffi_true_length, 1},
   {"ffi_unescape_character",           (DL_FUNC) &ffi_unescape_character, 1},
   {"ffi_unmark_object",                (DL_FUNC) &ffi_unmark_object, 1},
   {"ffi_unpreserve",                   (DL_FUNC) &ffi_unpreserve, 1},
