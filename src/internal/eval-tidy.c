@@ -144,14 +144,15 @@ static r_obj* mask_sym = NULL;
 
 static r_obj* tilde_fn = NULL;
 static r_obj* restore_mask_fn = NULL;
+static r_obj* restore_mask_formals = NULL;
+static r_obj* restore_mask_body = NULL;
 
 static void on_exit_restore_lexical_env(r_obj* mask, r_obj* old, r_obj* frame) {
-  r_obj* fn = KEEP(r_clone(restore_mask_fn));
-
   r_obj* env = KEEP(r_alloc_environment(2, r_envs.base));
   r_env_poke(env, mask_sym, mask);
   r_env_poke(env, old_sym, old);
-  r_fn_poke_env(fn, env);
+
+  r_obj* fn = KEEP(r_new_function(restore_mask_formals, restore_mask_body, env));
 
   r_obj* call = KEEP(r_new_call(fn, r_null));
   r_on_exit(call, frame);
@@ -599,6 +600,12 @@ void rlang_init_eval_tidy(void) {
     r_envs.base
   );
   r_preserve(restore_mask_fn);
+
+  restore_mask_formals = r_fn_formals(restore_mask_fn);
+  r_preserve(restore_mask_formals);
+
+  restore_mask_body = r_fn_body(restore_mask_fn);
+  r_preserve(restore_mask_body);
 
   FREE(1);
 }
