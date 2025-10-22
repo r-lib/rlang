@@ -31,10 +31,6 @@ sexp_address <- obj_address
 
 # nocov start - These functions are mostly for interactive experimentation
 
-poke_type <- function(x, type) {
-  invisible(.Call(ffi_poke_type, x, type))
-}
-
 mark_object <- function(x) {
   invisible(.Call(ffi_mark_object, x))
 }

@@ -724,11 +724,6 @@ r_obj* ffi_obj_address(r_obj* x) {
   return r_str_as_character(r_obj_address(x));
 }
 
-r_obj* ffi_poke_type(r_obj* x, r_obj* type) {
-  SET_TYPEOF(x, Rf_str2type(r_chr_get_c_string(type, 0)));
-  return x;
-}
-
 r_obj* ffi_mark_object(r_obj* x) {
   SET_OBJECT(x, 1);
   return x;

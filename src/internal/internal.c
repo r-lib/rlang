@@ -267,7 +267,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_pairlist_rev",                 (DL_FUNC) &r_pairlist_rev, 1},
   {"ffi_peek_srcref",                  (DL_FUNC) &ffi_peek_srcref, 0},
   {"ffi_poke_attrib",                  (DL_FUNC) &r_poke_attrib, 2},
-  {"ffi_poke_type",                    (DL_FUNC) &ffi_poke_type, 2},
   {"ffi_precious_dict",                (DL_FUNC) &ffi_precious_dict, 0},
   {"ffi_preserve",                     (DL_FUNC) &ffi_preserve, 1},
   {"ffi_promise_env",                  (DL_FUNC) &ffi_promise_env, 2},
