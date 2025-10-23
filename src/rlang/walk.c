@@ -314,7 +314,7 @@ r_obj* sexp_node_car(enum r_type type,
                      r_obj* x,
                      enum r_sexp_it_relation* p_rel) {
   switch (type) {
-  case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_fmls; return FORMALS(x);
+  case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_fmls; return r_fn_formals(x);
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_frame; return FRAME(x);
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_value; return PRVALUE(x);
   case R_TYPE_pairlist:
@@ -329,8 +329,8 @@ r_obj* sexp_node_cdr(enum r_type type,
                      r_obj* x,
                      enum r_sexp_it_relation* p_rel) {
   switch (type) {
-  case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_body; return BODY(x);
-  case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_enclos; return ENCLOS(x);
+  case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_body; return r_fn_body(x);
+  case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_enclos; return r_env_parent(x);
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_expr; return PREXPR(x);
   case R_TYPE_pointer:     *p_rel = R_SEXP_IT_RELATION_pointer_prot; return EXTPTR_PROT(x);
   case R_TYPE_pairlist:
@@ -344,7 +344,7 @@ r_obj* sexp_node_tag(enum r_type type,
                      r_obj* x,
                      enum r_sexp_it_relation* p_rel) {
   switch (type) {
-  case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_env; return CLOENV(x);
+  case R_TYPE_closure:     *p_rel = R_SEXP_IT_RELATION_function_env; return r_fn_env(x);
   case R_TYPE_environment: *p_rel = R_SEXP_IT_RELATION_environment_hashtab; return HASHTAB(x);
   case R_TYPE_promise:     *p_rel = R_SEXP_IT_RELATION_promise_env; return PRENV(x);
   case R_TYPE_pointer:     *p_rel = R_SEXP_IT_RELATION_pointer_tag; return EXTPTR_TAG(x);
