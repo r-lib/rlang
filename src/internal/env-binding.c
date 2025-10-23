@@ -3,7 +3,7 @@
 #include "env.h"
 #include "quo.h"
 
-#include "decl/env-decl.h"
+#include "decl/env-binding-decl.h"
 
 
 r_obj* ffi_env_get(r_obj* env,
