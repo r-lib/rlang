@@ -31,12 +31,6 @@ r_obj* r_fn_env(r_obj* fn) {
 #endif
 }
 
-// TODO: C API compliance
-static inline
-void r_fn_poke_env(r_obj* fn, r_obj* env) {
-  SET_CLOENV(fn, env);
-}
-
 static inline
 r_obj* r_new_function(r_obj* formals, r_obj* body, r_obj* env) {
 #if R_VERSION >= R_Version(4, 5, 0)
