@@ -23,18 +23,10 @@ test_encodings <- function() {
   string <- "\u00B0C"
 
   utf8 <- iconv(string, from = Encoding(string), to = "UTF-8")
+  unknown <- iconv(string, from = Encoding(string), to = "", mark = FALSE)
   latin1 <- iconv(string, from = Encoding(string), to = "latin1")
 
-  # We used to be able to detect unknown encodings via `LEVELS()`. In recent
-  # versions of R we need to use `Rf_charIsUTF8` instead to be conformant to the
-  # public API but unfortunately it treats unknown encodings as UTF-8. So we
-  # no longer support this case:
-  #
-  # ```
-  # unknown <- iconv(string, from = Encoding(string), to = "", mark = FALSE)
-  # ```
-
-  list(utf8 = utf8, latin1 = latin1)
+  list(utf8 = utf8, unknown = unknown, latin1 = latin1)
 }
 expect_utf8_encoded <- function(object) {
   expect_identical(Encoding(object), rep("UTF-8", length(object)))

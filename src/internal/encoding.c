@@ -61,8 +61,8 @@ r_obj* chr_encode_utf8(r_obj* x) {
   for (r_ssize i = start; i < size; ++i) {
     r_obj* const elt = p_x[i];
 
-    if (str_needs_encoding(elt)) {
-      r_chr_poke(x, i, str_encode_utf8(elt));
+    if (!str_is_ascii_or_utf8(elt)) {
+      r_chr_poke(x, i, str_as_utf8(elt));
     }
   }
 
@@ -78,7 +78,7 @@ r_ssize chr_find_encoding_start(r_obj* x, r_ssize size) {
   for (r_ssize i = 0; i < size; ++i) {
     r_obj* const elt = p_x[i];
 
-    if (str_needs_encoding(elt)) {
+    if (!str_is_ascii_or_utf8(elt)) {
       return i;
     }
   }
@@ -179,33 +179,21 @@ r_obj* attrib_encode_utf8(r_obj* x) {
 
 // -----------------------------------------------------------------------------
 
-static inline
-r_obj* str_encode_utf8(r_obj* x) {
-  return r_str(Rf_translateCharUTF8(x));
-}
-
-static inline
-bool str_needs_encoding(r_obj* x) {
-  return (!str_is_ascii_or_utf8(x)) && (x != NA_STRING);
-}
-
-#if (R_VERSION < R_Version(4, 5, 0))
-
-#define MASK_ASCII 8
-#define MASK_UTF8 64
-// The first 128 values are ASCII, and are the same regardless of the encoding.
-// Otherwise we enforce UTF-8.
+// String encoding normalization
+// From https://github.com/r-lib/vctrs/pull/2085
 static inline
 bool str_is_ascii_or_utf8(r_obj* x) {
-  const int levels = LEVELS(x);
-  return (levels & MASK_ASCII) || (levels & MASK_UTF8);
-}
-
+#if (R_VERSION >= R_Version(4, 5, 0))
+  return Rf_charIsASCII(x) || (Rf_getCharCE(x) == CE_UTF8) || (x == r_globals.na_str);
 #else
-
-static inline
-bool str_is_ascii_or_utf8(r_obj* x) {
-  return Rf_charIsUTF8(x);
+  const int mask_ascii = 8;
+  const int mask_utf8 = 64;
+  const int levels = LEVELS(x);
+  return (levels & mask_ascii) || (levels & mask_utf8) || (x == r_globals.na_str);
+#endif
 }
 
-#endif
+static inline
+r_obj* str_as_utf8(r_obj* x) {
+  return Rf_mkCharCE(Rf_translateCharUTF8(x), CE_UTF8);
+}
