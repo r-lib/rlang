@@ -17,7 +17,7 @@ bool r_is_installed(const char* pkg) {
 static r_obj* has_colour_call = NULL;
 
 bool r_has_colour(void) {
-  if (!r_is_installed("crayon")) {
+  if (!r_is_installed("cli")) {
     return false;
   }
 
@@ -29,7 +29,7 @@ void r_init_library_session(void) {
   is_installed_call = r_parse("requireNamespace(x, quietly = TRUE)");
   r_preserve(is_installed_call);
 
-  has_colour_call = r_parse("crayon::has_color()");
+  has_colour_call = r_parse("cli::num_ansi_colors() > 1L");
   r_preserve(has_colour_call);
 }
 
