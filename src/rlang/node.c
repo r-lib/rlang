@@ -52,17 +52,6 @@ r_obj* r_node_tree_clone(r_obj* x) {
   return x;
 }
 
-r_obj* r_pairlist_find(r_obj* node, r_obj* tag) {
-  while (node != r_null) {
-    if (r_node_tag(node) == tag) {
-      return node;
-    }
-    node = r_node_cdr(node);
-  }
-
-  return r_null;
-}
-
 r_obj* r_pairlist_rev(r_obj* node) {
   if (node == r_null) {
     return node;

@@ -355,8 +355,7 @@ test_that("call_name() handles formulas", {
 
 test_that("Inlined functions return NULL name", {
   call <- quote(fn())
-  call[[1]] <- function() {
-  }
+  call[[1]] <- function() {}
   expect_null(call_name(call))
 })
 
@@ -450,9 +449,30 @@ test_that("call_print_type() returns correct enum", {
   expect_identical(call_print_type(quote(+a)), "prefix")
   expect_identical(call_print_type(quote(-a)), "prefix")
 
-  expect_identical(call_print_type(quote(while (a) b)), "special")
-  expect_identical(call_print_type(quote(for (a in b) b)), "special")
-  expect_identical(call_print_type(quote(repeat a)), "special")
+  expect_identical(
+    call_print_type(quote(
+      while (a) {
+        b
+      }
+    )),
+    "special"
+  )
+  expect_identical(
+    call_print_type(quote(
+      for (a in b) {
+        b
+      }
+    )),
+    "special"
+  )
+  expect_identical(
+    call_print_type(quote(
+      repeat {
+        a
+      }
+    )),
+    "special"
+  )
   expect_identical(call_print_type(quote(if (a) b)), "special")
   expect_identical(call_print_type(quote((a))), "special")
   expect_identical(
@@ -534,9 +554,30 @@ test_that("call_print_fine_type() returns correct enum", {
   expect_identical(call_print_fine_type(quote(+a)), "prefix")
   expect_identical(call_print_fine_type(quote(-a)), "prefix")
 
-  expect_identical(call_print_fine_type(quote(while (a) b)), "control")
-  expect_identical(call_print_fine_type(quote(for (a in b) b)), "control")
-  expect_identical(call_print_fine_type(quote(repeat a)), "control")
+  expect_identical(
+    call_print_fine_type(quote(
+      while (a) {
+        b
+      }
+    )),
+    "control"
+  )
+  expect_identical(
+    call_print_fine_type(quote(
+      for (a in b) {
+        b
+      }
+    )),
+    "control"
+  )
+  expect_identical(
+    call_print_fine_type(quote(
+      repeat {
+        a
+      }
+    )),
+    "control"
+  )
   expect_identical(call_print_fine_type(quote(if (a) b)), "control")
   expect_identical(call_print_fine_type(quote((a))), "delim")
   expect_identical(

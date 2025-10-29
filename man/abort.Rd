@@ -272,7 +272,7 @@ There are two situations where messages are streamed to \code{stderr}:
 error so that R scripts can easily filter them out from normal
 output by redirecting \code{stderr}.
 \item If a sink is active (either on output or on messages) messages
-are always streamd to \code{stderr}.
+are always streamed to \code{stderr}.
 }
 
 These exceptions ensure consistency of behaviour in interactive and
@@ -346,7 +346,7 @@ try(
 g <- function() {
   f()
 }
-# Shows that the error occured in `my_function()`
+# Shows that the error occurred in `my_function()`
 try(g())
 
 }

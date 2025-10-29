@@ -289,8 +289,6 @@ test_that("`warning.length` is increased (#1211)", {
 })
 
 test_that("interrupt() doesn't fail when interrupts are suspended (#1224)", {
-  skip_if_not_installed("base", "3.5.0")
-
   out <- FALSE
 
   tryCatch(
@@ -394,9 +392,6 @@ test_that("downgraded conditions are not inherited (#1573)", {
 # Lifecycle ----------------------------------------------------------
 
 test_that("error_cnd() still accepts `.subclass`", {
-  # <deprecatedWarning>
-  skip_if(getRversion() < "3.6.0")
-
   local_options(
     lifecycle_disable_warnings = FALSE,
     force_subclass_deprecation = TRUE

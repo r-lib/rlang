@@ -100,9 +100,9 @@ is_bare_formula <- function(x, scoped = TRUE, lhs = NULL) {
 
 #' Get or set formula components
 #'
-#' `f_rhs` extracts the righthand side, `f_lhs` extracts the lefthand
-#' side, and `f_env` extracts the environment. All functions throw an
-#' error if `f` is not a formula.
+#' `f_rhs` extracts the right-hand side, `f_lhs` extracts the left-hand
+#' side, and `f_env` extracts the environment in which the formula was defined.
+#' All functions throw an error if `f` is not a formula.
 #'
 #' @param f,x A formula
 #' @param value The value to replace with.
@@ -120,6 +120,8 @@ is_bare_formula <- function(x, scoped = TRUE, lhs = NULL) {
 #' f_lhs(x ~ y)
 #'
 #' f_env(~ x)
+#' f <- as.formula("y ~ x", env = new.env())
+#' f_env(f)
 f_rhs <- function(f) {
   if (is_quosure(f)) {
     signal_formula_access()

@@ -188,6 +188,7 @@ test_that("`check_logical()` checks", {
     err(checker(NA_integer_, check_logical))
     err(checker(1, check_logical))
     err(checker(list("foo", "bar"), check_logical, allow_null = TRUE))
+    err(checker(NA, check_logical, allow_na = FALSE))
   })
 })
 

@@ -85,7 +85,7 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
   r_obj* old_shelter = p_dict->shelter;
   r_list_poke(old_shelter, 1, r_list_get(p_new_dict->shelter, 1));
 
-  memcpy(p_dict, p_new_dict, sizeof(*p_dict));
+  r_memcpy(p_dict, p_new_dict, sizeof(*p_dict));
   p_dict->shelter = old_shelter;
 
   FREE(1);

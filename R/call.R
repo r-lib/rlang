@@ -987,12 +987,18 @@ call_args_names <- function(call) {
 }
 
 is_qualified_call <- function(x) {
-  if (typeof(x) != "language") return(FALSE)
+  if (typeof(x) != "language") {
+    return(FALSE)
+  }
   is_qualified_symbol(node_car(x))
 }
 is_namespaced_call <- function(x, ns = NULL, private = NULL) {
-  if (typeof(x) != "language") return(FALSE)
-  if (!is_namespaced_symbol(node_car(x), ns, private)) return(FALSE)
+  if (typeof(x) != "language") {
+    return(FALSE)
+  }
+  if (!is_namespaced_symbol(node_car(x), ns, private)) {
+    return(FALSE)
+  }
   TRUE
 }
 
@@ -1008,10 +1014,14 @@ call_unnamespace <- function(x) {
 
 # Qualified and namespaced symbols are actually calls
 is_qualified_symbol <- function(x) {
-  if (typeof(x) != "language") return(FALSE)
+  if (typeof(x) != "language") {
+    return(FALSE)
+  }
 
   head <- node_cadr(node_cdr(x))
-  if (typeof(head) != "symbol") return(FALSE)
+  if (typeof(head) != "symbol") {
+    return(FALSE)
+  }
 
   qualifier <- node_car(x)
   identical(qualifier, namespace_sym) ||
@@ -1020,8 +1030,12 @@ is_qualified_symbol <- function(x) {
     identical(qualifier, at_sym)
 }
 is_namespaced_symbol <- function(x, ns = NULL, private = NULL) {
-  if (typeof(x) != "language") return(FALSE)
-  if (!is_null(ns) && !identical(node_cadr(x), sym(ns))) return(FALSE)
+  if (typeof(x) != "language") {
+    return(FALSE)
+  }
+  if (!is_null(ns) && !identical(node_cadr(x), sym(ns))) {
+    return(FALSE)
+  }
 
   head <- node_car(x)
   if (is_null(private)) {

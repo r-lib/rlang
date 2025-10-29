@@ -65,7 +65,7 @@ void r_unmark_object(r_obj* x) {
 }
 static inline
 bool r_is_object(r_obj* x) {
-  return OBJECT(x);
+  return Rf_isObject(x);
 }
 
 static inline
@@ -89,12 +89,6 @@ r_obj* r_clone_shared(r_obj* x) {
 // These also clone names
 r_obj* r_vec_clone(r_obj* x);
 r_obj* r_vec_clone_shared(r_obj* x);
-
-static inline
-r_obj* r_poke_type(r_obj* x, enum r_type type) {
-  SET_TYPEOF(x, type);
-  return x;
-}
 
 static inline
 r_obj* r_type_as_string(enum r_type type) {

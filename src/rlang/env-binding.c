@@ -14,7 +14,7 @@ static r_obj* new_binding_types(r_ssize n) {
   r_obj* types = r_alloc_integer(n);
 
   int* types_ptr = r_int_begin(types);
-  memset(types_ptr, 0, n * sizeof *types_ptr);
+  r_memset(types_ptr, 0, n * sizeof *types_ptr);
 
   return types;
 }

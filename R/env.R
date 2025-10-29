@@ -443,8 +443,7 @@ env_poke_parent <- function(env, new_env) {
 #'   LHS. If the RHS already contains bindings with the same name as
 #'   in the LHS, those are kept as is.
 #'
-#' Both these functions preserve active bindings and promises (the
-#' latter are only preserved on R >= 4.0.0).
+#' Both these functions preserve active bindings and promises.
 #'
 #' @inheritParams get_env
 #' @param parent The parent of the cloned environment.
@@ -603,7 +602,7 @@ env_unlock <- function(env) {
 #' * Whether the environment is [locked][env_lock].
 #'
 #' * The bindings in the environment (up to 20 bindings). They are
-#'   printed succintly using `pillar::type_sum()` (if available,
+#'   printed succinctly using `pillar::type_sum()` (if available,
 #'   otherwise uses an internal version of that generic). In addition
 #'   [fancy bindings][env_bind_lazy] (actives and promises) are
 #'   indicated as such.

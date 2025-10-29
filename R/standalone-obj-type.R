@@ -1,12 +1,15 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-obj-type.R
-# last-updated: 2024-02-14
+# last-updated: 2025-10-02
 # license: https://unlicense.org
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+#
+# 2025-10-02:
+# - `obj_type_friendly()` now shows the dimensionality of arrays.
 #
 # 2024-02-14:
 # - `obj_type_friendly()` now works for S7 objects.
@@ -183,14 +186,16 @@ vec_type_friendly <- function(x, length = FALSE) {
   }
 
   if (type == "list") {
-    if (n_dim < 2) {
+    if (n_dim == 0) {
       return(add_length("a list"))
-    } else if (is.data.frame(x)) {
-      return("a data frame")
     } else if (n_dim == 2) {
-      return("a list matrix")
+      if (is.data.frame(x)) {
+        return("a data frame")
+      } else {
+        return("a list matrix")
+      }
     } else {
-      return("a list array")
+      return(sprintf("a list %sD array", n_dim))
     }
   }
 
@@ -206,12 +211,12 @@ vec_type_friendly <- function(x, length = FALSE) {
     type = paste0("a ", type, " %s")
   )
 
-  if (n_dim < 2) {
+  if (n_dim == 0) {
     kind <- "vector"
   } else if (n_dim == 2) {
     kind <- "matrix"
   } else {
-    kind <- "array"
+    kind <- sprintf("%sD array", n_dim)
   }
   out <- sprintf(type, kind)
 

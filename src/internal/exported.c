@@ -1,4 +1,5 @@
 #include <rlang.h>
+#include "env.h"
 #include "internal.h"
 #include "utils.h"
 #include "vec.h"
@@ -453,6 +454,9 @@ r_obj* ffi_lof_arr_push_back(r_obj* lof, r_obj* i, r_obj* value) {
 // env.c
 
 r_obj* ffi_env_poke_parent(r_obj* env, r_obj* new_parent) {
+  // For the R level API, we do our own checks on top of
+  // what `r_env_poke_parent()` (really `base::parent.env<-`)
+  // does to throw better user facing error messages
   if (R_IsNamespaceEnv(env)) {
     r_abort("Can't change the parent of a namespace environment");
   }
@@ -472,7 +476,7 @@ r_obj* ffi_env_poke_parent(r_obj* env, r_obj* new_parent) {
     r_abort("Can't change the parent of the empty environment");
   }
 
-  SET_ENCLOS(env, new_parent);
+  r_env_poke_parent(env, new_parent);
   return env;
 }
 
@@ -700,9 +704,6 @@ r_obj* ffi_quo_is_null(r_obj* quo) {
 r_obj* ffi_length(r_obj* x) {
   return r_int(r_length(x));
 }
-r_obj* ffi_true_length(r_obj* x) {
-  return r_int(XTRUELENGTH(x));
-}
 
 r_obj* ffi_is_reference(r_obj* x, r_obj* y) {
   return r_lgl(x == y);
@@ -722,11 +723,6 @@ r_obj* ffi_duplicate(r_obj* x, r_obj* shallow) {
 
 r_obj* ffi_obj_address(r_obj* x) {
   return r_str_as_character(r_obj_address(x));
-}
-
-r_obj* ffi_poke_type(r_obj* x, r_obj* type) {
-  SET_TYPEOF(x, Rf_str2type(r_chr_get_c_string(type, 0)));
-  return x;
 }
 
 r_obj* ffi_mark_object(r_obj* x) {

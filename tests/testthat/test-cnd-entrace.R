@@ -294,8 +294,6 @@ test_that("can supply handler environment as `bottom`", {
 })
 
 test_that("can set `entrace()` as a global handler", {
-  skip_if_not_installed("base", "4.0.0")
-
   expect_snapshot_output(run(
     '{
     suppressMessages(testthat::local_reproducible_output())
@@ -342,21 +340,6 @@ test_that("can set `entrace()` as a global handler", {
   ))
 })
 
-test_that("can set `entrace()` as a global handler (older R)", {
-  skip_if(getRversion() >= "4.0", )
-
-  expect_snapshot_output(run(
-    '{
-    suppressMessages(testthat::local_reproducible_output())
-    rlang::global_entrace()
-    f <- function() g()
-    g <- function() h()
-    h <- function() 1 + ""
-    f()
-  }'
-  ))
-})
-
 test_that("errors are saved by `entrace()`", {
   out <- tryCatch(
     withCallingHandlers(
@@ -390,7 +373,9 @@ test_that("only the first n warnings are entraced (#1473)", {
         entrace(cnd)
         zap()
       },
-      for (i in 1:5) f()
+      for (i in 1:5) {
+        f()
+      }
     )
 
     expect_equal(
@@ -446,8 +431,6 @@ test_that("can't set backtrace-on-warning to reminder", {
 })
 
 test_that("warnings converted to errors are not resignalled by `global_entrace()`", {
-  skip_if_not_installed("base", "3.6.0")
-
   local_options(warn = 2)
 
   out <- withCallingHandlers(

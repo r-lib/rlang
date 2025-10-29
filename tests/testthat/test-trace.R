@@ -450,8 +450,9 @@ test_that("can trim layers of backtraces", {
   e <- current_env()
   f <- function(n) identity(identity(g(n)))
   g <- function(n) identity(identity(h(n)))
-  h <- function(n)
+  h <- function(n) {
     identity(identity(trace_back(e, bottom = caller_env(n - 1L))))
+  }
 
   trace1_env <- f(1)
   trace2_env <- f(2)
@@ -565,9 +566,6 @@ test_that("can bind backtraces", {
 })
 
 test_that("backtraces don't contain inlined objects (#1069, r-lib/testthat#1223)", {
-  # !! deparsing in older R
-  skip_if_not_installed("base", "3.5.0")
-
   local_options(
     rlang_trace_format_srcrefs = FALSE
   )
@@ -754,7 +752,7 @@ test_that("namespaced calls are highlighted", {
 })
 
 test_that("can highlight long lists of arguments in backtrace (#1456)", {
-  f <- function(...)
+  f <- function(...) {
     g(
       aaaaaaaaaaaa = aaaaaaaaaaaa,
       bbbbbbbbbbbb = bbbbbbbbbbbb,
@@ -763,6 +761,7 @@ test_that("can highlight long lists of arguments in backtrace (#1456)", {
       eeeeeeeeeeee = eeeeeeeeeeee,
       ...
     )
+  }
   g <- function(
     aaaaaaaaaaaa,
     bbbbbbbbbbbb,
@@ -786,7 +785,7 @@ test_that("can highlight long lists of arguments in backtrace (#1456)", {
 })
 
 test_that("can highlight multi-line arguments in backtrace (#1456)", {
-  f <- function(...)
+  f <- function(...) {
     g(
       x = {
         a
@@ -794,6 +793,7 @@ test_that("can highlight multi-line arguments in backtrace (#1456)", {
       },
       ...
     )
+  }
   g <- function(x, ...) {
     rlang::abort("foo", ...)
   }

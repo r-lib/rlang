@@ -119,29 +119,31 @@ is_expression <- function(x) {
 #' @export
 #' @rdname is_expression
 is_syntactic_literal <- function(x) {
+  # Don't combine the tests, because we want to make sure type is one of these
+  # *before* dispatching on `length()` or `is.na()` or even `attributes()`.
   switch(
     typeof(x),
-    NULL = {
-      TRUE
-    },
-
+    NULL = TRUE,
     logical = ,
-    integer = ,
-    double = ,
     character = {
-      length(x) == 1
+      length(x) == 1 && is.null(attributes(x))
     },
-
+    integer = ,
+    double = {
+      length(x) == 1 && is.null(attributes(x)) && (is.na(x) || x >= 0)
+    },
     complex = {
-      if (length(x) != 1) {
-        return(FALSE)
-      }
-      is_na(x) || Re(x) == 0
+      length(x) == 1 && 
+        is.null(attributes(x)) && 
+        (
+          (is.na(Re(x)) && is.na(Im(x))) || 
+            (!is.na(x) && Re(x) == 0 && Im(x) >= 0)
+        )
     },
-
     FALSE
   )
 }
+
 #' @export
 #' @rdname is_expression
 is_symbolic <- function(x) {

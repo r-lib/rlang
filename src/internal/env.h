@@ -13,5 +13,8 @@ void r_env_unbind_names(r_obj* env, r_obj* names);
 void r_env_unbind_c_string(r_obj* env, const char* name);
 void r_env_unbind_c_strings(r_obj* env, const char** strings, r_ssize n);
 
+// Not part of the rlang C API.
+// Maybe one day we will get a blessed C API for `SET_ENCLOS()`.
+void r_env_poke_parent(r_obj* env, r_obj* new_parent);
 
 #endif

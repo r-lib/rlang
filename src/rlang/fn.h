@@ -7,30 +7,41 @@
 #include "obj.h"
 
 static inline
-r_obj* r_fn_body(r_obj* fn) {
-  return BODY_EXPR(fn);
+r_obj* r_fn_formals(r_obj* fn) {
+#if R_VERSION >= R_Version(4, 5, 0)
+  return R_ClosureFormals(fn);
+#else
+  return FORMALS(fn);
+#endif
 }
+
+// Identical to `R_BytecodeExpr(R_ClosureBody(fn))`, which we always want
+// since it matches the R level `body()`
 static inline
-void r_fn_poke_body(r_obj* fn, r_obj* body) {
-  SET_BODY(fn, body);
+r_obj* r_fn_body(r_obj* fn) {
+  return R_ClosureExpr(fn);
 }
 
 static inline
 r_obj* r_fn_env(r_obj* fn) {
+#if R_VERSION >= R_Version(4, 5, 0)
+  return R_ClosureEnv(fn);
+#else
   return CLOENV(fn);
-}
-static inline
-void r_fn_poke_env(r_obj* fn, r_obj* env) {
-  SET_CLOENV(fn, env);
+#endif
 }
 
 static inline
 r_obj* r_new_function(r_obj* formals, r_obj* body, r_obj* env) {
+#if R_VERSION >= R_Version(4, 5, 0)
+  return R_mkClosure(formals, body, env);
+#else
   SEXP fn = Rf_allocSExp(R_TYPE_closure);
   SET_FORMALS(fn, formals);
   SET_BODY(fn, body);
   SET_CLOENV(fn, env);
   return fn;
+#endif
 }
 
 r_obj* r_as_function(r_obj* x, const char* arg);

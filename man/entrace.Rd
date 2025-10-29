@@ -56,7 +56,7 @@ any other effect. It should be called from a condition handler.
 \code{entrace()} also works as an \code{option(error = )} handler for
 compatibility with versions of R older than 4.0.
 
-When used as calling handler, rlang trims the handler invokation
+When used as calling handler, rlang trims the handler invocation
 context from the backtrace.
 }
 \examples{

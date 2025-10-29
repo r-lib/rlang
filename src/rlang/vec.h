@@ -5,6 +5,7 @@
 
 #include <string.h>
 #include "rlang-types.h"
+#include "c-utils.h"
 #include "cnd.h"
 #include "globals.h"
 #include "obj.h"
@@ -57,8 +58,8 @@ r_obj* const * r_chr_cbegin(r_obj* x) {
 }
 static inline
 r_obj* const * r_list_cbegin(r_obj* x) {
-#if (R_VERSION < R_Version(3, 5, 0))
-  return STRING_PTR_RO(x);
+#if (R_VERSION >= R_Version(4, 5, 0))
+  return VECTOR_PTR_RO(x);
 #else
   return ((r_obj* const *) DATAPTR_RO(x));
 #endif
@@ -219,7 +220,7 @@ r_obj* r_alloc_raw0(r_ssize n) {
   r_obj* out = r_alloc_raw(n);
 
   unsigned char* p_out = (unsigned char*) r_raw_begin(out);
-  memset(p_out, 0, n);
+  r_memset(p_out, 0, n);
 
   return out;
 }
@@ -438,7 +439,7 @@ r_obj* r_vec_n(enum r_type type, void* v_src, r_ssize n) {
   case R_TYPE_complex:
   case R_TYPE_raw: {
     r_obj* out = r_alloc_vector(type, n);
-    memcpy(r_vec_begin(out), v_src, n * r_vec_elt_sizeof0(type));
+    r_memcpy(r_vec_begin(out), v_src, n * r_vec_elt_sizeof0(type));
     return out;
   }
   case R_TYPE_character:
@@ -474,7 +475,7 @@ r_obj* r_raw_n(int* v_src, r_ssize n) {
 static inline
 r_obj* r_copy_in_raw(const void* src, size_t size) {
   r_obj* out = r_alloc_raw(size);
-  memcpy(r_raw_begin(out), src, size);
+  r_memcpy(r_raw_begin(out), src, size);
   return out;
 }
 

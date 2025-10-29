@@ -16,21 +16,6 @@
 #include "decl/hash-decl.h"
 
 /*
- * Construct a define specifying whether version 2 or 3 of
- * `R_Serialize()` should be used. Version 3 is used with R >= 3.5.0, and
- * has support for ALTREP.
- */
-#ifdef R_VERSION
-#  if (R_VERSION >= R_Version(3, 5, 0))
-#    define USE_VERSION_3 1
-#  else
-#    define USE_VERSION_3 0
-#  endif
-#else
-#  define USE_VERSION_3 0
-#endif
-
-/*
  * Before any R object data is serialized, `R_Serialize()` will first write out:
  *
  * Serialization info:
@@ -38,10 +23,7 @@
  * - An `int` representing the serialization version
  * - An `int` representing `R_VERSION`
  * - An `int` representing the minimum R version where this serialization
- *   version was supported. This is `R_Version(2,3,0)` for version 2, and
- *   `R_Version(3,5,0)` for version 3.
- *
- * With version 3, it additionally writes out:
+ *   version was supported. This is `R_Version(3,5,0)` for version 3.
  * - An `int` representing the `strlen()` of a `const char*` containing the
  *   native encoding.
  * - A `const char*` for that native encoding. The length of this comes from
@@ -54,10 +36,7 @@
  * https://github.com/wch/r-source/blob/d48ecd61012fa6ae645d087d9a6e97e200c32fbc/src/main/serialize.c#L1382-L1389
  */
 #define N_BYTES_SERIALIZATION_INFO (2 + 3 * sizeof(int))
-
-#if USE_VERSION_3
-#  define N_BYTES_N_NATIVE_ENC (sizeof(int))
-#endif
+#define N_BYTES_N_NATIVE_ENC (sizeof(int))
 
 // -----------------------------------------------------------------------------
 
@@ -83,9 +62,7 @@ r_obj* ffi_hash(r_obj* x) {
 struct hash_state_t {
   bool skip;
   int n_skipped;
-#if USE_VERSION_3
   int n_native_enc;
-#endif
   XXH3_state_t* p_xx_state;
 };
 
@@ -153,20 +130,14 @@ struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state) {
   return (struct hash_state_t) {
     .skip = true,
     .n_skipped = 0,
-#if USE_VERSION_3
     .n_native_enc = 0,
-#endif
     .p_xx_state = p_xx_state
   };
 }
 
 static inline
 int hash_version(void) {
-#if USE_VERSION_3
   return 3;
-#else
-  return 2;
-#endif
 }
 
 static inline
@@ -212,8 +183,6 @@ void hash_char(R_outpstream_t stream, int input) {
   r_stop_internal("Should never be called with binary format.");
 }
 
-#if USE_VERSION_3
-
 static inline
 void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
   if (p_state->n_skipped < N_BYTES_SERIALIZATION_INFO) {
@@ -225,7 +194,7 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
   if (p_state->n_skipped == N_BYTES_SERIALIZATION_INFO) {
     // We've skipped all serialization info bytes.
     // Incoming bytes tell the size of the native encoding string.
-    memcpy(&p_state->n_native_enc, p_input, sizeof(int));
+    r_memcpy(&p_state->n_native_enc, p_input, sizeof(int));
     p_state->n_skipped += n;
     return;
   }
@@ -242,23 +211,6 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
     p_state->skip = false;
   }
 }
-
-#else // !USE_VERSION_3
-
-static inline
-void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
-  // Skip serialization header bytes
-  p_state->n_skipped += n;
-
-  if (p_state->n_skipped == N_BYTES_SERIALIZATION_INFO) {
-    // We've skipped all serialization header bytes at this point
-    p_state->skip = false;
-  }
-}
-
-#endif // USE_VERSION_3
-
-#undef USE_VERSION_3
 
 // -----------------------------------------------------------------------------
 

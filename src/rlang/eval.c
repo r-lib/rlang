@@ -11,7 +11,7 @@ r_obj* r_eval_with_x(r_obj* call, r_obj* x, r_obj* parent) {
   return out;
 }
 r_obj* r_eval_with_xy(r_obj* call, r_obj* x, r_obj* y, r_obj* parent) {
-  r_obj* env = KEEP(r_alloc_environment(1, parent));
+  r_obj* env = KEEP(r_alloc_environment(2, parent));
   r_env_poke(env, r_syms.x, x);
   r_env_poke(env, r_syms.y, y);
 
@@ -21,7 +21,7 @@ r_obj* r_eval_with_xy(r_obj* call, r_obj* x, r_obj* y, r_obj* parent) {
   return out;
 }
 r_obj* r_eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z, r_obj* parent) {
-  r_obj* env = KEEP(r_alloc_environment(1, parent));
+  r_obj* env = KEEP(r_alloc_environment(3, parent));
   r_env_poke(env, r_syms.x, x);
   r_env_poke(env, r_syms.y, y);
   r_env_poke(env, r_syms.z, z);
@@ -32,7 +32,7 @@ r_obj* r_eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z, r_obj* parent)
   return out;
 }
 r_obj* r_eval_with_wxyz(r_obj* call, r_obj* w, r_obj* x, r_obj* y, r_obj* z, r_obj* parent) {
-  r_obj* env = KEEP(r_alloc_environment(1, parent));
+  r_obj* env = KEEP(r_alloc_environment(4, parent));
   r_env_poke(env, r_syms.w, w);
   r_env_poke(env, r_syms.x, x);
   r_env_poke(env, r_syms.y, y);

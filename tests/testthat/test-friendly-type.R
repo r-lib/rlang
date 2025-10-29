@@ -19,17 +19,26 @@ test_that("obj_type_friendly() only displays the first class of objects", {
 })
 
 test_that("obj_type_friendly() supports matrices and arrays (#141)", {
-  expect_true(all(friendly_types(matrix(list(1, 2))) == "a list matrix"))
+  # 1D, 2D, and >=3D all vary!
+
+  expect_true(all(friendly_types(array(list(1, 2, 3))) == "a list 1D array"))
+  expect_true(all(friendly_types(matrix(list(1, 2, 3))) == "a list matrix"))
   expect_true(all(
-    friendly_types(array(list(1, 2, 3), dim = 1:3)) == "a list array"
+    friendly_types(array(list(1, 2, 3), dim = 1:3)) == "a list 3D array"
   ))
 
+  expect_true(all(friendly_types(array(1:3)) == "an integer 1D array"))
   expect_true(all(friendly_types(matrix(1:3)) == "an integer matrix"))
-  expect_true(all(friendly_types(array(1:3, dim = 1:3)) == "an integer array"))
-
-  expect_true(all(friendly_types(matrix(letters)) == "a character matrix"))
   expect_true(all(
-    friendly_types(array(letters[1:3], dim = 1:3)) == "a character array"
+    friendly_types(array(1:3, dim = 1:3)) == "an integer 3D array"
+  ))
+
+  expect_true(all(
+    friendly_types(array(letters[1:3])) == "a character 1D array"
+  ))
+  expect_true(all(friendly_types(matrix(letters[1:3])) == "a character matrix"))
+  expect_true(all(
+    friendly_types(array(letters[1:3], dim = 1:3)) == "a character 3D array"
   ))
 })
 

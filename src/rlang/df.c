@@ -14,7 +14,7 @@ r_obj* r_alloc_df_list(r_ssize n_rows,
   if (r_length(names) != types_size) {
     r_abort("`names` must match the number of columns.");
   }
-  r_attrib_push(out, r_syms.names, names);
+  r_attrib_poke_names(out, names);
 
   for (r_ssize i = 0; i < types_size; ++i) {
     // A nil type stands for no column allocation

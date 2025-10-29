@@ -205,13 +205,30 @@ r_obj* zap_srcref(r_obj* x) {
 
 static
 r_obj* fn_zap_srcref(r_obj* x) {
-  x = KEEP(r_clone(x));
+  r_obj* formals = r_fn_formals(x);
+  r_obj* body = r_fn_body(x);
+  r_obj* env = r_fn_env(x);
 
-  r_fn_poke_body(x, zap_srcref(r_fn_body(x)));
-  r_attrib_poke(x, r_syms.srcref, r_null);
+  body = KEEP(zap_srcref(body));
 
-  FREE(1);
-  return x;
+  r_obj* out = KEEP(r_new_function(formals, body, env));
+
+  // Copy over attributes, but zap any `srcref` attribute
+  if (r_attrib_get(x, r_syms.srcref) == r_null) {
+    // Nothing to zap
+    r_obj* attrib = r_attrib(x);
+    r_poke_attrib(out, attrib);
+  } else {
+    // Clone so we can zap `srcref`
+    r_obj* attrib = r_attrib(x);
+    attrib = KEEP(r_clone(attrib));
+    r_poke_attrib(out, attrib);
+    FREE(1);
+    r_attrib_poke(out, r_syms.srcref, r_null);
+  }
+
+  FREE(2);
+  return out;
 }
 
 static
@@ -240,11 +257,14 @@ r_obj* expr_vec_zap_srcref(r_obj* x) {
 
   attrib_zap_srcref(x);
 
+  // `VECTOR_PTR_RO()` (i.e. `r_list_cbegin()`) doesn't allow `EXPRSXP`, so we
+  // use rlang equivalents of `Rf_xlength()`, `VECTOR_ELT()`, and
+  // `SET_VECTOR_ELT()` instead
   r_ssize n = r_length(x);
-  r_obj* const * v_x = r_list_cbegin(x);
 
   for (r_ssize i = 0; i < n; ++i) {
-    r_list_poke(x, i, zap_srcref(v_x[i]));
+    r_obj* elt = r_list_get(x, i);
+    r_list_poke(x, i, zap_srcref(elt));
   }
 
   FREE(1);
