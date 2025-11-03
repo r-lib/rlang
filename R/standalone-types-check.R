@@ -8,6 +8,8 @@
 # ---
 #
 # ## Changelog
+# 2024-06-28:
+# - Improved error messages of number checkers (@olivroy)
 #
 # 2025-09-19:
 # - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
@@ -287,7 +289,11 @@ check_number_whole <- function(
     max <- max %||% Inf
 
     if (min > -Inf && max < Inf) {
-      what <- sprintf("%s between %s and %s", what, min, max)
+      if (min == max) {
+         what <- sprintf("%s equal to %s", what, min)
+      } else {
+         what <- sprintf("%s between %s and %s", what, min, max)
+      }
     } else if (x < min) {
       what <- sprintf("%s larger than or equal to %s", what, min)
     } else if (x > max) {
