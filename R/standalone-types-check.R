@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-13
+# last-updated: 2025-09-19
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
@@ -11,6 +11,9 @@
 #
 # 2025-09-19:
 # - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
+# - Rename `check_number_decimal()` to `check_number()` (@khusmann, #1714)
+# - Add `check_numeric()` and `check_numeric_whole()`, vectorized versions
+#   of `check_number()` and `check_number_whole()` (@khusmann, #1714)
 #
 # 2024-08-15:
 # - `check_character()` gains an `allow_na` argument (@martaalcalde, #1724)
@@ -178,7 +181,7 @@ IS_NUMBER_true <- 0
 IS_NUMBER_false <- 1
 IS_NUMBER_oob <- 2
 
-check_number_decimal <- function(
+check_number <- function(
   x,
   ...,
   min = NULL,
@@ -501,6 +504,78 @@ check_formula <- function(
 # Vectors -----------------------------------------------------------------
 
 # TODO: Figure out what to do with logical `NA` and `allow_na = TRUE`
+
+check_numeric <- function(
+    x,
+    ...,
+    allow_na = TRUE,
+    allow_null = FALSE,
+    arg = caller_arg(x),
+    call = caller_env()
+) {
+  if (!missing(x)) {
+    if (is.numeric(x)) {
+      if (!allow_na && any(is.na(x))) {
+        abort(
+          sprintf("`%s` can't contain NA values.", arg),
+          arg = arg,
+          call = call
+        )
+      }
+
+      return(invisible(NULL))
+    }
+
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a numeric vector",
+    ...,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_numeric_whole <- function(
+    x,
+    ...,
+    allow_na = TRUE,
+    allow_null = FALSE,
+    arg = caller_arg(x),
+    call = caller_env()
+) {
+  if (!missing(x)) {
+    if (is_integerish(x)) {
+      if (!allow_na && any(is.na(x))) {
+        abort(
+          sprintf("`%s` can't contain NA values.", arg),
+          arg = arg,
+          call = call
+        )
+      }
+
+      return(invisible(NULL))
+    }
+
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a numeric vector with whole numbers",
+    ...,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
 
 check_character <- function(
   x,
