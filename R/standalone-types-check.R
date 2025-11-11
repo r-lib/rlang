@@ -335,6 +335,7 @@ check_symbol <- function(
   )
 }
 
+# Do we need this?
 check_arg <- function(
   x,
   ...,
