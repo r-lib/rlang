@@ -168,17 +168,6 @@ Understanding when to pass `arg` and `call` is critical for correct error report
 
 When validating inputs directly in an entry point function (typically exported functions), **do not** pass `arg` and `call` parameters. The default parameters `caller_arg(x)` and `caller_env()` will automatically pick up the correct argument name and calling environment.
 
-```r
-# Entry point: let defaults work
-#' @export
-my_function <- function(x, name) {
-  check_string(x)        # Correct! Defaults capture user's context
-  check_name(name)       # Correct!
-
-  # ... function body
-}
-```
-
 ### Check wrapper functions: DO pass `arg`/`call`
 
 When creating a wrapper or helper function that calls `check_*` functions on behalf of another function, you **must** propagate the caller context. Otherwise, errors will point to your wrapper function instead of the actual entry point.
@@ -216,6 +205,8 @@ my_function(-5)
 #> Error in `my_function()`:  # Correct!
 #> ! `count` must be a whole number larger than or equal to 1.  # Correct!
 ```
+
+Note how `arg` and `call` are part of the function signature. That allows them to be wrapped again by another checking function that can pass down its own context.
 
 ## vtcrs checkers
 
