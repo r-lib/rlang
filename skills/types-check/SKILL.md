@@ -32,7 +32,12 @@ check_number_whole(3.14, min = 1, max = 10)
 
 **Validate at entry points, not everywhere.**
 
-Input validation should happen at the boundary between user code and your package's internal implementation, typically in exported functions that accept user data. Once inputs are validated at these entry points, internal helper functions can trust the data they receive without checking again.
+Input validation should happen at the boundary between user code and your package's internal implementation:
+
+- **Exported functions**: Functions users call directly
+- **Functions accepting user data**: Even internal functions if they directly consume user input, or external data (e.g. unserialised data)
+
+Once inputs are validated at these entry points, internal helper functions can trust the data they receive without checking again.
 
 A good analogy to keep in mind is gradual typing. Think of input validation like TypeScript type guards. Once you've validated data at the boundary, you can treat it as "typed" within your internal functions. Additional runtime checks are not needed. The entry point validates once, and all downstream code benefits.
 
@@ -40,10 +45,7 @@ Exception: Validate when in doubt. Do validate in internal functions if:
 - The cost of invalid data is high (data corruption, security issues)
 - The function or context is complex and you want defensive checks
 
-### Entry points (validate here)
-
-- **Exported functions**: Functions users call directly
-- **Functions accepting user data**: Even internal functions if they directly consume user input, or external data (e.g. unserialised data)
+Example of validating arguments of an exported function:
 
 ```r
 # Exported function: VALIDATE
@@ -57,8 +59,6 @@ create_report <- function(title, n_rows) {
   format_report(title, data)
 }
 ```
-
-### Internal helpers (don't validate)
 
 Once data is validated at the entry point, internal helpers can skip validation:
 
