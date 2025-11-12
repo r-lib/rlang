@@ -207,20 +207,3 @@ my_function(-5)
 ```
 
 Note how `arg` and `call` are part of the function signature. That allows them to be wrapped again by another checking function that can pass down its own context.
-
-## vtcrs checkers
-
-TODO: differentiate
-
-- `vctrs::obj_check_list()` checks that input is considered a list in the vctrs sense:
-  - A bare list with no class
-  - A list explicitly inheriting from `"list"`.
-
-- `vctrs::obj_check_vector()` checks that input is considered a vector in the vctrs sense:
-  - A base atomic type
-  - A list in the vctrs sense
-  - An object with a `vec_proxy()` method
-
-- `vctrs::vec_check_size(x, size)` tests if vector `x` has size `size`, and throws an informative error if it doesn't.
-
-- `vctrs::list_check_all_vectors()` and `vctrs::list_check_all_size()` check that inputs are lists containing only vectors, or only vectors of a given size.
