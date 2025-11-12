@@ -7,6 +7,62 @@ description: Validate function inputs in R using a standalone file of check_* fu
 
 This skill covers rlang and r-lib patterns for validating function inputs or reviewing existing validation code. It mostly covers rlang's exported type checkers and rlang's standalone file of `check_*` functions.
 
+## Checker functions reference (standalone file)
+
+### Scalars (single values)
+
+For atomic vectors, use scalar checkers when arguments parameterise the function (configuration flags, names, single counts), rather than represent vectors of user data. They assert a single value.
+
+- `check_bool()`: Single TRUE/FALSE (use for flags/options)
+- `check_string()`: Single string (allows empty `""` by default)
+- `check_name()`: Single non-empty string (for variable names, symbols as strings)
+- `check_number_whole()`: Single integer-like numeric value
+- `check_number_decimal()`: Single numeric value (allows decimals)
+
+By default, scalar checkers do _not_ allow `NA` elements (`allow_na = FALSE`). Set `allow_na = TRUE` when missing values are allowed.
+
+With the number checkers you can use `min` and `max` arguments for range validation, and `allow_infinite` (default `TRUE` for decimals, `FALSE` for whole numbers).
+
+### Vectors
+
+- `check_logical()`: Logical vector of any length
+- `check_character()`: Character vector of any length
+- `check_data_frame()`: A data frame object
+
+By default, vector checkers allow `NA` elements (`allow_na = TRUE`). Set `allow_na = FALSE` when missing values are not allowed.
+
+### Optional values: `allow_null`
+
+Use `allow_null = TRUE` when `NULL` represents a valid "no value" state, similar to `Option<T>` in Rust or `T | null` in TypeScript:
+
+```r
+# NULL means "use default timeout"
+check_number_decimal(timeout, allow_null = TRUE)
+```
+
+The tidyverse style guide recommends using `NULL` defaults instead of `missing()` defaults, so this pattern comes up often in practice.
+
+## Checker functions reference (exported from rlang)
+
+- `rlang::arg_match()`: Validates enumerated choices. Partial matching is an error unlike `base::match.arg()`. Use when an argument must be one of a known set of strings.
+
+  ```r
+  # Validates and returns the matched value
+  my_plot <- function(color = c("red", "green", "blue")) {
+  color <- rlang::arg_match(color)
+  # ...
+  }
+
+  my_plot("redd")
+  #> Error in `my_plot()`:
+  #> ! `color` must be one of "red", "green", or "blue", not "redd".
+  #> ℹ Did you mean "red"?
+  ```
+
+- `rlang::check_exclusive()` ensures only one of two arguments can be supplied. Supplying both together (i.e. both of them are non-`NULL` is an error).
+
+- `rlang::check_required()`: Nice error message if required argument is not supplied.
+
 ## About the Standalone File
 
 Most of the `check_*` functions come from an rlang standalone file that can be vendored into any R package. This means:
@@ -104,78 +160,6 @@ Benefits:
 - This self-documents the types of the arguments
 - Eager evaluation also reduces the risk of confusing lazy evaluation effects
 
-## Choosing the Right Checker
-
-### Scalars (single values)
-
-For atomic vectors, use scalar checkers when arguments parameterise the function (configuration flags, names, single counts), rather than represent vectors of user data. They assert a single value.
-
-- `check_bool()`: Single TRUE/FALSE (use for flags/options)
-- `check_string()`: Single string (allows empty `""` by default)
-- `check_name()`: Single non-empty string (for variable names, symbols as strings)
-- `check_number_whole()`: Single integer-like numeric value
-- `check_number_decimal()`: Single numeric value (allows decimals)
-
-By default, scalar checkers do _not_ allow `NA` elements (`allow_na = FALSE`). Set `allow_na = TRUE` when missing values are allowed.
-
-Scalar checkers also include checks for non-vector inputs:
-
-- `check_symbol()`: A symbol object
-- `check_call()`: A defused call expression
-- `check_environment()`: An environment object
-- `check_function()`: Any function (closure, primitive, or special)
-- `check_closure()`: An R function specifically (not primitive/special)
-- `check_formula()`: A formula object
-
-### Vectors
-
-- `check_logical()`: Logical vector of any length
-- `check_character()`: Character vector of any length
-- `check_data_frame()`: A data frame object
-
-By default, vector checkers allow `NA` elements (`allow_na = TRUE`). Set `allow_na = FALSE` when missing values are not allowed.
-
-## Optional values: `allow_null`
-
-Use `allow_null = TRUE` when `NULL` represents a valid "no value" state, similar to `Option<T>` in Rust or `T | null` in TypeScript:
-
-```r
-# NULL means "use default timeout"
-check_number_decimal(timeout, allow_null = TRUE)
-```
-
-The tidyverse style guide recommends using `NULL` defaults instead of `missing()` defaults, so this pattern comes up often in practice.
-
-## Missing values: `allow_na`
-
-Use `allow_na = TRUE` when `NA` is semantically meaningful for your use case:
-
-- **For scalars**: Allows the value itself to be `NA`
-- **For vectors**: Allows the vector to contain `NA` elements (this is the default for vector checkers like `check_character()` and `check_logical()`)
-
-```r
-# NA means "unknown" - semantically valid
-check_string(name, allow_na = TRUE)
-
-# Don't allow missing values in required data
-check_character(ids, allow_na = FALSE)
-```
-
-## Bounds Checking for Numbers
-
-Use `min` and `max` arguments for range validation:
-
-```r
-check_number_whole(
-  n,
-  min = 1,
-  max = 100
-)
-```
-
-Additional number options:
-- `allow_infinite = TRUE`: Allow Inf/-Inf (default `TRUE` for decimals, `FALSE` for whole numbers)
-
 ## When to Use `arg` and `call` Parameters
 
 Understanding when to pass `arg` and `call` is critical for correct error reporting.
@@ -233,26 +217,9 @@ my_function(-5)
 #> ! `count` must be a whole number larger than or equal to 1.  # Correct!
 ```
 
-## Other useful checkers
+## vtcrs checkers
 
-Exported from other packages:
-
-- `rlang::arg_match()`: Validates enumerated choices. Partial matching is an error unlike `base::match.arg()`. Use when an argument must be one of a known set of strings.
-
-  ```r
-  # Validates and returns the matched value
-  my_plot <- function(color = c("red", "green", "blue")) {
-  color <- rlang::arg_match(color)
-  # ...
-  }
-
-  my_plot("redd")
-  #> Error in `my_plot()`:
-  #> ! `color` must be one of "red", "green", or "blue", not "redd".
-  #> ℹ Did you mean "red"?
-  ```
-
-- `rlang::check_required()`: Nice error message if required argument is not supplied.
+TODO: differentiate
 
 - `vctrs::obj_check_list()` checks that input is considered a list in the vctrs sense:
   - A bare list with no class
