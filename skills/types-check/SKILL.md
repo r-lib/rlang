@@ -5,7 +5,7 @@ description: Validate function inputs in R using a standalone file of check_* fu
 
 # Input Validation in R Functions
 
-This skill covers patterns for validating function inputs using rlang's standalone file of `check_*` functions or reviewing existing validation code.
+This skill covers rlang and r-lib patterns for validating function inputs or reviewing existing validation code. It mostly covers rlang's exported type checkers and rlang's standalone file of `check_*` functions.
 
 ## About the Standalone File
 
