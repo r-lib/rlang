@@ -28,16 +28,6 @@ check_number_whole(3.14, min = 1, max = 10)
 #> Error: `3.14` must be a whole number, not the number 3.14.
 ```
 
-### Performance
-
-Some checkers are implemented in C for minimal overhead:
-- `check_bool()`
-- `check_number_whole()`
-- `check_number_decimal()`
-
-This makes validation fast enough to use even in performance-sensitive code.
-But don't check in a very tight loop unless absolutely needed.
-
 ## When to Validate Inputs
 
 **Validate at entry points, not everywhere.**
