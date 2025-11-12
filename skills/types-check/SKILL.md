@@ -9,10 +9,9 @@ This skill covers rlang and r-lib patterns for validating function inputs or rev
 
 ## About the Standalone File
 
-The `check_*` functions come from <https://github.com/r-lib/rlang/blob/main/R/standalone-types-check.R>, a standalone file that can be vendored into any R package. This means:
+Most of the `check_*` functions come from an rlang standalone file that can be vendored into any R package. This means:
 
-- **Not exported**: These functions are internal utilities, not part of your package's public API, nor rlang's
-- **Use usethis to import**: If you see these helpers are missing, run `usethis::use_standalone("r-lib/rlang", "types-check")` to add the file in your package. Call again to update it.
+- **Use usethis to import**: If you see in diagnostics or runtime errors indicating that these helpers are missing, run `usethis::use_standalone("r-lib/rlang", "types-check")` to add the file in your package. Call again to update it.
 - **Dependency**: Requires a sufficiently new version of rlang in `Imports`.  The exact minimal version is inserted automatically by `usethis::use_standalone()`. These checkers are not a good fit for zero-dependencies packages.
 
 ## Core Principles
