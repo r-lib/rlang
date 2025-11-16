@@ -740,7 +740,7 @@ test_that("as_label() supports special objects", {
   expect_identical(as_label(quo(foo)), "foo")
   expect_identical(as_label(quo(foo(!!quo(bar)))), "foo(bar)")
   expect_identical(as_label(~foo), "~foo")
-  expect_identical(as_label(quote({{foo}})), "{{foo}}")
+  expect_identical(as_label(call("{", quote({x}))), "{ ... }")
   expect_identical(as_label(NULL), "NULL")
 })
 
