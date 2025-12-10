@@ -26,7 +26,10 @@ test_that("is_installed() checks minimal versions", {
     c("rlang", "testthat"),
     version = c("0.1", "100.1")
   ))
-  expect_false(is_installed(c("rlang", "testthis"), version = c("0.1", "0.1")))
+  expect_false(is_installed(
+    c("rlang", "noOnePublishedThisOnCran"),
+    version = c("0.1", "0.1")
+  ))
 
   expect_true(is_installed(c("rlang", "testthat"), version = chr(NA, NA)))
   expect_false(is_installed(c("rlang", "testthat"), version = c(NA, "100")))
