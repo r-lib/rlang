@@ -1726,7 +1726,7 @@
         1. +-base::print(err(foo()))
         2. +-err(foo())
         3. | \-testthat::expect_error(...)
-        4. |   \-testthat:::expect_condition_matching(...)
+        4. |   \-testthat:::expect_condition_matching_(...)
         5. |     \-testthat:::quasi_capture(...)
         6. |       +-testthat (local) .capture(...)
         7. |       | \-base::withCallingHandlers(...)
@@ -1753,7 +1753,7 @@
           x
        1. +-base::print(expect_error(f()))
        2. +-testthat::expect_error(f())
-       3. | \-testthat:::expect_condition_matching(...)
+       3. | \-testthat:::expect_condition_matching_(...)
        4. |   \-testthat:::quasi_capture(...)
        5. |     +-testthat (local) .capture(...)
        6. |     | \-base::withCallingHandlers(...)
@@ -1775,7 +1775,7 @@
           x
        1. +-base::print(expect_error(f()))
        2. +-testthat::expect_error(f())
-       3. | \-testthat:::expect_condition_matching(...)
+       3. | \-testthat:::expect_condition_matching_(...)
        4. |   \-testthat:::quasi_capture(...)
        5. |     +-testthat (local) .capture(...)
        6. |     | \-base::withCallingHandlers(...)
@@ -1797,7 +1797,7 @@
            x
         1. +-base::print(expect_error(my_verb(add(1, ""))))
         2. +-testthat::expect_error(my_verb(add(1, "")))
-        3. | \-testthat:::expect_condition_matching(...)
+        3. | \-testthat:::expect_condition_matching_(...)
         4. |   \-testthat:::quasi_capture(...)
         5. |     +-testthat (local) .capture(...)
         6. |     | \-base::withCallingHandlers(...)

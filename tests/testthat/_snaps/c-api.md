@@ -23,7 +23,7 @@
 
     Code
       r_obj_encode_utf8(bytes)
-    Condition <simpleError>
+    Condition <rlang_error>
       Error in `r_obj_encode_utf8()`:
       ! translating strings with "bytes" encoding is not allowed
 

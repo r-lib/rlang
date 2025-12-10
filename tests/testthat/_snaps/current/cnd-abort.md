@@ -13,7 +13,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(high1())
-        2. | \-testthat:::expect_condition_matching(...)
+        2. | \-testthat:::expect_condition_matching_(...)
         3. |   \-testthat:::quasi_capture(...)
         4. |     +-testthat (local) .capture(...)
         5. |     | \-base::withCallingHandlers(...)
@@ -38,7 +38,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(high1())
-        2. | \-testthat:::expect_condition_matching(...)
+        2. | \-testthat:::expect_condition_matching_(...)
         3. |   \-testthat:::quasi_capture(...)
         4. |     +-testthat (local) .capture(...)
         5. |     | \-base::withCallingHandlers(...)
@@ -67,7 +67,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(high1())
-        2. | \-testthat:::expect_condition_matching(...)
+        2. | \-testthat:::expect_condition_matching_(...)
         3. |   \-testthat:::quasi_capture(...)
         4. |     +-testthat (local) .capture(...)
         5. |     | \-base::withCallingHandlers(...)
@@ -93,7 +93,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(high1())
-        2. | \-testthat:::expect_condition_matching(...)
+        2. | \-testthat:::expect_condition_matching_(...)
         3. |   \-testthat:::quasi_capture(...)
         4. |     +-testthat (local) .capture(...)
         5. |     | \-base::withCallingHandlers(...)
@@ -128,7 +128,7 @@
         1. +-base::print(err(ff()))
         2. +-err(ff())
         3. | \-testthat::expect_error(...)
-        4. |   \-testthat:::expect_condition_matching(...)
+        4. |   \-testthat:::expect_condition_matching_(...)
         5. |     \-testthat:::quasi_capture(...)
         6. |       +-testthat (local) .capture(...)
         7. |       | \-base::withCallingHandlers(...)
@@ -161,7 +161,7 @@
         1. +-base::print(err(ff()))
         2. +-err(ff())
         3. | \-testthat::expect_error(...)
-        4. |   \-testthat:::expect_condition_matching(...)
+        4. |   \-testthat:::expect_condition_matching_(...)
         5. |     \-testthat:::quasi_capture(...)
         6. |       +-testthat (local) .capture(...)
         7. |       | \-base::withCallingHandlers(...)
@@ -196,7 +196,7 @@
         1. +-base::print(err(ff()))
         2. +-err(ff())
         3. | \-testthat::expect_error(...)
-        4. |   \-testthat:::expect_condition_matching(...)
+        4. |   \-testthat:::expect_condition_matching_(...)
         5. |     \-testthat:::quasi_capture(...)
         6. |       +-testthat (local) .capture(...)
         7. |       | \-base::withCallingHandlers(...)
@@ -225,7 +225,7 @@
         1. +-base::print(err(ff()))
         2. +-err(ff())
         3. | \-testthat::expect_error(...)
-        4. |   \-testthat:::expect_condition_matching(...)
+        4. |   \-testthat:::expect_condition_matching_(...)
         5. |     \-testthat:::quasi_capture(...)
         6. |       +-testthat (local) .capture(...)
         7. |       | \-base::withCallingHandlers(...)
@@ -259,7 +259,7 @@
         1. +-base::print(err(ff()))
         2. +-err(ff())
         3. | \-testthat::expect_error(...)
-        4. |   \-testthat:::expect_condition_matching(...)
+        4. |   \-testthat:::expect_condition_matching_(...)
         5. |     \-testthat:::quasi_capture(...)
         6. |       +-testthat (local) .capture(...)
         7. |       | \-base::withCallingHandlers(...)
