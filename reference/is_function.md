@@ -1,0 +1,112 @@
+# Is object a function?
+
+The R language defines two different types of functions: primitive
+functions, which are low-level, and closures, which are the regular kind
+of functions.
+
+## Usage
+
+``` r
+is_function(x)
+
+is_closure(x)
+
+is_primitive(x)
+
+is_primitive_eager(x)
+
+is_primitive_lazy(x)
+```
+
+## Arguments
+
+- x:
+
+  Object to be tested.
+
+## Details
+
+Closures are functions written in R, named after the way their arguments
+are scoped within nested environments (see
+<https://en.wikipedia.org/wiki/Closure_(computer_programming)>). The
+root environment of the closure is called the closure environment. When
+closures are evaluated, a new environment called the evaluation frame is
+created with the closure environment as parent. This is where the body
+of the closure is evaluated. These closure frames appear on the
+evaluation stack, as opposed to primitive functions which do not
+necessarily have their own evaluation frame and never appear on the
+stack.
+
+Primitive functions are more efficient than closures for two reasons.
+First, they are written entirely in fast low-level code. Second, the
+mechanism by which they are passed arguments is more efficient because
+they often do not need the full procedure of argument matching (dealing
+with positional versus named arguments, partial matching, etc). One
+practical consequence of the special way in which primitives are passed
+arguments is that they technically do not have formal arguments, and
+[`formals()`](https://rdrr.io/r/base/formals.html) will return `NULL` if
+called on a primitive function. Finally, primitive functions can either
+take arguments lazily, like R closures do, or evaluate them eagerly
+before being passed on to the C code. The former kind of primitives are
+called "special" in R terminology, while the latter is referred to as
+"builtin". `is_primitive_eager()` and `is_primitive_lazy()` allow you to
+check whether a primitive function evaluates arguments eagerly or
+lazily.
+
+You will also encounter the distinction between primitive and internal
+functions in technical documentation. Like primitive functions, internal
+functions are defined at a low level and written in C. However, internal
+functions have no representation in the R language. Instead, they are
+called via a call to
+[`base::.Internal()`](https://rdrr.io/r/base/Internal.html) within a
+regular closure. This ensures that they appear as normal R function
+objects: they obey all the usual rules of argument passing, and they
+appear on the evaluation stack as any other closures. As a result,
+[`fn_fmls()`](https://rlang.r-lib.org/reference/fn_fmls.md) does not
+need to look in the `.ArgsEnv` environment to obtain a representation of
+their arguments, and there is no way of querying from R whether they are
+lazy ('special' in R terminology) or eager ('builtin').
+
+You can call primitive functions with
+[`.Primitive()`](https://rdrr.io/r/base/Primitive.html) and internal
+functions with [`.Internal()`](https://rdrr.io/r/base/Internal.html).
+However, calling internal functions in a package is forbidden by CRAN's
+policy because they are considered part of the private API. They often
+assume that they have been called with correctly formed arguments, and
+may cause R to crash if you call them with unexpected objects.
+
+## Examples
+
+``` r
+# Primitive functions are not closures:
+is_closure(base::c)
+#> [1] FALSE
+is_primitive(base::c)
+#> [1] TRUE
+
+# On the other hand, internal functions are wrapped in a closure
+# and appear as such from the R side:
+is_closure(base::eval)
+#> [1] TRUE
+
+# Both closures and primitives are functions:
+is_function(base::c)
+#> [1] TRUE
+is_function(base::eval)
+#> [1] TRUE
+
+# Many primitive functions evaluate arguments eagerly:
+is_primitive_eager(base::c)
+#> [1] TRUE
+is_primitive_eager(base::list)
+#> [1] TRUE
+is_primitive_eager(base::`+`)
+#> [1] TRUE
+
+# However, primitives that operate on expressions, like quote() or
+# substitute(), are lazy:
+is_primitive_lazy(base::quote)
+#> [1] TRUE
+is_primitive_lazy(base::substitute)
+#> [1] TRUE
+```
