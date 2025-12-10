@@ -397,6 +397,10 @@ list_compact <- function(x) {
   .Call(ffi_list_compact, x)
 }
 
+vec_alloc <- function(type, n) {
+  .Call(ffi_vec_alloc, type, n)
+}
+
 vec_resize <- function(x, n) {
   .Call(ffi_vec_resize, x, n)
 }

@@ -817,7 +817,7 @@ r_obj* ffi_unpreserve(r_obj* x) {
 // vec.h
 
 r_obj* ffi_vec_alloc(r_obj* type, r_obj* n) {
-  return Rf_allocVector(Rf_str2type(r_chr_get_c_string(type, 0)), r_int_get(n, 0));
+  return r_alloc_vector(Rf_str2type(r_chr_get_c_string(type, 0)), r_int_get(n, 0));
 }
 r_obj* ffi_vec_coerce(r_obj* x, r_obj* type) {
   return Rf_coerceVector(x, Rf_str2type(r_chr_get_c_string(type, 0)));
