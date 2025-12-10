@@ -82,7 +82,7 @@ quo <- quo(foo(!! quo(bar)))
 quo
 #> <quosure>
 #> expr: ^foo(^bar)
-#> env:  0x560f94be7e40
+#> env:  0x55fbe493ebd8
 
 # quo_squash() unwraps all quosures and returns a raw expression:
 quo_squash(quo)
