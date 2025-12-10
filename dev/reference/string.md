@@ -1,0 +1,50 @@
+# Create a string
+
+**\[experimental\]**
+
+These base-type constructors allow more control over the creation of
+strings in R. They take character vectors or string-like objects
+(integerish or raw vectors), and optionally set the encoding. The string
+version checks that the input contains a scalar string.
+
+## Usage
+
+``` r
+string(x, encoding = NULL)
+```
+
+## Arguments
+
+- x:
+
+  A character vector or a vector or list of string-like objects.
+
+- encoding:
+
+  If non-null, set an encoding mark. This is only declarative, no
+  encoding conversion is performed.
+
+## Examples
+
+``` r
+# As everywhere in R, you can specify a string with Unicode
+# escapes. The characters corresponding to Unicode codepoints will
+# be encoded in UTF-8, and the string will be marked as UTF-8
+# automatically:
+cafe <- string("caf\uE9")
+Encoding(cafe)
+#> [1] "UTF-8"
+charToRaw(cafe)
+#> [1] 63 61 66 c3 a9
+
+# In addition, string() provides useful conversions to let
+# programmers control how the string is represented in memory. For
+# encodings other than UTF-8, you'll need to supply the bytes in
+# hexadecimal form. If it is a latin1 encoding, you can mark the
+# string explicitly:
+cafe_latin1 <- string(c(0x63, 0x61, 0x66, 0xE9), "latin1")
+Encoding(cafe_latin1)
+#> [1] "latin1"
+charToRaw(cafe_latin1)
+#> [1] 63 61 66 e9
+```
