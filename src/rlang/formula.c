@@ -85,7 +85,7 @@ r_obj* new_raw_formula(r_obj* lhs, r_obj* rhs, r_obj* env) {
 }
 r_obj* r_new_formula(r_obj* lhs, r_obj* rhs, r_obj* env) {
   r_obj* f = KEEP(new_raw_formula(lhs, rhs, env));
-  r_attrib_push_class(f, "formula");
+  r_attrib_poke_class(f, r_chr("formula"));
 
   FREE(1);
   return f;

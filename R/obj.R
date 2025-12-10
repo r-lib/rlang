@@ -31,13 +31,6 @@ sexp_address <- obj_address
 
 # nocov start - These functions are mostly for interactive experimentation
 
-mark_object <- function(x) {
-  invisible(.Call(ffi_mark_object, x))
-}
-unmark_object <- function(x) {
-  invisible(.Call(ffi_unmark_object, x))
-}
-
 promise_expr <- function(name, env = caller_env()) {
   .Call(ffi_promise_expr, name, env)
 }

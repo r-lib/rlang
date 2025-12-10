@@ -10,7 +10,7 @@ r_obj* ffi_new_quosure(r_obj* expr, r_obj* env) {
     r_abort("`env` must be an environment");
   }
   r_obj* quo = KEEP(new_raw_formula(r_null, expr, env));
-  r_attrib_push_classes(quo, quo_tags, R_ARR_SIZEOF(quo_tags));
+  r_attrib_poke_classes(quo, quo_tags, R_ARR_SIZEOF(quo_tags));
   FREE(1);
   return quo;
 }

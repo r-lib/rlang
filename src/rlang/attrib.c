@@ -117,35 +117,6 @@ r_obj* r_attrib_set(r_obj* x, r_obj* tag, r_obj* value) {
   return out;
 }
 
-
-/**
- * With push_ prefix, assumes there is no `class` attribute in the
- * node list merge. This is for low-level construction of objects.
- */
-
-// Caller must poke the object bit
-static
-r_obj* node_push_classes(r_obj* node, const char** tags, r_ssize n) {
-  r_obj* tags_chr = KEEP(r_chr_n(tags, n));
-  r_obj* attrs = r_new_node(tags_chr, node);
-  r_node_poke_tag(attrs, r_syms.class_);
-
-  FREE(1);
-  return attrs;
-}
-
-void r_attrib_push_classes(r_obj* x, const char** tags, r_ssize n) {
-  r_obj* attrs = r_attrib(x);
-  attrs = node_push_classes(attrs, tags, n);
-  SET_ATTRIB(x, attrs);
-  SET_OBJECT(x, 1);
-}
-void r_attrib_push_class(r_obj* x, const char* tag) {
-  static const char* tags[1] = { "" };
-  tags[0] = tag;
-  r_attrib_push_classes(x, tags, 1);
-}
-
 bool r_is_named(r_obj* x) {
   r_obj* nms = r_names(x);
 
@@ -158,4 +129,10 @@ bool r_is_named(r_obj* x) {
   }
 
   return true;
+}
+
+void r_attrib_poke_classes(r_obj* x, const char** classes, r_ssize n) {
+  r_obj* classes_chr = KEEP(r_chr_n(classes, n));
+  r_attrib_poke(x, r_syms.class_, classes_chr);
+  FREE(1);
 }

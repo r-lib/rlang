@@ -146,3 +146,7 @@ void r_init_library_obj(r_obj* ns) {
 }
 
 static r_obj* as_label_call = NULL;
+
+void r_mark_object(r_obj* x) {
+  r_attrib_poke_class(x, r_attrib_get(x, r_syms.class_));
+}
