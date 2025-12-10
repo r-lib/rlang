@@ -1,53 +1,38 @@
-# codebookr
+# dataquieR
 
 <details>
 
-* Version: 0.1.8
-* GitHub: https://github.com/brad-cannell/codebookr
-* Source code: https://github.com/cran/codebookr
-* Date/Publication: 2024-02-19 08:20:08 UTC
-* Number of recursive dependencies: 83
-
-Run `revdepcheck::cloud_details(, "codebookr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(codebookr)
-      > 
-      > test_check("codebookr")
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 103 ]
-      
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Failure ('test-cb_add_summary_stats.R:338:3'): The num_to_cat argument is working as expected ──
-      class(cb_add_summary_stats(study, "three_cats", num_to_cat = 2)) not equal to c("summary_numeric", "tbl_df", "tbl", "data.frame").
-      1/4 mismatches
-      x[1]: "summary_few_cats"
-      y[1]: "summary_numeric"
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 103 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-# Haplin
-
-<details>
-
-* Version: 7.3.2
+* Version: 2.5.1
 * GitHub: NA
-* Source code: https://github.com/cran/Haplin
-* Date/Publication: 2024-08-20 14:30:14 UTC
-* Number of recursive dependencies: 65
+* Source code: https://github.com/cran/dataquieR
+* Date/Publication: 2025-03-05 18:10:02 UTC
+* Number of recursive dependencies: 208
 
-Run `revdepcheck::cloud_details(, "Haplin")` for more info
+Run `revdepcheck::cloud_details(, "dataquieR")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.7Mb
+      sub-directories of 1Mb or more:
+        R      3.5Mb
+        help   1.6Mb
+    ```
+
+# embryogrowth
+
+<details>
+
+* Version: 10.4
+* GitHub: NA
+* Source code: https://github.com/cran/embryogrowth
+* Date/Publication: 2025-09-10 23:50:08 UTC
+* Number of recursive dependencies: 116
+
+Run `revdepcheck::cloud_details(, "embryogrowth")` for more info
 
 </details>
 
@@ -57,83 +42,94 @@ Run `revdepcheck::cloud_details(, "Haplin")` for more info
     ```
       installed size is  5.4Mb
       sub-directories of 1Mb or more:
-        R         1.5Mb
-        extdata   3.0Mb
-    ```
-
-# keras
-
-<details>
-
-* Version: 2.15.0
-* GitHub: https://github.com/rstudio/keras
-* Source code: https://github.com/cran/keras
-* Date/Publication: 2024-04-20 05:42:42 UTC
-* Number of recursive dependencies: 79
-
-Run `revdepcheck::cloud_details(, "keras")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.4Mb
-      sub-directories of 1Mb or more:
-        R      1.5Mb
-        doc    2.0Mb
-        help   1.5Mb
-    ```
-
-# pivottabler
-
-<details>
-
-* Version: 1.5.5
-* GitHub: https://github.com/cbailiss/pivottabler
-* Source code: https://github.com/cran/pivottabler
-* Date/Publication: 2023-10-01 16:20:02 UTC
-* Number of recursive dependencies: 83
-
-Run `revdepcheck::cloud_details(, "pivottabler")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.2Mb
-      sub-directories of 1Mb or more:
-        R      2.0Mb
-        data   4.0Mb
+        data   4.5Mb
     ```
 
 ## In both
 
-*   checking Rd files ... NOTE
+*   checking data for non-ASCII characters ... NOTE
     ```
-    checkRd: (-1) PivotDataGroup.Rd:78: Lost braces; missing escapes or markup?
-        78 | for the data group caption, default "{values}".}
-           |                                      ^
-    checkRd: (-1) PivotDataGroup.Rd:244: Lost braces; missing escapes or markup?
-       244 | for the data group caption, default "{values}".}
-           |                                      ^
-    checkRd: (-1) PivotDataGroup.Rd:581: Lost braces; missing escapes or markup?
-       581 | for the data group caption, default "{values}".}
-           |                                      ^
-    checkRd: (-1) PivotDataGroup.Rd:764: Lost braces; missing escapes or markup?
-    ...
-           |          ^
-    checkRd: (-1) PivotTable.Rd:1060: Lost braces; missing escapes or markup?
-      1060 | for the data group caption, default "{values}".}
-           |                                      ^
-    checkRd: (-1) PivotTable.Rd:1189: Lost braces; missing escapes or markup?
-      1189 | default "{value}".}
-           |          ^
-    checkRd: (-1) PivotTable.Rd:1808: Lost braces; missing escapes or markup?
-      1808 | `function(v, cell) { if(isTRUE(v>0.8)) return("green") }`.\cr
-           |                    ^
+      Note: found 7267 marked UTF-8 strings
+    ```
+
+# plotthis
+
+<details>
+
+* Version: 0.8.2
+* GitHub: https://github.com/pwwang/plotthis
+* Source code: https://github.com/cran/plotthis
+* Date/Publication: 2025-11-10 08:20:06 UTC
+* Number of recursive dependencies: 225
+
+Run `revdepcheck::cloud_details(, "plotthis")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        R      1.5Mb
+        help   3.3Mb
+    ```
+
+# spotifyr
+
+<details>
+
+* Version: 2.2.5
+* GitHub: https://github.com/charlie86/spotifyr
+* Source code: https://github.com/cran/spotifyr
+* Date/Publication: 2024-10-24 10:30:04 UTC
+* Number of recursive dependencies: 78
+
+Run `revdepcheck::cloud_details(, "spotifyr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘spotifyr-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: scopes
+    > ### Title: Valid Authorization Scopes
+    > ### Aliases: scopes
+    > 
+    > ### ** Examples
+    > 
+    > scopes()
+    Error in open.connection(x, "rb") : cannot open the connection
+    Calls: scopes ... xml_text -> <Anonymous> -> <Anonymous> -> read_html.default
+    Execution halted
+    ```
+
+# TKCat
+
+<details>
+
+* Version: 1.1.14
+* GitHub: https://github.com/patzaw/TKCat
+* Source code: https://github.com/cran/TKCat
+* Date/Publication: 2025-06-05 05:00:02 UTC
+* Number of recursive dependencies: 120
+
+Run `revdepcheck::cloud_details(, "TKCat")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.0Mb
+      sub-directories of 1Mb or more:
+        R     1.5Mb
+        doc   2.7Mb
     ```
 
