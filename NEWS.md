@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 1.1.7
 
 * Progress towards making rlang conformant with the public C API of R.
 
