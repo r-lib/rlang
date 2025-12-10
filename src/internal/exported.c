@@ -725,14 +725,6 @@ r_obj* ffi_obj_address(r_obj* x) {
   return r_str_as_character(r_obj_address(x));
 }
 
-r_obj* ffi_mark_object(r_obj* x) {
-  SET_OBJECT(x, 1);
-  return x;
-}
-r_obj* ffi_unmark_object(r_obj* x) {
-  SET_OBJECT(x, 0);
-  return x;
-}
 
 r_obj* rlang_get_promise(r_obj* x, r_obj* env) {
   switch (r_typeof(x)) {
