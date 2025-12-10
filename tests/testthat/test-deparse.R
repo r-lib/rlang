@@ -846,6 +846,8 @@ test_that("backslashes in strings are properly escaped (#1160)", {
 })
 
 test_that("formulas are deparsed (#1169)", {
+  skip_if_not_installed("pillar")
+
   # Evaluated formulas are treated as objects
   expect_equal(
     expr_deparse(~foo),
@@ -870,6 +872,8 @@ test_that("formulas are deparsed (#1169)", {
 })
 
 test_that("matrices and arrays are formatted (#383)", {
+  skip_if_not_installed("pillar")
+
   mat <- matrix(1:3)
   expect_equal(as_label(mat), "<int[,1]>")
   expect_equal(expr_deparse(mat), "<int[,1]: 1L, 2L, 3L>")

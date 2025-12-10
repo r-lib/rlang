@@ -1,3 +1,5 @@
+Fixes CRAN failures.
+
 Progress towards C API conformance.
 
 Only remaining issues:
