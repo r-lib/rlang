@@ -866,6 +866,38 @@ test_that("can shrink vectors", {
   }
 })
 
+test_that("can grow vectors allocated with vec_alloc()", {
+  x <- vec_alloc("integer", 3L)
+  x[1:3] <- 1:3
+  out <- vec_resize(x, 5)
+  expect_length(out, 5)
+  expect_equal(x, 1:3)
+  expect_equal(out[1:3], x)
+
+  x <- vec_alloc("list", 3L)
+  x[[1]] <- 1
+  x[[2]] <- 2
+  x[[3]] <- 3
+  out <- vec_resize(x, 5)
+  expect_length(out, 5)
+  expect_equal(x[[1]], 1)
+  expect_equal(out[1:3], x[1:3])
+})
+
+test_that("can shrink vectors allocated with vec_alloc()", {
+  x_atomic <- vec_alloc("integer", 3L)
+  x_atomic[1:3] <- 1:3
+  out <- vec_resize(x_atomic, 2)
+  expect_equal(out, 1:2)
+
+  x_list <- vec_alloc("list", 3L)
+  x_list[[1]] <- 1
+  x_list[[2]] <- 2
+  x_list[[3]] <- 3
+  out <- vec_resize(x_list, 2)
+  expect_equal(out, list(1, 2))
+})
+
 test_that("can grow and shrink dynamic arrays", {
   arr <- new_dyn_array(1, 3)
 
