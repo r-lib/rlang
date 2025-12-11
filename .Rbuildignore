@@ -25,3 +25,5 @@
 ^compile_commands\.json$
 .*\.clangd$
 ^[\.]?air\.toml$
+^skills$
+^.claude$
