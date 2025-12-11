@@ -1,13 +1,17 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-13
+# last-updated: 2024-08-18
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+#
+# 2025-09-19
+# - `check_logical()` and `check_character()` gain `allow_empty` to disallow
+#    `logical(0)` and `character(0)` respectively.
 #
 # 2025-09-19:
 # - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
@@ -505,14 +509,16 @@ check_formula <- function(
 check_character <- function(
   x,
   ...,
+  allow_empty = TRUE,
   allow_na = TRUE,
   allow_null = FALSE,
   arg = caller_arg(x),
   call = caller_env()
 ) {
   if (!missing(x)) {
-    if (is_character(x)) {
-      if (!allow_na && any(is.na(x))) {
+    problematic <- !allow_empty && length(x) == 0L
+    if (!problematic && is_character(x)) {
+      if (!allow_na && anyNA(x)) {
         abort(
           sprintf("`%s` can't contain NA values.", arg),
           arg = arg,
@@ -541,13 +547,16 @@ check_character <- function(
 check_logical <- function(
   x,
   ...,
+  allow_empty = TRUE,
   allow_na = TRUE,
   allow_null = FALSE,
   arg = caller_arg(x),
   call = caller_env()
 ) {
   if (!missing(x)) {
-    if (is_logical(x)) {
+    problematic <- !allow_empty && length(x) == 0
+
+    if (!problematic && is_logical(x)) {
       if (!allow_na && any(is.na(x))) {
         abort(
           sprintf("`%s` can't contain NA values.", arg),
