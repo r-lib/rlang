@@ -1,13 +1,15 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-13
+# last-updated: 2024-08-18
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
 # ---
 #
 # ## Changelog
+# 2024-08-18:
+# - `check_character()` gains `min_length` to allow prohibiting `character(0)` (@olivroy)
 #
 # 2025-09-19:
 # - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
@@ -507,11 +509,12 @@ check_character <- function(
   ...,
   allow_na = TRUE,
   allow_null = FALSE,
+  min_length = 0,
   arg = caller_arg(x),
   call = caller_env()
 ) {
   if (!missing(x)) {
-    if (is_character(x)) {
+    if (is_character(x) && (length(x) >= min_length)) {
       if (!allow_na && any(is.na(x))) {
         abort(
           sprintf("`%s` can't contain NA values.", arg),
@@ -528,9 +531,14 @@ check_character <- function(
     }
   }
 
+  what <- "a character vector"  
+  if (min_length > 1) {
+    what <- paste(what, "of length greater or equal to", min_length) 
+  }
+
   stop_input_type(
     x,
-    "a character vector",
+    what,
     ...,
     allow_null = allow_null,
     arg = arg,
