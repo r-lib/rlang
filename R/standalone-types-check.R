@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-types-check.R
-# last-updated: 2023-03-13
+# last-updated: 2024-10-21
 # license: https://unlicense.org
 # dependencies: standalone-obj-type.R
 # imports: rlang (>= 1.1.0)
@@ -512,7 +512,7 @@ check_character <- function(
 ) {
   if (!missing(x)) {
     if (is_character(x)) {
-      if (!allow_na && any(is.na(x))) {
+      if (!allow_na && anyNA(x)) {
         abort(
           sprintf("`%s` can't contain NA values.", arg),
           arg = arg,
