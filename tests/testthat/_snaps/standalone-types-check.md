@@ -244,76 +244,76 @@
       Error in `check()`:
       ! `max` must be a number, not missing.
 
-# `check_number_decimal()` checks
+# `check_number()` checks
 
     Code
-      err(checker(, check_number_decimal))
+      err(checker(, check_number))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not absent.
     Code
-      err(checker(NA, check_number_decimal))
+      err(checker(NA, check_number))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not `NA`.
     Code
-      err(checker(NULL, check_number_decimal))
+      err(checker(NULL, check_number))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not `NULL`.
     Code
-      err(checker(int(), check_number_decimal, allow_na = TRUE))
+      err(checker(int(), check_number, allow_na = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number or `NA`, not an empty integer vector.
     Code
-      err(checker(na_dbl, check_number_decimal))
+      err(checker(na_dbl, check_number))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not a numeric `NA`.
     Code
-      err(checker(na_int, check_number_decimal))
+      err(checker(na_int, check_number))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not an integer `NA`.
     Code
-      err(checker(10:11, check_number_decimal, allow_na = TRUE, allow_null = TRUE))
+      err(checker(10:11, check_number, allow_na = TRUE, allow_null = TRUE))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, `NA`, or `NULL`, not an integer vector.
     Code
-      err(checker(Inf, check_number_decimal, allow_infinite = FALSE))
+      err(checker(Inf, check_number, allow_infinite = FALSE))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not `Inf`.
     Code
-      err(checker(-Inf, check_number_decimal, allow_infinite = FALSE))
+      err(checker(-Inf, check_number, allow_infinite = FALSE))
     Output
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not `-Inf`.
     Code
-      err(checker(10, min = NA, check_number_decimal))
+      err(checker(10, min = NA, check_number))
     Output
       <error/rlang_error>
       Error in `check()`:
       ! `min` must be a single double value.
     Code
-      err(checker(10, min = NaN, check_number_decimal))
+      err(checker(10, min = NaN, check_number))
     Output
       <error/rlang_error>
       Error in `check()`:
       ! `min` must be a number, not missing.
     Code
-      err(checker(10, max = NaN, check_number_decimal))
+      err(checker(10, max = NaN, check_number))
     Output
       <error/rlang_error>
       Error in `check()`:
@@ -418,6 +418,90 @@
       Error in `checker()`:
       ! `foo` must be an environment or `NULL`, not a list.
 
+# `check_numeric()` checks
+
+    Code
+      err(checker(, check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not absent.
+    Code
+      err(checker(NULL, check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not `NULL`.
+    Code
+      err(checker(NA, check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not `NA`.
+    Code
+      err(checker("foo", check_numeric))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector, not the string "foo".
+    Code
+      err(checker(list(1, 2), check_numeric, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector or `NULL`, not a list.
+    Code
+      err(checker(c(1, NA), check_numeric, allow_na = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` can't contain NA values.
+
+# `check_numeric_whole()` checks
+
+    Code
+      err(checker(, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not absent.
+    Code
+      err(checker(1.1, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not the number 1.1.
+    Code
+      err(checker(NULL, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not `NULL`.
+    Code
+      err(checker(NA, check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not `NA`.
+    Code
+      err(checker("foo", check_numeric_whole))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers, not the string "foo".
+    Code
+      err(checker(list(1, 2), check_numeric_whole, allow_null = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a numeric vector with whole numbers or `NULL`, not a list.
+    Code
+      err(checker(c(1, NA), check_numeric_whole, allow_na = FALSE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` can't contain NA values.
+
 # `check_character()` checks
 
     Code
@@ -505,7 +589,7 @@
       Error:
       ! `factor("a")` must be a whole number, not a <factor> object.
     Code
-      (expect_error(check_number_decimal(as.Date("2000-01-01"))))
+      (expect_error(check_number(as.Date("2000-01-01"))))
     Output
       <error/rlang_error>
       Error:
