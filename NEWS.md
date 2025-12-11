@@ -1,5 +1,6 @@
 # rlang 1.1.7
 
+* `arg_match()` now throws better error messages if `multiple = TRUE` or if a single value is allowed (@olivroy, #1635, #1682).
 * Progress towards making rlang conformant with the public C API of R.
 
 * R >=4.0.0 is now required. This is still more permissive than the general tidyverse policy of supporting the [5 most recent versions of R](https://tidyverse.org/blog/2019/04/r-version-support/).

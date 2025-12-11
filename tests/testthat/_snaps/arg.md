@@ -23,6 +23,19 @@
       Error in `arg_match0_wrapper()`:
       ! `arg` must be length 1 or a permutation of `c("foo", "bar")`.
 
+# arg_match() works well when multiple = TRUE (#1682)
+
+    Code
+      f("x", values = c("y", "z"))
+    Condition
+      Error in `f()`:
+      ! `x` must be in "y" or "z", not "x".
+    Code
+      f(c("x", "y"), values = c("y", "z"))
+    Condition
+      Error in `f()`:
+      ! `x` must be in "y" or "z", not "x".
+
 # `arg_match()` has informative error messages
 
     Code
@@ -124,13 +137,13 @@
       my_wrapper("ba")
     Condition <rlang_error>
       Error in `my_wrapper()`:
-      ! `my_arg` must be one of "foo", "bar", or "baz", not "ba".
+      ! `my_arg` must be in "foo", "bar", or "baz", not "ba".
       i Did you mean "bar"?
     Code
       my_wrapper(c("foo", "ba"))
     Condition <rlang_error>
       Error in `my_wrapper()`:
-      ! `my_arg` must be one of "foo", "bar", or "baz", not "ba".
+      ! `my_arg` must be in "foo", "bar", or "baz", not "ba".
       i Did you mean "bar"?
 
 # arg_match0() defuses argument
