@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-linked-version.R
-# last-updated: 2022-05-26
+# last-updated: 2024-07-11
 # license: https://unlicense.org
 # imports: rlang (>= 1.0.0)
 # ---
@@ -14,7 +14,7 @@ check_linked_version <- local({
     os <- tolower(Sys.info()[["sysname"]])
 
     if (os == "windows") {
-      url <- "https://github.com/jennybc/what-they-forgot/issues/62"
+      url <- "https://github.com/rstats-wtf/what-they-forgot/issues/62"
       c(
         i = sprintf("Please update %s to the latest version.", pkg),
         i = sprintf(
