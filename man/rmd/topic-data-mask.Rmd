@@ -143,7 +143,7 @@ The tidyverse embraced the data-masking approach in packages like ggplot2 and dp
 
 - The rlang package developed tidy eval in 2017 as the data-masking framework of the tidyverse. It introduced the notions of [quosure][topic-quosure], [implicit injection][topic-inject] with `!!`  and `!!!`, and [data pronouns][.data].
 
-- In 2019, injection with `{{` was introduced in [rlang 0.4.0](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/) to simplify the defuse-and-inject pattern. This operator allows R programmers to transport data-masked arguments across functions more intuitively and with minimal boilerplate.
+- In 2019, injection with `{{` was introduced in [rlang 0.4.0](https://tidyverse.org/blog/2019/06/rlang-0-4-0/) to simplify the defuse-and-inject pattern. This operator allows R programmers to transport data-masked arguments across functions more intuitively and with minimal boilerplate.
 
 
 # See also

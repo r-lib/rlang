@@ -2,7 +2,7 @@
 
 * Progress towards making rlang conformant with the public C API of R.
 
-* R >=4.0.0 is now required. This is still more permissive than the general tidyverse policy of supporting the [5 most recent versions of R](https://www.tidyverse.org/blog/2019/04/r-version-support/).
+* R >=4.0.0 is now required. This is still more permissive than the general tidyverse policy of supporting the [5 most recent versions of R](https://tidyverse.org/blog/2019/04/r-version-support/).
 
 * `list2()` is now a little faster (#1837).
 
