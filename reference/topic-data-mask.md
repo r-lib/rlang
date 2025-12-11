@@ -224,10 +224,10 @@ following landmark developments from S and R authors.
   pronouns](https://rlang.r-lib.org/reference/dot-data.md).
 
 - In 2019, injection with `{{` was introduced in [rlang
-  0.4.0](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/) to
-  simplify the defuse-and-inject pattern. This operator allows R
-  programmers to transport data-masked arguments across functions more
-  intuitively and with minimal boilerplate.
+  0.4.0](https://tidyverse.org/blog/2019/06/rlang-0-4-0/) to simplify
+  the defuse-and-inject pattern. This operator allows R programmers to
+  transport data-masked arguments across functions more intuitively and
+  with minimal boilerplate.
 
 ## See also
 
