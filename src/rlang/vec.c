@@ -57,7 +57,7 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
     return out;                                                     \
   } while (0)
 
-// Assumption on older R: `size` smaller than `x_size`
+// Assumption on older R: `new_size` smaller than `old_size`
 static inline
 r_obj* vec_shrink(r_obj* x, r_ssize new_size, r_ssize old_size) {
 #if R_VERSION >= R_Version(4, 6, 0)
