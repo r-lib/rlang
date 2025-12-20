@@ -3,6 +3,7 @@
 # file: standalone-cli.R
 # last-updated: 2023-10-06
 # license: https://unlicense.org
+# suggests: cli (>= 3.1.1)
 # ---
 #
 # Provides a minimal shim API to format message elements consistently
