@@ -53,6 +53,3 @@ running in the frame was invoked.
 running in the frame.
 }
 }
-\seealso{
-\code{\link[=caller_env]{caller_env()}} and \code{\link[=current_env]{current_env()}}
-}
