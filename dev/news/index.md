@@ -2,11 +2,15 @@
 
 ## rlang (development version)
 
+## rlang 1.1.7
+
+CRAN release: 2026-01-09
+
 - Progress towards making rlang conformant with the public C API of R.
 
 - R \>=4.0.0 is now required. This is still more permissive than the
   general tidyverse policy of supporting the [5 most recent versions of
-  R](https://www.tidyverse.org/blog/2019/04/r-version-support/).
+  R](https://tidyverse.org/blog/2019/04/r-version-support/).
 
 - [`list2()`](https://rlang.r-lib.org/dev/reference/list2.md) is now a
   little faster ([\#1837](https://github.com/r-lib/rlang/issues/1837)).

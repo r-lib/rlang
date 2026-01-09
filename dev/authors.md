@@ -20,14 +20,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/r-lib/rlang/blob/main/DESCRIPTION)
 
-Henry L, Wickham H (2025). *rlang: Functions for Base Types and Core R
-and 'Tidyverse' Features*. R package version 1.1.6.9000,
+Henry L, Wickham H (2026). *rlang: Functions for Base Types and Core R
+and 'Tidyverse' Features*. R package version 1.1.7.9000,
 <https://rlang.r-lib.org>.
 
     @Manual{,
       title = {rlang: Functions for Base Types and Core R and 'Tidyverse' Features},
       author = {Lionel Henry and Hadley Wickham},
-      year = {2025},
-      note = {R package version 1.1.6.9000},
+      year = {2026},
+      note = {R package version 1.1.7.9000},
       url = {https://rlang.r-lib.org},
     }
