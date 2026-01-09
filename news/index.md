@@ -2,6 +2,8 @@
 
 ## rlang 1.1.7
 
+CRAN release: 2026-01-09
+
 - Progress towards making rlang conformant with the public C API of R.
 
 - R \>=4.0.0 is now required. This is still more permissive than the

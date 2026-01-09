@@ -18,16 +18,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/r-lib/rlang/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/r-lib/rlang/blob/v1.1.7/DESCRIPTION)
 
-Henry L, Wickham H (2025). *rlang: Functions for Base Types and Core R
+Henry L, Wickham H (2026). *rlang: Functions for Base Types and Core R
 and 'Tidyverse' Features*. R package version 1.1.7,
 <https://rlang.r-lib.org>.
 
     @Manual{,
       title = {rlang: Functions for Base Types and Core R and 'Tidyverse' Features},
       author = {Lionel Henry and Hadley Wickham},
-      year = {2025},
+      year = {2026},
       note = {R package version 1.1.7},
       url = {https://rlang.r-lib.org},
     }
