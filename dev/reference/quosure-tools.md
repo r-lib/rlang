@@ -114,14 +114,14 @@ quo <- quo(my_quosure)
 quo
 #> <quosure>
 #> expr: ^my_quosure
-#> env:  0x558f3c0fd670
+#> env:  0x563eb16d3ac8
 
 
 # Access and set the components of a quosure:
 quo_get_expr(quo)
 #> my_quosure
 quo_get_env(quo)
-#> <environment: 0x558f3c0fd670>
+#> <environment: 0x563eb16d3ac8>
 
 quo <- quo_set_expr(quo, quote(baz))
 quo <- quo_set_env(quo, empty_env())
