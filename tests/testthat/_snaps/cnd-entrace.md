@@ -197,9 +197,19 @@
           g <- function(do) h(do)
           h <- function(do) do("foo")
       
+          # Prior to knitr 1.51, this would report a base R error.
+          # After knitr 1.51, as long as a new enough rlang and evaluate are installed,
+          # knitr automatically global entraces all errors, so even this is entraced into
+          # an rlang error these days (https://github.com/yihui/knitr/pull/2388).
           f()
       
-          ## Error in h(do): foo
+          ## Error in `h()`:
+          ## ! foo
+          ## Backtrace:
+          ##     x
+          ##  1. \-rlang (local) f()
+          ##  2.   \-rlang (local) g(do)
+          ##  3.     \-rlang (local) h(do)
       
           rlang::global_entrace()
       
