@@ -74,7 +74,10 @@ r_obj* r_env_get(r_obj* env, r_obj* sym) {
   }
 
   if (r_typeof(out) == R_TYPE_promise) {
-    return Rf_eval(out, env);
+    KEEP(out);
+    out = Rf_eval(out, env);
+    FREE(1);
+    return out;
   }
 
   return out;
