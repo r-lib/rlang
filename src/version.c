@@ -16,9 +16,9 @@ const char* rlang_version = "1.1.7.9000";
  *
  * - Call `rlang::check_linked_version(pkg_name)` from your
  *   `.onLoad()` hook. If you don't depend on rlang copy the
- *   compat-linked-version.R file from the rlang repository to your R
+ *   standalone-linked-version.R file from the rlang repository to your R
  *   folder. Find it at
- *   <https://github.com/r-lib/rlang/tree/master/R/compat-linked-version.R>
+ *   <https://github.com/r-lib/rlang/tree/master/R/standalone-linked-version.R>
  */
 
 // [[ register() ]]
