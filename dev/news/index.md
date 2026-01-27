@@ -2,6 +2,9 @@
 
 ## rlang (development version)
 
+- Fixed a protection issue discovered by rchk
+  ([\#1865](https://github.com/r-lib/rlang/issues/1865)).
+
 ## rlang 1.1.7
 
 CRAN release: 2026-01-09

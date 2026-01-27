@@ -52,5 +52,5 @@ env_name(ns_env("rlang"))
 env_name(env())
 #> [1] ""
 env_label(env())
-#> [1] "0x563eb11ec078"
+#> [1] "0x564d81e99ac8"
 ```
