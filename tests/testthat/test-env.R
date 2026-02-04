@@ -454,8 +454,8 @@ test_that("env_coalesce() handles fancy bindings", {
   expect_equal(x$active, "active-value")
   expect_equal(x$lazy, "lazy-value")
 
-  # `y$lazy` was forced at the same time as `x$lazy`
-  expect_false(env_binding_are_lazy(y, "lazy"))
+  # `y$lazy` is an independent promise, not forced when `x$lazy` was
+  expect_true(env_binding_are_lazy(y, "lazy"))
 
   expect_condition(
     expect_equal(y$active, "active-value"),
@@ -465,7 +465,10 @@ test_that("env_coalesce() handles fancy bindings", {
   expect_equal(y$x, "a")
   expect_equal(y$z, "c")
   expect_equal(y$active, "active-value")
-  expect_equal(y$lazy, "lazy-value")
+  expect_condition(
+    expect_equal(y$lazy, "lazy-value"),
+    class = "lazy"
+  )
 })
 
 test_that("can subset `rlang_envs` list", {

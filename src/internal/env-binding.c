@@ -314,7 +314,7 @@ void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
   }
   KEEP(expr);
 
-  r_env_poke_lazy(env, sym, expr, eval_env);
+  r_env_bind_delayed(env, sym, expr, eval_env);
   FREE(1);
 }
 static
@@ -324,7 +324,7 @@ void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env) {
   }
   KEEP(fn);
 
-  r_env_poke_active(env, sym, fn);
+  r_env_bind_active(env, sym, fn);
   FREE(1);
 }
 

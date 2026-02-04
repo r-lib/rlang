@@ -108,6 +108,7 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_sym();
   r_init_library_eval();
   r_init_library_env();
+  r_init_library_env_binding();
   r_init_rlang_ns_env();
   r_init_library_arg();
   r_init_library_call();

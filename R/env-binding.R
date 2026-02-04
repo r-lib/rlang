@@ -630,25 +630,26 @@ env_binding_are_locked <- function(env, nms = NULL) {
 #' @return A logical vector as long as `nms` and named after it.
 #' @export
 env_binding_are_active <- function(env, nms = NULL) {
-  env_binding_are_type(env, nms, 2L)
+  env_binding_are_type(env, nms, 5L)
 }
 #' @rdname env_binding_are_active
 #' @export
 env_binding_are_lazy <- function(env, nms = NULL) {
-  env_binding_are_type(env, nms, 1L)
+  # Match both delayed (3L) and forced (4L) promises
+  env_binding_are_type(env, nms, c(3L, 4L))
 }
 env_binding_are_type <- function(env, nms, type, error_call = caller_env()) {
   check_environment(env, call = error_call)
 
   nms <- env_binding_validate_names(env, nms, call = error_call)
-  promise <- env_binding_types(env, nms)
+  types <- env_binding_types(env, nms)
 
-  if (is_null(promise)) {
-    promise <- rep(FALSE, length(nms))
+  if (is_null(types)) {
+    out <- rep(FALSE, length(nms))
   } else {
-    promise <- promise == type
+    out <- types %in% type
   }
-  set_names(promise, nms)
+  set_names(out, nms)
 }
 
 env_binding_validate_names <- function(env, nms, call = caller_env()) {
