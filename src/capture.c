@@ -2,12 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define attribute_hidden
+#include "rlang.h"
+#include "internal/dots-api.h"
+
 #define _(string) (string)
 
-static Rboolean dotDotVal(SEXP);
-static SEXP capturedot(SEXP, int);
+static int dotDotVal(SEXP sym);
 
+
+// Capture implementation ---
 
 SEXP attribute_hidden new_captured_arg(SEXP x, SEXP env) {
     static SEXP nms = NULL;
@@ -27,116 +30,197 @@ SEXP attribute_hidden new_captured_arg(SEXP x, SEXP env) {
     UNPROTECT(1);
     return info;
 }
+
 SEXP attribute_hidden new_captured_literal(SEXP x) {
     return new_captured_arg(x, R_EmptyEnv);
 }
 
-SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
-    SEXP expr_env = R_NilValue;
+static SEXP capture_delayed_dot(int i, SEXP env) {
+    SEXP expr = dot_delayed_expr(i, env);
+    SEXP expr_env = dot_delayed_env(i, env);
 
-    SEXP expr = x;
-    while (TYPEOF(expr) == PROMSXP) {
-        expr_env = PRENV(expr);
-        expr = PREXPR(expr);
-
-	if (expr_env == R_NilValue)
-	    break;
-
-	if (TYPEOF(expr) == SYMSXP) {
-	    int dd = dotDotVal(expr);
-	    if (dd)
-		expr = capturedot(expr_env, dd);
-	}
-    }
-
-    // Evaluated arguments are returned as literals
+    // If env is NULL, we hit a forced promise during unwrapping
+    // Use dots_elt to get the cached value
     if (expr_env == R_NilValue) {
-        SEXP value = PROTECT(eval(x, env));
-        expr = new_captured_literal(value);
+        SEXP value = PROTECT(dots_elt(i, env));
+        SEXP result = new_captured_literal(value);
         UNPROTECT(1);
-    } else {
-        MARK_NOT_MUTABLE(expr);
-        expr = new_captured_arg(expr, expr_env);
+        return result;
     }
 
-    return expr;
+    // Follow ..N references
+    while (TYPEOF(expr) == SYMSXP) {
+        int dd = dotDotVal(expr);
+        if (dd <= 0)
+            break;
+        if (!dots_exist(expr_env))
+            error(_("'...' used in an incorrect context"));
+        if (dd > dots_length(expr_env))
+            error(_("the ... list contains fewer than %d elements"), dd);
+        if (dot_type(dd, expr_env) != DOT_TYPE_delayed)
+            break;
+
+        SEXP new_env = dot_delayed_env(dd, expr_env);
+        expr = dot_delayed_expr(dd, expr_env);
+
+        // Evaluated arguments are returned as literals
+        if (new_env == R_NilValue) {
+            SEXP value = PROTECT(dots_elt(dd, expr_env));
+            SEXP result = new_captured_literal(value);
+            UNPROTECT(1);
+            return result;
+        }
+
+        expr_env = new_env;
+    }
+
+    MARK_NOT_MUTABLE(expr);
+    return new_captured_arg(expr, expr_env);
+}
+
+static SEXP capture_delayed_binding(SEXP found, SEXP sym) {
+    SEXP expr = r_env_binding_delayed_expr(found, sym);
+    SEXP expr_env = r_env_binding_delayed_env(found, sym);
+
+    while (TYPEOF(expr) == SYMSXP) {
+        int dd = dotDotVal(expr);
+        if (dd <= 0)
+            break;
+        if (!dots_exist(expr_env))
+            error(_("'...' used in an incorrect context"));
+        if (dd > dots_length(expr_env))
+            error(_("the ... list contains fewer than %d elements"), dd);
+        if (dot_type(dd, expr_env) != DOT_TYPE_delayed)
+            break;
+
+        SEXP new_env = dot_delayed_env(dd, expr_env);
+        expr = dot_delayed_expr(dd, expr_env);
+
+        // Hit a forced promise during chain following
+        if (new_env == R_NilValue) {
+            SEXP value = PROTECT(dots_elt(dd, expr_env));
+            SEXP result = new_captured_literal(value);
+            UNPROTECT(1);
+            return result;
+        }
+
+        expr_env = new_env;
+    }
+
+    MARK_NOT_MUTABLE(expr);
+    return new_captured_arg(expr, expr_env);
 }
 
 SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP rho)
 {
-    int nProt = 0;
+    enum r_env_binding_type arg_type = r_env_binding_type(rho, install("arg"));
 
-    // Unwrap first layer of promise
-    SEXP sym = findVarInFrame3(rho, install("arg"), TRUE);
-    PROTECT(sym); ++nProt;
+    SEXP sym;
 
     // May be a literal if compiler did not wrap in a promise
-    if (TYPEOF(sym) != PROMSXP) {
-	SEXP value = new_captured_literal(sym);
-	UNPROTECT(nProt);
-	return value;
+    if (arg_type != R_ENV_BINDING_TYPE_delayed) {
+        sym = r_env_get(rho, install("arg"));
+    } else {
+        sym = r_env_binding_delayed_expr(rho, install("arg"));
     }
 
-    sym = PREXPR(sym);
-
     if (TYPEOF(sym) != SYMSXP) {
-        UNPROTECT(nProt);
         error(_("\"x\" must be an argument name"));
     }
 
     SEXP frame = CAR(args);
-    SEXP arg;
 
     int dd = dotDotVal(sym);
+
     if (dd) {
-	arg = capturedot(frame, dd);
+        if (!dots_exist(frame)) {
+            error(_("'...' used in an incorrect context"));
+        }
+        if (dd > dots_length(frame)) {
+            error(_("the ... list contains fewer than %d elements"), dd);
+        }
+
+        dot_type_t type = dot_type(dd, frame);
+
+        switch (type) {
+        case DOT_TYPE_missing:
+            return new_captured_literal(R_MissingArg);
+        case DOT_TYPE_value:
+            return new_captured_literal(dots_elt(dd, frame));
+        case DOT_TYPE_forced:
+            return new_captured_literal(dots_elt(dd, frame));
+        case DOT_TYPE_delayed:
+            return capture_delayed_dot(dd, frame);
+        }
     } else {
-	arg = findVar(sym, frame);
-	if (arg == R_UnboundValue)
-	    error(_("object '%s' not found"), CHAR(PRINTNAME(sym)));
+        SEXP found = r_env_until(frame, sym, R_EmptyEnv);
+
+        if (found == R_EmptyEnv)
+            error(_("object '%s' not found"), CHAR(PRINTNAME(sym)));
+
+        enum r_env_binding_type type = r_env_binding_type(found, sym);
+
+        switch (type) {
+        case R_ENV_BINDING_TYPE_missing:
+            return new_captured_literal(R_MissingArg);
+        case R_ENV_BINDING_TYPE_delayed:
+            return capture_delayed_binding(found, sym);
+        case R_ENV_BINDING_TYPE_forced:
+        case R_ENV_BINDING_TYPE_value:
+        case R_ENV_BINDING_TYPE_active: {
+            SEXP value = PROTECT(r_env_get(found, sym));
+            SEXP result = new_captured_literal(value);
+            UNPROTECT(1);
+            return result;
+        }
+        case R_ENV_BINDING_TYPE_unbound:
+        default:
+            r_stop_unreachable();
+        }
     }
-    PROTECT(arg); ++nProt;
-
-    SEXP value;
-    if (arg == R_MissingArg)
-        value = new_captured_literal(arg);
-    else if (TYPEOF(arg) == PROMSXP)
-        value = new_captured_promise(arg, frame);
-    else
-        value = new_captured_literal(arg);
-
-    UNPROTECT(nProt);
-    return value;
 }
 
 SEXP capturedots(SEXP frame) {
-    SEXP dots = PROTECT(findVar(R_DotsSymbol, frame));
+    int n = dots_length(frame);
 
-    if (dots == R_UnboundValue)
+    if (n < 0)
 	error(_("'...' used in an incorrect context"));
 
-    if (dots == R_MissingArg) {
-        UNPROTECT(1);
-        return R_NilValue;
-    }
+    if (n == 0)
+	return R_NilValue;
 
+    SEXP names = PROTECT(dots_names(frame));
     SEXP out = PROTECT(cons(R_NilValue, R_NilValue));
     SEXP node = out;
 
-    while (dots != R_NilValue) {
-        SEXP head = CAR(dots);
+    for (int i = 1; i <= n; ++i) {
+	dot_type_t type = dot_type(i, frame);
+	SEXP nm = STRING_ELT(names, i - 1);
+	SEXP tag = (nm == R_BlankString) ? R_NilValue : installChar(nm);
+	SEXP dot;
 
-        SEXP dot;
-        if (TYPEOF(head) == PROMSXP)
-            dot = new_captured_promise(head, frame);
-        else
-            dot = new_captured_literal(head);
+	switch (type) {
+	case DOT_TYPE_missing:
+	    dot = new_captured_literal(R_MissingArg);
+	    break;
 
-        SETCDR(node, cons(dot, R_NilValue));
-        SET_TAG(CDR(node), TAG(dots));
+	case DOT_TYPE_value:
+	    dot = new_captured_literal(dots_elt(i, frame));
+	    break;
 
-        node = CDR(node);
-        dots = CDR(dots);
+	case DOT_TYPE_forced:
+	    dot = new_captured_literal(dots_elt(i, frame));
+	    break;
+
+	case DOT_TYPE_delayed:
+	    dot = capture_delayed_dot(i, frame);
+	    break;
+	}
+
+	SETCDR(node, cons(dot, R_NilValue));
+	SET_TAG(CDR(node), tag);
+
+	node = CDR(node);
     }
 
     UNPROTECT(2);
@@ -150,8 +234,11 @@ SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
 }
 
 
-static Rboolean dotDotVal(SEXP sym)
+static int dotDotVal(SEXP sym)
 {
+    if (TYPEOF(sym) != SYMSXP)
+        return 0;
+
     const char* str = CHAR(PRINTNAME(sym));
 
     if (strlen(str) < 3)
@@ -169,34 +256,3 @@ static Rboolean dotDotVal(SEXP sym)
     else
 	return 0;
 }
-
-static SEXP capturedot(SEXP frame, int i) {
-    if (i < 1)
-	error("'i' must be a positive non-zero integer");
-
-    SEXP dots = PROTECT(findVar(R_DotsSymbol, frame));
-    if (dots == R_UnboundValue)
-	error(_("'...' used in an incorrect context"));
-
-    if (dots == R_MissingArg)
-	goto fewer;
-
-    for (int j = 1; j != i; ++j)
-	dots = CDR(dots);
-
-    if (dots == R_NilValue)
-	goto fewer;
-
-    UNPROTECT(1);
-    return CAR(dots);
-
- fewer:
-    error(_("the ... list contains fewer than %d elements"), i);
-}
-
-
-// Local Variables:
-// tab-width: 8
-// c-basic-offset: 4
-// indent-tabs-mode: t
-// End:

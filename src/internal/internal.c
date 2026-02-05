@@ -10,6 +10,7 @@
 #include "cnd.c"
 #include "cnd-handlers.c"
 #include "dots.c"
+#include "dots-api.c"
 #include "dots-ellipsis.c"
 #include "encoding.c"
 #include "env.c"
@@ -156,9 +157,15 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_dyn_raw_push_back",            (DL_FUNC) &ffi_dyn_raw_push_back, 2},
   {"ffi_dyn_resize",                   (DL_FUNC) &ffi_dyn_resize, 2},
   {"ffi_dyn_unwrap",                   (DL_FUNC) &ffi_dyn_unwrap, 1},
-  {"ffi_ellipsis_dots",                (DL_FUNC) &ffi_ellipsis_dots, 1},
+  {"ffi_dot_delayed_env",              (DL_FUNC) &ffi_dot_delayed_env, 2},
+  {"ffi_dot_delayed_expr",             (DL_FUNC) &ffi_dot_delayed_expr, 2},
+  {"ffi_dot_forced_expr",              (DL_FUNC) &ffi_dot_forced_expr, 2},
+  {"ffi_dot_type",                     (DL_FUNC) &ffi_dot_type, 2},
+  {"ffi_dots_elt",                     (DL_FUNC) &ffi_dots_elt, 2},
+  {"ffi_dots_exist",                   (DL_FUNC) &ffi_dots_exist, 1},
+  {"ffi_dots_length",                  (DL_FUNC) &ffi_dots_length, 1},
+  {"ffi_dots_names",                   (DL_FUNC) &ffi_dots_names, 1},
   {"ffi_ellipsis_dots_used",           (DL_FUNC) &ffi_ellipsis_dots_used, 1},
-  {"ffi_ellipsis_promise_forced",      (DL_FUNC) &ffi_ellipsis_promise_forced, 1},
   {"ffi_enexpr",                       (DL_FUNC) &ffi_enexpr, 2},
   {"ffi_enquo",                        (DL_FUNC) &ffi_enquo, 2},
   {"ffi_ensym",                        (DL_FUNC) &ffi_ensym, 2},
