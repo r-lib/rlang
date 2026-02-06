@@ -144,7 +144,7 @@ function() {
 #>     local_error_call(quote(foo()))
 #>     local_error_call(sys.call())
 #> }
-#> <environment: 0x561c73cbf318>
+#> <environment: 0x562c5ad6b0b8>
 
 # Disable the context
 function() {
@@ -154,7 +154,7 @@ function() {
 #> {
 #>     local_error_call(NULL)
 #> }
-#> <environment: 0x561c73cbf318>
+#> <environment: 0x562c5ad6b0b8>
 
 # Use the caller's context
 function() {
@@ -164,5 +164,5 @@ function() {
 #> {
 #>     local_error_call(caller_env())
 #> }
-#> <environment: 0x561c73cbf318>
+#> <environment: 0x562c5ad6b0b8>
 ```
