@@ -55,9 +55,7 @@ void _r_preserve_global(r_obj* x) {
    (_r_preserve_global)(_r_placeholder),         \
    (void) NULL)
 
-// Gets class from `x` and resets it. Useful if you used `SET_ATTRIB()` with a
-// cached object structure that includes a `class` attribute.
-void r_mark_object(r_obj* x);
+
 
 static inline
 bool r_is_object(r_obj* x) {

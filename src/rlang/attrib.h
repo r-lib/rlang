@@ -52,11 +52,7 @@ void r_attrib_clone(r_obj* to, r_obj* from) {
   DUPLICATE_ATTRIB(to, from);
 }
 
-static inline
-r_obj* r_poke_attrib(r_obj* x, r_obj* attrs) {
-  SET_ATTRIB(x, attrs);
-  return x;
-}
+
 
 // Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
 // refcounts or namedness.
