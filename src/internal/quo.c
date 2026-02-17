@@ -43,7 +43,9 @@ r_obj* ffi_quo_set_env(r_obj* quo, r_obj* env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
   }
-  return r_attrib_set(quo, r_syms.dot_environment, env);
+  quo = r_clone(quo);
+  r_attrib_set(quo, r_syms.dot_environment, env);
+  return quo;
 }
 
 r_obj* ffi_get_expression(r_obj* x, r_obj* alternate) {
