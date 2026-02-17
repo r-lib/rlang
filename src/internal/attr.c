@@ -213,17 +213,12 @@ r_obj* fn_zap_srcref(r_obj* x) {
 
   r_obj* out = KEEP(r_new_function(formals, body, env));
 
-  // Copy over attributes, but zap any `srcref` attribute
-  if (r_attrib_get(x, r_syms.srcref) == r_null) {
-    // Nothing to zap
-    r_obj* attrib = r_attrib(x);
-    r_poke_attrib(out, attrib);
-  } else {
-    // Clone so we can zap `srcref`
-    r_obj* attrib = r_attrib(x);
-    attrib = KEEP(r_clone(attrib));
-    r_poke_attrib(out, attrib);
-    FREE(1);
+  // Copy over attributes, but zap any `srcref` attribute.
+  // r_attrib_collect() returns a fresh pairlist so no clone needed.
+  r_obj* attrib = KEEP(r_attrib_collect(x));
+  r_poke_attrib(out, attrib);
+  FREE(1);
+  if (r_attrib_get(x, r_syms.srcref) != r_null) {
     r_attrib_poke(out, r_syms.srcref, r_null);
   }
 
