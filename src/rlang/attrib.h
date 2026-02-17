@@ -48,6 +48,11 @@ bool r_has_attrib(r_obj* x) {
 r_obj* r_attrib_collect(r_obj* x);
 
 static inline
+void r_attrib_clone(r_obj* to, r_obj* from) {
+  DUPLICATE_ATTRIB(to, from);
+}
+
+static inline
 r_obj* r_poke_attrib(r_obj* x, r_obj* attrs) {
   SET_ATTRIB(x, attrs);
   return x;
