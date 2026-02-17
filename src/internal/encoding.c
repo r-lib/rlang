@@ -131,7 +131,9 @@ r_obj* obj_attrib_encode_utf8(r_obj* x, r_obj* attrib) {
   KEEP(attrib_new);
 
   x = KEEP(r_clone_shared(x));
-  r_poke_attrib(x, attrib_new);
+  for (r_obj* node = attrib_new; node != r_null; node = r_node_cdr(node)) {
+    Rf_setAttrib(x, r_node_tag(node), r_node_car(node));
+  }
 
   FREE(2);
   return x;
