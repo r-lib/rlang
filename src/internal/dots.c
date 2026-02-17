@@ -53,8 +53,7 @@ const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
 r_obj* new_splice_box(r_obj* x) {
   r_obj* out = KEEP(r_alloc_list(1));
   r_list_poke(out, 0, x);
-  r_poke_attrib(out, splice_box_attrib);
-  r_mark_object(out);
+  r_attrib_poke_class(out, splice_box_class);
   FREE(1);
   return out;
 }
@@ -877,12 +876,10 @@ r_obj* ffi_quos_interp(r_obj* frame_env,
   dots = KEEP(dots_as_list(dots, &capture_info));
   dots = KEEP(dots_finalise(&capture_info, dots));
 
-  r_obj* attrib = KEEP(r_new_node(r_names(dots), r_clone(quosures_attrib)));
-  r_node_poke_tag(attrib, r_syms.names);
-  r_poke_attrib(dots, attrib);
-  r_mark_object(dots);
+  r_attrib_poke_names(dots, r_names(dots));
+  r_attrib_poke_class(dots, quosures_class);
 
-  FREE(4);
+  FREE(3);
   return dots;
 }
 
@@ -1107,15 +1104,11 @@ void rlang_init_dots(r_obj* ns) {
   r_preserve(abort_dots_homonyms_ns_sym);
 
   {
-    r_obj* splice_box_class = KEEP(r_alloc_character(2));
+    splice_box_class = KEEP(r_alloc_character(2));
     r_chr_poke(splice_box_class, 0, r_str("rlang_box_splice"));
     r_chr_poke(splice_box_class, 1, r_str("rlang_box"));
-
-    splice_box_attrib = r_pairlist(splice_box_class);
-    r_preserve(splice_box_attrib);
-    r_mark_shared(splice_box_attrib);
-
-    r_node_poke_tag(splice_box_attrib, r_syms.class_);
+    r_preserve(splice_box_class);
+    r_mark_shared(splice_box_class);
     FREE(1);
   }
 
@@ -1128,15 +1121,11 @@ void rlang_init_dots(r_obj* ns) {
   }
 
   {
-    r_obj* quosures_class = KEEP(r_alloc_character(2));
+    quosures_class = KEEP(r_alloc_character(2));
     r_chr_poke(quosures_class, 0, r_str("quosures"));
     r_chr_poke(quosures_class, 1, r_str("list"));
-
-    quosures_attrib = r_pairlist(quosures_class);
-    r_preserve(quosures_attrib);
-    r_mark_shared(quosures_attrib);
-
-    r_node_poke_tag(quosures_attrib, r_syms.class_);
+    r_preserve(quosures_class);
+    r_mark_shared(quosures_class);
     FREE(1);
   }
 
@@ -1155,8 +1144,8 @@ static r_obj* empty_spliced_arg = NULL;
 static r_obj* glue_embrace_fn = NULL;
 static r_obj* dots_homonyms_values = NULL;
 static r_obj* dots_ignore_empty_values = NULL;
-static r_obj* quosures_attrib = NULL;
-static r_obj* splice_box_attrib = NULL;
+static r_obj* quosures_class = NULL;
+static r_obj* splice_box_class = NULL;
 static r_obj* abort_dots_homonyms_ns_sym = NULL;
 
 static struct r_lazy dots_homonyms_arg = { 0 };
