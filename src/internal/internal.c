@@ -105,7 +105,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_alloc_data_frame",             (DL_FUNC) &ffi_alloc_data_frame, 3},
   {"ffi_as_data_mask",                 (DL_FUNC) &ffi_as_data_mask, 1},
   {"ffi_as_data_pronoun",              (DL_FUNC) &ffi_as_data_pronoun, 1},
-  {"ffi_attrib",                       (DL_FUNC) &r_attrib, 1},
   {"ffi_c_tests",                      (DL_FUNC) &ffi_c_tests, 0},
   {"ffi_call_has_precedence",          (DL_FUNC) &ffi_call_has_precedence, 3},
   {"ffi_call_zap_inline",              (DL_FUNC) &ffi_call_zap_inline, 1},

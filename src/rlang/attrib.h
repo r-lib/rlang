@@ -48,10 +48,6 @@ bool r_has_attrib(r_obj* x) {
 r_obj* r_attrib_collect(r_obj* x);
 
 static inline
-r_obj* r_attrib(r_obj* x) {
-  return ATTRIB(x);
-}
-static inline
 r_obj* r_poke_attrib(r_obj* x, r_obj* attrs) {
   SET_ATTRIB(x, attrs);
   return x;

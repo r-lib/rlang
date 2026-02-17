@@ -791,7 +791,7 @@ as_base_type <- function(x, as_type) {
   # method dispatch, but we also want to avoid an extra copy of atomic
   # vectors: the first when unclassing, the second when coercing. This
   # is also useful for uncopyable types like environments.
-  attrs <- .Call(ffi_attrib, x)
+  attrs <- as.pairlist(attributes(x))
   .Call(ffi_poke_attrib, x, NULL)
 
   # This function assumes that the target type is different than the
