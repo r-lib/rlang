@@ -59,7 +59,7 @@ r_obj* new_splice_box(r_obj* x) {
   return out;
 }
 bool is_splice_box(r_obj* x) {
-  return r_attrib(x) == splice_box_attrib;
+  return r_inherits(x, "rlang_box_splice");
 }
 r_obj* ffi_is_splice_box(r_obj* x) {
   return r_lgl(is_splice_box(x));
