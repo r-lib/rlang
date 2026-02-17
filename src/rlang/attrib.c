@@ -1,5 +1,27 @@
 #include "rlang.h"
 
+// Collect attributes into a pairlist using `R_mapAttrib`
+static r_obj* r_attrib_collect_cb(r_obj* tag, r_obj* val, void* data) {
+  r_obj** p_tail = (r_obj**) data;
+
+  r_obj* node = r_new_node(val, r_null);
+  r_node_poke_tag(node, tag);
+  r_node_poke_cdr(*p_tail, node);
+
+  *p_tail = node;
+  return NULL;
+}
+
+r_obj* r_attrib_collect(r_obj* x) {
+  r_obj* sentinel = KEEP(r_new_node(r_null, r_null));
+  r_obj* tail = sentinel;
+
+  R_mapAttrib(x, &r_attrib_collect_cb, &tail);
+
+  FREE(1);
+  return r_node_cdr(sentinel);
+}
+
 /**
  * - If `sentinel` is found in the first node: `parent_out` is `r_null`
  * - If `sentinel` is not found: both return value and `parent_out`
