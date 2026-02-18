@@ -399,7 +399,7 @@ static r_obj* env_poke_fn = NULL;
 
 r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
   // Remove srcrefs from system call
-  r_attrib_poke(tilde, r_syms.srcref, r_null);
+  r_attrib_zap(tilde, r_syms.srcref);
 
   if (!is_quosure(tilde)) {
     return base_tilde_eval(tilde, caller_frame);
