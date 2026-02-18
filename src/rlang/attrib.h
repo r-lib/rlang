@@ -88,7 +88,6 @@ void r_attrib_poke(r_obj* x, r_obj* sym, r_obj* value) {
   Rf_setAttrib(x, sym, value);
 }
 
-#define r_attrib_set(x, tag, value) Rf_setAttrib(x, tag, value)
 
 static inline
 r_obj* r_class(r_obj* x) {

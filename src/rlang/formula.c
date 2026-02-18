@@ -76,7 +76,7 @@ r_obj* new_raw_formula(r_obj* lhs, r_obj* rhs, r_obj* env) {
   }
   f = KEEP(r_new_call(tilde_sym, args));
 
-  Rf_setAttrib(f, r_sym(".Environment"), env);
+  r_attrib_poke(f, r_sym(".Environment"), env);
 
   FREE(2);
   return f;
