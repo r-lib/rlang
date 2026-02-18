@@ -54,13 +54,13 @@ for versions of `get_env()` and `set_env()` that only work on quosures.
 # Environment of closure functions:
 fn <- function() "foo"
 get_env(fn)
-#> <environment: 0x55f685053ac8>
+#> <environment: 0x5604750761a0>
 
 # Or of quosures or formulas:
 get_env(~foo)
-#> <environment: 0x55f685053ac8>
+#> <environment: 0x5604750761a0>
 get_env(quo(foo))
-#> <environment: 0x55f685053ac8>
+#> <environment: 0x5604750761a0>
 
 
 # Provide a default in case the object doesn't bundle an environment.
@@ -95,7 +95,7 @@ other_env <- child_env(NULL)
 set_env(fn, other_env)
 #> function () 
 #> NULL
-#> <environment: 0x55f68438d880>
+#> <environment: 0x560474cf1310>
 identical(get_env(fn), other_env)
 #> [1] FALSE
 

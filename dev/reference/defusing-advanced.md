@@ -182,19 +182,19 @@ exprs(foo, bar, bar)
 quo(foo)
 #> <quosure>
 #> expr: ^foo
-#> env:  0x55f684fe9ad8
+#> env:  0x560473a51d98
 quos(foo, bar)
 #> <list_of<quosure>>
 #> 
 #> [[1]]
 #> <quosure>
 #> expr: ^foo
-#> env:  0x55f684fe9ad8
+#> env:  0x560473a51d98
 #> 
 #> [[2]]
 #> <quosure>
 #> expr: ^bar
-#> env:  0x55f684fe9ad8
+#> env:  0x560473a51d98
 #> 
 
 # `enexpr()` and `enexprs()` are the naked variants of `enquo()` and `enquos()`
@@ -240,15 +240,15 @@ no_injection <- function(x) enquo0(x)
 automatic_injection(foo(!!!1:3))
 #> <quosure>
 #> expr: ^foo(1L, 2L, 3L)
-#> env:  0x55f684fe9ad8
+#> env:  0x560473a51d98
 no_injection(foo(!!!1:3))
 #> <quosure>
 #> expr: ^foo(!!!1:3)
-#> env:  0x55f684fe9ad8
+#> env:  0x560473a51d98
 
 # Injection can still be done explicitly
 inject(no_injection(foo(!!!1:3)))
 #> <quosure>
 #> expr: ^foo(1L, 2L, 3L)
-#> env:  0x55f684fe9ad8
+#> env:  0x560473a51d98
 ```
