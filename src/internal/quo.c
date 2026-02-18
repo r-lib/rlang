@@ -44,7 +44,7 @@ r_obj* ffi_quo_set_env(r_obj* quo, r_obj* env) {
     r_abort("`env` must be an environment");
   }
   quo = r_clone(quo);
-  r_attrib_set(quo, r_syms.dot_environment, env);
+  r_attrib_poke(quo, r_syms.dot_environment, env);
   return quo;
 }
 
