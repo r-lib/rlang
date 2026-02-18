@@ -184,6 +184,8 @@ bool sexp_next_incoming(struct r_sexp_iterator* p_it,
 
   switch (state) {
   case SEXP_ITERATOR_STATE_attrib: {
+    // Allocates a new pairlist to avoid direct ATTRIB() access.
+    // Could use R_mapAttrib() instead but would require refactoring.
     r_obj* collected = r_attrib_collect(x);
     // Protect collected pairlist in the iterator's shelter chain
     r_obj* chain = r_new_node(collected, r_list_get(p_it->shelter, 2));

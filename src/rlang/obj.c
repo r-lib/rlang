@@ -147,4 +147,3 @@ void r_init_library_obj(r_obj* ns) {
 
 static r_obj* as_label_call = NULL;
 
-

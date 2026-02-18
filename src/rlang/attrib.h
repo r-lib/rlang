@@ -5,7 +5,6 @@
 
 #include "rlang-types.h"
 #include "globals.h"
-#include "node.h"
 
 
 // Polyfill for R < 4.5.0
