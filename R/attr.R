@@ -278,8 +278,6 @@ has_length <- function(x, n = NULL) {
   }
 }
 
-
-
 #' Zap source references
 #'
 #' @description

@@ -55,8 +55,6 @@ void _r_preserve_global(r_obj* x) {
    (_r_preserve_global)(_r_placeholder),         \
    (void) NULL)
 
-
-
 static inline
 bool r_is_object(r_obj* x) {
   return Rf_isObject(x);
