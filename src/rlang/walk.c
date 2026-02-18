@@ -108,7 +108,7 @@ struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root) {
     .x = r_null,
     .parent = r_null,
   };
-  
+
   FREE(1);
   return p_it;
 }
@@ -314,7 +314,7 @@ bool sexp_has_attrib(enum r_type type, r_obj* x) {
   if (type == R_TYPE_string) {
     return false;
   } else {
-    return r_has_attrib(x);
+    return r_attrib_has_any(x);
   }
 }
 static inline

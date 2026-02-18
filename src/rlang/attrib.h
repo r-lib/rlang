@@ -47,7 +47,7 @@ SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
 
 
 static inline
-bool r_has_attrib(r_obj* x) {
+bool r_attrib_has_any(r_obj* x) {
   return ANY_ATTRIB(x);
 }
 
