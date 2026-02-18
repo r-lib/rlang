@@ -32,7 +32,7 @@ r_obj* obj_encode_utf8(r_obj* x) {
   default: break;
   }
 
-  if (r_has_attrib(x)) {
+  if (r_attrib_has_any(x)) {
     r_obj* attrib = KEEP(r_attrib_collect(x));
     KEEP(x);
     x = obj_attrib_encode_utf8(x, attrib);
