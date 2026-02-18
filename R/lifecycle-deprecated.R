@@ -694,7 +694,7 @@ as_list <- function(x) {
 }
 env_as_list <- function(x) {
   names_x <- names(x)
-  x <- as_base_type(x, as.list)
+  x <- as.list.environment(x, all.names = TRUE)
   set_names(x, .Call(ffi_unescape_character, names_x))
 }
 vec_as_list <- function(x) {
