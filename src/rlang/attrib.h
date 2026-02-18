@@ -67,8 +67,8 @@ void r_attrib_poke_from(r_obj* to, r_obj* from) {
 }
 
 
-// Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
-// refcounts or namedness.
+// Unlike Rf_getAttrib(), this doesn't allocate, but in practice requires
+// protection because rchk considers the return value to be a fresh pointer.
 r_obj* r_attrib_get(r_obj* x, r_obj* tag);
 
 static inline
