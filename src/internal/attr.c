@@ -213,7 +213,7 @@ r_obj* fn_zap_srcref(r_obj* x) {
 
   r_obj* out = KEEP(r_new_function(formals, body, env));
 
-  r_attrib_clone(out, x);
+  r_attrib_poke_from(out, x);
   if (r_attrib_get(x, r_syms.srcref) != r_null) {
     r_attrib_poke(out, r_syms.srcref, r_null);
   }

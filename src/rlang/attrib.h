@@ -48,7 +48,7 @@ bool r_has_attrib(r_obj* x) {
 r_obj* r_attrib_collect(r_obj* x);
 
 static inline
-void r_attrib_clone(r_obj* to, r_obj* from) {
+void r_attrib_poke_from(r_obj* to, r_obj* from) {
   DUPLICATE_ATTRIB(to, from);
 }
 
