@@ -7,44 +7,6 @@
 #include "globals.h"
 
 
-// Polyfill for R < 4.5.0
-#if R_VERSION < R_Version(4, 5, 0)
-static inline
-int ANY_ATTRIB(SEXP x) {
-  return ATTRIB(x) != R_NilValue;
-}
-static inline
-void CLEAR_ATTRIB(SEXP x) {
-  SET_ATTRIB(x, R_NilValue);
-  SET_OBJECT(x, 0);
-  UNSET_S4_OBJECT(x);
-}
-#endif
-
-// Polyfill for R < 4.6.0
-#if R_VERSION < R_Version(4, 6, 0)
-static inline
-SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
-  PROTECT_INDEX api;
-  SEXP a = ATTRIB(x);
-  SEXP val = NULL;
-
-  PROTECT_WITH_INDEX(a, &api);
-  while (a != R_NilValue) {
-    SEXP tag = PROTECT(TAG(a));
-    SEXP attr = PROTECT(CAR(a));
-    val = FUN(tag, attr, data);
-    UNPROTECT(2);
-    if (val != NULL)
-      break;
-    REPROTECT(a = CDR(a), api);
-  }
-  UNPROTECT(1);
-  return val;
-}
-#endif
-
-
 static inline
 bool r_attrib_has_any(r_obj* x) {
   return ANY_ATTRIB(x);
