@@ -54,7 +54,11 @@ bool r_has_attrib(r_obj* x) {
 r_obj* r_attrib_collect(r_obj* x);
 
 static inline
-void r_attrib_zap(r_obj* x) {
+void r_attrib_zap(r_obj* x, r_obj* tag) {
+  Rf_setAttrib(x, tag, r_null);
+}
+static inline
+void r_attrib_zap_all(r_obj* x) {
   CLEAR_ATTRIB(x);
 }
 
