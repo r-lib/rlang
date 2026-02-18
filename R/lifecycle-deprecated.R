@@ -787,19 +787,7 @@ is_unspecified <- function(x) {
 }
 
 as_base_type <- function(x, as_type) {
-  # Zap attributes temporarily instead of unclassing. We want to avoid
-  # method dispatch, but we also want to avoid an extra copy of atomic
-  # vectors: the first when unclassing, the second when coercing. This
-  # is also useful for uncopyable types like environments.
-  attrs <- attributes(x)
-  attributes(x) <- NULL
-
-  # This function assumes that the target type is different than the
-  # input type, otherwise no duplication is done and the output will
-  # be modified by side effect when we restore the input attributes.
-  on.exit(attributes(x) <- attrs)
-
-  as_type(x)
+  as_type(unclass(x))
 }
 as_integerish_type <- function(x, as_type, to, value = FALSE) {
   if (is_integerish(x)) {
