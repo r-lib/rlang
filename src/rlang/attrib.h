@@ -71,18 +71,8 @@ void r_attrib_poke_from(r_obj* to, r_obj* from) {
 
 // Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
 // refcounts or namedness.
-static inline
-r_obj* r_attrib_get_cb(r_obj* attr_tag, r_obj* val, void* data) {
-  if (attr_tag == *(r_obj**) data) {
-    return val;
-  }
-  return NULL;
-}
-static inline
-r_obj* r_attrib_get(r_obj* x, r_obj* tag) {
-  r_obj* out = R_mapAttrib(x, &r_attrib_get_cb, &tag);
-  return out ? out : r_null;
-}
+r_obj* r_attrib_get(r_obj* x, r_obj* tag);
+
 static inline
 void r_attrib_poke(r_obj* x, r_obj* sym, r_obj* value) {
   Rf_setAttrib(x, sym, value);

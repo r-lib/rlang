@@ -1,5 +1,17 @@
 #include "rlang.h"
 
+static r_obj* r_attrib_get_cb(r_obj* attr_tag, r_obj* val, void* data) {
+  if (attr_tag == *(r_obj**) data) {
+    return val;
+  }
+  return NULL;
+}
+
+r_obj* r_attrib_get(r_obj* x, r_obj* tag) {
+  r_obj* out = R_mapAttrib(x, &r_attrib_get_cb, &tag);
+  return out ? out : r_null;
+}
+
 // Collect attributes into a pairlist using `R_mapAttrib`
 static r_obj* r_attrib_collect_cb(r_obj* tag, r_obj* val, void* data) {
   r_obj** p_tail = (r_obj**) data;
