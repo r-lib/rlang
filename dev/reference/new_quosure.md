@@ -51,26 +51,26 @@ is_quosure(x)
 new_quosure(quote(foo), current_env())
 #> <quosure>
 #> expr: ^foo
-#> env:  0x55717c0c5910
+#> env:  0x55f684feedc8
 
 quo(foo)
 #> <quosure>
 #> expr: ^foo
-#> env:  0x55717c0c5910
+#> env:  0x55f684feedc8
 
 # `new_quosure()` always rewraps its input into a new quosure, even
 # if the input is itself a quosure:
 new_quosure(quo(foo))
 #> <quosure>
 #> expr: ^<quosure>
-#> env:  0x55717c0c5910
+#> env:  0x55f684feedc8
 
 # This is unlike `as_quosure()` which preserves its input if it's
 # already a quosure:
 as_quosure(quo(foo))
 #> <quosure>
 #> expr: ^foo
-#> env:  0x55717c0c5910
+#> env:  0x55f684feedc8
 
 
 # `as_quosure()` uses the supplied environment with naked expressions:
@@ -78,7 +78,7 @@ env <- env(var = "thing")
 as_quosure(quote(var), env)
 #> <quosure>
 #> expr: ^var
-#> env:  0x55717cfacf60
+#> env:  0x55f685d2c640
 
 # If the expression already carries an environment, this
 # environment is preserved. This is the case for formulas and
@@ -86,12 +86,12 @@ as_quosure(quote(var), env)
 as_quosure(~foo, env)
 #> <quosure>
 #> expr: ^foo
-#> env:  0x55717c0c5910
+#> env:  0x55f684feedc8
 
 as_quosure(~foo)
 #> <quosure>
 #> expr: ^foo
-#> env:  0x55717c0c5910
+#> env:  0x55f684feedc8
 
 # An environment must be supplied when the input is a naked
 # expression:
@@ -103,5 +103,5 @@ try(
 #> This warning is displayed once every 8 hours.
 #> <quosure>
 #> expr: ^var
-#> env:  0x55717c0c5910
+#> env:  0x55f684feedc8
 ```
