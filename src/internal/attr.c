@@ -214,9 +214,7 @@ r_obj* fn_zap_srcref(r_obj* x) {
   r_obj* out = KEEP(r_new_function(formals, body, env));
 
   r_attrib_poke_from(out, x);
-  if (r_attrib_get(x, r_syms.srcref) != r_null) {
-    r_attrib_poke(out, r_syms.srcref, r_null);
-  }
+  r_attrib_zap(out, r_syms.srcref);
 
   FREE(2);
   return out;
@@ -264,9 +262,9 @@ r_obj* expr_vec_zap_srcref(r_obj* x) {
 
 static
 void attrib_zap_srcref(r_obj* x) {
-  r_attrib_poke(x, r_syms.srcfile, r_null);
-  r_attrib_poke(x, r_syms.srcref, r_null);
-  r_attrib_poke(x, r_syms.wholeSrcref, r_null);
+  r_attrib_zap(x, r_syms.srcfile);
+  r_attrib_zap(x, r_syms.srcref);
+  r_attrib_zap(x, r_syms.wholeSrcref);
 }
 
 
