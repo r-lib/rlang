@@ -27,18 +27,18 @@
  */
 r_obj* obj_encode_utf8(r_obj* x) {
   switch (r_typeof(x)) {
-  case R_TYPE_character: x = chr_encode_utf8(x); break;
-  case R_TYPE_list: x = list_encode_utf8(x); break;
-  default: break;
+  case R_TYPE_character: x = KEEP(chr_encode_utf8(x)); break;
+  case R_TYPE_list: x = KEEP(list_encode_utf8(x)); break;
+  default: KEEP(x); break;
   }
 
   if (r_attrib_has_any(x)) {
     r_obj* attrib = KEEP(r_attrib_collect(x));
-    KEEP(x);
     x = obj_attrib_encode_utf8(x, attrib);
-    FREE(2);
+    FREE(1);
   }
 
+  FREE(1);
   return x;
 }
 
