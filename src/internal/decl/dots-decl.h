@@ -4,7 +4,6 @@ static r_obj* dots_ignore_empty_values;
 static r_obj* spliced_box_prototype;
 static r_obj* glue_embrace_fn;
 static r_obj* quosures_prototype;
-static r_obj* splice_box_class;
 static r_obj* abort_dots_homonyms_ns_sym;
 
 static struct r_lazy dots_homonyms_arg;
