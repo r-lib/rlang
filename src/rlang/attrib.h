@@ -14,6 +14,12 @@ static inline
 int ANY_ATTRIB(SEXP x) {
   return ATTRIB(x) != R_NilValue;
 }
+static inline
+void CLEAR_ATTRIB(SEXP x) {
+  SET_ATTRIB(x, R_NilValue);
+  SET_OBJECT(x, 0);
+  UNSET_S4_OBJECT(x);
+}
 #endif
 
 // Polyfill for R < 4.6.0
@@ -48,8 +54,13 @@ bool r_has_attrib(r_obj* x) {
 r_obj* r_attrib_collect(r_obj* x);
 
 static inline
+void r_attrib_zap(r_obj* x) {
+  CLEAR_ATTRIB(x);
+}
+
+static inline
 void r_attrib_poke_from(r_obj* to, r_obj* from) {
-  DUPLICATE_ATTRIB(to, from);
+  SHALLOW_DUPLICATE_ATTRIB(to, from);
 }
 
 
