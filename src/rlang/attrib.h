@@ -68,57 +68,36 @@ void r_attrib_poke_from(r_obj* to, r_obj* from) {
 }
 
 
-
 // Unlike Rf_getAttrib(), this never allocates. This also doesn't bump
 // refcounts or namedness.
 r_obj* r_attrib_get(r_obj* x, r_obj* tag);
 
 static inline
-void r_attrib_poke(r_obj* x, r_obj* sym, r_obj* value) {
-  Rf_setAttrib(x, sym, value);
-}
-
-
-static inline
 r_obj* r_class(r_obj* x) {
   return r_attrib_get(x, r_syms.class_);
 }
-static inline
-void r_attrib_poke_class(r_obj* x, r_obj* classes) {
-  r_attrib_poke(x, r_syms.class_, classes);
-}
+
 void r_attrib_poke_classes(r_obj* x, const char** classes, r_ssize n);
 
 static inline
 r_obj* r_dim(r_obj* x) {
   return r_attrib_get(x, r_syms.dim);
 }
-static inline
-void r_attrib_poke_dim(r_obj* x, r_obj* dim) {
-  r_attrib_poke(x, r_syms.dim, dim);
-}
 
 static inline
 r_obj* r_dim_names(r_obj* x) {
   return r_attrib_get(x, r_syms.dim_names);
-}
-static inline
-void r_attrib_poke_dim_names(r_obj* x, r_obj* dim_names) {
-  r_attrib_poke(x, r_syms.dim_names, dim_names);
 }
 
 static inline
 r_obj* r_names(r_obj* x) {
   return r_attrib_get(x, r_syms.names);
 }
-static inline
-void r_attrib_poke_names(r_obj* x, r_obj* nms) {
-  r_attrib_poke(x, r_syms.names, nms);
-}
 
 bool r_is_named(r_obj* x);
 
 
+// Defined as macros so rchk can see that `X` protects `VALUE`
 #define r_attrib_poke(X, SYM, VALUE) Rf_setAttrib(X, SYM, VALUE)
 #define r_attrib_poke_class(X, VALUE) Rf_setAttrib(X, r_syms.class_, VALUE)
 #define r_attrib_poke_dim(X, VALUE) Rf_setAttrib(X, r_syms.dim, VALUE)
