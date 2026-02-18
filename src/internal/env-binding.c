@@ -239,7 +239,7 @@ r_obj* ffi_env_bind(r_obj* env,
     return r_globals.empty_list;
   }
 
-  r_obj* names = r_names(values);
+  r_obj* names = KEEP(r_names(values));
   if (n && names == r_null) {
     r_abort("Can't bind data because some elements are not named.");
   }
@@ -272,7 +272,7 @@ r_obj* ffi_env_bind(r_obj* env,
     }
   }
 
-  FREE(1);
+  FREE(2);
   return old;
 }
 
