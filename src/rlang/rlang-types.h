@@ -118,4 +118,49 @@ struct r_lazy {
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 
 
+// Polyfills for R API
+// Guarded with #ifndef so packages with their own polyfills can include rlang
+
+#if R_VERSION < R_Version(4, 5, 0)
+#ifndef ANY_ATTRIB
+static inline
+int ANY_ATTRIB(SEXP x) {
+  return ATTRIB(x) != R_NilValue;
+}
+#endif
+#ifndef CLEAR_ATTRIB
+static inline
+void CLEAR_ATTRIB(SEXP x) {
+  SET_ATTRIB(x, R_NilValue);
+  SET_OBJECT(x, 0);
+  UNSET_S4_OBJECT(x);
+}
+#endif
+#endif
+
+#if R_VERSION < R_Version(4, 6, 0)
+#ifndef R_mapAttrib
+static inline
+SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
+  PROTECT_INDEX api;
+  SEXP a = ATTRIB(x);
+  SEXP val = NULL;
+
+  PROTECT_WITH_INDEX(a, &api);
+  while (a != R_NilValue) {
+    SEXP tag = PROTECT(TAG(a));
+    SEXP attr = PROTECT(CAR(a));
+    val = FUN(tag, attr, data);
+    UNPROTECT(2);
+    if (val != NULL)
+      break;
+    REPROTECT(a = CDR(a), api);
+  }
+  UNPROTECT(1);
+  return val;
+}
+#endif
+#endif
+
+
 #endif
