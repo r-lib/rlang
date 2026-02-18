@@ -793,7 +793,7 @@ r_obj* ffi_unescape_character(r_obj*);
 static
 r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   int n_prot = 0;
-  r_obj* nms = r_names(dots);
+  r_obj* nms = KEEP_N(r_names(dots), &n_prot);
 
   // Here handle minimal vs none
   switch (capture_info->named) {
@@ -879,13 +879,13 @@ r_obj* ffi_quos_interp(r_obj* frame_env,
   dots = KEEP(dots_as_list(dots, &capture_info));
   dots = KEEP(dots_finalise(&capture_info, dots));
 
-  r_obj* nms = r_names(dots);
+  r_obj* nms = KEEP(r_names(dots));
   r_attrib_poke_from(dots, quosures_prototype);
   if (nms != r_null) {
     r_attrib_poke_names(dots, nms);
   }
 
-  FREE(3);
+  FREE(4);
   return dots;
 }
 
