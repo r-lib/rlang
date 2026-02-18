@@ -53,7 +53,10 @@ const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
 r_obj* new_splice_box(r_obj* x) {
   r_obj* out = KEEP(r_alloc_list(1));
   r_list_poke(out, 0, x);
-  r_attrib_poke_class(out, splice_box_class);
+
+  // Shallow-clone attributes from the prototype for fast construction
+  r_attrib_poke_from(out, empty_spliced_arg);
+
   FREE(1);
   return out;
 }
@@ -1113,8 +1116,9 @@ void rlang_init_dots(r_obj* ns) {
   }
 
   {
-    r_obj* list = KEEP(r_alloc_list(0));
-    empty_spliced_arg = new_splice_box(list);
+    empty_spliced_arg = KEEP(r_alloc_list(1));
+    r_list_poke(empty_spliced_arg, 0, r_alloc_list(0));
+    r_attrib_poke_class(empty_spliced_arg, splice_box_class);
     r_preserve(empty_spliced_arg);
     r_mark_shared(empty_spliced_arg);
     FREE(1);
