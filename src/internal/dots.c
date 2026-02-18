@@ -1110,18 +1110,9 @@ void rlang_init_dots(r_obj* ns) {
   r_preserve(abort_dots_homonyms_ns_sym);
 
   {
-    splice_box_class = KEEP(r_alloc_character(2));
-    r_chr_poke(splice_box_class, 0, r_str("rlang_box_splice"));
-    r_chr_poke(splice_box_class, 1, r_str("rlang_box"));
-    r_preserve(splice_box_class);
-    r_mark_shared(splice_box_class);
-    FREE(1);
-  }
-
-  {
     spliced_box_prototype = KEEP(r_alloc_list(1));
     r_list_poke(spliced_box_prototype, 0, r_alloc_list(0));
-    r_attrib_poke_class(spliced_box_prototype, splice_box_class);
+    r_attrib_poke_class(spliced_box_prototype, r_chr_n((const char*[]){"rlang_box_splice", "rlang_box"}, 2));
     r_preserve(spliced_box_prototype);
     r_mark_shared(spliced_box_prototype);
     FREE(1);
@@ -1151,7 +1142,7 @@ static r_obj* glue_embrace_fn = NULL;
 static r_obj* dots_homonyms_values = NULL;
 static r_obj* dots_ignore_empty_values = NULL;
 static r_obj* quosures_prototype = NULL;
-static r_obj* splice_box_class = NULL;
+
 static r_obj* abort_dots_homonyms_ns_sym = NULL;
 
 static struct r_lazy dots_homonyms_arg = { 0 };
