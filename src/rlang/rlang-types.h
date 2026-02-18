@@ -119,16 +119,12 @@ struct r_lazy {
 
 
 // Polyfills for R API
-// Guarded with #ifndef so packages with their own polyfills can include rlang
 
 #if R_VERSION < R_Version(4, 5, 0)
-#ifndef ANY_ATTRIB
 static inline
 int ANY_ATTRIB(SEXP x) {
   return ATTRIB(x) != R_NilValue;
 }
-#endif
-#ifndef CLEAR_ATTRIB
 static inline
 void CLEAR_ATTRIB(SEXP x) {
   SET_ATTRIB(x, R_NilValue);
@@ -136,10 +132,8 @@ void CLEAR_ATTRIB(SEXP x) {
   UNSET_S4_OBJECT(x);
 }
 #endif
-#endif
 
 #if R_VERSION < R_Version(4, 6, 0)
-#ifndef R_mapAttrib
 static inline
 SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
   PROTECT_INDEX api;
@@ -159,7 +153,6 @@ SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
   UNPROTECT(1);
   return val;
 }
-#endif
 #endif
 
 
