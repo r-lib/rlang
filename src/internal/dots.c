@@ -55,7 +55,7 @@ r_obj* new_splice_box(r_obj* x) {
   r_list_poke(out, 0, x);
 
   // Shallow-clone attributes from the prototype for fast construction
-  r_attrib_poke_from(out, empty_spliced_arg);
+  r_attrib_poke_from(out, spliced_box_prototype);
 
   FREE(1);
   return out;
@@ -545,7 +545,7 @@ static inline
 void ignore(struct dots_capture_info* p_capture_info,
             r_obj* node) {
   p_capture_info->needs_expansion = true;
-  r_node_poke_car(node, empty_spliced_arg);
+  r_node_poke_car(node, spliced_box_prototype);
 }
 
 
@@ -644,7 +644,7 @@ r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
   for (r_ssize count = 0; dots != r_null; dots = r_node_cdr(dots)) {
     r_obj* elt = r_node_car(dots);
 
-    if (elt == empty_spliced_arg) {
+    if (elt == spliced_box_prototype) {
       continue;
     }
 
@@ -689,7 +689,7 @@ r_obj* dots_as_pairlist(r_obj* dots, struct dots_capture_info* capture_info) {
   while (dots != r_null) {
     r_obj* elt = r_node_car(dots);
 
-    if (elt == empty_spliced_arg) {
+    if (elt == spliced_box_prototype) {
       dots = r_node_cdr(dots);
       r_node_poke_cdr(prev, dots);
       continue;
@@ -1119,11 +1119,11 @@ void rlang_init_dots(r_obj* ns) {
   }
 
   {
-    empty_spliced_arg = KEEP(r_alloc_list(1));
-    r_list_poke(empty_spliced_arg, 0, r_alloc_list(0));
-    r_attrib_poke_class(empty_spliced_arg, splice_box_class);
-    r_preserve(empty_spliced_arg);
-    r_mark_shared(empty_spliced_arg);
+    spliced_box_prototype = KEEP(r_alloc_list(1));
+    r_list_poke(spliced_box_prototype, 0, r_alloc_list(0));
+    r_attrib_poke_class(spliced_box_prototype, splice_box_class);
+    r_preserve(spliced_box_prototype);
+    r_mark_shared(spliced_box_prototype);
     FREE(1);
   }
 
@@ -1146,7 +1146,7 @@ void rlang_init_dots(r_obj* ns) {
 }
 
 static r_obj* auto_name_call = NULL;
-static r_obj* empty_spliced_arg = NULL;
+static r_obj* spliced_box_prototype = NULL;
 static r_obj* glue_embrace_fn = NULL;
 static r_obj* dots_homonyms_values = NULL;
 static r_obj* dots_ignore_empty_values = NULL;
