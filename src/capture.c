@@ -39,15 +39,6 @@ static SEXP capture_delayed_dot(int i, SEXP env) {
     SEXP expr = dot_delayed_expr(i, env);
     SEXP expr_env = dot_delayed_env(i, env);
 
-    // If env is NULL, we hit a forced promise during unwrapping
-    // Use dots_elt to get the cached value
-    if (expr_env == R_NilValue) {
-        SEXP value = PROTECT(dots_elt(i, env));
-        SEXP result = new_captured_literal(value);
-        UNPROTECT(1);
-        return result;
-    }
-
     // Follow ..N references
     while (TYPEOF(expr) == SYMSXP) {
         int dd = dotDotVal(expr);
@@ -62,15 +53,6 @@ static SEXP capture_delayed_dot(int i, SEXP env) {
 
         SEXP new_env = dot_delayed_env(dd, expr_env);
         expr = dot_delayed_expr(dd, expr_env);
-
-        // Evaluated arguments are returned as literals
-        if (new_env == R_NilValue) {
-            SEXP value = PROTECT(dots_elt(dd, expr_env));
-            SEXP result = new_captured_literal(value);
-            UNPROTECT(1);
-            return result;
-        }
-
         expr_env = new_env;
     }
 
@@ -95,15 +77,6 @@ static SEXP capture_delayed_binding(SEXP found, SEXP sym) {
 
         SEXP new_env = dot_delayed_env(dd, expr_env);
         expr = dot_delayed_expr(dd, expr_env);
-
-        // Hit a forced promise during chain following
-        if (new_env == R_NilValue) {
-            SEXP value = PROTECT(dots_elt(dd, expr_env));
-            SEXP result = new_captured_literal(value);
-            UNPROTECT(1);
-            return result;
-        }
-
         expr_env = new_env;
     }
 

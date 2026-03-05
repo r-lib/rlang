@@ -18,6 +18,31 @@ static Rboolean promise_is_forced(SEXP x) {
     return PRVALUE(x) != R_UnboundValue;
 }
 
+// Unwrap nested promises to the innermost one.
+// Sets `*forced` to TRUE if the innermost promise is forced.
+static SEXP delayed_promise_unwrap(SEXP elt, Rboolean *forced) {
+    if (!is_promise(elt) || promise_is_forced(elt))
+        Rf_error("internal: expected a delayed promise");
+
+    while (is_promise(elt)) {
+        if (promise_env(elt) == R_NilValue) {
+            *forced = TRUE;
+            return elt;
+        }
+
+        SEXP expr = promise_expr(elt);
+        if (!is_promise(expr)) {
+            *forced = FALSE;
+            return elt;
+        }
+
+        elt = expr;
+    }
+
+    *forced = FALSE;
+    return elt;
+}
+
 
 // Dots API - mirrors R-devel PR #209 ---
 // See https://github.com/r-devel/r-svn/pull/209
@@ -102,14 +127,18 @@ dot_type_t dot_type(int i, SEXP env) {
     if (elt == R_MissingArg)
         return DOT_TYPE_missing;
 
-    if (is_promise(elt)) {
-        if (promise_is_forced(elt))
-            return DOT_TYPE_forced;
-        else
-            return DOT_TYPE_delayed;
-    }
+    if (!is_promise(elt))
+        return DOT_TYPE_value;
 
-    return DOT_TYPE_value;
+    if (promise_is_forced(elt))
+        return DOT_TYPE_forced;
+
+    Rboolean forced;
+    delayed_promise_unwrap(elt, &forced);
+    if (forced)
+        return DOT_TYPE_forced;
+
+    return DOT_TYPE_delayed;
 }
 
 // R API: R_DotDelayedExpression
@@ -118,69 +147,50 @@ SEXP dot_delayed_expr(int i, SEXP env) {
 
     if (!is_promise(elt))
         Rf_error("not a delayed promise");
-
-    // Check if outermost promise is forced - error in that case
     if (promise_is_forced(elt))
         Rf_error("not a delayed promise");
 
-    // Unwrap nested promises until we get a non-promise expression
-    // If we hit a forced INNER promise (PRENV == NULL), we still return its PREXPR
-    while (is_promise(elt)) {
-        SEXP expr_env = promise_env(elt);
-        SEXP expr = promise_expr(elt);
+    Rboolean forced;
+    SEXP inner = delayed_promise_unwrap(elt, &forced);
+    if (forced)
+        Rf_error("not a delayed promise");
 
-        // Forced inner promise: PRENV is NULL, but we can still get PREXPR
-        if (expr_env == R_NilValue) {
-            return expr;
-        }
-
-        if (!is_promise(expr))
-            return expr;
-        elt = expr;
-    }
-
-    Rf_error("not a promise");
+    return promise_expr(inner);
 }
 
 // R API: R_DotDelayedEnvironment
 SEXP dot_delayed_env(int i, SEXP env) {
     SEXP elt = dot_find(i, env);
-    SEXP expr_env = R_NilValue;
 
     if (!is_promise(elt))
         Rf_error("not a delayed promise");
-
-    // Check if outermost promise is forced - error in that case
     if (promise_is_forced(elt))
         Rf_error("not a delayed promise");
 
-    // Unwrap nested promises, tracking the environment of the innermost promise
-    // If we hit a forced INNER promise (PRENV == NULL), return R_NilValue
-    while (is_promise(elt)) {
-        expr_env = promise_env(elt);
-        SEXP expr = promise_expr(elt);
+    Rboolean forced;
+    SEXP inner = delayed_promise_unwrap(elt, &forced);
+    if (forced)
+        Rf_error("not a delayed promise");
 
-        // Forced inner promise: PRENV is NULL
-        if (expr_env == R_NilValue) {
-            return R_NilValue;
-        }
-
-        if (!is_promise(expr))
-            return expr_env;
-        elt = expr;
-    }
-
-    Rf_error("not a promise");
+    return promise_env(inner);
 }
 
 // R API: R_DotForcedExpression
 SEXP dot_forced_expr(int i, SEXP env) {
     SEXP elt = dot_find(i, env);
 
-    if (!is_promise(elt) || !promise_is_forced(elt))
+    if (!is_promise(elt))
         Rf_error("not a forced promise");
 
-    return promise_expr(elt);
+    if (promise_is_forced(elt))
+        return promise_expr(elt);
+
+    Rboolean forced;
+    SEXP inner = delayed_promise_unwrap(elt, &forced);
+    if (forced)
+        return promise_expr(inner);
+
+    Rf_error("not a forced promise");
 }
 
 

@@ -9,6 +9,32 @@
 static inline r_obj* env_find(r_obj* env, r_obj* sym) {
   return Rf_findVarInFrame3(env, sym, FALSE);
 }
+
+// Unwrap nested promises to the innermost one.
+// Sets `*forced` to true if the innermost promise is forced (PRENV == NULL).
+static r_obj* delayed_promise_unwrap(r_obj* value, bool *forced) {
+  if (r_typeof(value) != R_TYPE_promise || PRVALUE(value) != r_syms.unbound) {
+    r_abort("Internal error: expected a delayed promise.");
+  }
+
+  while (r_typeof(value) == R_TYPE_promise) {
+    if (PRENV(value) == r_null) {
+      *forced = true;
+      return value;
+    }
+
+    r_obj* expr = R_PromiseExpr(value);
+    if (r_typeof(expr) != R_TYPE_promise) {
+      *forced = false;
+      return value;
+    }
+
+    value = expr;
+  }
+
+  *forced = false;
+  return value;
+}
 #endif
 
 
@@ -141,11 +167,17 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
   }
 
   if (r_typeof(value) == R_TYPE_promise) {
-    if (PRVALUE(value) == r_syms.unbound) {
-      return R_ENV_BINDING_TYPE_delayed;
-    } else {
+    if (PRVALUE(value) != r_syms.unbound) {
       return R_ENV_BINDING_TYPE_forced;
     }
+
+    bool forced;
+    delayed_promise_unwrap(value, &forced);
+    if (forced) {
+      return R_ENV_BINDING_TYPE_forced;
+    }
+
+    return R_ENV_BINDING_TYPE_delayed;
   }
 
   return R_ENV_BINDING_TYPE_value;
@@ -235,7 +267,13 @@ r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
     r_abort("Not a delayed binding.");
   }
 
-  return R_PromiseExpr(value);
+  bool forced;
+  r_obj* inner = delayed_promise_unwrap(value, &forced);
+  if (forced) {
+    r_abort("Not a delayed binding.");
+  }
+
+  return R_PromiseExpr(inner);
 #endif
 }
 
@@ -252,7 +290,13 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
     r_abort("Not a delayed binding.");
   }
 
-  return PRENV(value);
+  bool forced;
+  r_obj* inner = delayed_promise_unwrap(value, &forced);
+  if (forced) {
+    r_abort("Not a delayed binding.");
+  }
+
+  return PRENV(inner);
 #endif
 }
 
@@ -268,11 +312,18 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
   }
-  if (PRVALUE(value) == r_syms.unbound) {
-    r_abort("Not a forced binding.");
+
+  if (PRVALUE(value) != r_syms.unbound) {
+    return R_PromiseExpr(value);
   }
 
-  return R_PromiseExpr(value);
+  bool forced;
+  r_obj* inner = delayed_promise_unwrap(value, &forced);
+  if (forced) {
+    return R_PromiseExpr(inner);
+  }
+
+  r_abort("Not a forced binding.");
 #endif
 }
 
