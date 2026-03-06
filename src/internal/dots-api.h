@@ -10,18 +10,18 @@ typedef enum {
     DOT_TYPE_missing = 1,
     DOT_TYPE_delayed = 2,
     DOT_TYPE_forced = 3
-} dot_type_t;
+} r_dot_type_t;
 
-Rboolean dots_exist(SEXP env);
-int dots_length(SEXP env);
-SEXP dots_names(SEXP env);
-SEXP dots_elt(int i, SEXP env);
+Rboolean r_env_dots_exist(SEXP env);
+int r_env_dots_length(SEXP env);
+SEXP r_env_dots_names(SEXP env);
+SEXP r_env_dot_get(SEXP env, int i);
 
-dot_type_t dot_type(int i, SEXP env);
+r_dot_type_t r_env_dot_type(SEXP env, int i);
 
-SEXP dot_delayed_expr(int i, SEXP env);
-SEXP dot_delayed_env(int i, SEXP env);
-SEXP dot_forced_expr(int i, SEXP env);
+SEXP r_env_dot_delayed_expr(SEXP env, int i);
+SEXP r_env_dot_delayed_env(SEXP env, int i);
+SEXP r_env_dot_forced_expr(SEXP env, int i);
 
 
 // FFI wrappers for R interface ---

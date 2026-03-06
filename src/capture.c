@@ -35,24 +35,24 @@ SEXP attribute_hidden new_captured_literal(SEXP x) {
     return new_captured_arg(x, R_EmptyEnv);
 }
 
-static SEXP capture_delayed_dot(int i, SEXP env) {
-    SEXP expr = dot_delayed_expr(i, env);
-    SEXP expr_env = dot_delayed_env(i, env);
+static SEXP env_dot_delayed_capture(SEXP env, int i) {
+    SEXP expr = r_env_dot_delayed_expr(env, i);
+    SEXP expr_env = r_env_dot_delayed_env(env, i);
 
     // Follow ..N references
     while (TYPEOF(expr) == SYMSXP) {
         int dd = dotDotVal(expr);
         if (dd <= 0)
             break;
-        if (!dots_exist(expr_env))
+        if (!r_env_dots_exist(expr_env))
             error(_("'...' used in an incorrect context"));
-        if (dd > dots_length(expr_env))
+        if (dd > r_env_dots_length(expr_env))
             error(_("the ... list contains fewer than %d elements"), dd);
-        if (dot_type(dd, expr_env) != DOT_TYPE_delayed)
+        if (r_env_dot_type(expr_env, dd) != DOT_TYPE_delayed)
             break;
 
-        SEXP new_env = dot_delayed_env(dd, expr_env);
-        expr = dot_delayed_expr(dd, expr_env);
+        SEXP new_env = r_env_dot_delayed_env(expr_env, dd);
+        expr = r_env_dot_delayed_expr(expr_env, dd);
         expr_env = new_env;
     }
 
@@ -60,23 +60,24 @@ static SEXP capture_delayed_dot(int i, SEXP env) {
     return new_captured_arg(expr, expr_env);
 }
 
-static SEXP capture_delayed_binding(SEXP found, SEXP sym) {
+static SEXP env_binding_delayed_capture(SEXP found, SEXP sym) {
     SEXP expr = r_env_binding_delayed_expr(found, sym);
     SEXP expr_env = r_env_binding_delayed_env(found, sym);
 
+    // Climb `..N` symbols
     while (TYPEOF(expr) == SYMSXP) {
         int dd = dotDotVal(expr);
         if (dd <= 0)
             break;
-        if (!dots_exist(expr_env))
+        if (!r_env_dots_exist(expr_env))
             error(_("'...' used in an incorrect context"));
-        if (dd > dots_length(expr_env))
+        if (dd > r_env_dots_length(expr_env))
             error(_("the ... list contains fewer than %d elements"), dd);
-        if (dot_type(dd, expr_env) != DOT_TYPE_delayed)
+        if (r_env_dot_type(expr_env, dd) != DOT_TYPE_delayed)
             break;
 
-        SEXP new_env = dot_delayed_env(dd, expr_env);
-        expr = dot_delayed_expr(dd, expr_env);
+        SEXP new_env = r_env_dot_delayed_env(expr_env, dd);
+        expr = r_env_dot_delayed_expr(expr_env, dd);
         expr_env = new_env;
     }
 
@@ -106,24 +107,24 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
     int dd = dotDotVal(sym);
 
     if (dd) {
-        if (!dots_exist(frame)) {
+        if (!r_env_dots_exist(frame)) {
             error(_("'...' used in an incorrect context"));
         }
-        if (dd > dots_length(frame)) {
+        if (dd > r_env_dots_length(frame)) {
             error(_("the ... list contains fewer than %d elements"), dd);
         }
 
-        dot_type_t type = dot_type(dd, frame);
+        r_dot_type_t type = r_env_dot_type(frame, dd);
 
         switch (type) {
         case DOT_TYPE_missing:
             return new_captured_literal(R_MissingArg);
         case DOT_TYPE_value:
-            return new_captured_literal(dots_elt(dd, frame));
+            return new_captured_literal(r_env_dot_get(frame, dd));
         case DOT_TYPE_forced:
-            return new_captured_literal(dots_elt(dd, frame));
+            return new_captured_literal(r_env_dot_get(frame, dd));
         case DOT_TYPE_delayed:
-            return capture_delayed_dot(dd, frame);
+            return env_dot_delayed_capture(frame, dd);
         }
     } else {
         SEXP found = r_env_until(frame, sym, R_EmptyEnv);
@@ -137,7 +138,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
         case R_ENV_BINDING_TYPE_missing:
             return new_captured_literal(R_MissingArg);
         case R_ENV_BINDING_TYPE_delayed:
-            return capture_delayed_binding(found, sym);
+            return env_binding_delayed_capture(found, sym);
         case R_ENV_BINDING_TYPE_forced:
         case R_ENV_BINDING_TYPE_value:
         case R_ENV_BINDING_TYPE_active: {
@@ -154,7 +155,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 }
 
 SEXP capturedots(SEXP frame) {
-    int n = dots_length(frame);
+    int n = r_env_dots_length(frame);
 
     if (n < 0)
 	error(_("'...' used in an incorrect context"));
@@ -162,12 +163,12 @@ SEXP capturedots(SEXP frame) {
     if (n == 0)
 	return R_NilValue;
 
-    SEXP names = PROTECT(dots_names(frame));
+    SEXP names = PROTECT(r_env_dots_names(frame));
     SEXP out = PROTECT(cons(R_NilValue, R_NilValue));
     SEXP node = out;
 
     for (int i = 1; i <= n; ++i) {
-	dot_type_t type = dot_type(i, frame);
+	r_dot_type_t type = r_env_dot_type(frame, i);
 	SEXP nm = STRING_ELT(names, i - 1);
 	SEXP tag = (nm == R_BlankString) ? R_NilValue : installChar(nm);
 	SEXP dot;
@@ -178,15 +179,15 @@ SEXP capturedots(SEXP frame) {
 	    break;
 
 	case DOT_TYPE_value:
-	    dot = new_captured_literal(dots_elt(i, frame));
+	    dot = new_captured_literal(r_env_dot_get(frame, i));
 	    break;
 
 	case DOT_TYPE_forced:
-	    dot = new_captured_literal(dots_elt(i, frame));
+	    dot = new_captured_literal(r_env_dot_get(frame, i));
 	    break;
 
 	case DOT_TYPE_delayed:
-	    dot = capture_delayed_dot(i, frame);
+	    dot = env_dot_delayed_capture(frame, i);
 	    break;
 	}
 
