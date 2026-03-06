@@ -69,7 +69,7 @@ int r_env_dots_length(SEXP env) {
 
 // R API: R_DotsNames
 SEXP r_env_dots_names(SEXP env) {
-    SEXP dots = Rf_findVar(R_DotsSymbol, env);
+    SEXP dots = PROTECT(Rf_findVar(R_DotsSymbol, env));
 
     if (dots == R_UnboundValue)
         Rf_error("incorrect context: the current call has no '...' to look in");
@@ -88,7 +88,7 @@ SEXP r_env_dots_names(SEXP env) {
         dots = CDR(dots);
     }
 
-    UNPROTECT(1);
+    UNPROTECT(2);
     return out;
 }
 
@@ -228,7 +228,7 @@ SEXP ffi_dot_type(SEXP ffi_i, SEXP env) {
     case DOT_TYPE_missing: return Rf_mkString("missing");
     case DOT_TYPE_delayed: return Rf_mkString("delayed");
     case DOT_TYPE_forced:  return Rf_mkString("forced");
-    default:               return Rf_mkString("value");
+    default:               Rf_error("unreachable");
     }
 }
 

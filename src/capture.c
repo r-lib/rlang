@@ -77,18 +77,19 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 {
     enum r_env_binding_type arg_type = r_env_binding_type(rho, install("arg"));
 
-    SEXP sym;
-
     // May be a literal if compiler did not wrap in a promise
-    if (arg_type != R_ENV_BINDING_TYPE_delayed) {
-        sym = r_env_get(rho, install("arg"));
-    } else {
+    SEXP sym;
+    if (arg_type == R_ENV_BINDING_TYPE_delayed) {
         sym = r_env_binding_delayed_expr(rho, install("arg"));
+    } else {
+        sym = r_env_get(rho, install("arg"));
     }
 
     if (TYPEOF(sym) != SYMSXP) {
         error(_("\"x\" must be an argument name"));
     }
+
+    PROTECT(sym);
 
     SEXP frame = CAR(args);
 
@@ -106,13 +107,20 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 
         switch (type) {
         case DOT_TYPE_missing:
+            UNPROTECT(1);
             return new_captured_literal(R_MissingArg);
         case DOT_TYPE_value:
-            return new_captured_literal(r_env_dot_get(frame, dd));
-        case DOT_TYPE_forced:
-            return new_captured_literal(r_env_dot_get(frame, dd));
+        case DOT_TYPE_forced: {
+            SEXP value = PROTECT(r_env_dot_get(frame, dd));
+            SEXP result = new_captured_literal(value);
+            UNPROTECT(2);
+            return result;
+        }
         case DOT_TYPE_delayed:
+            UNPROTECT(1);
             return env_dot_delayed_capture(frame, dd);
+        default:
+            r_stop_unreachable();
         }
     } else {
         SEXP found = r_env_until(frame, sym, R_EmptyEnv);
@@ -124,15 +132,19 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 
         switch (type) {
         case R_ENV_BINDING_TYPE_missing:
+            UNPROTECT(1);
             return new_captured_literal(R_MissingArg);
-        case R_ENV_BINDING_TYPE_delayed:
-            return env_binding_delayed_capture(found, sym);
+        case R_ENV_BINDING_TYPE_delayed: {
+            SEXP result = env_binding_delayed_capture(found, sym);
+            UNPROTECT(1);
+            return result;
+        }
         case R_ENV_BINDING_TYPE_forced:
         case R_ENV_BINDING_TYPE_value:
         case R_ENV_BINDING_TYPE_active: {
             SEXP value = PROTECT(r_env_get(found, sym));
             SEXP result = new_captured_literal(value);
-            UNPROTECT(1);
+            UNPROTECT(2);
             return result;
         }
         case R_ENV_BINDING_TYPE_unbound:
@@ -140,6 +152,8 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
             r_stop_unreachable();
         }
     }
+
+    r_stop_unreachable();
 }
 
 SEXP capturedots(SEXP frame) {
@@ -155,11 +169,14 @@ SEXP capturedots(SEXP frame) {
     SEXP out = PROTECT(cons(R_NilValue, R_NilValue));
     SEXP node = out;
 
+    SEXP dot = R_NilValue;
+    PROTECT_INDEX dot_pi;
+    PROTECT_WITH_INDEX(dot, &dot_pi);
+
     for (int i = 1; i <= n; ++i) {
 	r_dot_type_t type = r_env_dot_type(frame, i);
 	SEXP nm = STRING_ELT(names, i - 1);
 	SEXP tag = (nm == R_BlankString) ? R_NilValue : installChar(nm);
-	SEXP dot;
 
 	switch (type) {
 	case DOT_TYPE_missing:
@@ -167,25 +184,26 @@ SEXP capturedots(SEXP frame) {
 	    break;
 
 	case DOT_TYPE_value:
-	    dot = new_captured_literal(r_env_dot_get(frame, i));
+	case DOT_TYPE_forced: {
+	    SEXP value = PROTECT(r_env_dot_get(frame, i));
+	    dot = new_captured_literal(value);
+	    UNPROTECT(1);
 	    break;
-
-	case DOT_TYPE_forced:
-	    dot = new_captured_literal(r_env_dot_get(frame, i));
-	    break;
+	}
 
 	case DOT_TYPE_delayed:
 	    dot = env_dot_delayed_capture(frame, i);
 	    break;
 	}
 
+	REPROTECT(dot, dot_pi);
 	SETCDR(node, cons(dot, R_NilValue));
 	SET_TAG(CDR(node), tag);
 
 	node = CDR(node);
     }
 
-    UNPROTECT(2);
+    UNPROTECT(3);
     return CDR(out);
 }
 
