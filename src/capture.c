@@ -35,11 +35,10 @@ SEXP attribute_hidden new_captured_literal(SEXP x) {
     return new_captured_arg(x, R_EmptyEnv);
 }
 
-static SEXP env_dot_delayed_capture(SEXP env, int i) {
-    SEXP expr = r_env_dot_delayed_expr(env, i);
-    SEXP expr_env = r_env_dot_delayed_env(env, i);
-
-    // Follow ..N references
+static SEXP capture_delayed(SEXP expr, SEXP expr_env) {
+    // Follow ..N references. This is the main difference with the accessors
+    // from the R API which do follow promises but not individual `..N`
+    // references.
     while (TYPEOF(expr) == SYMSXP) {
         int dd = dotDotVal(expr);
         if (dd <= 0)
@@ -60,29 +59,18 @@ static SEXP env_dot_delayed_capture(SEXP env, int i) {
     return new_captured_arg(expr, expr_env);
 }
 
-static SEXP env_binding_delayed_capture(SEXP found, SEXP sym) {
-    SEXP expr = r_env_binding_delayed_expr(found, sym);
-    SEXP expr_env = r_env_binding_delayed_env(found, sym);
+static SEXP env_dot_delayed_capture(SEXP env, int i) {
+    return capture_delayed(
+        r_env_dot_delayed_expr(env, i),
+        r_env_dot_delayed_env(env, i)
+    );
+}
 
-    // Climb `..N` symbols
-    while (TYPEOF(expr) == SYMSXP) {
-        int dd = dotDotVal(expr);
-        if (dd <= 0)
-            break;
-        if (!r_env_dots_exist(expr_env))
-            error(_("'...' used in an incorrect context"));
-        if (dd > r_env_dots_length(expr_env))
-            error(_("the ... list contains fewer than %d elements"), dd);
-        if (r_env_dot_type(expr_env, dd) != DOT_TYPE_delayed)
-            break;
-
-        SEXP new_env = r_env_dot_delayed_env(expr_env, dd);
-        expr = r_env_dot_delayed_expr(expr_env, dd);
-        expr_env = new_env;
-    }
-
-    MARK_NOT_MUTABLE(expr);
-    return new_captured_arg(expr, expr_env);
+static SEXP env_binding_delayed_capture(SEXP env, SEXP sym) {
+    return capture_delayed(
+        r_env_binding_delayed_expr(env, sym),
+        r_env_binding_delayed_env(env, sym)
+    );
 }
 
 SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP rho)
