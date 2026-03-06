@@ -47,8 +47,22 @@ static SEXP capture_delayed(SEXP expr, SEXP expr_env) {
             error(_("'...' used in an incorrect context"));
         if (dd > r_env_dots_length(expr_env))
             error(_("the ... list contains fewer than %d elements"), dd);
-        if (r_env_dot_type(expr_env, dd) != DOT_TYPE_delayed)
+
+        r_dot_type_t type = r_env_dot_type(expr_env, dd);
+
+        switch (type) {
+        case DOT_TYPE_missing:
+            return new_captured_literal(R_MissingArg);
+        case DOT_TYPE_value:
+        case DOT_TYPE_forced: {
+            SEXP value = PROTECT(r_env_dot_get(expr_env, dd));
+            SEXP result = new_captured_literal(value);
+            UNPROTECT(1);
+            return result;
+        }
+        case DOT_TYPE_delayed:
             break;
+        }
 
         SEXP new_env = r_env_dot_delayed_env(expr_env, dd);
         expr = r_env_dot_delayed_expr(expr_env, dd);
