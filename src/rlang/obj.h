@@ -73,10 +73,6 @@ static inline
 r_obj* r_clone(r_obj* x) {
   return Rf_shallow_duplicate(x);
 }
-static inline
-r_obj* r_clone_shared(r_obj* x) {
-  return r_is_shared(x) ? r_clone(x) : x;
-}
 
 // These also clone names
 r_obj* r_vec_clone(r_obj* x);
