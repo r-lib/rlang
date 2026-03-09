@@ -1254,6 +1254,19 @@ test_that("attributes are re-encoded", {
   expect_utf8_encoded(c_enc1)
   expect_utf8_encoded(c_enc2)
   expect_utf8_encoded(c_enc3)
+
+  # Ensure nothing has changed in the original objects
+  a_enc <- attr(a, "enc")
+  b_enc <- attr(b, "enc")
+  c_enc1 <- attr(c, "enc1")
+  c_enc2 <- attr(c, "enc2")[[1]]
+  c_enc3 <- attr(c, "enc3")
+
+  expect_utf8_encoded(a_enc)
+  expect_latin1_encoded(b_enc)
+  expect_utf8_encoded(c_enc1)
+  expect_latin1_encoded(c_enc2)
+  expect_latin1_encoded(c_enc3)
 })
 
 test_that("attributes are re-encoded recursively", {
