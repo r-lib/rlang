@@ -56,7 +56,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
       continue;
     }
 
-    const char* name = r_str_c_string(elt);
+    const char* name = Rf_translateCharUTF8(elt);
 
     int size = strlen(name);
     int buf_size = size + MAX_IOTA_SIZE;
@@ -76,7 +76,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
       stop_large_name();
     }
 
-    r_chr_poke(new_names, i, Rf_mkCharLenCE(buf, size + needed, Rf_getCharCE(elt)));
+    r_chr_poke(new_names, i, Rf_mkCharLenCE(buf, size + needed, CE_UTF8));
   }
 
   if (!quiet) {
