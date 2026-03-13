@@ -9,6 +9,7 @@
 #include "debug.c"
 #include "dict.c"
 #include "df.c"
+#include "dots-info.c"
 #include "dyn-array.c"
 #include "dyn-list-of.c"
 #include "env.c"

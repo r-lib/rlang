@@ -1,5 +1,4 @@
-#include "rlang.h"
-#include "dots-info.h"
+#include <rlang.h>
 
 // Internal promise helpers (static, used only in this file) ---
 
@@ -172,52 +171,4 @@ r_obj* r_env_dot_forced_expr(r_obj* env, r_ssize i) {
     }
 
     return promise_expr(inner);
-}
-
-
-// FFI wrappers for R interface ---
-
-r_obj* ffi_dots_exist(r_obj* env) {
-    return r_lgl(r_env_dots_exist(env));
-}
-
-r_obj* ffi_dots_length(r_obj* env) {
-    return r_int(r_env_dots_length(env));
-}
-
-r_obj* ffi_dots_names(r_obj* env) {
-    return r_env_dots_names(env);
-}
-
-r_obj* ffi_dot_get(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_get(env, i);
-}
-
-r_obj* ffi_dot_type(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    r_dot_type_t type = r_env_dot_type(env, i);
-
-    switch (type) {
-    case DOT_TYPE_value:   return r_chr("value");
-    case DOT_TYPE_missing: return r_chr("missing");
-    case DOT_TYPE_delayed: return r_chr("delayed");
-    case DOT_TYPE_forced:  return r_chr("forced");
-    default:               r_abort("unreachable");
-    }
-}
-
-r_obj* ffi_dot_delayed_expr(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_delayed_expr(env, i);
-}
-
-r_obj* ffi_dot_delayed_env(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_delayed_env(env, i);
-}
-
-r_obj* ffi_dot_forced_expr(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_forced_expr(env, i);
 }
