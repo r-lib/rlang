@@ -66,9 +66,9 @@ identical(wref_key(w), e)
 # the weak reference will not keep the object alive.
 rm(e)
 gc()
-#>           used (Mb) gc trigger (Mb) max used  (Mb)
-#> Ncells 1196104 63.9    2151795  115  2151795 115.0
-#> Vcells 2217231 17.0    8388608   64  7534778  57.5
+#>           used (Mb) gc trigger  (Mb) max used  (Mb)
+#> Ncells 1196010 63.9    2194717 117.3  2194717 117.3
+#> Vcells 2217097 17.0    8388608  64.0  7538121  57.6
 identical(wref_key(w), NULL)
 #> [1] TRUE
 
@@ -87,18 +87,18 @@ identical(wref_value(w), v)
 # When v is removed, the weak ref keeps it alive because k is still reachable.
 rm(v)
 gc()
-#>           used (Mb) gc trigger (Mb) max used  (Mb)
-#> Ncells 1196075 63.9    2151795  115  2151795 115.0
-#> Vcells 2217002 17.0    8388608   64  7534778  57.5
+#>           used (Mb) gc trigger  (Mb) max used  (Mb)
+#> Ncells 1195930 63.9    2194717 117.3  2194717 117.3
+#> Vcells 2216783 17.0    8388608  64.0  7538121  57.6
 identical(wref_value(w), list(1, 2, 3))
 #> [1] TRUE
 
 # When k is removed, the weak ref does not keep k or v alive.
 rm(k)
 gc()
-#>           used (Mb) gc trigger (Mb) max used  (Mb)
-#> Ncells 1196097 63.9    2151795  115  2151795 115.0
-#> Vcells 2217040 17.0    8388608   64  7534778  57.5
+#>           used (Mb) gc trigger  (Mb) max used  (Mb)
+#> Ncells 1195952 63.9    2194717 117.3  2194717 117.3
+#> Vcells 2216821 17.0    8388608  64.0  7538121  57.6
 identical(wref_key(w), NULL)
 #> [1] TRUE
 identical(wref_value(w), NULL)
