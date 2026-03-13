@@ -72,8 +72,8 @@ check_dots <- function(env = caller_env(), error, action, call) {
     return(invisible())
   }
 
-  n <- dots_length(env)
-  unused <- map_lgl(seq_len(n), function(i) dot_type(i, env) == "delayed")
+  n <- env_dots_length(env)
+  unused <- map_lgl(seq_len(n), function(i) env_dot_type(env, i) == "delayed")
 
   action_dots(
     error = error,
@@ -116,7 +116,7 @@ check_dots_unnamed <- function(
     return()
   }
 
-  nms <- dots_names(env)
+  nms <- env_dots_names(env)
   unnamed <- nms == ""
 
   if (all(unnamed)) {
@@ -175,21 +175,21 @@ check_dots_empty <- function(
   call = caller_env(),
   action = abort
 ) {
-  n <- dots_length(env)
+  n <- env_dots_length(env)
 
   if (n == 0) {
     return()
   }
 
   if (n == 1) {
-    nms <- dots_names(env)
+    nms <- env_dots_names(env)
     no_name <- identical(nms, "") || identical(nms, character())
-    if (no_name && dot_type(1, env) == "missing") {
+    if (no_name && env_dot_type(env, 1) == "missing") {
       return()
     }
   }
 
-  nms <- dots_names(env)
+  nms <- env_dots_names(env)
   if (any(nms == "")) {
     note <- c("i" = "Did you forget to name an argument?")
   } else {

@@ -1,16 +1,16 @@
 # Basic operations --------------------------------------------------------
 
-test_that("dots_exist() detects dots presence", {
-  fn <- function(...) dots_exist()
-  fn_no_dots <- function() dots_exist()
+test_that("env_dots_exist() detects dots presence", {
+  fn <- function(...) env_dots_exist()
+  fn_no_dots <- function() env_dots_exist()
 
   expect_true(fn())
   expect_true(fn(a = 1))
   expect_false(fn_no_dots())
 })
 
-test_that("dots_length() returns correct count", {
-  fn <- function(...) dots_length()
+test_that("env_dots_length() returns correct count", {
+  fn <- function(...) env_dots_length()
 
   expect_equal(fn(), 0L)
   expect_equal(fn(1), 1L)
@@ -19,13 +19,13 @@ test_that("dots_length() returns correct count", {
   expect_equal(fn(1, , 3), 3L)
 })
 
-test_that("dots_length() errors without dots", {
-  fn <- function() dots_length()
+test_that("env_dots_length() errors without dots", {
+  fn <- function() env_dots_length()
   expect_error(fn(), "incorrect context")
 })
 
-test_that("dots_names() returns names", {
-  fn <- function(...) dots_names()
+test_that("env_dots_names() returns names", {
+  fn <- function(...) env_dots_names()
 
   expect_equal(fn(), character())
   expect_equal(fn(1, 2), c("", ""))
@@ -33,13 +33,13 @@ test_that("dots_names() returns names", {
   expect_equal(fn(a = 1, 2, c = 3), c("a", "", "c"))
 })
 
-test_that("dots_names() errors without dots", {
-  fn <- function() dots_names()
+test_that("env_dots_names() errors without dots", {
+  fn <- function() env_dots_names()
   expect_error(fn(), "incorrect context")
 })
 
-test_that("dots_elt() evaluates and returns dot value", {
-  fn <- function(...) dots_elt(1)
+test_that("env_dots_elt() evaluates and returns dot value", {
+  fn <- function(...) env_dots_elt(environment(), 1)
 
   expect_equal(fn(1 + 1), 2)
   expect_equal(fn(10), 10)
@@ -48,19 +48,22 @@ test_that("dots_elt() evaluates and returns dot value", {
   expect_equal(fn(x), 100)
 })
 
-test_that("dots_elt() can access different positions", {
-  fn <- function(...) list(dots_elt(1), dots_elt(2), dots_elt(3))
+test_that("env_dots_elt() can access different positions", {
+  fn <- function(...) {
+    env <- environment()
+    list(env_dots_elt(env, 1), env_dots_elt(env, 2), env_dots_elt(env, 3))
+  }
   expect_equal(fn("a", "b", "c"), list("a", "b", "c"))
 })
 
-test_that("dots_elt() errors on missing argument", {
-  fn <- function(...) dots_elt(1)
+test_that("env_dots_elt() errors on missing argument", {
+  fn <- function(...) env_dots_elt(environment(), 1)
   expect_error(fn(, 2), "missing")
 })
 
-test_that("dots_elt() respects index bounds", {
-  fn <- function(...) dots_elt(2)
-  fn_no_dots <- function() dots_elt(1)
+test_that("env_dots_elt() respects index bounds", {
+  fn <- function(...) env_dots_elt(environment(), 2)
+  fn_no_dots <- function() env_dots_elt(environment(), 1)
 
   expect_error(fn(1), "fewer than")
   expect_error(fn_no_dots(), "incorrect context")
@@ -69,10 +72,10 @@ test_that("dots_elt() respects index bounds", {
 
 # Type classification -----------------------------------------------------
 
-test_that("dot_type() identifies delayed promises", {
+test_that("env_dot_type() identifies delayed promises", {
   fn <- function(...) {
     env <- environment()
-    dot_type(1, env)
+    env_dot_type(env, 1)
   }
 
   expect_equal(fn(x), "delayed")
@@ -80,23 +83,23 @@ test_that("dot_type() identifies delayed promises", {
   expect_equal(fn(42), "delayed")
 })
 
-test_that("dot_type() detects missing arguments", {
+test_that("env_dot_type() detects missing arguments", {
   fn <- function(...) {
     env <- environment()
-    n <- dots_length()
-    vapply(seq_len(n), function(i) dot_type(i, env), character(1))
+    n <- env_dots_length()
+    vapply(seq_len(n), function(i) env_dot_type(env, i), character(1))
   }
 
   expect_equal(fn(a, ), c("delayed", "missing"))
   expect_equal(fn(, b, ), c("missing", "delayed", "missing"))
 })
 
-test_that("dot_type() detects forced promises", {
+test_that("env_dot_type() detects forced promises", {
   fn <- function(...) {
     env <- environment()
-    type_before <- dot_type(1, env)
-    dots_elt(1)
-    type_after <- dot_type(1, env)
+    type_before <- env_dot_type(env, 1)
+    env_dots_elt(env, 1)
+    type_after <- env_dot_type(env, 1)
     c(before = type_before, after = type_after)
   }
 
@@ -105,21 +108,21 @@ test_that("dot_type() detects forced promises", {
   expect_equal(result[["after"]], "forced")
 })
 
-test_that("dot_type() detects value dots from compiler", {
+test_that("env_dot_type() detects value dots from compiler", {
   fn <- function(...) {
     env <- environment()
-    dot_type(1, env)
+    env_dot_type(env, 1)
   }
   wrapper <- compiler::cmpfun(function() fn("hello"))
   expect_equal(wrapper(), "value")
 })
 
-test_that("dot_type() classifies mixed types correctly", {
+test_that("env_dot_type() classifies mixed types correctly", {
   fn <- function(...) {
     env <- environment()
-    dots_elt(2)
-    n <- dots_length()
-    vapply(seq_len(n), function(i) dot_type(i, env), character(1))
+    env_dots_elt(env, 2)
+    n <- env_dots_length()
+    vapply(seq_len(n), function(i) env_dot_type(env, i), character(1))
   }
 
   # Dot 1 is delayed, dot 2 is forced (we evaluated it), dot 3 is missing
@@ -129,10 +132,10 @@ test_that("dot_type() classifies mixed types correctly", {
 
 # Delayed accessors -------------------------------------------------------
 
-test_that("dot_delayed_expr() returns promise expression", {
+test_that("env_dot_delayed_expr() returns promise expression", {
   fn <- function(...) {
     env <- environment()
-    dot_delayed_expr(1, env)
+    env_dot_delayed_expr(env, 1)
   }
 
   expect_equal(fn(x + y), quote(x + y))
@@ -140,10 +143,10 @@ test_that("dot_delayed_expr() returns promise expression", {
   expect_equal(fn(42), 42)
 })
 
-test_that("dot_delayed_env() returns promise environment", {
+test_that("env_dot_delayed_env() returns promise environment", {
   fn <- function(...) {
     env <- environment()
-    dot_delayed_env(1, env)
+    env_dot_delayed_env(env, 1)
   }
 
   e <- new.env()
@@ -151,36 +154,36 @@ test_that("dot_delayed_env() returns promise environment", {
   expect_identical(result, e)
 })
 
-test_that("dot_delayed_expr() errors on forced promise", {
+test_that("env_dot_delayed_expr() errors on forced promise", {
   fn <- function(...) {
     env <- environment()
-    dots_elt(1)
-    dot_delayed_expr(1, env)
+    env_dots_elt(env, 1)
+    env_dot_delayed_expr(env, 1)
   }
   expect_error(fn(1 + 1), "not a delayed promise")
 })
 
-test_that("dot_delayed_env() errors on forced promise", {
+test_that("env_dot_delayed_env() errors on forced promise", {
   fn <- function(...) {
     env <- environment()
-    dots_elt(1)
-    dot_delayed_env(1, env)
+    env_dots_elt(env, 1)
+    env_dot_delayed_env(env, 1)
   }
   expect_error(fn(1 + 1), "not a delayed promise")
 })
 
-test_that("dot_delayed_expr() errors on missing argument", {
+test_that("env_dot_delayed_expr() errors on missing argument", {
   fn <- function(...) {
     env <- environment()
-    dot_delayed_expr(2, env)
+    env_dot_delayed_expr(env, 2)
   }
   expect_error(fn(a, ), "not a delayed promise")
 })
 
-test_that("dot_delayed_env() errors on missing argument", {
+test_that("env_dot_delayed_env() errors on missing argument", {
   fn <- function(...) {
     env <- environment()
-    dot_delayed_env(2, env)
+    env_dot_delayed_env(env, 2)
   }
   expect_error(fn(a, ), "not a delayed promise")
 })
@@ -188,32 +191,32 @@ test_that("dot_delayed_env() errors on missing argument", {
 
 # Forced accessor ---------------------------------------------------------
 
-test_that("dot_forced_expr() returns expression from forced promise", {
+test_that("env_dot_forced_expr() returns expression from forced promise", {
   fn <- function(...) {
     env <- environment()
-    dots_elt(1)
-    dot_forced_expr(1, env)
+    env_dots_elt(env, 1)
+    env_dot_forced_expr(env, 1)
   }
 
-  # The exact value of dot_forced_expr depends on R internals (JIT state),
+  # The exact value of env_dot_forced_expr depends on R internals (JIT state),
   # so just verify it succeeds without error
   expect_no_error(fn(1 + 1))
   expect_no_error(fn(42))
 })
 
-test_that("dot_forced_expr() errors on delayed promise", {
+test_that("env_dot_forced_expr() errors on delayed promise", {
   fn <- function(...) {
     env <- environment()
-    dot_forced_expr(1, env)
+    env_dot_forced_expr(env, 1)
   }
   expect_error(fn(1 + 1), "not a forced promise")
 })
 
-test_that("dot_forced_expr() errors on missing argument", {
+test_that("env_dot_forced_expr() errors on missing argument", {
   fn <- function(...) {
     env <- environment()
-    dots_elt(1)
-    dot_forced_expr(2, env)
+    env_dots_elt(env, 1)
+    env_dot_forced_expr(env, 2)
   }
   expect_error(fn(1, ), "not a forced promise")
 })
@@ -225,8 +228,8 @@ test_that("`...` forwarding shares the promise object", {
   inner <- function(...) {
     env <- environment()
     list(
-      expr = dot_delayed_expr(1, env),
-      env = dot_delayed_env(1, env)
+      expr = env_dot_delayed_expr(env, 1),
+      env = env_dot_delayed_env(env, 1)
     )
   }
   outer <- function(...) inner(...)
@@ -242,7 +245,7 @@ test_that("`...` forwarding shares the promise object", {
 test_that("`...` forwarding preserves types", {
   inner <- function(...) {
     env <- environment()
-    dot_type(1, env)
+    env_dot_type(env, 1)
   }
   outer <- function(...) inner(...)
 
@@ -252,7 +255,7 @@ test_that("`...` forwarding preserves types", {
 test_that("`...` forwarding reflects forced state", {
   inner <- function(...) {
     env <- environment()
-    dot_type(1, env)
+    env_dot_type(env, 1)
   }
   outer <- function(...) {
     force(..1)
@@ -262,8 +265,8 @@ test_that("`...` forwarding reflects forced state", {
   expect_equal(outer(1 + 1), "forced")
 })
 
-test_that("dots_elt() works through `...` forwarding", {
-  inner <- function(...) dots_elt(1)
+test_that("env_dots_elt() works through `...` forwarding", {
+  inner <- function(...) env_dots_elt(environment(), 1)
   outer <- function(...) inner(...)
 
   x <- 42
@@ -271,15 +274,15 @@ test_that("dots_elt() works through `...` forwarding", {
   expect_equal(outer(1 + 1), 2)
 })
 
-test_that("dots_length() reflects forwarded count", {
-  inner <- function(...) dots_length()
+test_that("env_dots_length() reflects forwarded count", {
+  inner <- function(...) env_dots_length()
   outer <- function(...) inner(...)
 
   expect_equal(outer(a, b, c), 3L)
 })
 
-test_that("dots_names() preserved through `...` forwarding", {
-  inner <- function(...) dots_names()
+test_that("env_dots_names() preserved through `...` forwarding", {
+  inner <- function(...) env_dots_names()
   outer <- function(...) inner(...)
 
   expect_equal(outer(a = 1, b = 2), c("a", "b"))
@@ -290,9 +293,9 @@ test_that("`...` forwarding across multiple levels", {
   level3 <- function(...) {
     env <- environment()
     list(
-      type = dot_type(1, env),
-      expr = dot_delayed_expr(1, env),
-      env = dot_delayed_env(1, env)
+      type = env_dot_type(env, 1),
+      expr = env_dot_delayed_expr(env, 1),
+      env = env_dot_delayed_env(env, 1)
     )
   }
   level2 <- function(...) level3(...)
@@ -313,8 +316,8 @@ test_that("`..N` forwarding creates a new promise layer", {
   inner <- function(...) {
     env <- environment()
     list(
-      expr = dot_delayed_expr(1, env),
-      env = dot_delayed_env(1, env)
+      expr = env_dot_delayed_expr(env, 1),
+      env = env_dot_delayed_env(env, 1)
     )
   }
   outer <- function(...) inner(..1)
@@ -330,9 +333,9 @@ test_that("`..N` forwarding can select specific dots", {
   inner <- function(...) {
     env <- environment()
     list(
-      n = dots_length(),
-      expr1 = dot_delayed_expr(1, env),
-      expr2 = dot_delayed_expr(2, env)
+      n = env_dots_length(),
+      expr1 = env_dot_delayed_expr(env, 1),
+      expr2 = env_dot_delayed_expr(env, 2)
     )
   }
   outer <- function(...) inner(..2, ..1)
@@ -343,8 +346,8 @@ test_that("`..N` forwarding can select specific dots", {
   expect_equal(result$expr2, quote(..1))
 })
 
-test_that("dots_elt() works through `..N` forwarding", {
-  inner <- function(...) dots_elt(1)
+test_that("env_dots_elt() works through `..N` forwarding", {
+  inner <- function(...) env_dots_elt(environment(), 1)
   outer <- function(...) inner(..1)
 
   x <- 42
@@ -355,7 +358,7 @@ test_that("dots_elt() works through `..N` forwarding", {
 test_that("`..N` forwarding with forced outer dot shows delayed for new promise", {
   inner <- function(...) {
     env <- environment()
-    dot_type(1, env)
+    env_dot_type(env, 1)
   }
   outer <- function(...) {
     force(..1)
@@ -370,7 +373,7 @@ test_that("`..N` forwarding with forced outer dot shows delayed for new promise"
 test_that("`..N` forwarding across multiple levels", {
   level3 <- function(...) {
     env <- environment()
-    dot_type(1, env)
+    env_dot_type(env, 1)
   }
   level2 <- function(...) level3(..1)
   level1 <- function(...) level2(..1)
@@ -384,7 +387,7 @@ test_that("`..N` forwarding across multiple levels", {
 test_that("compiler-unwrapped literals create value dots", {
   fn <- function(...) {
     env <- environment()
-    dot_type(1, env)
+    env_dot_type(env, 1)
   }
   wrapper <- compiler::cmpfun(function() fn("hello"))
   expect_equal(wrapper(), "value")
@@ -393,8 +396,8 @@ test_that("compiler-unwrapped literals create value dots", {
   expect_equal(wrapper2(), "value")
 })
 
-test_that("dots_elt() works with value dots", {
-  fn <- function(...) dots_elt(1)
+test_that("env_dots_elt() works with value dots", {
+  fn <- function(...) env_dots_elt(environment(), 1)
   wrapper <- compiler::cmpfun(function() fn("hello"))
   expect_equal(wrapper(), "hello")
 })
@@ -402,11 +405,11 @@ test_that("dots_elt() works with value dots", {
 test_that("delayed accessors error on value dots", {
   fn_expr <- function(...) {
     env <- environment()
-    dot_delayed_expr(1, env)
+    env_dot_delayed_expr(env, 1)
   }
   fn_env <- function(...) {
     env <- environment()
-    dot_delayed_env(1, env)
+    env_dot_delayed_env(env, 1)
   }
 
   wrapper_expr <- compiler::cmpfun(function() fn_expr("hello"))
@@ -420,13 +423,13 @@ test_that("delayed accessors error on value dots", {
 # Input validation --------------------------------------------------------
 
 test_that("index validation works", {
-  expect_error(dot_type(0), "larger than or equal to 1")
-  expect_error(dot_type(-1), "larger than or equal to 1")
-  expect_error(dot_type("a"), "number")
+  expect_error(env_dot_type(environment(), 0), "larger than or equal to 1")
+  expect_error(env_dot_type(environment(), -1), "larger than or equal to 1")
+  expect_error(env_dot_type(environment(), "a"), "number")
 })
 
 test_that("environment validation works", {
-  expect_error(dots_exist(NULL), "environment")
-  expect_error(dots_length(1), "environment")
-  expect_error(dots_names(list()), "environment")
+  expect_error(env_dots_exist(NULL), "environment")
+  expect_error(env_dots_length(1), "environment")
+  expect_error(env_dots_names(list()), "environment")
 })
