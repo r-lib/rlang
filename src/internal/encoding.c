@@ -169,7 +169,7 @@ r_obj* obj_attrib_encode_utf8(r_obj* x, bool owned) {
     .p_owned = &owned
   };
 
-  R_mapAttrib(x, obj_attrib_encode_utf8_cb, &data);
+  r_attrib_map(x, obj_attrib_encode_utf8_cb, &data);
 
   FREE(1);
   return out;

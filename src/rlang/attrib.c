@@ -8,7 +8,7 @@ static r_obj* r_attrib_get_cb(r_obj* tag, r_obj* val, void* data) {
 }
 
 r_obj* r_attrib_get(r_obj* x, r_obj* tag) {
-  r_obj* out = R_mapAttrib(x, &r_attrib_get_cb, &tag);
+  r_obj* out = r_attrib_map(x, &r_attrib_get_cb, &tag);
   return out ? out : r_null;
 }
 
@@ -28,7 +28,7 @@ r_obj* r_attrib_collect(r_obj* x) {
   r_obj* sentinel = KEEP(r_new_node(r_null, r_null));
   r_obj* tail = sentinel;
 
-  R_mapAttrib(x, &r_attrib_collect_cb, &tail);
+  r_attrib_map(x, &r_attrib_collect_cb, &tail);
 
   FREE(1);
   return r_node_cdr(sentinel);

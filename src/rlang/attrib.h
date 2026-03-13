@@ -15,6 +15,15 @@ bool r_attrib_has_any(r_obj* x) {
 // Collect attributes into a fresh pairlist
 r_obj* r_attrib_collect(r_obj* x);
 
+typedef r_obj* (r_attrib_map_fn)(r_obj* tag, r_obj* value, void* data);
+
+// Map a callback to each attribute of an object. Prefer this to collecting for
+// performance-critical applications.
+static inline
+r_obj* r_attrib_map(r_obj* x, r_attrib_map_fn* fn, void* data) {
+  return R_mapAttrib(x, fn, data);
+}
+
 static inline
 void r_attrib_zap(r_obj* x, r_obj* tag) {
   Rf_setAttrib(x, tag, r_null);
