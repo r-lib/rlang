@@ -74,10 +74,10 @@ typed variants (`squash_lgl()` etc).
 x <- replicate(2, sample(4), simplify = FALSE)
 x
 #> [[1]]
-#> [1] 1 4 3 2
+#> [1] 2 1 3 4
 #> 
 #> [[2]]
-#> [1] 3 1 2 4
+#> [1] 3 4 1 2
 #> 
 
 flatten(x)
@@ -85,16 +85,16 @@ flatten(x)
 #> ℹ Please use `purrr::list_flatten()` or `purrr::list_c()`.
 #> This warning is displayed once every 8 hours.
 #> [[1]]
-#> [1] 1 4 3 2
+#> [1] 2 1 3 4
 #> 
 #> [[2]]
-#> [1] 3 1 2 4
+#> [1] 3 4 1 2
 #> 
 flatten_int(x)
 #> Warning: `flatten_int()` is deprecated as of rlang 1.1.0.
 #> ℹ Please use `purrr::list_flatten()` and/or `purrr::list_c()`.
 #> This warning is displayed once every 8 hours.
-#> [1] 1 4 3 2 3 1 2 4
+#> [1] 2 1 3 4 3 4 1 2
 
 # With flatten(), only one level gets removed at a time:
 deep <- list(1, list(2, list(3)))

@@ -224,22 +224,22 @@ env_bind_active(env, symbol = fn)
 # `fn` is executed each time `symbol` is evaluated or retrieved:
 env$symbol
 #> I have been called
-#> [1] -0.0499649
+#> [1] -1.400044
 env$symbol
 #> I have been called
-#> [1] -0.2514834
+#> [1] 0.2553171
 eval_bare(quote(symbol), env)
 #> I have been called
-#> [1] 0.4447971
+#> [1] -2.437264
 eval_bare(quote(symbol), env)
 #> I have been called
-#> [1] 2.755418
+#> [1] -0.005571287
 
 # All arguments are passed to as_function() so you can use the
 # formula shortcut:
 env_bind_active(env, foo = ~ runif(1))
 env$foo
-#> [1] 0.5185566
+#> [1] 0.732882
 env$foo
-#> [1] 0.8461201
+#> [1] 0.7725215
 ```
