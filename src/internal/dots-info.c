@@ -93,9 +93,9 @@ SEXP r_env_dots_names(SEXP env) {
 }
 
 static
-SEXP env_dot_find(SEXP env, int i) {
+SEXP env_dot_find(SEXP env, r_ssize i) {
     if (i <= 0)
-        Rf_error("indexing '...' with non-positive index %d", i);
+        Rf_error("indexing '...' with non-positive index %d", (int) i);
 
     SEXP dots = Rf_findVar(R_DotsSymbol, env);
 
@@ -103,25 +103,25 @@ SEXP env_dot_find(SEXP env, int i) {
         Rf_error("'...' used in an incorrect context");
 
     if (dots == R_MissingArg || TYPEOF(dots) != DOTSXP)
-        Rf_error("the ... list contains fewer than %d elements", i);
+        Rf_error("the ... list contains fewer than %d elements", (int) i);
 
-    for (int j = 1; j < i; ++j) {
+    for (r_ssize j = 1; j < i; ++j) {
         dots = CDR(dots);
         if (dots == R_NilValue)
-            Rf_error("the ... list contains fewer than %d elements", i);
+            Rf_error("the ... list contains fewer than %d elements", (int) i);
     }
 
     return CAR(dots);
 }
 
 // R API: R_DotsElt
-SEXP r_env_dot_get(SEXP env, int i) {
+SEXP r_env_dot_get(SEXP env, r_ssize i) {
     SEXP elt = env_dot_find(env, i);
     return Rf_eval(elt, env);
 }
 
 // R API: R_GetDotType
-r_dot_type_t r_env_dot_type(SEXP env, int i) {
+r_dot_type_t r_env_dot_type(SEXP env, r_ssize i) {
     SEXP elt = env_dot_find(env, i);
 
     if (elt == R_MissingArg)
@@ -142,7 +142,7 @@ r_dot_type_t r_env_dot_type(SEXP env, int i) {
 }
 
 // R API: R_DotDelayedExpression
-SEXP r_env_dot_delayed_expr(SEXP env, int i) {
+SEXP r_env_dot_delayed_expr(SEXP env, r_ssize i) {
     SEXP elt = env_dot_find(env, i);
 
     if (!is_promise(elt))
@@ -159,7 +159,7 @@ SEXP r_env_dot_delayed_expr(SEXP env, int i) {
 }
 
 // R API: R_DotDelayedEnvironment
-SEXP r_env_dot_delayed_env(SEXP env, int i) {
+SEXP r_env_dot_delayed_env(SEXP env, r_ssize i) {
     SEXP elt = env_dot_find(env, i);
 
     if (!is_promise(elt))
@@ -176,7 +176,7 @@ SEXP r_env_dot_delayed_env(SEXP env, int i) {
 }
 
 // R API: R_DotForcedExpression
-SEXP r_env_dot_forced_expr(SEXP env, int i) {
+SEXP r_env_dot_forced_expr(SEXP env, r_ssize i) {
     SEXP elt = env_dot_find(env, i);
 
     if (!is_promise(elt))
