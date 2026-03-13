@@ -22,24 +22,27 @@
  * Bytes-encoded vectors are not supported, as they cannot be
  * converted to UTF-8 by `Rf_translateCharUTF8()`.
  *
- * If `x` is not shared (i.e. `r_is_shared(x) == false`), this function will
- * modify `x` in place. Otherwise, a copy is made.
+ * This function never modifies `x` in place.
  */
 r_obj* obj_encode_utf8(r_obj* x) {
+  r_obj* out;
+
   switch (r_typeof(x)) {
-  case R_TYPE_character: x = chr_encode_utf8(x); break;
-  case R_TYPE_list: x = list_encode_utf8(x); break;
-  default: break;
+  case R_TYPE_character: out = chr_encode_utf8(x); break;
+  case R_TYPE_list: out = list_encode_utf8(x); break;
+  default: out = x; break;
   }
 
-  r_obj* attrib = r_attrib(x);
-  if (attrib != r_null) {
-    KEEP(x);
-    x = obj_attrib_encode_utf8(x, attrib);
+  if (r_attrib_has_any(out)) {
+    // Only `KEEP()` if there are attributes
+    KEEP(out);
+    // Pass down ownership to avoid a reclone if attributes change
+    bool owned = x != out;
+    out = obj_attrib_encode_utf8(out, owned);
     FREE(1);
   }
 
-  return x;
+  return out;
 }
 
 // -----------------------------------------------------------------------------
@@ -53,7 +56,7 @@ r_obj* chr_encode_utf8(r_obj* x) {
     return x;
   }
 
-  x = KEEP(r_clone_shared(x));
+  x = KEEP(r_clone(x));
   r_obj* const* p_x = r_chr_cbegin(x);
 
   const void* vmax = vmaxget();
@@ -90,6 +93,8 @@ r_ssize chr_find_encoding_start(r_obj* x, r_ssize size) {
 
 static
 r_obj* list_encode_utf8(r_obj* x) {
+  bool owned = false;
+
   r_keep_loc pi;
   KEEP_HERE(x, &pi);
 
@@ -105,11 +110,11 @@ r_obj* list_encode_utf8(r_obj* x) {
     }
     KEEP(elt_new);
 
-    if (r_is_shared(x)) {
-      // Cloned once, at which point `x` is free of references
+    if (!owned) {
       x = r_clone(x);
       KEEP_AT(x, pi);
       p_x = r_list_cbegin(x);
+      owned = true;
     }
 
     r_list_poke(x, i, elt_new);
@@ -122,59 +127,52 @@ r_obj* list_encode_utf8(r_obj* x) {
 
 // -----------------------------------------------------------------------------
 
-static
-r_obj* obj_attrib_encode_utf8(r_obj* x, r_obj* attrib) {
-  r_obj* attrib_new = attrib_encode_utf8(attrib);
-  if (attrib_new == attrib) {
-    return x;
+struct cb_data {
+  r_obj** p_out;
+  r_keep_loc shelter;
+  bool* p_owned;
+};
+
+static r_obj* obj_attrib_encode_utf8_cb(r_obj* tag, r_obj* old, void* data) {
+  struct cb_data* p_data = (struct cb_data*) data;
+
+  r_obj* new = obj_encode_utf8(old);
+  if (old == new) {
+    return NULL;
   }
-  KEEP(attrib_new);
+  KEEP(new);
 
-  x = KEEP(r_clone_shared(x));
-  r_poke_attrib(x, attrib_new);
+  if (!(*p_data->p_owned)) {
+    // Shallow clones `out` and its attributes
+    *p_data->p_out = r_clone(*p_data->p_out);
+    KEEP_AT(*p_data->p_out, p_data->shelter);
+    *p_data->p_owned = true;
+  }
 
-  FREE(2);
-  return x;
+  r_attrib_poke(*p_data->p_out, tag, new);
+
+  FREE(1);
+  return NULL;
 }
 
 static
-r_obj* attrib_encode_utf8(r_obj* x) {
-  r_ssize loc = 0;
-  bool owned = false;
+r_obj* obj_attrib_encode_utf8(r_obj* x, bool owned) {
+  // `out` pointer may be updated in place by callback
+  r_obj* out = x;
 
-  r_keep_loc pi;
-  KEEP_HERE(x, &pi);
+  r_keep_loc shelter;
+  KEEP_HERE(out, &shelter);
 
-  for (r_obj* node = x; node != r_null; node = r_node_cdr(node), ++loc) {
-    r_obj* elt_old = r_node_car(node);
+  struct cb_data data = {
+    .p_out = &out,
+    .shelter = shelter,
+    .p_owned = &owned
+  };
 
-    r_obj* elt_new = obj_encode_utf8(elt_old);
-    if (elt_old == elt_new) {
-      continue;
-    }
-    KEEP(elt_new);
-
-    if (!owned) {
-      // Shallow clone entire pairlist if not owned.
-      // Should be fast because these are generally short.
-      x = r_clone(x);
-      KEEP_AT(x, pi);
-      owned = true;
-
-      node = x;
-
-      // Restore original positioning post-clone
-      for (r_ssize i = 0; i < loc; ++i) {
-        node = r_node_cdr(node);
-      }
-    }
-
-    r_node_poke_car(node, elt_new);
-    FREE(1);
-  }
+  r_attrib_map(x, obj_attrib_encode_utf8_cb, &data);
 
   FREE(1);
-  return x;
+  return out;
 }
 
 // -----------------------------------------------------------------------------

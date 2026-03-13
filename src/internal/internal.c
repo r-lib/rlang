@@ -105,7 +105,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_alloc_data_frame",             (DL_FUNC) &ffi_alloc_data_frame, 3},
   {"ffi_as_data_mask",                 (DL_FUNC) &ffi_as_data_mask, 1},
   {"ffi_as_data_pronoun",              (DL_FUNC) &ffi_as_data_pronoun, 1},
-  {"ffi_attrib",                       (DL_FUNC) &r_attrib, 1},
   {"ffi_c_tests",                      (DL_FUNC) &ffi_c_tests, 0},
   {"ffi_call_has_precedence",          (DL_FUNC) &ffi_call_has_precedence, 3},
   {"ffi_call_zap_inline",              (DL_FUNC) &ffi_call_zap_inline, 1},
@@ -263,7 +262,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_obj_address",                  (DL_FUNC) &ffi_obj_address, 1},
   {"ffi_pairlist_rev",                 (DL_FUNC) &r_pairlist_rev, 1},
   {"ffi_peek_srcref",                  (DL_FUNC) &ffi_peek_srcref, 0},
-  {"ffi_poke_attrib",                  (DL_FUNC) &r_poke_attrib, 2},
+
   {"ffi_precious_dict",                (DL_FUNC) &ffi_precious_dict, 0},
   {"ffi_preserve",                     (DL_FUNC) &ffi_preserve, 1},
   {"ffi_quo_get_env",                  (DL_FUNC) &ffi_quo_get_env, 1},
@@ -294,7 +293,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_test_Rf_errorcall",            (DL_FUNC) &ffi_test_Rf_errorcall, 2},
   {"ffi_test_Rf_warning",              (DL_FUNC) &ffi_test_Rf_warning, 1},
   {"ffi_test_Rf_warningcall",          (DL_FUNC) &ffi_test_Rf_warningcall, 2},
-  {"ffi_test_attrib_set",              (DL_FUNC) &r_attrib_set, 3},
+
   {"ffi_test_base_ns_get",             (DL_FUNC) &ffi_test_base_ns_get, 1},
   {"ffi_test_r_env_get",               (DL_FUNC) &ffi_test_r_env_get, 2},
   {"ffi_test_chr_append",              (DL_FUNC) &chr_append, 2},
@@ -302,7 +301,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_test_current_frame",           (DL_FUNC) &r_peek_frame, 0},
   {"ffi_test_lgl_sum",                 (DL_FUNC) &ffi_test_lgl_sum, 2},
   {"ffi_test_lgl_which",               (DL_FUNC) &ffi_test_lgl_which, 2},
-  {"ffi_test_node_list_clone_until",   (DL_FUNC) &ffi_test_node_list_clone_until, 2},
+
   {"ffi_test_obj_encode_utf8",         (DL_FUNC) &obj_encode_utf8, 1},
   {"ffi_test_parse",                   (DL_FUNC) &ffi_test_parse, 1},
   {"ffi_test_parse_eval",              (DL_FUNC) &ffi_test_parse_eval, 2},

@@ -55,10 +55,6 @@ void _r_preserve_global(r_obj* x) {
    (_r_preserve_global)(_r_placeholder),         \
    (void) NULL)
 
-// Gets class from `x` and resets it. Useful if you used `SET_ATTRIB()` with a
-// cached object structure that includes a `class` attribute.
-void r_mark_object(r_obj* x);
-
 static inline
 bool r_is_object(r_obj* x) {
   return Rf_isObject(x);
@@ -76,10 +72,6 @@ r_obj* r_copy(r_obj* x) {
 static inline
 r_obj* r_clone(r_obj* x) {
   return Rf_shallow_duplicate(x);
-}
-static inline
-r_obj* r_clone_shared(r_obj* x) {
-  return r_is_shared(x) ? r_clone(x) : x;
 }
 
 // These also clone names

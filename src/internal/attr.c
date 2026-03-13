@@ -213,19 +213,8 @@ r_obj* fn_zap_srcref(r_obj* x) {
 
   r_obj* out = KEEP(r_new_function(formals, body, env));
 
-  // Copy over attributes, but zap any `srcref` attribute
-  if (r_attrib_get(x, r_syms.srcref) == r_null) {
-    // Nothing to zap
-    r_obj* attrib = r_attrib(x);
-    r_poke_attrib(out, attrib);
-  } else {
-    // Clone so we can zap `srcref`
-    r_obj* attrib = r_attrib(x);
-    attrib = KEEP(r_clone(attrib));
-    r_poke_attrib(out, attrib);
-    FREE(1);
-    r_attrib_poke(out, r_syms.srcref, r_null);
-  }
+  r_attrib_clone_from(out, x);
+  r_attrib_zap(out, r_syms.srcref);
 
   FREE(2);
   return out;
@@ -273,9 +262,9 @@ r_obj* expr_vec_zap_srcref(r_obj* x) {
 
 static
 void attrib_zap_srcref(r_obj* x) {
-  r_attrib_poke(x, r_syms.srcfile, r_null);
-  r_attrib_poke(x, r_syms.srcref, r_null);
-  r_attrib_poke(x, r_syms.wholeSrcref, r_null);
+  r_attrib_zap(x, r_syms.srcfile);
+  r_attrib_zap(x, r_syms.srcref);
+  r_attrib_zap(x, r_syms.wholeSrcref);
 }
 
 

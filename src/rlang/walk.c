@@ -69,7 +69,7 @@ const enum sexp_iterator_state done_state[] = {
 
 
 struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root) {
-  r_obj* shelter = KEEP(r_alloc_list(2));
+  r_obj* shelter = KEEP(r_alloc_list(3));
 
   r_obj* it = r_alloc_raw(sizeof(struct r_sexp_iterator));
   r_list_poke(shelter, 0, it);
@@ -78,9 +78,12 @@ struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root) {
   struct r_dyn_array* p_stack = r_new_dyn_array(sizeof(struct sexp_stack_info), SEXP_STACK_INIT_SIZE);
   r_list_poke(shelter, 1, p_stack->shelter);
 
+  // Slot 2 holds a pairlist chain of collected attribute pairlists
+  // that need protection for the lifetime of the iterator
+
   enum r_type type = r_typeof(root);
   enum sexp_iterator_type it_type = sexp_iterator_type(type, root);
-  bool has_attrib = sexp_node_attrib(type, root) != r_null;
+  bool has_attrib = sexp_has_attrib(type, root);
 
   struct sexp_stack_info root_info = {
     .x = root,
@@ -105,7 +108,7 @@ struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root) {
     .x = r_null,
     .parent = r_null,
   };
-  
+
   FREE(1);
   return p_it;
 }
@@ -180,10 +183,17 @@ bool sexp_next_incoming(struct r_sexp_iterator* p_it,
   child.depth = p_info->depth + 1;
 
   switch (state) {
-  case SEXP_ITERATOR_STATE_attrib:
-    child.x = r_attrib(x);
+  case SEXP_ITERATOR_STATE_attrib: {
+    // Allocates a new pairlist to avoid direct ATTRIB() access.
+    // Could use R_mapAttrib() instead but would require refactoring.
+    r_obj* collected = r_attrib_collect(x);
+    // Protect collected pairlist in the iterator's shelter chain
+    r_obj* chain = r_new_node(collected, r_list_get(p_it->shelter, 2));
+    r_list_poke(p_it->shelter, 2, chain);
+    child.x = collected;
     child.rel = R_SEXP_IT_RELATION_attrib;
     break;
+  }
   case SEXP_ITERATOR_STATE_elt:
     child.x = *p_info->v_arr;
     child.rel = R_SEXP_IT_RELATION_list_elt;
@@ -202,7 +212,7 @@ bool sexp_next_incoming(struct r_sexp_iterator* p_it,
   }
 
   child.type = r_typeof(child.x);
-  bool has_attrib = sexp_node_attrib(child.type, child.x) != r_null;
+  bool has_attrib = sexp_has_attrib(child.type, child.x);
   enum sexp_iterator_type it_type = sexp_iterator_type(child.type, child.x);
 
   if (it_type == SEXP_ITERATOR_TYPE_atomic && !has_attrib) {
@@ -301,12 +311,12 @@ enum sexp_iterator_type sexp_iterator_type(enum r_type type,
   }
 }
 static inline
-r_obj* sexp_node_attrib(enum r_type type, r_obj* x) {
+bool sexp_has_attrib(enum r_type type, r_obj* x) {
   // Strings have private data stored in attributes
   if (type == R_TYPE_string) {
-    return r_null;
+    return false;
   } else {
-    return ATTRIB(x);
+    return r_attrib_has_any(x);
   }
 }
 static inline

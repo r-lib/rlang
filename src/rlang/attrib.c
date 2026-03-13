@@ -1,120 +1,37 @@
 #include "rlang.h"
 
-/**
- * - If `sentinel` is found in the first node: `parent_out` is `r_null`
- * - If `sentinel` is not found: both return value and `parent_out`
- *   are `r_null`
- * - If `sentinel` is `r_null`, this is like a full shallow duplication
- *   but returns tail node
- */
-r_obj* r_pairlist_clone_until(r_obj* node, r_obj* sentinel, r_obj** parent_out) {
-  r_obj* parent = r_null;
-  r_obj* cur = node;
-  int n_kept = 0;
-
-  while (true) {
-    if (cur == sentinel) {
-      FREE(n_kept);
-      *parent_out = parent;
-      return node;
-    }
-    // Return NULL if sentinel is not found
-    if (cur == r_null) {
-      FREE(n_kept);
-      *parent_out = r_null;
-      return r_null;
-    }
-
-    r_obj* tag = r_node_tag(cur);
-    cur = r_new_node(r_node_car(cur), r_node_cdr(cur));
-    r_node_poke_tag(cur, tag);
-
-    if (parent == r_null) {
-      KEEP_N(cur, &n_kept);
-      node = cur;
-    } else {
-      r_node_poke_cdr(parent, cur);
-    }
-
-    parent = cur;
-    cur = r_node_cdr(cur);
+static r_obj* r_attrib_get_cb(r_obj* tag, r_obj* val, void* data) {
+  if (tag == *(r_obj**) data) {
+    return val;
   }
-
-  r_stop_unreachable();
+  return NULL;
 }
 
-
-r_obj* r_attrs_set_at(r_obj* attrs, r_obj* node, r_obj* value) {
-  r_obj* sentinel = r_node_cdr(node);
-  r_obj* new_node = r_null;
-
-  attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
-  r_node_poke_car(new_node, value);
-
-  FREE(1);
-  return attrs;
-}
-r_obj* r_attrs_zap_at(r_obj* attrs, r_obj* node, r_obj* value) {
-  r_obj* sentinel = node;
-  r_obj* new_node = r_null;
-
-  attrs = KEEP(r_pairlist_clone_until(attrs, sentinel, &new_node));
-
-  if (new_node == r_null) {
-    // `node` is the first node of `attrs`
-    attrs = r_node_cdr(attrs);
-  } else {
-    r_node_poke_cdr(new_node, r_node_cdr(node));
-  }
-
-  FREE(1);
-  return attrs;
-}
-r_obj* r_clone2(r_obj* x) {
-  r_obj* attrs = KEEP(r_attrib(x));
-
-  // Prevent attributes from being cloned
-  r_poke_attrib(x, r_null);
-  r_obj* out = r_clone(x);
-  r_poke_attrib(x, attrs);
-  r_poke_attrib(out, attrs);
-
-  FREE(1);
-  return out;
+r_obj* r_attrib_get(r_obj* x, r_obj* tag) {
+  r_obj* out = r_attrib_map(x, &r_attrib_get_cb, &tag);
+  return out ? out : r_null;
 }
 
-r_obj* r_attrib_set(r_obj* x, r_obj* tag, r_obj* value) {
-  r_obj* attrs = r_attrib(x);
-  r_obj* out = KEEP(r_clone2(x));
+// Collect attributes into a pairlist using `R_mapAttrib`
+static r_obj* r_attrib_collect_cb(r_obj* tag, r_obj* val, void* data) {
+  r_obj** p_tail = (r_obj**) data;
 
-  r_obj* node = attrs;
-  while (node != r_null) {
-    if (r_node_tag(node) == tag) {
-      if (value == r_null) {
-        attrs = r_attrs_zap_at(attrs, node, value);
-      } else {
-        attrs = r_attrs_set_at(attrs, node, value);
-      }
-      r_poke_attrib(out, attrs);
+  r_obj* node = r_new_node(val, r_null);
+  r_node_poke_tag(node, tag);
+  r_node_poke_cdr(*p_tail, node);
 
-      FREE(1);
-      return out;
-    }
+  *p_tail = node;
+  return NULL;
+}
 
-    node = r_node_cdr(node);
-  }
+r_obj* r_attrib_collect(r_obj* x) {
+  r_obj* sentinel = KEEP(r_new_node(r_null, r_null));
+  r_obj* tail = sentinel;
 
-  if (value != r_null) {
-    // Just add to the front if attribute does not exist yet
-    attrs = KEEP(r_new_node(out, attrs));
-    r_node_poke_tag(attrs, tag);
-    r_node_poke_car(attrs, value);
-    r_poke_attrib(out, attrs);
-    FREE(1);
-  }
+  r_attrib_map(x, &r_attrib_collect_cb, &tail);
 
   FREE(1);
-  return out;
+  return r_node_cdr(sentinel);
 }
 
 bool r_is_named(r_obj* x) {
