@@ -66,8 +66,8 @@ SEXP r_env_dots_names(SEXP env) {
 
 static
 SEXP env_dot_find(SEXP env, r_ssize i) {
-    if (i <= 0)
-        Rf_error("indexing '...' with non-positive index %d", (int) i);
+    if (i < 0)
+        Rf_error("indexing '...' with negative index %d", (int) i);
 
     SEXP dots = Rf_findVar(R_DotsSymbol, env);
 
@@ -75,12 +75,12 @@ SEXP env_dot_find(SEXP env, r_ssize i) {
         Rf_error("'...' used in an incorrect context");
 
     if (dots == R_MissingArg || TYPEOF(dots) != DOTSXP)
-        Rf_error("the ... list contains fewer than %d elements", (int) i);
+        Rf_error("the ... list contains fewer than %d elements", (int) i + 1);
 
-    for (r_ssize j = 1; j < i; ++j) {
+    for (r_ssize j = 0; j < i; ++j) {
         dots = CDR(dots);
         if (dots == R_NilValue)
-            Rf_error("the ... list contains fewer than %d elements", (int) i);
+            Rf_error("the ... list contains fewer than %d elements", (int) i + 1);
     }
 
     return CAR(dots);
@@ -177,12 +177,12 @@ SEXP ffi_dots_names(SEXP env) {
 }
 
 SEXP ffi_dots_elt(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0];
+    int i = INTEGER(ffi_i)[0] - 1;
     return r_env_dot_get(env, i);
 }
 
 SEXP ffi_dot_type(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0];
+    int i = INTEGER(ffi_i)[0] - 1;
     r_dot_type_t type = r_env_dot_type(env, i);
 
     switch (type) {
@@ -195,16 +195,16 @@ SEXP ffi_dot_type(SEXP ffi_i, SEXP env) {
 }
 
 SEXP ffi_dot_delayed_expr(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0];
+    int i = INTEGER(ffi_i)[0] - 1;
     return r_env_dot_delayed_expr(env, i);
 }
 
 SEXP ffi_dot_delayed_env(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0];
+    int i = INTEGER(ffi_i)[0] - 1;
     return r_env_dot_delayed_env(env, i);
 }
 
 SEXP ffi_dot_forced_expr(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0];
+    int i = INTEGER(ffi_i)[0] - 1;
     return r_env_dot_forced_expr(env, i);
 }

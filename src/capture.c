@@ -48,14 +48,14 @@ static SEXP capture_delayed(SEXP expr, SEXP expr_env) {
         if (dd > r_env_dots_length(expr_env))
             error(_("the ... list contains fewer than %d elements"), dd);
 
-        r_dot_type_t type = r_env_dot_type(expr_env, dd);
+        r_dot_type_t type = r_env_dot_type(expr_env, dd - 1);
 
         switch (type) {
         case DOT_TYPE_missing:
             return new_captured_literal(R_MissingArg);
         case DOT_TYPE_value:
         case DOT_TYPE_forced: {
-            SEXP value = PROTECT(r_env_dot_get(expr_env, dd));
+            SEXP value = PROTECT(r_env_dot_get(expr_env, dd - 1));
             SEXP result = new_captured_literal(value);
             UNPROTECT(1);
             return result;
@@ -64,8 +64,8 @@ static SEXP capture_delayed(SEXP expr, SEXP expr_env) {
             break;
         }
 
-        SEXP new_env = r_env_dot_delayed_env(expr_env, dd);
-        expr = r_env_dot_delayed_expr(expr_env, dd);
+        SEXP new_env = r_env_dot_delayed_env(expr_env, dd - 1);
+        expr = r_env_dot_delayed_expr(expr_env, dd - 1);
         expr_env = new_env;
     }
 
@@ -117,7 +117,7 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
             error(_("the ... list contains fewer than %d elements"), dd);
         }
 
-        r_dot_type_t type = r_env_dot_type(frame, dd);
+        r_dot_type_t type = r_env_dot_type(frame, dd - 1);
 
         switch (type) {
         case DOT_TYPE_missing:
@@ -125,14 +125,14 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
             return new_captured_literal(R_MissingArg);
         case DOT_TYPE_value:
         case DOT_TYPE_forced: {
-            SEXP value = PROTECT(r_env_dot_get(frame, dd));
+            SEXP value = PROTECT(r_env_dot_get(frame, dd - 1));
             SEXP result = new_captured_literal(value);
             UNPROTECT(2);
             return result;
         }
         case DOT_TYPE_delayed:
             UNPROTECT(1);
-            return env_dot_delayed_capture(frame, dd);
+            return env_dot_delayed_capture(frame, dd - 1);
         default:
             r_stop_unreachable();
         }
@@ -187,9 +187,9 @@ SEXP capturedots(SEXP frame) {
     PROTECT_INDEX dot_pi;
     PROTECT_WITH_INDEX(dot, &dot_pi);
 
-    for (int i = 1; i <= n; ++i) {
+    for (int i = 0; i < n; ++i) {
 	r_dot_type_t type = r_env_dot_type(frame, i);
-	SEXP nm = STRING_ELT(names, i - 1);
+	SEXP nm = STRING_ELT(names, i);
 	SEXP tag = (nm == R_BlankString) ? R_NilValue : installChar(nm);
 
 	switch (type) {

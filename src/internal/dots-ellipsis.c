@@ -44,7 +44,7 @@ r_obj* ffi_ellipsis_dots_used(r_obj* env) {
     return r_true;
   }
 
-  for (int i = 1; i <= n; ++i) {
+  for (int i = 0; i < n; ++i) {
     r_dot_type_t type = r_env_dot_type(env, i);
     if (type == DOT_TYPE_delayed) {
       return r_false;
