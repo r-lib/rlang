@@ -485,3 +485,70 @@ test_that("env_dot_forced_expr() finds dots in parent env", {
   }
   expect_no_error(fn(1 + 1))
 })
+
+
+# Promise chain unwrapping ------------------------------------------------
+# `...` expansion via `promiseArgs()` wraps each dot element with
+# `mkPROMISE(CAR(h), rho)`, creating a promise chain where PRCODE of
+# the outer promise is the original inner PROMSXP.
+
+test_that("env_dot_type() unwraps chains to detect forced state", {
+  inner <- function(...) env_dot_type(environment(), 1)
+  outer <- function(...) { force(..1); inner(...) }
+  expect_equal(outer(1 + 1), "forced")
+})
+
+test_that("env_dot_type() unwraps chains to detect delayed state", {
+  inner <- function(...) env_dot_type(environment(), 1)
+  outer <- function(...) inner(...)
+  expect_equal(outer(1 + 1), "delayed")
+})
+
+test_that("env_dot_delayed_expr() unwraps chains to the innermost expression", {
+  inner <- function(...) env_dot_delayed_expr(environment(), 1)
+  outer <- function(...) inner(...)
+
+  caller_env <- current_env()
+  result <- outer(x + y)
+
+  expect_equal(result, quote(x + y))
+})
+
+test_that("env_dot_delayed_env() unwraps chains to the innermost environment", {
+  inner <- function(...) env_dot_delayed_env(environment(), 1)
+  outer <- function(...) inner(...)
+
+  caller_env <- current_env()
+  result <- outer(x + y)
+
+  expect_identical(result, caller_env)
+})
+
+test_that("env_dot_forced_expr() unwraps chains to detect forced promise", {
+  inner <- function(...) {
+    env <- environment()
+    env_dot_get(env, 1)
+    env_dot_forced_expr(env, 1)
+  }
+  outer <- function(...) inner(...)
+  expect_no_error(outer(1 + 1))
+})
+
+test_that("env_dot_delayed_expr() errors on forced chain", {
+  inner <- function(...) env_dot_delayed_expr(environment(), 1)
+  outer <- function(...) { force(..1); inner(...) }
+  expect_error(outer(1 + 1), "not a delayed promise")
+})
+
+test_that("env_dot_delayed_env() errors on forced chain", {
+  inner <- function(...) env_dot_delayed_env(environment(), 1)
+  outer <- function(...) { force(..1); inner(...) }
+  expect_error(outer(1 + 1), "not a delayed promise")
+})
+
+test_that("deeper `...` chains unwrap correctly", {
+  inner <- function(...) env_dot_type(environment(), 1)
+  mid <- function(...) inner(...)
+  outer <- function(...) { force(..1); mid(...) }
+  expect_equal(outer(1 + 1), "forced")
+})
