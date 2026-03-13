@@ -60,13 +60,15 @@ r_obj* capture_delayed(r_obj* expr, r_obj* expr_env) {
             FREE(1);
             return result;
         }
-        case DOT_TYPE_delayed:
+        case DOT_TYPE_delayed: {
+            r_obj* new_env = r_env_dot_delayed_env(expr_env, dd - 1);
+            expr = r_env_dot_delayed_expr(expr_env, dd - 1);
+            expr_env = new_env;
             break;
         }
-
-        r_obj* new_env = r_env_dot_delayed_env(expr_env, dd - 1);
-        expr = r_env_dot_delayed_expr(expr_env, dd - 1);
-        expr_env = new_env;
+        default:
+            r_stop_unreachable();
+        }
     }
 
     MARK_NOT_MUTABLE(expr);
@@ -209,6 +211,9 @@ r_obj* capturedots(r_obj* frame) {
         case DOT_TYPE_delayed:
             dot = env_dot_delayed_capture(frame, i);
             break;
+
+        default:
+            r_stop_unreachable();
         }
 
         KEEP_AT(dot, dot_pi);
