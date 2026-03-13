@@ -173,9 +173,6 @@ SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP r
 SEXP capturedots(SEXP frame) {
     int n = r_env_dots_length(frame);
 
-    if (n < 0)
-	error(_("'...' used in an incorrect context"));
-
     if (n == 0)
 	return R_NilValue;
 

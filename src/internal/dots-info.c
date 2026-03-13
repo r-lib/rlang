@@ -31,7 +31,7 @@ int r_env_dots_length(SEXP env) {
     SEXP dots = Rf_findVar(R_DotsSymbol, env);
 
     if (dots == R_UnboundValue)
-        return -1;
+        Rf_error("incorrect context: the current call has no '...' to look in");
 
     if (dots == R_MissingArg || TYPEOF(dots) != DOTSXP)
         return 0;
@@ -163,13 +163,7 @@ SEXP ffi_dots_exist(SEXP env) {
 }
 
 SEXP ffi_dots_length(SEXP env) {
-    int n = r_env_dots_length(env);
-
-    if (n < 0) {
-        Rf_error("incorrect context: the current call has no '...' to look in");
-    }
-
-    return Rf_ScalarInteger(n);
+    return Rf_ScalarInteger(r_env_dots_length(env));
 }
 
 SEXP ffi_dots_names(SEXP env) {
