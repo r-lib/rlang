@@ -29,7 +29,7 @@ SEXP r_env_dot_forced_expr(SEXP env, r_ssize i);
 SEXP ffi_dots_exist(SEXP env);
 SEXP ffi_dots_length(SEXP env);
 SEXP ffi_dots_names(SEXP env);
-SEXP ffi_dots_elt(SEXP ffi_i, SEXP env);
+SEXP ffi_dot_get(SEXP ffi_i, SEXP env);
 SEXP ffi_dot_type(SEXP ffi_i, SEXP env);
 SEXP ffi_dot_delayed_expr(SEXP ffi_i, SEXP env);
 SEXP ffi_dot_delayed_env(SEXP ffi_i, SEXP env);

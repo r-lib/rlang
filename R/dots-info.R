@@ -16,10 +16,10 @@ env_dots_names <- function(env = caller_env()) {
   .Call(ffi_dots_names, env)
 }
 
-env_dots_elt <- function(env, i) {
+env_dot_get <- function(env, i) {
   check_environment(env)
   check_number_whole(i, min = 1)
-  .Call(ffi_dots_elt, as.integer(i), env)
+  .Call(ffi_dot_get, as.integer(i), env)
 }
 
 env_dot_type <- function(env, i) {

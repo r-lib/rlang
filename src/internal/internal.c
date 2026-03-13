@@ -161,7 +161,7 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_dot_delayed_expr",             (DL_FUNC) &ffi_dot_delayed_expr, 2},
   {"ffi_dot_forced_expr",              (DL_FUNC) &ffi_dot_forced_expr, 2},
   {"ffi_dot_type",                     (DL_FUNC) &ffi_dot_type, 2},
-  {"ffi_dots_elt",                     (DL_FUNC) &ffi_dots_elt, 2},
+  {"ffi_dot_get",                      (DL_FUNC) &ffi_dot_get, 2},
   {"ffi_dots_exist",                   (DL_FUNC) &ffi_dots_exist, 1},
   {"ffi_dots_length",                  (DL_FUNC) &ffi_dots_length, 1},
   {"ffi_dots_names",                   (DL_FUNC) &ffi_dots_names, 1},

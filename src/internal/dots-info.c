@@ -176,7 +176,7 @@ SEXP ffi_dots_names(SEXP env) {
     return r_env_dots_names(env);
 }
 
-SEXP ffi_dots_elt(SEXP ffi_i, SEXP env) {
+SEXP ffi_dot_get(SEXP ffi_i, SEXP env) {
     int i = INTEGER(ffi_i)[0] - 1;
     return r_env_dot_get(env, i);
 }
