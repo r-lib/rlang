@@ -55,7 +55,7 @@ r_obj* new_splice_box(r_obj* x) {
   r_list_poke(out, 0, x);
 
   // Shallow-clone attributes from the prototype for fast construction
-  r_attrib_poke_from(out, spliced_box_prototype);
+  r_attrib_clone_from(out, spliced_box_prototype);
 
   FREE(1);
   return out;
@@ -880,7 +880,7 @@ r_obj* ffi_quos_interp(r_obj* frame_env,
   dots = KEEP(dots_finalise(&capture_info, dots));
 
   r_obj* nms = KEEP(r_names(dots));
-  r_attrib_poke_from(dots, quosures_prototype);
+  r_attrib_clone_from(dots, quosures_prototype);
   if (nms != r_null) {
     r_attrib_poke_names(dots, nms);
   }

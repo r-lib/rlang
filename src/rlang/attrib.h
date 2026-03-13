@@ -34,7 +34,7 @@ void r_attrib_zap_all(r_obj* x) {
 }
 
 static inline
-void r_attrib_poke_from(r_obj* to, r_obj* from) {
+void r_attrib_clone_from(r_obj* to, r_obj* from) {
   SHALLOW_DUPLICATE_ATTRIB(to, from);
 }
 
