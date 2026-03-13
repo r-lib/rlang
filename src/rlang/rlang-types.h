@@ -133,7 +133,7 @@ void CLEAR_ATTRIB(SEXP x) {
 }
 #endif
 
-#if R_VERSION < R_Version(4, 6, 0)
+#if 1 || R_VERSION < R_Version(4, 6, 0)
 static inline
 Rboolean rlang_promise_is_forced(SEXP x) {
   return PRVALUE(x) != R_UnboundValue;
@@ -157,6 +157,9 @@ SEXP rlang_promise_unwrap(SEXP x, Rboolean *forced) {
     x = expr;
   }
 }
+#endif
+
+#if R_VERSION < R_Version(4, 6, 0)
 static inline
 SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
   PROTECT_INDEX api;
