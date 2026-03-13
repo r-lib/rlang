@@ -1151,24 +1151,24 @@ static struct r_lazy dots_ignore_empty_arg = { 0 };
 
 // FFI wrappers for dots-info API ---
 
-r_obj* ffi_dots_exist(r_obj* env) {
+r_obj* ffi_env_dots_exist(r_obj* env) {
     return r_lgl(r_env_dots_exist(env));
 }
 
-r_obj* ffi_dots_length(r_obj* env) {
+r_obj* ffi_env_dots_length(r_obj* env) {
     return r_int(r_env_dots_length(env));
 }
 
-r_obj* ffi_dots_names(r_obj* env) {
+r_obj* ffi_env_dots_names(r_obj* env) {
     return r_env_dots_names(env);
 }
 
-r_obj* ffi_dot_get(r_obj* ffi_i, r_obj* env) {
+r_obj* ffi_env_dot_get(r_obj* ffi_i, r_obj* env) {
     r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_get(env, i);
 }
 
-r_obj* ffi_dot_type(r_obj* ffi_i, r_obj* env) {
+r_obj* ffi_env_dot_type(r_obj* ffi_i, r_obj* env) {
     r_ssize i = r_int_get(ffi_i, 0) - 1;
     r_dot_type_t type = r_env_dot_type(env, i);
 
@@ -1181,17 +1181,17 @@ r_obj* ffi_dot_type(r_obj* ffi_i, r_obj* env) {
     }
 }
 
-r_obj* ffi_dot_delayed_expr(r_obj* ffi_i, r_obj* env) {
+r_obj* ffi_env_dot_delayed_expr(r_obj* ffi_i, r_obj* env) {
     r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_delayed_expr(env, i);
 }
 
-r_obj* ffi_dot_delayed_env(r_obj* ffi_i, r_obj* env) {
+r_obj* ffi_env_dot_delayed_env(r_obj* ffi_i, r_obj* env) {
     r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_delayed_env(env, i);
 }
 
-r_obj* ffi_dot_forced_expr(r_obj* ffi_i, r_obj* env) {
+r_obj* ffi_env_dot_forced_expr(r_obj* ffi_i, r_obj* env) {
     r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_forced_expr(env, i);
 }
