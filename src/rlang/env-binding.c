@@ -16,9 +16,9 @@ static inline bool promise_is_forced(r_obj* x) {
 
 // Unwrap nested promises to the innermost one.
 // Sets `*forced` to true if the innermost promise is forced.
-static r_obj* delayed_promise_unwrap(r_obj* value, bool *forced) {
-  if (r_typeof(value) != R_TYPE_promise || promise_is_forced(value)) {
-    r_abort("Internal error: expected a delayed promise.");
+static r_obj* promise_unwrap(r_obj* value, bool *forced) {
+  if (r_typeof(value) != R_TYPE_promise) {
+    r_abort("Internal error: expected a promise.");
   }
 
   while (true) {
@@ -168,12 +168,8 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
   }
 
   if (r_typeof(value) == R_TYPE_promise) {
-    if (promise_is_forced(value)) {
-      return R_ENV_BINDING_TYPE_forced;
-    }
-
     bool forced;
-    delayed_promise_unwrap(value, &forced);
+    promise_unwrap(value, &forced);
     if (forced) {
       return R_ENV_BINDING_TYPE_forced;
     }
@@ -264,12 +260,9 @@ r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
   }
-  if (promise_is_forced(value)) {
-    r_abort("Not a delayed binding.");
-  }
 
   bool forced;
-  r_obj* inner = delayed_promise_unwrap(value, &forced);
+  r_obj* inner = promise_unwrap(value, &forced);
   if (forced) {
     r_abort("Not a delayed binding.");
   }
@@ -287,12 +280,9 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
   }
-  if (promise_is_forced(value)) {
-    r_abort("Not a delayed binding.");
-  }
 
   bool forced;
-  r_obj* inner = delayed_promise_unwrap(value, &forced);
+  r_obj* inner = promise_unwrap(value, &forced);
   if (forced) {
     r_abort("Not a delayed binding.");
   }
@@ -314,17 +304,13 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  if (promise_is_forced(value)) {
-    return R_PromiseExpr(value);
-  }
-
   bool forced;
-  r_obj* inner = delayed_promise_unwrap(value, &forced);
-  if (forced) {
-    return R_PromiseExpr(inner);
+  r_obj* inner = promise_unwrap(value, &forced);
+  if (!forced) {
+    r_abort("Not a forced binding.");
   }
 
-  r_abort("Not a forced binding.");
+  return R_PromiseExpr(inner);
 #endif
 }
 

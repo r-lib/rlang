@@ -20,9 +20,9 @@ static Rboolean promise_is_forced(SEXP x) {
 
 // Unwrap nested promises to the innermost one.
 // Sets `*forced` to TRUE if the innermost promise is forced.
-static SEXP delayed_promise_unwrap(SEXP elt, Rboolean *forced) {
-    if (!is_promise(elt) || promise_is_forced(elt))
-        Rf_error("internal: expected a delayed promise");
+static SEXP promise_unwrap(SEXP elt, Rboolean *forced) {
+    if (!is_promise(elt))
+        Rf_error("internal: expected a promise");
 
     while (true) {
         if (promise_is_forced(elt)) {
@@ -127,11 +127,8 @@ r_dot_type_t r_env_dot_type(SEXP env, r_ssize i) {
     if (!is_promise(elt))
         return DOT_TYPE_value;
 
-    if (promise_is_forced(elt))
-        return DOT_TYPE_forced;
-
     Rboolean forced;
-    delayed_promise_unwrap(elt, &forced);
+    promise_unwrap(elt, &forced);
     if (forced)
         return DOT_TYPE_forced;
 
@@ -144,11 +141,9 @@ SEXP r_env_dot_delayed_expr(SEXP env, r_ssize i) {
 
     if (!is_promise(elt))
         Rf_error("not a delayed promise");
-    if (promise_is_forced(elt))
-        Rf_error("not a delayed promise");
 
     Rboolean forced;
-    SEXP inner = delayed_promise_unwrap(elt, &forced);
+    SEXP inner = promise_unwrap(elt, &forced);
     if (forced)
         Rf_error("not a delayed promise");
 
@@ -161,11 +156,9 @@ SEXP r_env_dot_delayed_env(SEXP env, r_ssize i) {
 
     if (!is_promise(elt))
         Rf_error("not a delayed promise");
-    if (promise_is_forced(elt))
-        Rf_error("not a delayed promise");
 
     Rboolean forced;
-    SEXP inner = delayed_promise_unwrap(elt, &forced);
+    SEXP inner = promise_unwrap(elt, &forced);
     if (forced)
         Rf_error("not a delayed promise");
 
@@ -179,15 +172,12 @@ SEXP r_env_dot_forced_expr(SEXP env, r_ssize i) {
     if (!is_promise(elt))
         Rf_error("not a forced promise");
 
-    if (promise_is_forced(elt))
-        return promise_expr(elt);
-
     Rboolean forced;
-    SEXP inner = delayed_promise_unwrap(elt, &forced);
-    if (forced)
-        return promise_expr(inner);
+    SEXP inner = promise_unwrap(elt, &forced);
+    if (!forced)
+        Rf_error("not a forced promise");
 
-    Rf_error("not a forced promise");
+    return promise_expr(inner);
 }
 
 
