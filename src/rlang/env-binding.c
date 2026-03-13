@@ -10,15 +10,19 @@ static inline r_obj* env_find(r_obj* env, r_obj* sym) {
   return Rf_findVarInFrame3(env, sym, FALSE);
 }
 
+static inline bool promise_is_forced(r_obj* x) {
+  return PRVALUE(x) != r_syms.unbound;
+}
+
 // Unwrap nested promises to the innermost one.
-// Sets `*forced` to true if the innermost promise is forced (PRENV == r_null).
+// Sets `*forced` to true if the innermost promise is forced.
 static r_obj* delayed_promise_unwrap(r_obj* value, bool *forced) {
-  if (r_typeof(value) != R_TYPE_promise || PRVALUE(value) != r_syms.unbound) {
+  if (r_typeof(value) != R_TYPE_promise || promise_is_forced(value)) {
     r_abort("Internal error: expected a delayed promise.");
   }
 
-  while (r_typeof(value) == R_TYPE_promise) {
-    if (PRENV(value) == r_null) {
+  while (true) {
+    if (promise_is_forced(value)) {
       *forced = true;
       return value;
     }
@@ -31,9 +35,6 @@ static r_obj* delayed_promise_unwrap(r_obj* value, bool *forced) {
 
     value = expr;
   }
-
-  *forced = false;
-  return value;
 }
 #endif
 
@@ -167,7 +168,7 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
   }
 
   if (r_typeof(value) == R_TYPE_promise) {
-    if (PRVALUE(value) != r_syms.unbound) {
+    if (promise_is_forced(value)) {
       return R_ENV_BINDING_TYPE_forced;
     }
 
@@ -263,7 +264,7 @@ r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
   }
-  if (PRVALUE(value) != r_syms.unbound) {
+  if (promise_is_forced(value)) {
     r_abort("Not a delayed binding.");
   }
 
@@ -286,7 +287,7 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
   }
-  if (PRVALUE(value) != r_syms.unbound) {
+  if (promise_is_forced(value)) {
     r_abort("Not a delayed binding.");
   }
 
@@ -313,7 +314,7 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  if (PRVALUE(value) != r_syms.unbound) {
+  if (promise_is_forced(value)) {
     return R_PromiseExpr(value);
   }
 

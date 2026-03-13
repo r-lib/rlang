@@ -24,8 +24,8 @@ static SEXP delayed_promise_unwrap(SEXP elt, Rboolean *forced) {
     if (!is_promise(elt) || promise_is_forced(elt))
         Rf_error("internal: expected a delayed promise");
 
-    while (is_promise(elt)) {
-        if (promise_env(elt) == R_NilValue) {
+    while (true) {
+        if (promise_is_forced(elt)) {
             *forced = TRUE;
             return elt;
         }
@@ -38,9 +38,6 @@ static SEXP delayed_promise_unwrap(SEXP elt, Rboolean *forced) {
 
         elt = expr;
     }
-
-    *forced = FALSE;
-    return elt;
 }
 
 
