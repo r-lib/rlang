@@ -31,3 +31,6 @@ test_encodings <- function() {
 expect_utf8_encoded <- function(object) {
   expect_identical(Encoding(object), rep("UTF-8", length(object)))
 }
+expect_latin1_encoded <- function(object) {
+  expect_identical(Encoding(object), rep("latin1", length(object)))
+}
