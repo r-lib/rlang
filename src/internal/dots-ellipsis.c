@@ -1,5 +1,5 @@
 #include "rlang.h"
-#include "dots-api.h"
+#include "dots-info.h"
 
 r_obj* ffi_has_dots_unnamed(r_obj* env) {
   if (r_typeof(env) != R_TYPE_environment) {

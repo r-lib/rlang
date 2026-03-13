@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "rlang.h"
-#include "internal/dots-api.h"
+#include "internal/dots-info.h"
 
 #define _(string) (string)
 

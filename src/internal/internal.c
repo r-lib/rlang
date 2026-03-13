@@ -10,7 +10,7 @@
 #include "cnd.c"
 #include "cnd-handlers.c"
 #include "dots.c"
-#include "dots-api.c"
+#include "dots-info.c"
 #include "dots-ellipsis.c"
 #include "encoding.c"
 #include "env.c"
