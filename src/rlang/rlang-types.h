@@ -135,20 +135,20 @@ void CLEAR_ATTRIB(SEXP x) {
 
 #if 1 || R_VERSION < R_Version(4, 6, 0)
 static inline
-Rboolean rlang_promise_is_forced(SEXP x) {
+bool rlang_promise_is_forced(r_obj* x) {
   return PRVALUE(x) != R_UnboundValue;
 }
 // Unwrap nested promises to the innermost one.
 // Sets `*forced` to TRUE if the innermost promise is forced.
 static inline
-SEXP rlang_promise_unwrap(SEXP x, Rboolean *forced) {
+r_obj* rlang_promise_unwrap(r_obj* x, bool *forced) {
   while (TRUE) {
     if (rlang_promise_is_forced(x)) {
       *forced = TRUE;
       return x;
     }
 
-    SEXP expr = PREXPR(x);
+    r_obj* expr = PREXPR(x);
     if (TYPEOF(expr) != PROMSXP) {
       *forced = FALSE;
       return x;

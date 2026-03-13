@@ -141,7 +141,7 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
   }
 
   if (r_typeof(value) == R_TYPE_promise) {
-    Rboolean forced;
+    bool forced;
     rlang_promise_unwrap(value, &forced);
     if (forced) {
       return R_ENV_BINDING_TYPE_forced;
@@ -234,7 +234,7 @@ r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  Rboolean forced;
+  bool forced;
   r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (forced) {
     r_abort("Not a delayed binding.");
@@ -254,7 +254,7 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  Rboolean forced;
+  bool forced;
   r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (forced) {
     r_abort("Not a delayed binding.");
@@ -277,7 +277,7 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  Rboolean forced;
+  bool forced;
   r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (!forced) {
     r_abort("Not a forced binding.");

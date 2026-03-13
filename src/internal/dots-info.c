@@ -3,15 +3,18 @@
 
 // Internal promise helpers (static, used only in this file) ---
 
-static Rboolean is_promise(SEXP x) {
-    return TYPEOF(x) == PROMSXP;
+static
+bool is_promise(r_obj* x) {
+    return r_typeof(x) == R_TYPE_promise;
 }
 
-static SEXP promise_expr(SEXP x) {
+static
+r_obj* promise_expr(r_obj* x) {
     return PREXPR(x);
 }
 
-static SEXP promise_env(SEXP x) {
+static
+r_obj* promise_env(r_obj* x) {
     return PRENV(x);
 }
 
@@ -21,136 +24,152 @@ static SEXP promise_env(SEXP x) {
 
 
 // R API: R_DotsExist
-Rboolean r_env_dots_exist(SEXP env) {
-    SEXP dots = Rf_findVar(R_DotsSymbol, env);
-    return dots != R_UnboundValue;
+bool r_env_dots_exist(r_obj* env) {
+    r_obj* dots = Rf_findVar(r_syms.dots, env);
+    return dots != r_syms.unbound;
 }
 
 // R API: R_DotsLength
-int r_env_dots_length(SEXP env) {
-    SEXP dots = Rf_findVar(R_DotsSymbol, env);
+r_ssize r_env_dots_length(r_obj* env) {
+    r_obj* dots = Rf_findVar(r_syms.dots, env);
 
-    if (dots == R_UnboundValue)
-        Rf_error("incorrect context: the current call has no '...' to look in");
+    if (dots == r_syms.unbound) {
+        r_abort("incorrect context: the current call has no '...' to look in");
+    }
 
-    if (dots == R_MissingArg || TYPEOF(dots) != DOTSXP)
+    if (dots == r_syms.missing || r_typeof(dots) != R_TYPE_dots) {
         return 0;
+    }
 
-    return Rf_length(dots);
+    return r_length(dots);
 }
 
 // R API: R_DotsNames
-SEXP r_env_dots_names(SEXP env) {
-    SEXP dots = PROTECT(Rf_findVar(R_DotsSymbol, env));
+r_obj* r_env_dots_names(r_obj* env) {
+    r_obj* dots = KEEP(Rf_findVar(r_syms.dots, env));
 
-    if (dots == R_UnboundValue)
-        Rf_error("incorrect context: the current call has no '...' to look in");
-
-    int n = (dots == R_MissingArg || TYPEOF(dots) != DOTSXP) ? 0 : Rf_length(dots);
-
-    SEXP out = PROTECT(Rf_allocVector(STRSXP, n));
-
-    for (int i = 0; i < n; ++i) {
-        SEXP tag = TAG(dots);
-        if (TYPEOF(tag) == SYMSXP) {
-            SET_STRING_ELT(out, i, PRINTNAME(tag));
-        } else {
-            SET_STRING_ELT(out, i, R_BlankString);
-        }
-        dots = CDR(dots);
+    if (dots == r_syms.unbound) {
+        r_abort("incorrect context: the current call has no '...' to look in");
     }
 
-    UNPROTECT(2);
+    r_ssize n = (dots == r_syms.missing || r_typeof(dots) != R_TYPE_dots) ? 0 : r_length(dots);
+
+    r_obj* out = KEEP(r_alloc_character(n));
+
+    for (r_ssize i = 0; i < n; ++i) {
+        r_obj* tag = r_node_tag(dots);
+        if (r_typeof(tag) == R_TYPE_symbol) {
+            r_chr_poke(out, i, r_sym_string(tag));
+        } else {
+            r_chr_poke(out, i, r_strs.empty);
+        }
+        dots = r_node_cdr(dots);
+    }
+
+    FREE(2);
     return out;
 }
 
 static
-SEXP env_dot_find(SEXP env, r_ssize i) {
-    if (i < 0)
-        Rf_error("indexing '...' with negative index %d", (int) i);
-
-    SEXP dots = Rf_findVar(R_DotsSymbol, env);
-
-    if (dots == R_UnboundValue)
-        Rf_error("'...' used in an incorrect context");
-
-    if (dots == R_MissingArg || TYPEOF(dots) != DOTSXP)
-        Rf_error("the ... list contains fewer than %d elements", (int) i + 1);
-
-    for (r_ssize j = 0; j < i; ++j) {
-        dots = CDR(dots);
-        if (dots == R_NilValue)
-            Rf_error("the ... list contains fewer than %d elements", (int) i + 1);
+r_obj* env_dot_find(r_obj* env, r_ssize i) {
+    if (i < 0) {
+        r_abort("indexing '...' with negative index %d", (int) i);
     }
 
-    return CAR(dots);
+    r_obj* dots = Rf_findVar(r_syms.dots, env);
+
+    if (dots == r_syms.unbound) {
+        r_abort("'...' used in an incorrect context");
+    }
+
+    if (dots == r_syms.missing || r_typeof(dots) != R_TYPE_dots) {
+        r_abort("the ... list contains fewer than %d elements", (int) i + 1);
+    }
+
+    for (r_ssize j = 0; j < i; ++j) {
+        dots = r_node_cdr(dots);
+        if (dots == r_null) {
+            r_abort("the ... list contains fewer than %d elements", (int) i + 1);
+        }
+    }
+
+    return r_node_car(dots);
 }
 
 // R API: R_DotsElt
-SEXP r_env_dot_get(SEXP env, r_ssize i) {
-    SEXP elt = env_dot_find(env, i);
-    return Rf_eval(elt, env);
+r_obj* r_env_dot_get(r_obj* env, r_ssize i) {
+    r_obj* elt = env_dot_find(env, i);
+    return r_eval(elt, env);
 }
 
 // R API: R_GetDotType
-r_dot_type_t r_env_dot_type(SEXP env, r_ssize i) {
-    SEXP elt = env_dot_find(env, i);
+r_dot_type_t r_env_dot_type(r_obj* env, r_ssize i) {
+    r_obj* elt = env_dot_find(env, i);
 
-    if (elt == R_MissingArg)
+    if (elt == r_syms.missing) {
         return DOT_TYPE_missing;
+    }
 
-    if (!is_promise(elt))
+    if (!is_promise(elt)) {
         return DOT_TYPE_value;
+    }
 
-    Rboolean forced;
+    bool forced;
     rlang_promise_unwrap(elt, &forced);
-    if (forced)
+    if (forced) {
         return DOT_TYPE_forced;
+    }
 
     return DOT_TYPE_delayed;
 }
 
 // R API: R_DotDelayedExpression
-SEXP r_env_dot_delayed_expr(SEXP env, r_ssize i) {
-    SEXP elt = env_dot_find(env, i);
+r_obj* r_env_dot_delayed_expr(r_obj* env, r_ssize i) {
+    r_obj* elt = env_dot_find(env, i);
 
-    if (!is_promise(elt))
-        Rf_error("not a delayed promise");
+    if (!is_promise(elt)) {
+        r_abort("not a delayed promise");
+    }
 
-    Rboolean forced;
-    SEXP inner = rlang_promise_unwrap(elt, &forced);
-    if (forced)
-        Rf_error("not a delayed promise");
+    bool forced;
+    r_obj* inner = rlang_promise_unwrap(elt, &forced);
+    if (forced) {
+        r_abort("not a delayed promise");
+    }
 
     return promise_expr(inner);
 }
 
 // R API: R_DotDelayedEnvironment
-SEXP r_env_dot_delayed_env(SEXP env, r_ssize i) {
-    SEXP elt = env_dot_find(env, i);
+r_obj* r_env_dot_delayed_env(r_obj* env, r_ssize i) {
+    r_obj* elt = env_dot_find(env, i);
 
-    if (!is_promise(elt))
-        Rf_error("not a delayed promise");
+    if (!is_promise(elt)) {
+        r_abort("not a delayed promise");
+    }
 
-    Rboolean forced;
-    SEXP inner = rlang_promise_unwrap(elt, &forced);
-    if (forced)
-        Rf_error("not a delayed promise");
+    bool forced;
+    r_obj* inner = rlang_promise_unwrap(elt, &forced);
+    if (forced) {
+        r_abort("not a delayed promise");
+    }
 
     return promise_env(inner);
 }
 
 // R API: R_DotForcedExpression
-SEXP r_env_dot_forced_expr(SEXP env, r_ssize i) {
-    SEXP elt = env_dot_find(env, i);
+r_obj* r_env_dot_forced_expr(r_obj* env, r_ssize i) {
+    r_obj* elt = env_dot_find(env, i);
 
-    if (!is_promise(elt))
-        Rf_error("not a forced promise");
+    if (!is_promise(elt)) {
+        r_abort("not a forced promise");
+    }
 
-    Rboolean forced;
-    SEXP inner = rlang_promise_unwrap(elt, &forced);
-    if (!forced)
-        Rf_error("not a forced promise");
+    bool forced;
+    r_obj* inner = rlang_promise_unwrap(elt, &forced);
+    if (!forced) {
+        r_abort("not a forced promise");
+    }
 
     return promise_expr(inner);
 }
@@ -158,47 +177,47 @@ SEXP r_env_dot_forced_expr(SEXP env, r_ssize i) {
 
 // FFI wrappers for R interface ---
 
-SEXP ffi_dots_exist(SEXP env) {
-    return Rf_ScalarLogical(r_env_dots_exist(env));
+r_obj* ffi_dots_exist(r_obj* env) {
+    return r_lgl(r_env_dots_exist(env));
 }
 
-SEXP ffi_dots_length(SEXP env) {
-    return Rf_ScalarInteger(r_env_dots_length(env));
+r_obj* ffi_dots_length(r_obj* env) {
+    return r_int(r_env_dots_length(env));
 }
 
-SEXP ffi_dots_names(SEXP env) {
+r_obj* ffi_dots_names(r_obj* env) {
     return r_env_dots_names(env);
 }
 
-SEXP ffi_dot_get(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0] - 1;
+r_obj* ffi_dot_get(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_get(env, i);
 }
 
-SEXP ffi_dot_type(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0] - 1;
+r_obj* ffi_dot_type(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
     r_dot_type_t type = r_env_dot_type(env, i);
 
     switch (type) {
-    case DOT_TYPE_value:   return Rf_mkString("value");
-    case DOT_TYPE_missing: return Rf_mkString("missing");
-    case DOT_TYPE_delayed: return Rf_mkString("delayed");
-    case DOT_TYPE_forced:  return Rf_mkString("forced");
-    default:               Rf_error("unreachable");
+    case DOT_TYPE_value:   return r_chr("value");
+    case DOT_TYPE_missing: return r_chr("missing");
+    case DOT_TYPE_delayed: return r_chr("delayed");
+    case DOT_TYPE_forced:  return r_chr("forced");
+    default:               r_abort("unreachable");
     }
 }
 
-SEXP ffi_dot_delayed_expr(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0] - 1;
+r_obj* ffi_dot_delayed_expr(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_delayed_expr(env, i);
 }
 
-SEXP ffi_dot_delayed_env(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0] - 1;
+r_obj* ffi_dot_delayed_env(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_delayed_env(env, i);
 }
 
-SEXP ffi_dot_forced_expr(SEXP ffi_i, SEXP env) {
-    int i = INTEGER(ffi_i)[0] - 1;
+r_obj* ffi_dot_forced_expr(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_forced_expr(env, i);
 }
