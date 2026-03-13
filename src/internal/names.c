@@ -21,7 +21,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
 
   r_ssize n = r_length(names);
 
-  r_obj* new_names = KEEP(r_clone(names));
+  r_obj* new_names = KEEP(r_obj_encode_utf8(r_clone(names)));
   r_obj* const * v_new_names = r_chr_cbegin(new_names);
 
   for (r_ssize i = 0; i < n; ++i) {
@@ -56,7 +56,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
       continue;
     }
 
-    const char* name = Rf_translateCharUTF8(elt);
+    const char* name = r_str_c_string(elt);
 
     int size = strlen(name);
     int buf_size = size + MAX_IOTA_SIZE;
@@ -76,7 +76,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
       stop_large_name();
     }
 
-    r_chr_poke(new_names, i, Rf_mkCharLenCE(buf, size + needed, CE_UTF8));
+    r_chr_poke(new_names, i, Rf_mkCharLenCE(buf, size + needed, Rf_getCharCE(elt)));
   }
 
   if (!quiet) {
