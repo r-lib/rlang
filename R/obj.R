@@ -44,10 +44,6 @@ errorcall <- function(call, msg) {
   .Call(ffi_test_Rf_errorcall, call, msg)
 }
 
-obj_attrib <- function(x) {
-  .Call(ffi_attrib, x)
-}
-
 vec_alloc <- function(type, n) {
   stopifnot(
     is_string(type),

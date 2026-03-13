@@ -174,11 +174,12 @@ r_obj* ffi_new_condition(r_obj* class,
   r_attrib_poke_names(cnd, KEEP(new_condition_names(data)));
   r_attrib_poke_class(cnd, KEEP(chr_append(class, KEEP(r_str("condition")))));
 
-  if (Rf_any_duplicated(r_names(cnd), FALSE)) {
+  r_obj* cnd_nms = KEEP(r_names(cnd));
+  if (Rf_any_duplicated(cnd_nms, FALSE)) {
     r_abort("Condition fields can't have the same name.");
   }
 
-  FREE(4);
+  FREE(5);
   return cnd;
 }
 static
@@ -187,7 +188,7 @@ r_obj* new_condition_names(r_obj* data) {
     r_abort("Conditions must have named data fields");
   }
 
-  r_obj* data_nms = r_names(data);
+  r_obj* data_nms = KEEP(r_names(data));
 
   if (r_chr_has_any(data_nms, (const char* []) { "message", NULL })) {
     r_abort("Conditions can't have a `message` data field");
@@ -197,7 +198,7 @@ r_obj* new_condition_names(r_obj* data) {
   r_chr_poke(nms, 0, r_str("message"));
   r_vec_poke_n(nms, 1, data_nms, 0, r_length(nms) - 1);
 
-  FREE(1);
+  FREE(2);
   return nms;
 }
 

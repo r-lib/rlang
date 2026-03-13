@@ -247,7 +247,7 @@ r_obj* call_zap_one(r_obj* x) {
   case R_TYPE_double:
   case R_TYPE_character:
   case R_TYPE_complex: // Not entirely correct for complex
-    if (r_attrib(x) == r_null && r_length(x) == 1) {
+    if (!r_attrib_has_any(x) && r_length(x) == 1) {
       return x;
     } else {
       return type_sum(x);

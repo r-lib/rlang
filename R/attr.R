@@ -278,10 +278,6 @@ has_length <- function(x, n = NULL) {
   }
 }
 
-poke_attributes <- function(x, attrs) {
-  .Call(ffi_poke_attrib, x, attrs)
-}
-
 #' Zap source references
 #'
 #' @description

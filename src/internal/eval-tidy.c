@@ -84,13 +84,14 @@ static void check_unique_names(r_obj* x) {
     return ;
   }
 
-  r_obj* names = r_names(x);
+  r_obj* names = KEEP(r_names(x));
   if (names == r_null) {
     r_abort("`data` must be uniquely named but does not have names");
   }
   if (vec_find_first_duplicate(names, empty_names_chr, NULL)) {
     r_abort("`data` must be uniquely named but has duplicate columns");
   }
+  FREE(1);
 }
 r_obj* ffi_as_data_pronoun(r_obj* x) {
   int n_kept = 0;
@@ -308,7 +309,7 @@ r_obj* ffi_as_data_mask(r_obj* data) {
   case R_TYPE_list: {
     check_unique_names(data);
 
-    r_obj* names = r_names(data);
+    r_obj* names = KEEP_N(r_names(data), &n_kept);
 
     r_ssize n_mask = mask_length(r_length(data));
     bottom = KEEP_N(r_alloc_environment(n_mask, r_envs.empty), &n_kept);
@@ -399,7 +400,7 @@ static r_obj* env_poke_fn = NULL;
 
 r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
   // Remove srcrefs from system call
-  r_attrib_poke(tilde, r_syms.srcref, r_null);
+  r_attrib_zap(tilde, r_syms.srcref);
 
   if (!is_quosure(tilde)) {
     return base_tilde_eval(tilde, caller_frame);
@@ -413,12 +414,13 @@ r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
     return expr;
   }
 
-  r_obj* quo_env = ffi_quo_get_env(tilde);
+  int n_kept = 0;
+
+  r_obj* quo_env = KEEP_N(ffi_quo_get_env(tilde), &n_kept);
   if (r_typeof(quo_env) != R_TYPE_environment) {
     r_abort("Internal error: Quosure environment is corrupt");
   }
 
-  int n_kept = 0;
   r_obj* top = r_null;
   struct rlang_mask_info info = mask_info(caller_frame);
 
