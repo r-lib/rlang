@@ -1,202 +1,264 @@
-#include <Rinternals.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define attribute_hidden
-#define _(string) (string)
+#include "rlang.h"
 
-static Rboolean dotDotVal(SEXP);
-static SEXP capturedot(SEXP, int);
+static int dotDotVal(r_obj* sym);
 
 
-SEXP attribute_hidden new_captured_arg(SEXP x, SEXP env) {
-    static SEXP nms = NULL;
+// Capture implementation ---
+
+r_obj* attribute_hidden new_captured_arg(r_obj* x, r_obj* env) {
+    static r_obj* nms = NULL;
     if (!nms) {
-        nms = allocVector(STRSXP, 2);
-        R_PreserveObject(nms);
+        nms = r_alloc_character(2);
+        r_preserve_global(nms);
         MARK_NOT_MUTABLE(nms);
-        SET_STRING_ELT(nms, 0, mkChar("expr"));
-        SET_STRING_ELT(nms, 1, mkChar("env"));
+        r_chr_poke(nms, 0, r_str("expr"));
+        r_chr_poke(nms, 1, r_str("env"));
     }
 
-    SEXP info = PROTECT(allocVector(VECSXP, 2));
-    SET_VECTOR_ELT(info, 0, x);
-    SET_VECTOR_ELT(info, 1, env);
-    setAttrib(info, R_NamesSymbol, nms);
+    r_obj* info = KEEP(r_alloc_list(2));
+    r_list_poke(info, 0, x);
+    r_list_poke(info, 1, env);
+    r_attrib_poke(info, r_syms.names, nms);
 
-    UNPROTECT(1);
+    FREE(1);
     return info;
 }
-SEXP attribute_hidden new_captured_literal(SEXP x) {
-    return new_captured_arg(x, R_EmptyEnv);
+
+r_obj* attribute_hidden new_captured_literal(r_obj* x) {
+    return new_captured_arg(x, r_envs.empty);
 }
 
-SEXP attribute_hidden new_captured_promise(SEXP x, SEXP env) {
-    SEXP expr_env = R_NilValue;
+static
+r_obj* capture_delayed(r_obj* expr, r_obj* expr_env) {
+    // Follow ..N references. This is the main difference with the accessors
+    // from the R API which do follow promises but not individual `..N`
+    // references.
+    while (r_typeof(expr) == R_TYPE_symbol) {
+        int dd = dotDotVal(expr);
+        if (dd <= 0) {
+            break;
+        }
+        if (!r_env_dots_exist(expr_env)) {
+            r_abort("'...' used in an incorrect context");
+        }
+        if (dd > r_env_dots_length(expr_env)) {
+            r_abort("the ... list contains fewer than %d elements", dd);
+        }
 
-    SEXP expr = x;
-    while (TYPEOF(expr) == PROMSXP) {
-        expr_env = PRENV(expr);
-        expr = PREXPR(expr);
+        r_dot_type_t type = r_env_dot_type(expr_env, dd - 1);
 
-	if (expr_env == R_NilValue)
-	    break;
-
-	if (TYPEOF(expr) == SYMSXP) {
-	    int dd = dotDotVal(expr);
-	    if (dd)
-		expr = capturedot(expr_env, dd);
-	}
+        switch (type) {
+        case DOT_TYPE_missing:
+            return new_captured_literal(r_syms.missing);
+        case DOT_TYPE_value:
+        case DOT_TYPE_forced: {
+            r_obj* value = KEEP(r_env_dot_get(expr_env, dd - 1));
+            r_obj* result = new_captured_literal(value);
+            FREE(1);
+            return result;
+        }
+        case DOT_TYPE_delayed: {
+            r_obj* new_env = r_env_dot_delayed_env(expr_env, dd - 1);
+            expr = r_env_dot_delayed_expr(expr_env, dd - 1);
+            expr_env = new_env;
+            break;
+        }
+        default:
+            r_stop_unreachable();
+        }
     }
 
-    // Evaluated arguments are returned as literals
-    if (expr_env == R_NilValue) {
-        SEXP value = PROTECT(eval(x, env));
-        expr = new_captured_literal(value);
-        UNPROTECT(1);
-    } else {
-        MARK_NOT_MUTABLE(expr);
-        expr = new_captured_arg(expr, expr_env);
-    }
-
-    return expr;
+    MARK_NOT_MUTABLE(expr);
+    return new_captured_arg(expr, expr_env);
 }
 
-SEXP attribute_hidden rlang_capturearginfo(SEXP call, SEXP op, SEXP args, SEXP rho)
+static
+r_obj* env_dot_delayed_capture(r_obj* env, r_ssize i) {
+    return capture_delayed(
+        r_env_dot_delayed_expr(env, i),
+        r_env_dot_delayed_env(env, i)
+    );
+}
+
+static
+r_obj* env_binding_delayed_capture(r_obj* env, r_obj* sym) {
+    return capture_delayed(
+        r_env_binding_delayed_expr(env, sym),
+        r_env_binding_delayed_env(env, sym)
+    );
+}
+
+r_obj* rlang_capturearginfo(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
 {
-    int nProt = 0;
-
-    // Unwrap first layer of promise
-    SEXP sym = findVarInFrame3(rho, install("arg"), TRUE);
-    PROTECT(sym); ++nProt;
+    enum r_env_binding_type arg_type = r_env_binding_type(rho, r_sym("arg"));
 
     // May be a literal if compiler did not wrap in a promise
-    if (TYPEOF(sym) != PROMSXP) {
-	SEXP value = new_captured_literal(sym);
-	UNPROTECT(nProt);
-	return value;
+    r_obj* sym;
+    if (arg_type == R_ENV_BINDING_TYPE_delayed) {
+        sym = r_env_binding_delayed_expr(rho, r_sym("arg"));
+    } else {
+        sym = r_env_get(rho, r_sym("arg"));
     }
 
-    sym = PREXPR(sym);
-
-    if (TYPEOF(sym) != SYMSXP) {
-        UNPROTECT(nProt);
-        error(_("\"x\" must be an argument name"));
+    if (r_typeof(sym) != R_TYPE_symbol) {
+        r_abort("\"x\" must be an argument name");
     }
 
-    SEXP frame = CAR(args);
-    SEXP arg;
+    KEEP(sym);
+
+    r_obj* frame = r_node_car(args);
 
     int dd = dotDotVal(sym);
+
     if (dd) {
-	arg = capturedot(frame, dd);
+        if (!r_env_dots_exist(frame)) {
+            r_abort("'...' used in an incorrect context");
+        }
+        if (dd > r_env_dots_length(frame)) {
+            r_abort("the ... list contains fewer than %d elements", dd);
+        }
+
+        r_dot_type_t type = r_env_dot_type(frame, dd - 1);
+
+        switch (type) {
+        case DOT_TYPE_missing:
+            FREE(1);
+            return new_captured_literal(r_syms.missing);
+        case DOT_TYPE_value:
+        case DOT_TYPE_forced: {
+            r_obj* value = KEEP(r_env_dot_get(frame, dd - 1));
+            r_obj* result = new_captured_literal(value);
+            FREE(2);
+            return result;
+        }
+        case DOT_TYPE_delayed:
+            FREE(1);
+            return env_dot_delayed_capture(frame, dd - 1);
+        default:
+            r_stop_unreachable();
+        }
     } else {
-	arg = findVar(sym, frame);
-	if (arg == R_UnboundValue)
-	    error(_("object '%s' not found"), CHAR(PRINTNAME(sym)));
+        r_obj* found = r_env_until(frame, sym, r_envs.empty);
+
+        if (found == r_envs.empty) {
+            r_abort("object '%s' not found", CHAR(r_sym_string(sym)));
+        }
+
+        enum r_env_binding_type type = r_env_binding_type(found, sym);
+
+        switch (type) {
+        case R_ENV_BINDING_TYPE_missing:
+            FREE(1);
+            return new_captured_literal(r_syms.missing);
+        case R_ENV_BINDING_TYPE_delayed: {
+            r_obj* result = env_binding_delayed_capture(found, sym);
+            FREE(1);
+            return result;
+        }
+        case R_ENV_BINDING_TYPE_forced:
+        case R_ENV_BINDING_TYPE_value:
+        case R_ENV_BINDING_TYPE_active: {
+            r_obj* value = KEEP(r_env_get(found, sym));
+            r_obj* result = new_captured_literal(value);
+            FREE(2);
+            return result;
+        }
+        case R_ENV_BINDING_TYPE_unbound:
+        default:
+            r_stop_unreachable();
+        }
     }
-    PROTECT(arg); ++nProt;
 
-    SEXP value;
-    if (arg == R_MissingArg)
-        value = new_captured_literal(arg);
-    else if (TYPEOF(arg) == PROMSXP)
-        value = new_captured_promise(arg, frame);
-    else
-        value = new_captured_literal(arg);
-
-    UNPROTECT(nProt);
-    return value;
+    r_stop_unreachable();
 }
 
-SEXP capturedots(SEXP frame) {
-    SEXP dots = PROTECT(findVar(R_DotsSymbol, frame));
+r_obj* capturedots(r_obj* frame) {
+    r_ssize n = r_env_dots_length(frame);
 
-    if (dots == R_UnboundValue)
-	error(_("'...' used in an incorrect context"));
-
-    if (dots == R_MissingArg) {
-        UNPROTECT(1);
-        return R_NilValue;
+    if (n == 0) {
+        return r_null;
     }
 
-    SEXP out = PROTECT(cons(R_NilValue, R_NilValue));
-    SEXP node = out;
+    r_obj* names = KEEP(r_env_dots_names(frame));
+    r_obj* out = KEEP(r_new_node(r_null, r_null));
+    r_obj* node = out;
 
-    while (dots != R_NilValue) {
-        SEXP head = CAR(dots);
+    r_obj* dot = r_null;
+    r_keep_loc dot_pi;
+    KEEP_HERE(dot, &dot_pi);
 
-        SEXP dot;
-        if (TYPEOF(head) == PROMSXP)
-            dot = new_captured_promise(head, frame);
-        else
-            dot = new_captured_literal(head);
+    for (r_ssize i = 0; i < n; ++i) {
+        r_dot_type_t type = r_env_dot_type(frame, i);
+        r_obj* nm = r_chr_get(names, i);
+        r_obj* tag = (nm == r_strs.empty) ? r_null : r_str_as_symbol(nm);
 
-        SETCDR(node, cons(dot, R_NilValue));
-        SET_TAG(CDR(node), TAG(dots));
+        switch (type) {
+        case DOT_TYPE_missing:
+            dot = new_captured_literal(r_syms.missing);
+            break;
 
-        node = CDR(node);
-        dots = CDR(dots);
+        case DOT_TYPE_value:
+        case DOT_TYPE_forced: {
+            r_obj* value = KEEP(r_env_dot_get(frame, i));
+            dot = new_captured_literal(value);
+            FREE(1);
+            break;
+        }
+
+        case DOT_TYPE_delayed:
+            dot = env_dot_delayed_capture(frame, i);
+            break;
+
+        default:
+            r_stop_unreachable();
+        }
+
+        KEEP_AT(dot, dot_pi);
+        r_node_poke_cdr(node, r_new_node(dot, r_null));
+        r_node_poke_tag(r_node_cdr(node), tag);
+
+        node = r_node_cdr(node);
     }
 
-    UNPROTECT(2);
-    return CDR(out);
+    FREE(3);
+    return r_node_cdr(out);
 }
 
-SEXP attribute_hidden rlang_capturedots(SEXP call, SEXP op, SEXP args, SEXP rho)
+r_obj* attribute_hidden rlang_capturedots(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
 {
-    SEXP caller_env = CAR(args);
+    r_obj* caller_env = r_node_car(args);
     return capturedots(caller_env);
 }
 
 
-static Rboolean dotDotVal(SEXP sym)
+static
+int dotDotVal(r_obj* sym)
 {
-    const char* str = CHAR(PRINTNAME(sym));
+    if (r_typeof(sym) != R_TYPE_symbol) {
+        return 0;
+    }
 
-    if (strlen(str) < 3)
-	return 0;
-    if (*str++ != '.')
-	return 0;
-    if (*str++ != '.')
-	return 0;
+    const char* str = CHAR(r_sym_string(sym));
+
+    if (strlen(str) < 3) {
+        return 0;
+    }
+    if (*str++ != '.') {
+        return 0;
+    }
+    if (*str++ != '.') {
+        return 0;
+    }
 
     char* p_end;
     int val = (int) strtol(str, &p_end, 10);
 
-    if (*p_end == '\0')
-	return val;
-    else
-	return 0;
+    if (*p_end == '\0') {
+        return val;
+    } else {
+        return 0;
+    }
 }
-
-static SEXP capturedot(SEXP frame, int i) {
-    if (i < 1)
-	error("'i' must be a positive non-zero integer");
-
-    SEXP dots = PROTECT(findVar(R_DotsSymbol, frame));
-    if (dots == R_UnboundValue)
-	error(_("'...' used in an incorrect context"));
-
-    if (dots == R_MissingArg)
-	goto fewer;
-
-    for (int j = 1; j != i; ++j)
-	dots = CDR(dots);
-
-    if (dots == R_NilValue)
-	goto fewer;
-
-    UNPROTECT(1);
-    return CAR(dots);
-
- fewer:
-    error(_("the ... list contains fewer than %d elements"), i);
-}
-
-
-// Local Variables:
-// tab-width: 8
-// c-basic-offset: 4
-// indent-tabs-mode: t
-// End:
