@@ -19,16 +19,17 @@ r_obj* ffi_has_dots_unnamed(r_obj* env) {
 
   // Use dots_names() to check if any dot has a name
   r_obj* names = KEEP(r_env_dots_names(env));
+  r_obj* unnamed = r_true;
 
   for (int i = 0; i < n; ++i) {
     if (r_chr_get(names, i) != r_strs.empty) {
-      FREE(1);
-      return r_false;
+      unnamed = r_false;
+      break;
     }
   }
 
   FREE(1);
-  return r_true;
+  return unnamed;
 }
 
 r_obj* ffi_ellipsis_dots_used(r_obj* env) {
@@ -39,7 +40,7 @@ r_obj* ffi_ellipsis_dots_used(r_obj* env) {
   int n = r_env_dots_length(env);
 
   // Empty or missing dots count as used
-  if (n <= 0) {
+  if (n == 0) {
     return r_true;
   }
 

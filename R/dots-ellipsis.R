@@ -73,11 +73,7 @@ check_dots <- function(env = caller_env(), error, action, call) {
   }
 
   n <- dots_length(env)
-  unused <- vapply(
-    seq_len(n),
-    function(i) dot_type(i, env) == "delayed",
-    logical(1)
-  )
+  unused <- map_lgl(seq_len(n), function(i) dot_type(i, env) == "delayed")
 
   action_dots(
     error = error,

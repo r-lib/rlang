@@ -11,7 +11,7 @@ static inline r_obj* env_find(r_obj* env, r_obj* sym) {
 }
 
 // Unwrap nested promises to the innermost one.
-// Sets `*forced` to true if the innermost promise is forced (PRENV == NULL).
+// Sets `*forced` to true if the innermost promise is forced (PRENV == r_null).
 static r_obj* delayed_promise_unwrap(r_obj* value, bool *forced) {
   if (r_typeof(value) != R_TYPE_promise || PRVALUE(value) != r_syms.unbound) {
     r_abort("Internal error: expected a delayed promise.");

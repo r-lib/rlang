@@ -730,7 +730,7 @@ test_that("enquo() returns literal when ..N chain hits value dot", {
   expect_equal(wrapper(), quos("hello"))
 })
 
-test_that("enquo() returns literal when ..N chain hits missing arg", {
+test_that("enquo() returns missing arg when ..N chain hits missing arg", {
   inner <- function(...) enquo(..1)
   outer <- function(...) inner(..1)
   expect_equal(outer(, 1), quo())
