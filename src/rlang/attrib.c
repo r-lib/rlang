@@ -1,7 +1,7 @@
 #include "rlang.h"
 
-static r_obj* r_attrib_get_cb(r_obj* attr_tag, r_obj* val, void* data) {
-  if (attr_tag == *(r_obj**) data) {
+static r_obj* r_attrib_get_cb(r_obj* tag, r_obj* val, void* data) {
+  if (tag == *(r_obj**) data) {
     return val;
   }
   return NULL;

@@ -12,6 +12,7 @@ bool r_attrib_has_any(r_obj* x) {
   return ANY_ATTRIB(x);
 }
 
+// Collect attributes into a fresh pairlist
 r_obj* r_attrib_collect(r_obj* x);
 
 static inline
