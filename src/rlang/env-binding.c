@@ -9,33 +9,6 @@
 static inline r_obj* env_find(r_obj* env, r_obj* sym) {
   return Rf_findVarInFrame3(env, sym, FALSE);
 }
-
-static inline bool promise_is_forced(r_obj* x) {
-  return PRVALUE(x) != r_syms.unbound;
-}
-
-// Unwrap nested promises to the innermost one.
-// Sets `*forced` to true if the innermost promise is forced.
-static r_obj* promise_unwrap(r_obj* value, bool *forced) {
-  if (r_typeof(value) != R_TYPE_promise) {
-    r_abort("Internal error: expected a promise.");
-  }
-
-  while (true) {
-    if (promise_is_forced(value)) {
-      *forced = true;
-      return value;
-    }
-
-    r_obj* expr = R_PromiseExpr(value);
-    if (r_typeof(expr) != R_TYPE_promise) {
-      *forced = false;
-      return value;
-    }
-
-    value = expr;
-  }
-}
 #endif
 
 
@@ -168,8 +141,8 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
   }
 
   if (r_typeof(value) == R_TYPE_promise) {
-    bool forced;
-    promise_unwrap(value, &forced);
+    Rboolean forced;
+    rlang_promise_unwrap(value, &forced);
     if (forced) {
       return R_ENV_BINDING_TYPE_forced;
     }
@@ -261,8 +234,8 @@ r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  bool forced;
-  r_obj* inner = promise_unwrap(value, &forced);
+  Rboolean forced;
+  r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (forced) {
     r_abort("Not a delayed binding.");
   }
@@ -281,8 +254,8 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  bool forced;
-  r_obj* inner = promise_unwrap(value, &forced);
+  Rboolean forced;
+  r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (forced) {
     r_abort("Not a delayed binding.");
   }
@@ -304,8 +277,8 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
     r_abort("Not a promise binding.");
   }
 
-  bool forced;
-  r_obj* inner = promise_unwrap(value, &forced);
+  Rboolean forced;
+  r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (!forced) {
     r_abort("Not a forced binding.");
   }

@@ -135,6 +135,29 @@ void CLEAR_ATTRIB(SEXP x) {
 
 #if R_VERSION < R_Version(4, 6, 0)
 static inline
+Rboolean rlang_promise_is_forced(SEXP x) {
+  return PRVALUE(x) != R_UnboundValue;
+}
+// Unwrap nested promises to the innermost one.
+// Sets `*forced` to TRUE if the innermost promise is forced.
+static inline
+SEXP rlang_promise_unwrap(SEXP x, Rboolean *forced) {
+  while (TRUE) {
+    if (rlang_promise_is_forced(x)) {
+      *forced = TRUE;
+      return x;
+    }
+
+    SEXP expr = PREXPR(x);
+    if (TYPEOF(expr) != PROMSXP) {
+      *forced = FALSE;
+      return x;
+    }
+
+    x = expr;
+  }
+}
+static inline
 SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
   PROTECT_INDEX api;
   SEXP a = ATTRIB(x);

@@ -1,3 +1,4 @@
+#include "rlang.h"
 #include "dots-info.h"
 
 // Internal promise helpers (static, used only in this file) ---
@@ -12,32 +13,6 @@ static SEXP promise_expr(SEXP x) {
 
 static SEXP promise_env(SEXP x) {
     return PRENV(x);
-}
-
-static Rboolean promise_is_forced(SEXP x) {
-    return PRVALUE(x) != R_UnboundValue;
-}
-
-// Unwrap nested promises to the innermost one.
-// Sets `*forced` to TRUE if the innermost promise is forced.
-static SEXP promise_unwrap(SEXP elt, Rboolean *forced) {
-    if (!is_promise(elt))
-        Rf_error("internal: expected a promise");
-
-    while (true) {
-        if (promise_is_forced(elt)) {
-            *forced = TRUE;
-            return elt;
-        }
-
-        SEXP expr = promise_expr(elt);
-        if (!is_promise(expr)) {
-            *forced = FALSE;
-            return elt;
-        }
-
-        elt = expr;
-    }
 }
 
 
@@ -128,7 +103,7 @@ r_dot_type_t r_env_dot_type(SEXP env, r_ssize i) {
         return DOT_TYPE_value;
 
     Rboolean forced;
-    promise_unwrap(elt, &forced);
+    rlang_promise_unwrap(elt, &forced);
     if (forced)
         return DOT_TYPE_forced;
 
@@ -143,7 +118,7 @@ SEXP r_env_dot_delayed_expr(SEXP env, r_ssize i) {
         Rf_error("not a delayed promise");
 
     Rboolean forced;
-    SEXP inner = promise_unwrap(elt, &forced);
+    SEXP inner = rlang_promise_unwrap(elt, &forced);
     if (forced)
         Rf_error("not a delayed promise");
 
@@ -158,7 +133,7 @@ SEXP r_env_dot_delayed_env(SEXP env, r_ssize i) {
         Rf_error("not a delayed promise");
 
     Rboolean forced;
-    SEXP inner = promise_unwrap(elt, &forced);
+    SEXP inner = rlang_promise_unwrap(elt, &forced);
     if (forced)
         Rf_error("not a delayed promise");
 
@@ -173,7 +148,7 @@ SEXP r_env_dot_forced_expr(SEXP env, r_ssize i) {
         Rf_error("not a forced promise");
 
     Rboolean forced;
-    SEXP inner = promise_unwrap(elt, &forced);
+    SEXP inner = rlang_promise_unwrap(elt, &forced);
     if (!forced)
         Rf_error("not a forced promise");
 
