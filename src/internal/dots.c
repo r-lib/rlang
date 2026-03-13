@@ -1195,3 +1195,32 @@ r_obj* ffi_env_dot_forced_expr(r_obj* ffi_i, r_obj* env) {
     r_ssize i = r_int_get(ffi_i, 0) - 1;
     return r_env_dot_forced_expr(env, i);
 }
+
+
+// FFI wrappers for env-binding accessors ---
+
+r_obj* ffi_env_binding_type(r_obj* sym, r_obj* env) {
+    enum r_env_binding_type type = r_env_binding_type(env, sym);
+
+    switch (type) {
+    case R_ENV_BINDING_TYPE_value:   return r_chr("value");
+    case R_ENV_BINDING_TYPE_missing: return r_chr("missing");
+    case R_ENV_BINDING_TYPE_delayed: return r_chr("delayed");
+    case R_ENV_BINDING_TYPE_forced:  return r_chr("forced");
+    case R_ENV_BINDING_TYPE_active:  return r_chr("active");
+    case R_ENV_BINDING_TYPE_unbound: return r_chr("unbound");
+    default:                         r_abort("unreachable");
+    }
+}
+
+r_obj* ffi_env_binding_delayed_expr(r_obj* sym, r_obj* env) {
+    return r_env_binding_delayed_expr(env, sym);
+}
+
+r_obj* ffi_env_binding_delayed_env(r_obj* sym, r_obj* env) {
+    return r_env_binding_delayed_env(env, sym);
+}
+
+r_obj* ffi_env_binding_forced_expr(r_obj* sym, r_obj* env) {
+    return r_env_binding_forced_expr(env, sym);
+}

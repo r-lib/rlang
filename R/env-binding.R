@@ -681,3 +681,23 @@ env_binding_type_sum <- function(env, nms = NULL) {
 
   types
 }
+
+env_binding_type <- function(env, sym) {
+  check_environment(env)
+  .Call(ffi_env_binding_type, sym, env)
+}
+
+env_binding_delayed_expr <- function(env, sym) {
+  check_environment(env)
+  .Call(ffi_env_binding_delayed_expr, sym, env)
+}
+
+env_binding_delayed_env <- function(env, sym) {
+  check_environment(env)
+  .Call(ffi_env_binding_delayed_env, sym, env)
+}
+
+env_binding_forced_expr <- function(env, sym) {
+  check_environment(env)
+  .Call(ffi_env_binding_forced_expr, sym, env)
+}

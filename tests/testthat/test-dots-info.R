@@ -504,7 +504,7 @@ test_that("env_dot_type() unwraps chains to detect delayed state", {
   expect_equal(outer(1 + 1), "delayed")
 })
 
-test_that("env_dot_delayed_expr() unwraps chains to the innermost expression", {
+test_that("env_dot_delayed_expr() unwraps chains to the outermost expression", {
   inner <- function(...) env_dot_delayed_expr(environment(), 1)
   outer <- function(...) inner(...)
 
@@ -514,7 +514,7 @@ test_that("env_dot_delayed_expr() unwraps chains to the innermost expression", {
   expect_equal(result, quote(x + y))
 })
 
-test_that("env_dot_delayed_env() unwraps chains to the innermost environment", {
+test_that("env_dot_delayed_env() unwraps chains to the outermost environment", {
   inner <- function(...) env_dot_delayed_env(environment(), 1)
   outer <- function(...) inner(...)
 
