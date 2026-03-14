@@ -140,8 +140,12 @@ bool rlang_promise_is_forced(r_obj* x) {
 }
 // Unwrap nested promises to the innermost one.
 // Sets `*forced` to TRUE if the innermost promise is forced.
+// Uses Floyd's cycle detection to guard against promise loops.
 static inline
 r_obj* rlang_promise_unwrap(r_obj* x, bool *forced) {
+  r_obj* slow = x;
+  bool advance_slow = false;
+
   while (TRUE) {
     if (rlang_promise_is_forced(x)) {
       *forced = TRUE;
@@ -155,6 +159,14 @@ r_obj* rlang_promise_unwrap(r_obj* x, bool *forced) {
     }
 
     x = expr;
+    if (x == slow) {
+      Rf_error("Cycle detected in promise chain");
+    }
+
+    if (advance_slow) {
+      slow = PREXPR(slow);
+    }
+    advance_slow = !advance_slow;
   }
 }
 #endif
