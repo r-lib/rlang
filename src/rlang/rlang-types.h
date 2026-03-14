@@ -147,14 +147,9 @@ r_obj* rlang_promise_unwrap(r_obj* x, bool *forced) {
   bool advance_slow = false;
 
   while (TRUE) {
-    if (rlang_promise_is_forced(x)) {
-      *forced = TRUE;
-      return x;
-    }
-
     r_obj* expr = PREXPR(x);
     if (TYPEOF(expr) != PROMSXP) {
-      *forced = FALSE;
+      *forced = rlang_promise_is_forced(x);
       return x;
     }
 
