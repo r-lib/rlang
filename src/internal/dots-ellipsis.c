@@ -16,17 +16,8 @@ r_obj* ffi_has_dots_unnamed(r_obj* env) {
     return r_true;
   }
 
-  // Check if any dot has a name
   r_obj* names = KEEP(r_env_dots_names(env));
-  r_obj* unnamed = r_true;
-
-  for (int i = 0; i < n; ++i) {
-    if (r_chr_get(names, i) != r_strs.empty) {
-      unnamed = r_false;
-      break;
-    }
-  }
-
+  r_obj* unnamed = (names == r_null) ? r_true : r_false;
   FREE(1);
   return unnamed;
 }

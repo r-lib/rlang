@@ -192,8 +192,13 @@ r_obj* capturedots(r_obj* frame) {
 
     for (r_ssize i = 0; i < n; ++i) {
         r_dot_type_t type = r_env_dot_type(frame, i);
-        r_obj* nm = r_chr_get(names, i);
-        r_obj* tag = (nm == r_strs.empty) ? r_null : r_str_as_symbol(nm);
+        r_obj* tag = r_null;
+        if (names != r_null) {
+            r_obj* nm = r_chr_get(names, i);
+            if (nm != r_strs.empty) {
+                tag = r_str_as_symbol(nm);
+            }
+        }
 
         switch (type) {
         case DOT_TYPE_missing:

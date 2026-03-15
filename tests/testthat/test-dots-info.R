@@ -27,8 +27,8 @@ test_that("env_dots_length() errors without dots", {
 test_that("env_dots_names() returns names", {
   fn <- function(...) env_dots_names()
 
-  expect_equal(fn(), character())
-  expect_equal(fn(1, 2), c("", ""))
+  expect_null(fn())
+  expect_null(fn(1, 2))
   expect_equal(fn(a = 1, b = 2), c("a", "b"))
   expect_equal(fn(a = 1, 2, c = 3), c("a", "", "c"))
 })
@@ -287,6 +287,7 @@ test_that("env_dots_names() preserved through `...` forwarding", {
 
   expect_equal(outer(a = 1, b = 2), c("a", "b"))
   expect_equal(outer(1, b = 2, 3), c("", "b", ""))
+  expect_null(outer(1, 2, 3))
 })
 
 test_that("`...` forwarding across multiple levels", {
