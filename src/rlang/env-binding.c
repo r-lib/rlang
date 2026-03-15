@@ -3,7 +3,7 @@
 #include "decl/env-binding-decl.h"
 
 // https://bugs.r-project.org/show_bug.cgi?id=18928
-#define RLANG_HAS_R_BINDING_API 0
+#define RLANG_HAS_R_BINDING_API (R_VERSION >= R_Version(4, 6, 0))
 
 #if !RLANG_HAS_R_BINDING_API
 static inline r_obj* env_find(r_obj* env, r_obj* sym) {
