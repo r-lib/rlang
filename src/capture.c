@@ -8,7 +8,8 @@ static int dotDotVal(r_obj* sym);
 
 // Capture implementation ---
 
-r_obj* attribute_hidden new_captured_arg(r_obj* x, r_obj* env) {
+static
+r_obj* new_captured_arg(r_obj* x, r_obj* env) {
     static r_obj* nms = NULL;
     if (!nms) {
         nms = r_alloc_character(2);
@@ -27,7 +28,8 @@ r_obj* attribute_hidden new_captured_arg(r_obj* x, r_obj* env) {
     return info;
 }
 
-r_obj* attribute_hidden new_captured_literal(r_obj* x) {
+static
+r_obj* new_captured_literal(r_obj* x) {
     return new_captured_arg(x, r_envs.empty);
 }
 
@@ -232,7 +234,7 @@ r_obj* capturedots(r_obj* frame) {
     return r_node_cdr(out);
 }
 
-r_obj* attribute_hidden rlang_capturedots(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
+r_obj* rlang_capturedots(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
 {
     r_obj* caller_env = r_node_car(args);
     return capturedots(caller_env);
