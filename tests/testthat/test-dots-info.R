@@ -56,17 +56,19 @@ test_that("env_dot_get() can access different positions", {
   expect_equal(fn("a", "b", "c"), list("a", "b", "c"))
 })
 
-test_that("env_dot_get() errors on missing argument", {
+test_that("env_dot_get() returns missing arg for missing dot", {
   fn <- function(...) env_dot_get(environment(), 1)
-  expect_error(fn(, 2), "missing")
+  expect_true(is_missing(fn(, 2)))
 })
 
 test_that("env_dot_get() respects index bounds", {
   fn <- function(...) env_dot_get(environment(), 2)
   fn_no_dots <- function() env_dot_get(environment(), 1)
+  fn_empty <- function(...) env_dot_get(environment(), 1)
 
   expect_error(fn(1), "fewer than")
   expect_error(fn_no_dots(), "incorrect context")
+  expect_error(fn_empty(), "fewer than")
 })
 
 
@@ -177,7 +179,7 @@ test_that("env_dot_delayed_expr() errors on missing argument", {
     env <- environment()
     env_dot_delayed_expr(env, 2)
   }
-  expect_error(fn(a, ), "not a delayed \\.\\.\\.") 
+  expect_error(fn(a, ), "not a delayed \\.\\.\\.")
 })
 
 test_that("env_dot_delayed_env() errors on missing argument", {

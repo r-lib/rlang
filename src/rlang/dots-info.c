@@ -119,6 +119,10 @@ r_obj* r_env_dots_names(r_obj* env) {
 
 // R API: R_DotsElt
 r_obj* r_env_dot_get(r_obj* env, r_ssize i) {
+    if (r_env_dot_type(env, i) == DOT_TYPE_missing) {
+        return r_missing_arg;
+    }
+
 #if RLANG_HAS_R_DOTS_API
     return R_DotsElt((int)(i + 1), env);
 #else
