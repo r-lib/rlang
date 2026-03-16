@@ -564,13 +564,13 @@ test_that("env_binding_forced_expr() unwraps when outer wrapper is forced", {
 test_that("env_binding_delayed_expr() errors on forced chain", {
   g <- function(x) env_binding_delayed_expr(environment(), as.name("x"))
   f <- function(...) { force(..1); g(...) }
-  expect_error(f(1 + 1), "Not a delayed binding")
+  expect_error(f(1 + 1), "not a delayed binding")
 })
 
 test_that("env_binding_delayed_env() errors on forced chain", {
   g <- function(x) env_binding_delayed_env(environment(), as.name("x"))
   f <- function(...) { force(..1); g(...) }
-  expect_error(f(1 + 1), "Not a delayed binding")
+  expect_error(f(1 + 1), "not a delayed binding")
 })
 
 test_that("deeper `...` chains unwrap correctly for bindings", {

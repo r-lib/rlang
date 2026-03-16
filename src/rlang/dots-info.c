@@ -160,13 +160,13 @@ r_obj* r_env_dot_delayed_expr(r_obj* env, r_ssize i) {
     r_obj* elt = env_dot_find(env, i);
 
     if (!is_promise(elt)) {
-        r_abort("not a delayed promise");
+        r_abort("not a delayed ... element");
     }
 
     bool forced;
     r_obj* inner = rlang_promise_unwrap(elt, &forced);
     if (forced) {
-        r_abort("not a delayed promise");
+        r_abort("not a delayed ... element");
     }
 
     return promise_expr(inner);
@@ -181,13 +181,13 @@ r_obj* r_env_dot_delayed_env(r_obj* env, r_ssize i) {
     r_obj* elt = env_dot_find(env, i);
 
     if (!is_promise(elt)) {
-        r_abort("not a delayed promise");
+        r_abort("not a delayed ... element");
     }
 
     bool forced;
     r_obj* inner = rlang_promise_unwrap(elt, &forced);
     if (forced) {
-        r_abort("not a delayed promise");
+        r_abort("not a delayed ... element");
     }
 
     return promise_env(inner);
@@ -202,13 +202,13 @@ r_obj* r_env_dot_forced_expr(r_obj* env, r_ssize i) {
     r_obj* elt = env_dot_find(env, i);
 
     if (!is_promise(elt)) {
-        r_abort("not a forced promise");
+        r_abort("not a forced ... element");
     }
 
     bool forced;
     r_obj* inner = rlang_promise_unwrap(elt, &forced);
     if (!forced) {
-        r_abort("not a forced promise");
+        r_abort("not a forced ... element");
     }
 
     return promise_expr(inner);
