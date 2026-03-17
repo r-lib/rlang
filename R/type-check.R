@@ -1,5 +1,8 @@
 #' Throw a type mismatch error
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' `stop_input_type()` throws an error when an argument has the wrong
 #' type, producing a friendly error message that includes the expected
 #' type and the actual type of the input.

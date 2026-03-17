@@ -1,5 +1,8 @@
 #' Check argument type (language objects)
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' These functions check that an argument is an R language object
 #' (symbol, call, formula, environment, function, or closure) and
 #' produce friendly error messages on failure.

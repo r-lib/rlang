@@ -1,5 +1,8 @@
 #' Check argument type (numbers)
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' These functions check that an argument is a number, optionally
 #' with bounds, and produce friendly error messages otherwise.
 #'

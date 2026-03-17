@@ -60,6 +60,8 @@ mentioned in error messages as the source of the error. See the
 \code{NULL} invisibly if the check passes, throws an error otherwise.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 These functions check that an argument is a number, optionally
 with bounds, and produce friendly error messages otherwise.
 }

@@ -1,5 +1,8 @@
 #' Check argument type (scalar)
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' These functions check that an argument is of the expected scalar type
 #' and produce friendly error messages otherwise.
 #'

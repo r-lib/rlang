@@ -47,6 +47,8 @@ mentioned in error messages as the source of the error. See the
 Throws an error, does not return.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{stop_input_type()} throws an error when an argument has the wrong
 type, producing a friendly error message that includes the expected
 type and the actual type of the input.

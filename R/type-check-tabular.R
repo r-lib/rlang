@@ -1,5 +1,8 @@
 #' Check argument type (data frame)
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
 #' Checks that an argument is a data frame, producing a friendly error
 #' message on failure.
 #'
