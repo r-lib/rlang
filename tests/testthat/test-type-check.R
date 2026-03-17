@@ -155,6 +155,18 @@ test_that("`check_environment()` checks", {
   })
 })
 
+test_that("`check_formula()` checks", {
+  expect_null(check_formula(~foo))
+  expect_null(check_formula(NULL, allow_null = TRUE))
+
+  expect_snapshot({
+    err(checker(, check_formula))
+    err(checker(NULL, check_formula))
+    err(checker(TRUE, check_formula))
+    err(checker(quote(~foo), check_formula))
+  })
+})
+
 test_that("non-numeric types are not numbers", {
   expect_snapshot({
     (expect_error(check_number_whole(factor("a"))))

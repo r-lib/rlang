@@ -178,11 +178,18 @@ check_formula <- function(
   call = caller_env()
 ) {
   if (!missing(x)) {
-    if (is_formula(x)) {
-      return(invisible(NULL))
-    }
     if (allow_null && is_null(x)) {
       return(invisible(NULL))
+    }
+    if (is_formula(x, scoped = TRUE)) {
+      return(invisible(NULL))
+    }
+    if (is_formula(x)) {
+      cli::cli_abort(
+        "{.arg {arg}} must be an evaluated formula, not a defused one.",
+        arg = arg,
+        call = call
+      )
     }
   }
 

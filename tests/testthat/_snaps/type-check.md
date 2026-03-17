@@ -418,6 +418,33 @@
       Error in `checker()`:
       ! `foo` must be an environment or `NULL`, not a list.
 
+# `check_formula()` checks
+
+    Code
+      err(checker(, check_formula))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a formula, not absent.
+    Code
+      err(checker(NULL, check_formula))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a formula, not `NULL`.
+    Code
+      err(checker(TRUE, check_formula))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a formula, not `TRUE`.
+    Code
+      err(checker(quote(~foo), check_formula))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be an evaluated formula, not a defused one.
+
 # non-numeric types are not numbers
 
     Code
