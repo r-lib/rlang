@@ -5,7 +5,7 @@
 #'
 #' @param x The argument to check.
 #' @param ... Additional arguments passed to [abort()].
-#' @param allow_null Whether `NULL` is accepted.
+#' @param allow_null Whether `NULL` is allowed.
 #' @inheritParams args_error_context
 #'
 #' @return `NULL` invisibly if the check passes, throws an error otherwise.

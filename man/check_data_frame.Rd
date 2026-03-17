@@ -17,7 +17,7 @@ check_data_frame(
 
 \item{...}{Additional arguments passed to \code{\link[=abort]{abort()}}.}
 
-\item{allow_null}{Whether \code{NULL} is accepted.}
+\item{allow_null}{Whether \code{NULL} is allowed.}
 
 \item{arg}{An argument name as a string. This argument
 will be mentioned in error messages as the input that is at the
@@ -29,7 +29,7 @@ mentioned in error messages as the source of the error. See the
 \code{call} argument of \code{\link[=abort]{abort()}} for more information.}
 }
 \value{
-\code{x} invisibly if the check passes, throws an error otherwise.
+\code{NULL} invisibly if the check passes, throws an error otherwise.
 }
 \description{
 Checks that an argument is a data frame, producing a friendly error
