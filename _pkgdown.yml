@@ -134,6 +134,7 @@ reference:
   - check_type_number
   - check_type_lang
   - check_data_frame
+  - stop_input_type
   - missing_arg
 
 - subtitle: Check dots
