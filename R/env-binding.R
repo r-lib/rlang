@@ -549,6 +549,11 @@ env_names <- function(env) {
   .Call(ffi_unescape_character, nms)
 }
 
+env_syms <- function(env) {
+  check_environment(env)
+  .Call(ffi_env_syms, env)
+}
+
 #' @rdname env_names
 #' @export
 env_length <- function(env) {

@@ -599,3 +599,27 @@ test_that("deeper `...` chains unwrap correctly for forced accessor", {
   foo <- 1
   expect_equal(f(foo), quote(foo))
 })
+
+
+# env_syms ----------------------------------------------------------------
+
+test_that("env_syms() returns list of symbols", {
+  e <- env(a = 1, b = 2, c = 3, `.__hidden__.` = 4)
+  syms <- env_syms(e)
+
+  expect_type(syms, "list")
+  expect_length(syms, 4L)
+  expect_true(all(map_lgl(syms, is_symbol)))
+  expect_setequal(
+    map_chr(syms, as_string),
+    c("a", "b", "c", ".__hidden__.")
+  )
+})
+
+test_that("env_syms() returns empty list for empty env", {
+  expect_identical(env_syms(env()), list())
+})
+
+test_that("env_syms() validates input", {
+  expect_error(env_syms(1), "environment")
+})
