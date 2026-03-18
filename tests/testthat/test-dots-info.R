@@ -4,7 +4,7 @@ test_that("env_dots_exist() detects dots presence", {
   fn <- function(...) env_dots_exist()
   fn_no_dots <- function() env_dots_exist()
 
-  expect_false(fn())
+  expect_true(fn())
   expect_true(fn(a = 1))
   expect_false(fn_no_dots())
 })
