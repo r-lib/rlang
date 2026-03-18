@@ -27,8 +27,8 @@ test_that("env_dots_length() errors without dots", {
 test_that("env_dots_names() returns names", {
   fn <- function(...) env_dots_names()
 
-  expect_equal(fn(), character())
-  expect_equal(fn(1, 2), c("", ""))
+  expect_null(fn())
+  expect_null(fn(1, 2))
   expect_equal(fn(a = 1, b = 2), c("a", "b"))
   expect_equal(fn(a = 1, 2, c = 3), c("a", "", "c"))
 })
@@ -56,17 +56,19 @@ test_that("env_dot_get() can access different positions", {
   expect_equal(fn("a", "b", "c"), list("a", "b", "c"))
 })
 
-test_that("env_dot_get() errors on missing argument", {
+test_that("env_dot_get() returns missing arg for missing dot", {
   fn <- function(...) env_dot_get(environment(), 1)
-  expect_error(fn(, 2), "missing")
+  expect_true(is_missing(fn(, 2)))
 })
 
 test_that("env_dot_get() respects index bounds", {
   fn <- function(...) env_dot_get(environment(), 2)
   fn_no_dots <- function() env_dot_get(environment(), 1)
+  fn_empty <- function(...) env_dot_get(environment(), 1)
 
   expect_error(fn(1), "fewer than")
   expect_error(fn_no_dots(), "incorrect context")
+  expect_error(fn_empty(), "fewer than")
 })
 
 
@@ -160,7 +162,7 @@ test_that("env_dot_delayed_expr() errors on forced promise", {
     env_dot_get(env, 1)
     env_dot_delayed_expr(env, 1)
   }
-  expect_error(fn(1 + 1), "not a delayed promise")
+  expect_error(fn(1 + 1), "not a delayed \\.\\.\\.")
 })
 
 test_that("env_dot_delayed_env() errors on forced promise", {
@@ -169,7 +171,7 @@ test_that("env_dot_delayed_env() errors on forced promise", {
     env_dot_get(env, 1)
     env_dot_delayed_env(env, 1)
   }
-  expect_error(fn(1 + 1), "not a delayed promise")
+  expect_error(fn(1 + 1), "not a delayed \\.\\.\\.")
 })
 
 test_that("env_dot_delayed_expr() errors on missing argument", {
@@ -177,7 +179,7 @@ test_that("env_dot_delayed_expr() errors on missing argument", {
     env <- environment()
     env_dot_delayed_expr(env, 2)
   }
-  expect_error(fn(a, ), "not a delayed promise")
+  expect_error(fn(a, ), "not a delayed \\.\\.\\.")
 })
 
 test_that("env_dot_delayed_env() errors on missing argument", {
@@ -185,7 +187,7 @@ test_that("env_dot_delayed_env() errors on missing argument", {
     env <- environment()
     env_dot_delayed_env(env, 2)
   }
-  expect_error(fn(a, ), "not a delayed promise")
+  expect_error(fn(a, ), "not a delayed \\.\\.\\.")
 })
 
 
@@ -209,7 +211,7 @@ test_that("env_dot_forced_expr() errors on delayed promise", {
     env <- environment()
     env_dot_forced_expr(env, 1)
   }
-  expect_error(fn(1 + 1), "not a forced promise")
+  expect_error(fn(1 + 1), "not a forced \\.\\.\\.")
 })
 
 test_that("env_dot_forced_expr() errors on missing argument", {
@@ -218,7 +220,7 @@ test_that("env_dot_forced_expr() errors on missing argument", {
     env_dot_get(env, 1)
     env_dot_forced_expr(env, 2)
   }
-  expect_error(fn(1, ), "not a forced promise")
+  expect_error(fn(1, ), "not a forced \\.\\.\\.")
 })
 
 
@@ -287,6 +289,7 @@ test_that("env_dots_names() preserved through `...` forwarding", {
 
   expect_equal(outer(a = 1, b = 2), c("a", "b"))
   expect_equal(outer(1, b = 2, 3), c("", "b", ""))
+  expect_null(outer(1, 2, 3))
 })
 
 test_that("`...` forwarding across multiple levels", {
@@ -415,8 +418,8 @@ test_that("delayed accessors error on value dots", {
   wrapper_expr <- compiler::cmpfun(function() fn_expr("hello"))
   wrapper_env <- compiler::cmpfun(function() fn_env("hello"))
 
-  expect_error(wrapper_expr(), "not a delayed promise")
-  expect_error(wrapper_env(), "not a delayed promise")
+  expect_error(wrapper_expr(), "not a delayed \\.\\.\\.")
+  expect_error(wrapper_env(), "not a delayed \\.\\.\\.")
 })
 
 
@@ -537,13 +540,13 @@ test_that("env_dot_forced_expr() unwraps chains to detect forced promise", {
 test_that("env_dot_delayed_expr() errors on forced chain", {
   inner <- function(...) env_dot_delayed_expr(environment(), 1)
   outer <- function(...) { force(..1); inner(...) }
-  expect_error(outer(1 + 1), "not a delayed promise")
+  expect_error(outer(1 + 1), "not a delayed \\.\\.\\.")
 })
 
 test_that("env_dot_delayed_env() errors on forced chain", {
   inner <- function(...) env_dot_delayed_env(environment(), 1)
   outer <- function(...) { force(..1); inner(...) }
-  expect_error(outer(1 + 1), "not a delayed promise")
+  expect_error(outer(1 + 1), "not a delayed \\.\\.\\.")
 })
 
 test_that("deeper `...` chains unwrap correctly", {

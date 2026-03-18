@@ -1,5 +1,5 @@
-#' These functions mirror the C API proposed in R-devel for programmatically
-#' working with dots.
+# These functions mirror the C API proposed in R-devel for programmatically
+# working with dots.
 
 env_dots_exist <- function(env = caller_env()) {
   check_environment(env)

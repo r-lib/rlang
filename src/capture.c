@@ -8,7 +8,8 @@ static int dotDotVal(r_obj* sym);
 
 // Capture implementation ---
 
-r_obj* attribute_hidden new_captured_arg(r_obj* x, r_obj* env) {
+static
+r_obj* new_captured_arg(r_obj* x, r_obj* env) {
     static r_obj* nms = NULL;
     if (!nms) {
         nms = r_alloc_character(2);
@@ -27,7 +28,8 @@ r_obj* attribute_hidden new_captured_arg(r_obj* x, r_obj* env) {
     return info;
 }
 
-r_obj* attribute_hidden new_captured_literal(r_obj* x) {
+static
+r_obj* new_captured_literal(r_obj* x) {
     return new_captured_arg(x, r_envs.empty);
 }
 
@@ -192,8 +194,13 @@ r_obj* capturedots(r_obj* frame) {
 
     for (r_ssize i = 0; i < n; ++i) {
         r_dot_type_t type = r_env_dot_type(frame, i);
-        r_obj* nm = r_chr_get(names, i);
-        r_obj* tag = (nm == r_strs.empty) ? r_null : r_str_as_symbol(nm);
+        r_obj* tag = r_null;
+        if (names != r_null) {
+            r_obj* nm = r_chr_get(names, i);
+            if (nm != r_strs.empty) {
+                tag = r_str_as_symbol(nm);
+            }
+        }
 
         switch (type) {
         case DOT_TYPE_missing:
@@ -227,7 +234,7 @@ r_obj* capturedots(r_obj* frame) {
     return r_node_cdr(out);
 }
 
-r_obj* attribute_hidden rlang_capturedots(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
+r_obj* rlang_capturedots(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
 {
     r_obj* caller_env = r_node_car(args);
     return capturedots(caller_env);

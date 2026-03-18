@@ -183,14 +183,14 @@ check_dots_empty <- function(
 
   if (n == 1) {
     nms <- env_dots_names(env)
-    no_name <- identical(nms, "") || identical(nms, character())
+    no_name <- is.null(nms)
     if (no_name && env_dot_type(env, 1) == "missing") {
       return()
     }
   }
 
   nms <- env_dots_names(env)
-  if (any(nms == "")) {
+  if (is.null(nms) || any(nms == "")) {
     note <- c("i" = "Did you forget to name an argument?")
   } else {
     note <- NULL

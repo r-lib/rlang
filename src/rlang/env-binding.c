@@ -3,7 +3,7 @@
 #include "decl/env-binding-decl.h"
 
 // https://bugs.r-project.org/show_bug.cgi?id=18928
-#define RLANG_HAS_R_BINDING_API 0
+#define RLANG_HAS_R_BINDING_API (R_VERSION >= R_Version(4, 6, 0))
 
 #if !RLANG_HAS_R_BINDING_API
 static inline r_obj* env_find(r_obj* env, r_obj* sym) {
@@ -231,13 +231,13 @@ r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
   r_obj* value = env_find(env, sym);
 
   if (r_typeof(value) != R_TYPE_promise) {
-    r_abort("Not a promise binding.");
+    r_abort("not a delayed binding");
   }
 
   bool forced;
   r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (forced) {
-    r_abort("Not a delayed binding.");
+    r_abort("not a delayed binding");
   }
 
   return R_PromiseExpr(inner);
@@ -251,13 +251,13 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
   r_obj* value = env_find(env, sym);
 
   if (r_typeof(value) != R_TYPE_promise) {
-    r_abort("Not a promise binding.");
+    r_abort("not a delayed binding");
   }
 
   bool forced;
   r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (forced) {
-    r_abort("Not a delayed binding.");
+    r_abort("not a delayed binding");
   }
 
   return PRENV(inner);
@@ -274,13 +274,13 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
   r_obj* value = env_find(env, sym);
 
   if (r_typeof(value) != R_TYPE_promise) {
-    r_abort("Not a promise binding.");
+    r_abort("not a forced binding");
   }
 
   bool forced;
   r_obj* inner = rlang_promise_unwrap(value, &forced);
   if (!forced) {
-    r_abort("Not a forced binding.");
+    r_abort("not a forced binding");
   }
 
   return R_PromiseExpr(inner);
