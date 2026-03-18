@@ -4,7 +4,7 @@ test_that("env_dots_exist() detects dots presence", {
   fn <- function(...) env_dots_exist()
   fn_no_dots <- function() env_dots_exist()
 
-  expect_true(fn())
+  expect_false(fn())
   expect_true(fn(a = 1))
   expect_false(fn_no_dots())
 })
@@ -442,7 +442,24 @@ test_that("environment validation works", {
 
 test_that("env_dots_exist() does not reach into parent envs", {
   fn <- function(...) local(env_dots_exist())
+  fn_no_dots <- function() local(env_dots_exist())
+
+  expect_false(fn())
   expect_false(fn(1))
+  expect_false(fn_no_dots())
+})
+
+test_that("env_dots_exist() only returns TRUE for DOTSXP values", {
+  e <- new.env(parent = emptyenv())
+
+  e$... <- 1
+  expect_false(env_dots_exist(e))
+
+  e$... <- list(1, 2)
+  expect_false(env_dots_exist(e))
+
+  e$... <- NULL
+  expect_false(env_dots_exist(e))
 })
 
 test_that("env_dots_length() does not reach into parent envs", {
