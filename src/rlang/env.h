@@ -48,8 +48,6 @@ bool r_is_namespace(r_obj* x) {
   return R_IsNamespaceEnv(x);
 }
 
-r_obj* r_env_get(r_obj* env, r_obj* sym);
-
 r_obj* r_env_until(r_obj* env, r_obj* sym, r_obj* last);
 
 r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym);
