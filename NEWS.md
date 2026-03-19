@@ -1,5 +1,11 @@
 # rlang (development version)
 
+* New type-checking functions exported from rlang: `check_bool()`,
+  `check_string()`, `check_name()`, `check_number_decimal()`,
+  `check_number_whole()`, and `check_data_frame()`. These were
+  previously only available via the `standalone-types-check.R`
+  standalone file. `stop_input_type()` is also now exported.
+
 * Fixed a protection issue discovered by rchk (#1865).
 
 
