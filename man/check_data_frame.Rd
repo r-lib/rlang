@@ -44,7 +44,6 @@ try(check_data_frame(1:5))
 }
 \seealso{
 Other input checkers: 
-\code{\link{check_type_lang}},
 \code{\link{check_type_number}},
 \code{\link{check_type_scalar}},
 \code{\link{stop_input_type}()}

@@ -11,12 +11,12 @@
 #
 # 2026-03-17:
 # - `check_bool()`, `check_string()`, `check_name()`,
-#   `check_number_decimal()`, `check_number_whole()`,
-#   `check_symbol()`, `check_call()`, `check_environment()`,
-#   `check_function()`, `check_closure()`, `check_formula()`, and
-#   `check_data_frame()` are now exported from rlang. Column type
-#   checkers (`check_character()`, `check_logical()`) and
+#   `check_number_decimal()`, `check_number_whole()`, and
+#   `check_data_frame()` are now exported from rlang. Language type
+#   checkers (`check_symbol()`, `check_call()`, etc.), column type
+#   checkers (`check_character()`, `check_logical()`), and
 #   `check_arg()` remain in the standalone file.
+# - `check_formula()` now requires an evaluated formula, not a defused one.
 #
 # 2025-09-19:
 # - `check_logical()` gains an `allow_na` argument (@jonthegeek, #1724)
@@ -68,6 +68,33 @@
 #
 # nocov start
 
+check_symbol <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (!missing(x)) {
+    if (is_symbol(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a symbol",
+    ...,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
 check_arg <- function(
   x,
   ...,
@@ -87,6 +114,148 @@ check_arg <- function(
   stop_input_type(
     x,
     "an argument name",
+    ...,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_call <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (!missing(x)) {
+    if (is_call(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a defused call",
+    ...,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_environment <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (!missing(x)) {
+    if (is_environment(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "an environment",
+    ...,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_function <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (!missing(x)) {
+    if (is_function(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a function",
+    ...,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_closure <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (!missing(x)) {
+    if (is_closure(x)) {
+      return(invisible(NULL))
+    }
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+  }
+
+  stop_input_type(
+    x,
+    "an R function",
+    ...,
+    allow_na = FALSE,
+    allow_null = allow_null,
+    arg = arg,
+    call = call
+  )
+}
+
+check_formula <- function(
+  x,
+  ...,
+  allow_null = FALSE,
+  arg = caller_arg(x),
+  call = caller_env()
+) {
+  if (!missing(x)) {
+    if (allow_null && is_null(x)) {
+      return(invisible(NULL))
+    }
+    if (is_formula(x, scoped = TRUE)) {
+      return(invisible(NULL))
+    }
+    if (is_formula(x)) {
+      cli::cli_abort(
+        "{.arg {arg}} must be an evaluated formula, not a defused one.",
+        arg = arg,
+        call = call
+      )
+    }
+  }
+
+  stop_input_type(
+    x,
+    "a formula",
     ...,
     allow_na = FALSE,
     allow_null = allow_null,
