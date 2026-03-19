@@ -8,7 +8,7 @@ void r_sexp_inspect(r_obj* x) {
 }
 
 void r_browse(r_obj* x) {
-  r_env_poke(r_envs.global, r_sym(".debug"), x);
+  r_env_bind(r_envs.global, r_sym(".debug"), x);
 
   r_printf("Object saved in `.debug`:\n");
   r_obj_print(x);

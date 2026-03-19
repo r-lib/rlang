@@ -127,7 +127,7 @@ r_obj* r_as_label(r_obj* x) {
 void r_init_library_obj(r_obj* ns) {
   p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
   KEEP(p_precious_dict->shelter);
-  r_env_poke(ns,
+  r_env_bind(ns,
              r_sym(".__rlang_lib_precious_dict__."),
              p_precious_dict->shelter);
   FREE(1);
@@ -146,3 +146,4 @@ void r_init_library_obj(r_obj* ns) {
 }
 
 static r_obj* as_label_call = NULL;
+

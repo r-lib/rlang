@@ -77,22 +77,6 @@ r_obj* ffi_r_string(r_obj* str) {
 }
 
 
-// attrib.c
-
-r_obj* r_pairlist_clone_until(r_obj* node, r_obj* sentinel, r_obj** parent_out);
-r_obj* ffi_test_node_list_clone_until(r_obj* node, r_obj* sentinel) {
-  r_obj* sentinel_out;
-  node = KEEP(r_pairlist_clone_until(node, sentinel, &sentinel_out));
-
-  r_obj* out = r_alloc_list(2);
-  r_list_poke(out, 0, node);
-  r_list_poke(out, 1, sentinel_out);
-
-  FREE(1);
-  return out;
-}
-
-
 // cnd.c
 
 r_obj* ffi_test_r_warn(r_obj* x) {
@@ -123,6 +107,10 @@ r_obj* ffi_test_Rf_errorcall(r_obj* call, r_obj* msg) {
 
 r_obj* ffi_test_base_ns_get(r_obj* name) {
   return r_base_ns_get(r_chr_get_c_string(name, 0));
+}
+
+r_obj* ffi_test_r_env_get(r_obj* env, r_obj* name) {
+  return r_env_get(env, r_str_as_symbol(r_chr_get(name, 0)));
 }
 
 

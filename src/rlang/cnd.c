@@ -43,7 +43,7 @@ void r_abort(const char* fmt, ...) {
   // Evaluate in a mask but forward error call to the current frame
   r_obj* frame = KEEP(r_peek_frame());
   r_obj* mask = KEEP(r_alloc_environment(2, frame));
-  r_env_poke(mask, r_syms.error_call_flag, frame);
+  r_env_bind(mask, r_syms.error_call_flag, frame);
 
   struct r_pair args[] = {
     { r_syms.message, message }

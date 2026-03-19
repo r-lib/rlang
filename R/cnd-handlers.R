@@ -97,12 +97,21 @@ environment(hnd_prompt_install) <- baseenv()
 #'     ```
 #'
 #' -   **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`.
-#'     See the `parent` argument of [abort()]. This is typically done to
+#'     The `parent` argument of [abort()], [warn()], and [inform()]
+#'     can be used to chain conditions. This is typically done to
 #'     add information to low-level errors about the high-level context
 #'     in which they occurred.
 #'
 #'     ```
 #'     try_fetch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+#'
+#'     try_fetch(
+#'       1 + "",
+#'       error = function(cnd) {
+#'         warn("Failed. Returning 1", parent = cnd)
+#'         1L
+#'       }
+#'     )
 #'     ```
 #'
 #' -   **Inspect conditions**, for instance to log data about warnings

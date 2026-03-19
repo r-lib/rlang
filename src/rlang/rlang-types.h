@@ -118,4 +118,75 @@ struct r_lazy {
 #define RLANG_ASSERT(condition) ((void)sizeof(char[1 - 2*!(condition)]))
 
 
+// Polyfills for R API
+
+#if R_VERSION < R_Version(4, 5, 0)
+static inline
+int ANY_ATTRIB(SEXP x) {
+  return ATTRIB(x) != R_NilValue;
+}
+static inline
+void CLEAR_ATTRIB(SEXP x) {
+  SET_ATTRIB(x, R_NilValue);
+  SET_OBJECT(x, 0);
+  UNSET_S4_OBJECT(x);
+}
+#endif
+
+#if 1 || R_VERSION < R_Version(4, 6, 0)
+static inline
+bool rlang_promise_is_forced(r_obj* x) {
+  return PRVALUE(x) != R_UnboundValue;
+}
+// Unwrap nested promises to the innermost one.
+// Sets `*forced` to TRUE if the innermost promise is forced.
+// Uses Floyd's cycle detection to guard against promise loops.
+static inline
+r_obj* rlang_promise_unwrap(r_obj* x, bool *forced) {
+  r_obj* slow = x;
+  bool advance_slow = false;
+
+  while (TRUE) {
+    r_obj* expr = PREXPR(x);
+    if (TYPEOF(expr) != PROMSXP) {
+      *forced = rlang_promise_is_forced(x);
+      return x;
+    }
+
+    x = expr;
+    if (x == slow) {
+      Rf_error("Cycle detected in promise chain");
+    }
+
+    if (advance_slow) {
+      slow = PREXPR(slow);
+    }
+    advance_slow = !advance_slow;
+  }
+}
+#endif
+
+#if R_VERSION < R_Version(4, 6, 0)
+static inline
+SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
+  PROTECT_INDEX api;
+  SEXP a = ATTRIB(x);
+  SEXP val = NULL;
+
+  PROTECT_WITH_INDEX(a, &api);
+  while (a != R_NilValue) {
+    SEXP tag = PROTECT(TAG(a));
+    SEXP attr = PROTECT(CAR(a));
+    val = FUN(tag, attr, data);
+    UNPROTECT(2);
+    if (val != NULL)
+      break;
+    REPROTECT(a = CDR(a), api);
+  }
+  UNPROTECT(1);
+  return val;
+}
+#endif
+
+
 #endif

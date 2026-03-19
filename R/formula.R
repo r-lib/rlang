@@ -178,7 +178,9 @@ f_env <- function(f) {
     signal_formula_access()
     return(quo_get_env(f))
   }
-  check_formula(f)
+  if (!is_formula(f)) {
+    check_formula(f)
+  }
   attr(f, ".Environment")
 }
 

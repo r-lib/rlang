@@ -513,3 +513,89 @@ test_that("env_get(last = ) checks for empty env when last is disconnected (#120
   )
   expect_equal(out, "_fallback")
 })
+
+
+# Promise chain unwrapping ------------------------------------------------
+# `...` expansion via `promiseArgs()` wraps each dot element with
+# `mkPROMISE(CAR(h), rho)`, creating a promise chain where PRCODE of
+# the outer promise is the original inner PROMSXP.
+
+test_that("env_binding_type() unwraps chains to detect forced state", {
+  g <- function(x) env_binding_type(environment(), as.name("x"))
+  f <- function(...) { force(..1); g(...) }
+  expect_equal(f(1 + 1), "forced")
+})
+
+test_that("env_binding_type() unwraps chains to detect delayed state", {
+  g <- function(x) env_binding_type(environment(), as.name("x"))
+  f <- function(...) g(...)
+  expect_equal(f(1 + 1), "delayed")
+})
+
+test_that("env_binding_delayed_expr() unwraps chains to the outermost expression", {
+  g <- function(x) env_binding_delayed_expr(environment(), as.name("x"))
+  f <- function(...) g(...)
+  expect_equal(f(x + y), quote(x + y))
+})
+
+test_that("env_binding_delayed_env() unwraps chains to the outermost environment", {
+  g <- function(x) env_binding_delayed_env(environment(), as.name("x"))
+  f <- function(...) g(...)
+
+  caller_env <- current_env()
+  result <- f(x + y)
+  expect_identical(result, caller_env)
+})
+
+test_that("env_binding_forced_expr() unwraps chains to detect forced promise", {
+  g <- function(x) { force(x); env_binding_forced_expr(environment(), as.name("x")) }
+  f <- function(...) g(...)
+  foo <- 1
+  expect_equal(f(foo), quote(foo))
+})
+
+test_that("env_binding_forced_expr() unwraps when outer wrapper is forced", {
+  g <- function(x) env_binding_forced_expr(environment(), as.name("x"))
+  f <- function(...) { force(..1); g(...) }
+  foo <- 1
+  expect_equal(f(foo), quote(foo))
+})
+
+test_that("env_binding_delayed_expr() errors on forced chain", {
+  g <- function(x) env_binding_delayed_expr(environment(), as.name("x"))
+  f <- function(...) { force(..1); g(...) }
+  expect_error(f(1 + 1), "not a delayed binding")
+})
+
+test_that("env_binding_delayed_env() errors on forced chain", {
+  g <- function(x) env_binding_delayed_env(environment(), as.name("x"))
+  f <- function(...) { force(..1); g(...) }
+  expect_error(f(1 + 1), "not a delayed binding")
+})
+
+test_that("deeper `...` chains unwrap correctly for bindings", {
+  g <- function(x) env_binding_type(environment(), as.name("x"))
+  mid <- function(...) g(...)
+  f <- function(...) { force(..1); mid(...) }
+  expect_equal(f(1 + 1), "forced")
+})
+
+test_that("deeper `...` chains unwrap correctly for delayed accessors", {
+  get_expr <- function(x) env_binding_delayed_expr(environment(), as.name("x"))
+  get_env <- function(x) env_binding_delayed_env(environment(), as.name("x"))
+  mid_expr <- function(...) get_expr(...)
+  deep_expr <- function(...) mid_expr(...)
+  mid_env <- function(...) get_env(...)
+  deep_env <- function(...) mid_env(...)
+  e <- current_env()
+  expect_equal(deep_expr(x + y), quote(x + y))
+  expect_identical(deep_env(x + y), e)
+})
+
+test_that("deeper `...` chains unwrap correctly for forced accessor", {
+  inner <- function(x) env_binding_forced_expr(environment(), as.name("x"))
+  mid <- function(...) inner(...)
+  f <- function(...) { force(..1); mid(...) }
+  foo <- 1
+  expect_equal(f(foo), quote(foo))
+})

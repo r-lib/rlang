@@ -20,13 +20,6 @@ static
 r_obj* remove_call;
 
 static
-r_obj* poke_lazy_call;
-
-static
-r_obj* poke_lazy_value_node;
-
-
-static
 r_obj* env2list_call;
 
 static

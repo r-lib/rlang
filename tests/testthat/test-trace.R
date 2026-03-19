@@ -312,6 +312,8 @@ test_that("anonymous calls are stripped from backtraces", {
 })
 
 test_that("collapsing of eval() frames detects when error occurs within eval()", {
+  skip_if_not_installed("base", "4.5")
+
   e <- NULL
   trace <- NULL
 
@@ -328,12 +330,7 @@ test_that("collapsing of eval() frames detects when error occurs within eval()",
     error = function(err) trace <<- trace_back(e)
   ))
 
-  if (getRversion() >= "4.5") {
-    variant <- "4.5_and_older"
-  } else {
-    variant <- "old"
-  }
-  expect_snapshot_trace(trace, variant = variant)
+  expect_snapshot_trace(trace)
 })
 
 test_that("can print degenerate backtraces", {

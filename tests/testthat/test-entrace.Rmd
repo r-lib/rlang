@@ -9,6 +9,10 @@ h <- function(do) do("foo")
 ```
 
 ```{r, error = TRUE}
+# Prior to knitr 1.51, this would report a base R error.
+# After knitr 1.51, as long as a new enough rlang and evaluate are installed,
+# knitr automatically global entraces all errors, so even this is entraced into
+# an rlang error these days (https://github.com/yihui/knitr/pull/2388).
 f()
 ```
 

@@ -145,7 +145,7 @@ r_obj* ffi_env_has(r_obj* env, r_obj* nms, r_obj* inherit) {
 }
 
 static void env_poke_or_zap(r_obj* env, r_obj* sym, r_obj* value);
-static void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* value, r_obj* eval_env);
+static void env_poke_delayed(r_obj* env, r_obj* sym, r_obj* value, r_obj* eval_env);
 static void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env);
 static r_obj* env_get(r_obj* env, r_obj* sym);
 
@@ -239,7 +239,7 @@ r_obj* ffi_env_bind(r_obj* env,
     return r_globals.empty_list;
   }
 
-  r_obj* names = r_names(values);
+  r_obj* names = KEEP(r_names(values));
   if (n && names == r_null) {
     r_abort("Can't bind data because some elements are not named.");
   }
@@ -265,14 +265,14 @@ r_obj* ffi_env_bind(r_obj* env,
       r_env_unbind(env, sym);
     } else {
       switch (c_bind_type) {
-      case BIND_TYPE_value: r_env_poke(env, sym, value); break;
-      case BIND_TYPE_lazy: env_poke_lazy(env, sym, value, eval_env); break;
+      case BIND_TYPE_value: r_env_bind(env, sym, value); break;
+      case BIND_TYPE_lazy: env_poke_delayed(env, sym, value, eval_env); break;
       case BIND_TYPE_active: env_poke_active(env, sym, value, eval_env); break;
       }
     }
   }
 
-  FREE(1);
+  FREE(2);
   return old;
 }
 
@@ -302,11 +302,11 @@ void env_poke_or_zap(r_obj* env, r_obj* sym, r_obj* value) {
   if (value == rlang_zap) {
     r_env_unbind(env, sym);
   } else {
-    r_env_poke(env, sym, value);
+    r_env_bind(env, sym, value);
   }
 }
 static
-void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
+void env_poke_delayed(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
   if (is_quosure(expr)) {
     expr = KEEP(rlang_as_function(expr, eval_env));
     expr = r_new_call(expr, r_null);
@@ -314,7 +314,7 @@ void env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
   }
   KEEP(expr);
 
-  r_env_poke_lazy(env, sym, expr, eval_env);
+  r_env_bind_delayed(env, sym, expr, eval_env);
   FREE(1);
 }
 static
@@ -324,7 +324,7 @@ void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env) {
   }
   KEEP(fn);
 
-  r_env_poke_active(env, sym, fn);
+  r_env_bind_active(env, sym, fn);
   FREE(1);
 }
 

@@ -72,8 +72,8 @@ check_dots <- function(env = caller_env(), error, action, call) {
     return(invisible())
   }
 
-  proms <- ellipsis_dots(env)
-  unused <- !map_lgl(proms, promise_forced)
+  n <- env_dots_length(env)
+  unused <- map_lgl(seq_len(n), function(i) env_dot_type(env, i) == "delayed")
 
   action_dots(
     error = error,
@@ -116,8 +116,8 @@ check_dots_unnamed <- function(
     return()
   }
 
-  proms <- ellipsis_dots(env)
-  unnamed <- names2(proms) == ""
+  nms <- env_dots_names(env)
+  unnamed <- nms == ""
 
   if (all(unnamed)) {
     return(invisible())
@@ -175,22 +175,22 @@ check_dots_empty <- function(
   call = caller_env(),
   action = abort
 ) {
-  dots <- ellipsis_dots(env)
-  n <- length(dots)
+  n <- env_dots_length(env)
 
   if (n == 0) {
     return()
   }
 
   if (n == 1) {
-    nms <- names(dots)
-    no_name <- is_null(nms) || identical(nms[[n]], "")
-    if (no_name && identical(dots[[n]], missing_arg())) {
+    nms <- env_dots_names(env)
+    no_name <- is.null(nms)
+    if (no_name && env_dot_type(env, 1) == "missing") {
       return()
     }
   }
 
-  if (!is_named(dots)) {
+  nms <- env_dots_names(env)
+  if (is.null(nms) || any(nms == "")) {
     note <- c("i" = "Did you forget to name an argument?")
   } else {
     note <- NULL
@@ -275,12 +275,7 @@ action_dots <- function(
   ))
 }
 
-promise_forced <- function(x) {
-  .Call(ffi_ellipsis_promise_forced, x)
-}
-ellipsis_dots <- function(env = caller_env()) {
-  .Call(ffi_ellipsis_dots, env)
-}
+
 
 #' Helper for consistent documentation of empty dots
 #'

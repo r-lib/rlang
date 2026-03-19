@@ -1,34 +1,3 @@
-test_that("can access promise properties", {
-  fn <- function(...) {
-    list(node_car(get("...")))
-  }
-  prom <- fn(foo)
-  expect_identical(promise_expr(prom[[1]]), quote(foo))
-  expect_identical(promise_env(prom[[1]]), current_env())
-})
-
-test_that("can pluck promise and its properties from env", {
-  fn <- function(x) {
-    list(
-      promise_expr("x"),
-      promise_env("x")
-    )
-  }
-  expect_identical(fn(foo), list(quote(foo), current_env()))
-})
-
-test_that("can pluck promise value", {
-  fn <- function(x) promise_value("x")
-  expect_identical(fn(foo), sym("R_UnboundValue"))
-
-  fn <- function(x) {
-    force(x)
-    promise_value("x")
-  }
-  foo <- "foo"
-  expect_identical(fn(foo), "foo")
-})
-
 test_that("can take the address of the missing arg (#1521)", {
   fn <- function(x) obj_address(x)
   expect_true(is_string(fn()))

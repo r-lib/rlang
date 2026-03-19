@@ -701,6 +701,45 @@ test_that("can capture forced numbered dot", {
   expect_equal(fn(1 + 1), quo(2))
 })
 
+test_that("enquo() returns literal when ..N chain hits forced promise", {
+  inner <- function(...) enquo(..1)
+  outer <- function(...) {
+    force(..1)
+    inner(..1)
+  }
+  expect_equal(outer(1 + 1), quo(2))
+
+  inner <- function(...) enquos(...)
+  outer <- function(...) {
+    force(..1)
+    inner(..1)
+  }
+  expect_equal(outer(1 + 1), quos(2))
+})
+
+test_that("enquo() returns literal when ..N chain hits value dot", {
+  # The compiler unwraps literals from promises, creating DOT_TYPE_value dots
+  inner <- function(...) enquo(..1)
+  outer <- function(...) inner(..1)
+  wrapper <- compiler::cmpfun(function() outer("hello"))
+  expect_equal(wrapper(), quo("hello"))
+
+  inner <- function(...) enquos(...)
+  outer <- function(...) inner(..1)
+  wrapper <- compiler::cmpfun(function() outer("hello"))
+  expect_equal(wrapper(), quos("hello"))
+})
+
+test_that("enquo() returns missing arg when ..N chain hits missing arg", {
+  inner <- function(...) enquo(..1)
+  outer <- function(...) inner(..1)
+  expect_equal(outer(, 1), quo())
+
+  inner <- function(...) enquos(...)
+  outer <- function(...) inner(..1)
+  expect_equal(outer(, 1), quos())
+})
+
 test_that("`enexprs()` and variants support `.named = NULL` (#1223)", {
   fn <- function(...) enexprs(..., .named = NULL)
   expect_equal(fn(), list())

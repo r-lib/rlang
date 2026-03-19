@@ -6,6 +6,7 @@ test_that("error if dots not used", {
 
   expect_no_error(f(1, 2))
   expect_error(f(1, 2, 3), class = "rlib_error_dots_unused")
+  expect_error(f(1, 2, 3, 4, 5), class = "rlib_error_dots_unused")
 })
 
 test_that("error if dots not used by another function", {

@@ -622,6 +622,29 @@
     Output
       
 
+# collapsing of eval() frames detects when error occurs within eval()
+
+    Code
+      # Full
+      print(trace, simplify = "none", dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-base::eval()
+       2. \-rlang (local) `<fn>`(`<gtvrErrr>`)
+    Code
+      # Focused
+      print_focused_trace(trace, dir = dir, srcrefs = srcrefs)
+    Output
+          x
+       1. +-base::eval()
+       2. \-rlang (local) `<fn>`(`<gtvrErrr>`)
+    Code
+      # Branch
+      print(trace, simplify = "branch", dir = dir, srcrefs = srcrefs)
+    Output
+       1. base::eval()
+       2. rlang (local) `<fn>`(`<gtvrErrr>`)
+
 # can print degenerate backtraces
 
     Code
@@ -796,14 +819,14 @@
       summary(trace0)
     Output
            x
-        1. \-rlang (local) f(0) at test-trace.R:428:3
-        2.   +-base::identity(identity(g(n))) at test-trace.R:424:8
+        1. \-rlang (local) f(0) at test-trace.R:425:3
+        2.   +-base::identity(identity(g(n))) at test-trace.R:421:8
         3.   +-base::identity(g(n))
         4.   \-rlang (local) g(n)
-        5.     +-base::identity(identity(h(n))) at test-trace.R:425:8
+        5.     +-base::identity(identity(h(n))) at test-trace.R:422:8
         6.     +-base::identity(h(n))
         7.     \-rlang (local) h(n)
-        8.       +-base::identity(identity(trace_back(e, bottom = n))) at test-trace.R:426:8
+        8.       +-base::identity(identity(trace_back(e, bottom = n))) at test-trace.R:423:8
         9.       +-base::identity(trace_back(e, bottom = n))
        10.       \-rlang::trace_back(e, bottom = n)
     Code
@@ -816,11 +839,11 @@
       summary(trace1)
     Output
           x
-       1. \-rlang (local) f(1) at test-trace.R:429:3
-       2.   +-base::identity(identity(g(n))) at test-trace.R:424:8
+       1. \-rlang (local) f(1) at test-trace.R:426:3
+       2.   +-base::identity(identity(g(n))) at test-trace.R:421:8
        3.   +-base::identity(g(n))
        4.   \-rlang (local) g(n)
-       5.     +-base::identity(identity(h(n))) at test-trace.R:425:8
+       5.     +-base::identity(identity(h(n))) at test-trace.R:422:8
        6.     +-base::identity(h(n))
        7.     \-rlang (local) h(n)
     Code
@@ -833,8 +856,8 @@
       summary(trace2)
     Output
           x
-       1. \-rlang (local) f(2) at test-trace.R:430:3
-       2.   +-base::identity(identity(g(n))) at test-trace.R:424:8
+       1. \-rlang (local) f(2) at test-trace.R:427:3
+       2.   +-base::identity(identity(g(n))) at test-trace.R:421:8
        3.   +-base::identity(g(n))
        4.   \-rlang (local) g(n)
     Code
@@ -847,7 +870,7 @@
       summary(trace3)
     Output
           x
-       1. \-rlang (local) f(3) at test-trace.R:431:3
+       1. \-rlang (local) f(3) at test-trace.R:428:3
 
 # caught error does not display backtrace in knitted files
 
@@ -1116,7 +1139,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(parallel(f(0)))
-        2. | \-testthat:::expect_condition_matching(...)
+        2. | \-testthat:::expect_condition_matching_(...)
         3. |   \-testthat:::quasi_capture(...)
         4. |     +-testthat (local) .capture(...)
         5. |     | \-base::withCallingHandlers(...)
@@ -1140,7 +1163,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(parallel(f(0)))
-        2. | <<\-testthat:::expect_condition_matching(...)>>
+        2. | <<\-testthat:::expect_condition_matching_(...)>>
         3. |   <<\-testthat:::quasi_capture(...)>>
         4. |     <<+-testthat (local) .capture(...)>>
         5. |     <<| \-base::withCallingHandlers(...)>>
@@ -1180,7 +1203,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(deep(1))
-        2. | \-testthat:::expect_condition_matching(...)
+        2. | \-testthat:::expect_condition_matching_(...)
         3. |   \-testthat:::quasi_capture(...)
         4. |     +-testthat (local) .capture(...)
         5. |     | \-base::withCallingHandlers(...)
@@ -1213,7 +1236,7 @@
       Backtrace:
            x
         1. +-testthat::expect_error(deep(1))
-        2. | <<\-testthat:::expect_condition_matching(...)>>
+        2. | <<\-testthat:::expect_condition_matching_(...)>>
         3. |   <<\-testthat:::quasi_capture(...)>>
         4. |     <<+-testthat (local) .capture(...)>>
         5. |     <<| \-base::withCallingHandlers(...)>>

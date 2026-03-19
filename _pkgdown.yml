@@ -130,6 +130,10 @@ reference:
   - arg_match
   - check_exclusive
   - check_required
+  - check_type_scalar
+  - check_type_number
+  - check_data_frame
+  - stop_input_type
   - missing_arg
 
 - subtitle: Check dots

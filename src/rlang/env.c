@@ -65,37 +65,64 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent) {
 }
 
 void r_env_coalesce(r_obj* env, r_obj* from) {
-  r_obj* nms = KEEP(r_env_names(from));
-  r_obj* types = KEEP(r_env_binding_types(from, nms));
+  r_obj* syms = KEEP(r_env_syms(from));
+  r_obj* types = KEEP(r_env_binding_types(from, syms));
 
   if (types == r_null) {
-    env_coalesce_plain(env, from, nms);
+    env_coalesce_plain(env, from, syms);
     FREE(2);
     return;
   }
 
-  r_ssize n = r_length(nms);
-  r_obj* const * v_nms = r_chr_cbegin(nms);
+  r_ssize n = r_length(syms);
+  r_obj* const * v_syms = r_list_cbegin(syms);
   enum r_env_binding_type* v_types = (enum r_env_binding_type*) r_int_begin(types);
 
   for (r_ssize i = 0; i < n; ++i) {
-    r_obj* sym = r_str_as_symbol(v_nms[i]);
+    r_obj* sym = v_syms[i];
 
     if (r_env_has(env, sym)) {
       continue;
     }
 
     switch (v_types[i]) {
-    case R_ENV_BINDING_TYPE_value:
-    case R_ENV_BINDING_TYPE_promise:
-      r_env_poke(env, sym, r_env_find(from, sym));
+    case R_ENV_BINDING_TYPE_unbound:
       break;
 
-    case R_ENV_BINDING_TYPE_active: {
-      r_obj* fn = R_ActiveBindingFunction(sym, from);
-      r_env_poke_active(env, sym, fn);
+    case R_ENV_BINDING_TYPE_value:
+      r_env_bind(env, sym, KEEP(r_env_get(from, sym)));
+      FREE(1);
       break;
-    }}
+
+    case R_ENV_BINDING_TYPE_delayed:
+      r_env_bind_delayed(
+        env,
+        sym,
+        KEEP(r_env_binding_delayed_expr(from, sym)),
+        KEEP(r_env_binding_delayed_env(from, sym))
+      );
+      FREE(2);
+      break;
+
+    case R_ENV_BINDING_TYPE_forced:
+      r_env_bind_forced(
+        env,
+        sym,
+        KEEP(r_env_binding_forced_expr(from, sym)),
+        KEEP(r_env_get(from, sym))
+      );
+      FREE(2);
+      break;
+
+    case R_ENV_BINDING_TYPE_missing:
+      r_env_bind_missing(env, sym);
+      break;
+
+    case R_ENV_BINDING_TYPE_active:
+      r_env_bind_active(env, sym, KEEP(r_env_binding_active_fn(from, sym)));
+      FREE(1);
+      break;
+    }
   }
 
   FREE(2);
@@ -103,18 +130,19 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
 }
 
 static
-void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* nms) {
-  r_ssize n = r_length(nms);
-  r_obj* const * v_nms = r_chr_cbegin(nms);
+void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* syms) {
+  r_ssize n = r_length(syms);
+  r_obj* const * v_syms = r_list_cbegin(syms);
 
   for (r_ssize i = 0; i < n; ++i) {
-    r_obj* sym = r_str_as_symbol(v_nms[i]);
+    r_obj* sym = v_syms[i];
 
     if (r_env_has(env, sym)) {
       continue;
     }
 
-    r_env_poke(env, sym, r_env_find(from, sym));
+    r_env_bind(env, sym, KEEP(r_env_get(from, sym)));
+    FREE(1);
   }
 
   return;
@@ -125,20 +153,12 @@ r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
   return eval_with_xy(list2env_call, x, parent);
 }
 
-void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
-  KEEP(expr);
-  r_obj* name = KEEP(r_sym_as_utf8_character(sym));
-
-  r_node_poke_car(poke_lazy_value_node, expr);
-  r_eval_with_xyz(poke_lazy_call, name, env, eval_env, rlang_ns_env);
-  r_node_poke_car(poke_lazy_value_node, r_null);
-
-  FREE(2);
-}
-
-
 #if RLANG_USE_R_EXISTS
 bool r__env_has(r_obj* env, r_obj* sym) {
+  // `exists("")` errors on older R
+  if (sym == R_MissingArg) {
+    return Rf_findVarInFrame3(env, sym, FALSE) != r_syms.unbound;
+  }
   r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
   r_obj* out = eval_with_xyz(exists_call, env, nm, r_false);
   FREE(1);
@@ -146,6 +166,10 @@ bool r__env_has(r_obj* env, r_obj* sym) {
 }
 
 bool r__env_has_anywhere(r_obj* env, r_obj* sym) {
+  // `exists("")` errors on older R
+  if (sym == R_MissingArg) {
+    return Rf_findVar(sym, env) != r_syms.unbound;
+  }
   r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
   r_obj* out = eval_with_xyz(exists_call, env, nm, r_true);
   FREE(1);
@@ -180,34 +204,41 @@ bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top) {
   return env == ancestor;
 }
 
-static
-r_obj* env_until(r_obj* env, r_obj* sym, r_obj* last) {
+r_obj* r_env_until(r_obj* env, r_obj* sym, r_obj* last) {
   r_obj* stop = r_envs.empty;
   if (last != r_envs.empty) {
     stop = r_env_parent(last);
   }
 
   while (true) {
-    if (env == r_envs.empty || r_env_has(env, sym)) {
+    if (env == r_envs.empty) {
+      return r_envs.empty;
+    }
+    if (r_env_has(env, sym)) {
       return env;
     }
 
     r_obj* next = r_env_parent(env);
     if (next == r_envs.empty || next == stop) {
-      return env;
+      return r_envs.empty;
     }
 
     env = next;
   }
 }
 
+r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym) {
+  env = r_env_until(env, sym, r_envs.empty);
+  return r_env_get(env, sym);
+}
+
 r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last) {
-  env = env_until(env, sym, last);
+  env = r_env_until(env, sym, last);
   return r_env_get(env, sym);
 }
 
 bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last) {
-  env = env_until(env, sym, last);
+  env = r_env_until(env, sym, last);
   return r_env_has(env, sym);
 }
 
@@ -240,11 +271,6 @@ void r_init_library_env(void) {
   list2env_call = r_parse("list2env(x, envir = NULL, parent = y, hash = TRUE)");
   r_preserve(list2env_call);
 
-  poke_lazy_call = r_parse("delayedAssign(x, value = NULL, assign.env = y, eval.env = z)");
-  r_preserve(poke_lazy_call);
-
-  poke_lazy_value_node = r_node_cddr(poke_lazy_call);
-
   exists_call = r_parse("exists(y, envir = x, inherits = z)");
   r_preserve(exists_call);
 
@@ -273,12 +299,6 @@ r_obj* exists_call = NULL;
 
 static
 r_obj* remove_call = NULL;
-
-static
-r_obj* poke_lazy_call = NULL;
-
-static
-r_obj* poke_lazy_value_node = NULL;
 
 static
 r_obj* env2list_call = NULL;

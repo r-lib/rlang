@@ -137,8 +137,8 @@ r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env) {
   // `.x` is the first input, x
   // `.fn` is the function, fn
   // The dots are a pairlist already in the call
-  r_env_poke(env, r_syms.dot_x, x);
-  r_env_poke(env, r_syms.dot_fn, fn);
+  r_env_bind(env, r_syms.dot_x, x);
+  r_env_bind(env, r_syms.dot_fn, fn);
 
   r_obj* out = r_eval(call, env);
 
@@ -148,13 +148,13 @@ r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env) {
 
 static inline
 r_obj* eval_as_character(r_obj* x, r_obj* env) {
-  r_env_poke(env, r_syms.dot_x, x);
+  r_env_bind(env, r_syms.dot_x, x);
   return r_eval(as_character_call, env);
 }
 
 static inline
 r_obj* names_dispatch(r_obj* x, r_obj* env) {
-  r_env_poke(env, r_syms.dot_x, x);
+  r_env_bind(env, r_syms.dot_x, x);
   return r_eval(names_call, env);
 }
 
@@ -163,14 +163,14 @@ r_obj* names_dispatch(r_obj* x, r_obj* env) {
 // attributes using ALTREP wrappers, which is not in R's public API.
 static inline
 r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env) {
-  r_env_poke(env, r_syms.dot_x, x);
-  r_env_poke(env, r_syms.dot_y, nm);
+  r_env_bind(env, r_syms.dot_x, x);
+  r_env_bind(env, r_syms.dot_y, nm);
   return r_eval(set_names_call, env);
 }
 
 static inline
 r_ssize length_dispatch(r_obj* x, r_obj* env) {
-  r_env_poke(env, r_syms.dot_x, x);
+  r_env_bind(env, r_syms.dot_x, x);
   r_obj* n = KEEP(r_eval(length_call, env));
 
   if (r_length(n) != 1) {
@@ -213,19 +213,8 @@ r_obj* fn_zap_srcref(r_obj* x) {
 
   r_obj* out = KEEP(r_new_function(formals, body, env));
 
-  // Copy over attributes, but zap any `srcref` attribute
-  if (r_attrib_get(x, r_syms.srcref) == r_null) {
-    // Nothing to zap
-    r_obj* attrib = r_attrib(x);
-    r_poke_attrib(out, attrib);
-  } else {
-    // Clone so we can zap `srcref`
-    r_obj* attrib = r_attrib(x);
-    attrib = KEEP(r_clone(attrib));
-    r_poke_attrib(out, attrib);
-    FREE(1);
-    r_attrib_poke(out, r_syms.srcref, r_null);
-  }
+  r_attrib_clone_from(out, x);
+  r_attrib_zap(out, r_syms.srcref);
 
   FREE(2);
   return out;
@@ -273,9 +262,9 @@ r_obj* expr_vec_zap_srcref(r_obj* x) {
 
 static
 void attrib_zap_srcref(r_obj* x) {
-  r_attrib_poke(x, r_syms.srcfile, r_null);
-  r_attrib_poke(x, r_syms.srcref, r_null);
-  r_attrib_poke(x, r_syms.wholeSrcref, r_null);
+  r_attrib_zap(x, r_syms.srcfile);
+  r_attrib_zap(x, r_syms.srcref);
+  r_attrib_zap(x, r_syms.wholeSrcref);
 }
 
 

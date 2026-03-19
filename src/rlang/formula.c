@@ -76,16 +76,14 @@ r_obj* new_raw_formula(r_obj* lhs, r_obj* rhs, r_obj* env) {
   }
   f = KEEP(r_new_call(tilde_sym, args));
 
-  r_obj* attrs = KEEP(r_new_node(env, r_null));
-  r_node_poke_tag(attrs, r_sym(".Environment"));
-  r_poke_attrib(f, attrs);
+  r_attrib_poke(f, r_sym(".Environment"), env);
 
-  FREE(3);
+  FREE(2);
   return f;
 }
 r_obj* r_new_formula(r_obj* lhs, r_obj* rhs, r_obj* env) {
   r_obj* f = KEEP(new_raw_formula(lhs, rhs, env));
-  r_attrib_push_class(f, "formula");
+  r_attrib_poke_class(f, r_chr("formula"));
 
   FREE(1);
   return f;

@@ -40,6 +40,11 @@ test_that("r_base_ns_get() fail if object does not exist", {
   expect_error(.Call(ffi_test_base_ns_get, "foobar"))
 })
 
+test_that("r_env_get() retrieves `...` bindings", {
+  fn <- function(...) typeof(.Call(ffi_test_r_env_get, environment(), "..."))
+  expect_equal(fn(1, 2, 3), "...")
+})
+
 test_that("r_peek_frame() returns current frame", {
   current_frame <- function() {
     list(.Call(ffi_test_current_frame), environment())
@@ -262,129 +267,6 @@ test_that("client library passes tests", {
     types = "test"
   )
   expect_identical(result, 0L)
-})
-
-node_list_clone_until <- function(node, sentinel) {
-  .Call(ffi_test_node_list_clone_until, node, sentinel)
-}
-
-test_that("can clone-until with NULL list", {
-  expect_identical(node_list_clone_until(NULL, pairlist()), list(NULL, NULL))
-})
-
-test_that("can clone-until with NULL sentinel", {
-  node <- pairlist(a = 1, b = 2, c = 3)
-  out <- node_list_clone_until(node, NULL)
-
-  sentinel_out <- out[[2]]
-  expect_reference(node_cddr(out[[1]]), sentinel_out)
-
-  node_out <- out[[1]]
-  expect_identical(node_out, pairlist(a = 1, b = 2, c = 3))
-  while (!is_null(node_out)) {
-    expect_false(is_reference(node_out, node))
-    node_out <- node_cdr(node_out)
-    node <- node_cdr(node)
-  }
-})
-
-test_that("returned sentinel and value are NULL if couldn't be found", {
-  node <- pairlist(a = NULL)
-  out <- node_list_clone_until(node, pairlist(NULL))
-
-  expect_false(is_reference(out[[1]], node))
-  expect_null(out[[1]])
-  expect_null(out[[2]])
-})
-
-test_that("can clone until sentinel", {
-  node1 <- pairlist(a = 1, b = 2, c = 3)
-  node2 <- node_cdr(node1)
-  node3 <- node_cdr(node2)
-
-  out <- node_list_clone_until(node1, node2)
-
-  # No modification by reference of original list
-  expect_false(is_reference(out, node1))
-  expect_true(is_reference(node_cdr(node1), node2))
-  expect_true(is_reference(node_cdr(node2), node3))
-
-  node_out <- out[[1]]
-  expect_identical(node_out, pairlist(a = 1, b = 2, c = 3))
-  expect_false(is_reference(node_out, node1))
-  expect_true(is_reference(node_cdr(node_out), node2))
-  expect_true(is_reference(node_out, out[[2]]))
-})
-
-get_attributes <- function(x) {
-  .Call(ffi_attrib, x)
-}
-c_set_attribute <- function(x, name, value) {
-  .Call(ffi_test_attrib_set, x, sym(name), value)
-}
-
-test_that("r_attrib_set() sets elements", {
-  x <- list()
-  out1 <- c_set_attribute(x, "foo", 1L)
-  attrs1 <- get_attributes(out1)
-  expect_identical(attrs1, pairlist(foo = 1L))
-  expect_false(is_reference(x, out1))
-  expect_null(get_attributes(x))
-
-  out2 <- c_set_attribute(out1, "bar", 2L)
-  attrs2 <- get_attributes(out2)
-  expect_identical(attrs2, pairlist(bar = 2L, foo = 1L))
-
-  expect_reference(get_attributes(out1), attrs1)
-  expect_reference(node_cdr(attrs2), attrs1)
-})
-
-test_that("r_attrib_set() zaps one element", {
-  x <- structure(list(), foo = 1)
-  attrs <- get_attributes(x)
-  out <- c_set_attribute(x, "foo", NULL)
-
-  expect_reference(get_attributes(x), attrs)
-  expect_null(get_attributes(out))
-})
-
-test_that("r_attrib_set() zaps several elements", {
-  x <- structure(list(), foo = 1, bar = 2, baz = 3)
-  attrs <- get_attributes(x)
-
-  out1 <- c_set_attribute(x, "foo", NULL)
-  attrs1 <- get_attributes(out1)
-
-  expect_identical(attrs1, pairlist(bar = 2, baz = 3))
-  expect_true(is_reference(attrs1, node_cdr(attrs)))
-  expect_true(is_reference(node_cdr(attrs1), node_cddr(attrs)))
-
-  out2 <- c_set_attribute(x, "bar", NULL)
-  attrs2 <- get_attributes(out2)
-
-  expect_identical(attrs2, pairlist(foo = 1, baz = 3))
-  expect_false(is_reference(attrs2, attrs))
-  expect_true(is_reference(node_cdr(attrs2), node_cddr(attrs)))
-
-  out3 <- c_set_attribute(x, "baz", NULL)
-  attrs3 <- get_attributes(out3)
-
-  expect_identical(attrs3, pairlist(foo = 1, bar = 2))
-  expect_false(is_reference(attrs3, attrs))
-  expect_false(is_reference(node_cdr(attrs3), node_cdr(attrs)))
-})
-
-test_that("can zap non-existing attributes", {
-  x <- list()
-  out <- c_set_attribute(x, "foo", NULL)
-  expect_identical(out, list())
-  expect_false(is_reference(x, out))
-
-  x2 <- structure(list(), foo = 1, bar = 2)
-  out2 <- c_set_attribute(x2, "baz", NULL)
-  attrs2 <- get_attributes(out2)
-  expect_identical(attrs2, pairlist(foo = 1, bar = 2))
-  expect_reference(attrs2, get_attributes(x2))
 })
 
 test_that("r_parse()", {
@@ -860,10 +742,42 @@ test_that("can shrink vectors", {
   expect_equal(out, as.list(1:2))
 
   # Uses truelength to modify in place on recent R
-  if (getRversion() >= "3.4.0") {
+  if (getRversion() >= "3.4.0" && getRversion() < "4.6.0") {
     expect_equal(x_atomic, 1:2)
     expect_equal(x_list, as.list(1:2))
   }
+})
+
+test_that("can grow vectors allocated with vec_alloc()", {
+  x <- vec_alloc("integer", 3L)
+  x[1:3] <- 1:3
+  out <- vec_resize(x, 5)
+  expect_length(out, 5)
+  expect_equal(x, 1:3)
+  expect_equal(out[1:3], x)
+
+  x <- vec_alloc("list", 3L)
+  x[[1]] <- 1
+  x[[2]] <- 2
+  x[[3]] <- 3
+  out <- vec_resize(x, 5)
+  expect_length(out, 5)
+  expect_equal(x[[1]], 1)
+  expect_equal(out[1:3], x[1:3])
+})
+
+test_that("can shrink vectors allocated with vec_alloc()", {
+  x_atomic <- vec_alloc("integer", 3L)
+  x_atomic[1:3] <- 1:3
+  out <- vec_resize(x_atomic, 2)
+  expect_equal(out, 1:2)
+
+  x_list <- vec_alloc("list", 3L)
+  x_list[[1]] <- 1
+  x_list[[2]] <- 2
+  x_list[[3]] <- 3
+  out <- vec_resize(x_list, 2)
+  expect_equal(out, list(1, 2))
 })
 
 test_that("can grow and shrink dynamic arrays", {
@@ -1340,6 +1254,19 @@ test_that("attributes are re-encoded", {
   expect_utf8_encoded(c_enc1)
   expect_utf8_encoded(c_enc2)
   expect_utf8_encoded(c_enc3)
+
+  # Ensure nothing has changed in the original objects
+  a_enc <- attr(a, "enc")
+  b_enc <- attr(b, "enc")
+  c_enc1 <- attr(c, "enc1")
+  c_enc2 <- attr(c, "enc2")[[1]]
+  c_enc3 <- attr(c, "enc3")
+
+  expect_utf8_encoded(a_enc)
+  expect_latin1_encoded(b_enc)
+  expect_utf8_encoded(c_enc1)
+  expect_latin1_encoded(c_enc2)
+  expect_latin1_encoded(c_enc3)
 })
 
 test_that("attributes are re-encoded recursively", {

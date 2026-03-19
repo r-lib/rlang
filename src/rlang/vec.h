@@ -184,35 +184,67 @@ void r_list_poke(r_obj* x, r_ssize i, r_obj* y) {
 
 static inline
 r_obj* r_alloc_vector(enum r_type type, r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(type, n);
+#else
   return Rf_allocVector(type, n);
+#endif
 }
 static inline
 r_obj* r_alloc_logical(r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(R_TYPE_logical, n);
+#else
   return Rf_allocVector(R_TYPE_logical, n);
+#endif
 }
 static inline
 r_obj* r_alloc_integer(r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(R_TYPE_integer, n);
+#else
   return Rf_allocVector(R_TYPE_integer, n);
+#endif
 }
 static inline
 r_obj* r_alloc_double(r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(R_TYPE_double, n);
+#else
   return Rf_allocVector(R_TYPE_double, n);
+#endif
 }
 static inline
 r_obj* r_alloc_complex(r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(R_TYPE_complex, n);
+#else
   return Rf_allocVector(R_TYPE_complex, n);
+#endif
 }
 static inline
 r_obj* r_alloc_raw(r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(R_TYPE_raw, n);
+#else
   return Rf_allocVector(R_TYPE_raw, n);
+#endif
 }
 static inline
 r_obj* r_alloc_character(r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(R_TYPE_character, n);
+#else
   return Rf_allocVector(R_TYPE_character, n);
+#endif
 }
 static inline
 r_obj* r_alloc_list(r_ssize n) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  return R_allocResizableVector(R_TYPE_list, n);
+#else
   return Rf_allocVector(R_TYPE_list, n);
+#endif
 }
 
 static inline
@@ -404,30 +436,30 @@ char r_as_char(r_obj* x) {
   return r_arg_as_char(x, "x");
 }
 
-r_obj* r_lgl_resize(r_obj* x, r_ssize size);
-r_obj* r_int_resize(r_obj* x, r_ssize size);
-r_obj* r_dbl_resize(r_obj* x, r_ssize size);
-r_obj* r_cpl_resize(r_obj* x, r_ssize size);
-r_obj* r_raw_resize(r_obj* x, r_ssize size);
-r_obj* r_chr_resize(r_obj* x, r_ssize size);
-r_obj* r_list_resize(r_obj* x, r_ssize size);
+r_obj* r_lgl_resize(r_obj* x, r_ssize new_size);
+r_obj* r_int_resize(r_obj* x, r_ssize new_size);
+r_obj* r_dbl_resize(r_obj* x, r_ssize new_size);
+r_obj* r_cpl_resize(r_obj* x, r_ssize new_size);
+r_obj* r_raw_resize(r_obj* x, r_ssize new_size);
+r_obj* r_chr_resize(r_obj* x, r_ssize new_size);
+r_obj* r_list_resize(r_obj* x, r_ssize new_size);
 
 static inline
-r_obj* r_vec_resize0(enum r_type type, r_obj* x, r_ssize size) {
+r_obj* r_vec_resize0(enum r_type type, r_obj* x, r_ssize new_size) {
   switch (type) {
-  case R_TYPE_logical: return r_lgl_resize(x, size);
-  case R_TYPE_integer: return r_int_resize(x, size);
-  case R_TYPE_double: return r_dbl_resize(x, size);
-  case R_TYPE_complex: return r_cpl_resize(x, size);
-  case R_TYPE_raw: return r_raw_resize(x, size);
-  case R_TYPE_character: return r_chr_resize(x, size);
-  case R_TYPE_list: return r_list_resize(x, size);
+  case R_TYPE_logical: return r_lgl_resize(x, new_size);
+  case R_TYPE_integer: return r_int_resize(x, new_size);
+  case R_TYPE_double: return r_dbl_resize(x, new_size);
+  case R_TYPE_complex: return r_cpl_resize(x, new_size);
+  case R_TYPE_raw: return r_raw_resize(x, new_size);
+  case R_TYPE_character: return r_chr_resize(x, new_size);
+  case R_TYPE_list: return r_list_resize(x, new_size);
   default: r_stop_unimplemented_type(type);
   }
 }
 static inline
-r_obj* r_vec_resize(r_obj* x, r_ssize size) {
-  return r_vec_resize0(r_typeof(x), x, size);
+r_obj* r_vec_resize(r_obj* x, r_ssize new_size) {
+  return r_vec_resize0(r_typeof(x), x, new_size);
 }
 
 static inline

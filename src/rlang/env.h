@@ -7,8 +7,6 @@
 #include "cnd.h"
 #include "globals.h"
 #include "obj.h"
-#include "rlang.h"
-#include "sym.h"
 
 #define RLANG_USE_R_EXISTS (R_VERSION < R_Version(4, 2, 0))
 
@@ -50,58 +48,11 @@ bool r_is_namespace(r_obj* x) {
   return R_IsNamespaceEnv(x);
 }
 
-static inline
-r_obj* r_env_find(r_obj* env, r_obj* sym) {
-  return Rf_findVarInFrame3(env, sym, FALSE);
-}
-static inline
-r_obj* r_env_find_anywhere(r_obj* env, r_obj* sym) {
-  return Rf_findVar(sym, env);
-}
+r_obj* r_env_get(r_obj* env, r_obj* sym);
 
-#if 1 || R_VERSION < R_Version(4, 5, 0)
-// We currently can't use `R_getVar()` which:
-// 1. Throws if not found
-// 2. Throws if argument is the missing arg
-// 3. Evaluates promises
-// Our operators have to return missing arguments.
-static inline
-r_obj* r_env_get(r_obj* env, r_obj* sym) {
-  r_obj* out = r_env_find(env, sym);
+r_obj* r_env_until(r_obj* env, r_obj* sym, r_obj* last);
 
-  if (out == r_syms.unbound) {
-    r_abort("object '%s' not found", r_sym_c_string(sym));
-  }
-
-  if (r_typeof(out) == R_TYPE_promise) {
-    return Rf_eval(out, env);
-  }
-
-  return out;
-}
-
-static inline
-r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym) {
-  r_obj* out = r_env_find_anywhere(env, sym);
-
-  if (out == r_syms.unbound) {
-    r_abort("object '%s' not found", r_sym_c_string(sym));
-  }
-
-  return out;
-}
-#else
-static inline
-r_obj* r_env_get(r_obj* env, r_obj* sym) {
-  return R_getVar(sym, env, FALSE);
-}
-
-static inline
-r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym) {
-  return R_getVar(sym, env, TRUE);
-}
-#endif
-
+r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym);
 r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last);
 bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last);
 
@@ -159,29 +110,6 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent);
 
 void r_env_coalesce(r_obj* env, r_obj* from);
 
-
-// Silently ignores bindings that are not defined in `env`.
-static inline
-void r_env_unbind(r_obj* env, r_obj* sym) {
-  R_removeVarFromFrame(sym, env);
-}
-
-static inline
-void r_env_poke(r_obj* env, r_obj* sym, r_obj* value) {
-  KEEP(value);
-  Rf_defineVar(sym, value, env);
-  FREE(1);
-}
-
-void r_env_poke_lazy(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env);
-
-static inline
-void r_env_poke_active(r_obj* env, r_obj* sym, r_obj* fn) {
-  KEEP(fn);
-  r_env_unbind(env, sym);
-  R_MakeActiveBinding(sym, fn, env);
-  FREE(1);
-}
 
 bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top);
 

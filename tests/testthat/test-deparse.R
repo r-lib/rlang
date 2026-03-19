@@ -385,11 +385,6 @@ test_that("literal functions are deparsed", {
   )
 })
 
-test_that("literal dots are deparsed", {
-  dots <- (function(...) env_get(, "..."))(NULL)
-  expect_identical_(sexp_deparse(expr(foo(!!dots))), "foo(<...>)")
-})
-
 test_that("environments are deparsed", {
   expect_identical(sexp_deparse(expr(foo(!!env()))), "foo(<environment>)")
 })
@@ -740,6 +735,7 @@ test_that("as_label() supports special objects", {
   expect_identical(as_label(quo(foo)), "foo")
   expect_identical(as_label(quo(foo(!!quo(bar)))), "foo(bar)")
   expect_identical(as_label(~foo), "~foo")
+  expect_identical(as_label(call("{", quote({x}))), "{ ... }")
   expect_identical(as_label(NULL), "NULL")
 })
 
@@ -845,6 +841,8 @@ test_that("backslashes in strings are properly escaped (#1160)", {
 })
 
 test_that("formulas are deparsed (#1169)", {
+  skip_if_not_installed("pillar")
+
   # Evaluated formulas are treated as objects
   expect_equal(
     expr_deparse(~foo),
@@ -869,6 +867,8 @@ test_that("formulas are deparsed (#1169)", {
 })
 
 test_that("matrices and arrays are formatted (#383)", {
+  skip_if_not_installed("pillar")
+
   mat <- matrix(1:3)
   expect_equal(as_label(mat), "<int[,1]>")
   expect_equal(expr_deparse(mat), "<int[,1]: 1L, 2L, 3L>")

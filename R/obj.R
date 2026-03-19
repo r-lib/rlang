@@ -31,23 +31,6 @@ sexp_address <- obj_address
 
 # nocov start - These functions are mostly for interactive experimentation
 
-mark_object <- function(x) {
-  invisible(.Call(ffi_mark_object, x))
-}
-unmark_object <- function(x) {
-  invisible(.Call(ffi_unmark_object, x))
-}
-
-promise_expr <- function(name, env = caller_env()) {
-  .Call(ffi_promise_expr, name, env)
-}
-promise_env <- function(name, env = caller_env()) {
-  .Call(ffi_promise_env, name, env)
-}
-promise_value <- function(name, env = caller_env()) {
-  .Call(ffi_promise_value, name, env)
-}
-
 c_warning <- function(msg) {
   .Call(ffi_test_Rf_warning, msg)
 }
@@ -61,24 +44,12 @@ errorcall <- function(call, msg) {
   .Call(ffi_test_Rf_errorcall, call, msg)
 }
 
-obj_attrib <- function(x) {
-  .Call(ffi_attrib, x)
-}
-
 vec_alloc <- function(type, n) {
   stopifnot(
     is_string(type),
     is_integer(n, 1) && is.finite(n)
   )
   .Call(ffi_vec_alloc, type, n)
-}
-
-# Note that the C-level function has inverted arguments
-find_var <- function(env, sym) {
-  .Call(ffi_find_var, env, sym)
-}
-find_var_in_frame <- function(env, sym) {
-  .Call(ffi_find_var, env, sym)
 }
 
 chr_get <- function(x, i = 0L) {

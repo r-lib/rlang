@@ -2,7 +2,7 @@ rlang <img src="man/figures/logo.png" align="right" />
 =======================================================
 
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/r-lib/rlang/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/rlang?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/r-lib/rlang/graph/badge.svg)](https://app.codecov.io/gh/r-lib/rlang)
 [![Lifecycle Status](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/r-lib/rlang/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/rlang/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->

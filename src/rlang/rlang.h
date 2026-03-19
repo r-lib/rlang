@@ -54,6 +54,7 @@ bool _r_use_local_precious_list;
 #include "df.h"
 #include "dyn-array.h"
 #include "dyn-list-of.h"
+#include "dots-info.h"
 #include "env.h"
 #include "env-binding.h"
 #include "eval.h"

@@ -148,7 +148,7 @@ The tidyverse embraced the data-masking approach in packages like ggplot2 and dp
 \item In 2006 the \href{https://r-datatable.com}{data.table package} included data-masking and selections in the \code{i} and \code{j} arguments of the \code{[} method of a data frame.
 \item The \href{https://dplyr.tidyverse.org/}{dplyr package} was published in 2014.
 \item The rlang package developed tidy eval in 2017 as the data-masking framework of the tidyverse. It introduced the notions of \link[=topic-quosure]{quosure}, \link[=topic-inject]{implicit injection} with \verb{!!}  and \verb{!!!}, and \link[=.data]{data pronouns}.
-\item In 2019, injection with \verb{\{\{} was introduced in \href{https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/}{rlang 0.4.0} to simplify the defuse-and-inject pattern. This operator allows R programmers to transport data-masked arguments across functions more intuitively and with minimal boilerplate.
+\item In 2019, injection with \verb{\{\{} was introduced in \href{https://tidyverse.org/blog/2019/06/rlang-0-4-0/}{rlang 0.4.0} to simplify the defuse-and-inject pattern. This operator allows R programmers to transport data-masked arguments across functions more intuitively and with minimal boilerplate.
 }
 }
 

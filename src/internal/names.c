@@ -21,7 +21,11 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
 
   r_ssize n = r_length(names);
 
-  r_obj* new_names = KEEP(r_clone(names));
+  r_obj* new_names = r_obj_encode_utf8(names);
+  if (new_names == names) {
+    new_names = r_clone(names);
+  }
+  KEEP(new_names);
   r_obj* const * v_new_names = r_chr_cbegin(new_names);
 
   for (r_ssize i = 0; i < n; ++i) {

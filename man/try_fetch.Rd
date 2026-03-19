@@ -33,11 +33,20 @@ catching site instead.
 try_fetch(1 + "", error = function(cnd) 0)
 }\if{html}{\out{</div>}}
 \item \strong{Rethrow conditions}, e.g. using \code{abort(msg, parent = cnd)}.
-See the \code{parent} argument of \code{\link[=abort]{abort()}}. This is typically done to
+The \code{parent} argument of \code{\link[=abort]{abort()}}, \code{\link[=warn]{warn()}}, and \code{\link[=inform]{inform()}}
+can be used to chain conditions. This is typically done to
 add information to low-level errors about the high-level context
 in which they occurred.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{try_fetch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+
+try_fetch(
+  1 + "",
+  error = function(cnd) \{
+    warn("Failed. Returning 1", parent = cnd)
+    1L
+  \}
+)
 }\if{html}{\out{</div>}}
 \item \strong{Inspect conditions}, for instance to log data about warnings
 or errors. In this case, the handler must return the \code{\link[=zap]{zap()}}

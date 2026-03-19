@@ -3,7 +3,7 @@
 
 r_obj* r_eval_with_x(r_obj* call, r_obj* x, r_obj* parent) {
   r_obj* env = KEEP(r_alloc_environment(1, parent));
-  r_env_poke(env, r_syms.x, x);
+  r_env_bind(env, r_syms.x, x);
 
   r_obj* out = r_eval(call, env);
 
@@ -12,8 +12,8 @@ r_obj* r_eval_with_x(r_obj* call, r_obj* x, r_obj* parent) {
 }
 r_obj* r_eval_with_xy(r_obj* call, r_obj* x, r_obj* y, r_obj* parent) {
   r_obj* env = KEEP(r_alloc_environment(2, parent));
-  r_env_poke(env, r_syms.x, x);
-  r_env_poke(env, r_syms.y, y);
+  r_env_bind(env, r_syms.x, x);
+  r_env_bind(env, r_syms.y, y);
 
   r_obj* out = r_eval(call, env);
 
@@ -22,9 +22,9 @@ r_obj* r_eval_with_xy(r_obj* call, r_obj* x, r_obj* y, r_obj* parent) {
 }
 r_obj* r_eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z, r_obj* parent) {
   r_obj* env = KEEP(r_alloc_environment(3, parent));
-  r_env_poke(env, r_syms.x, x);
-  r_env_poke(env, r_syms.y, y);
-  r_env_poke(env, r_syms.z, z);
+  r_env_bind(env, r_syms.x, x);
+  r_env_bind(env, r_syms.y, y);
+  r_env_bind(env, r_syms.z, z);
 
   r_obj* out = r_eval(call, env);
 
@@ -33,10 +33,10 @@ r_obj* r_eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z, r_obj* parent)
 }
 r_obj* r_eval_with_wxyz(r_obj* call, r_obj* w, r_obj* x, r_obj* y, r_obj* z, r_obj* parent) {
   r_obj* env = KEEP(r_alloc_environment(4, parent));
-  r_env_poke(env, r_syms.w, w);
-  r_env_poke(env, r_syms.x, x);
-  r_env_poke(env, r_syms.y, y);
-  r_env_poke(env, r_syms.z, z);
+  r_env_bind(env, r_syms.w, w);
+  r_env_bind(env, r_syms.x, x);
+  r_env_bind(env, r_syms.y, y);
+  r_env_bind(env, r_syms.z, z);
 
   r_obj* out = r_eval(call, env);
 
@@ -58,42 +58,42 @@ static r_obj* shared_xy_env;
 static r_obj* shared_xyz_env;
 
 r_obj* eval_with_x(r_obj* call, r_obj* x) {
-  r_env_poke(shared_x_env, r_syms.x, x);
+  r_env_bind(shared_x_env, r_syms.x, x);
 
   r_obj* out = KEEP(r_eval(call, shared_x_env));
 
   // Release for gc
-  r_env_poke(shared_x_env, r_syms.x, r_null);
+  r_env_bind(shared_x_env, r_syms.x, r_null);
 
   FREE(1);
   return out;
 }
 
 r_obj* eval_with_xy(r_obj* call, r_obj* x, r_obj* y) {
-  r_env_poke(shared_xy_env, r_syms.x, x);
-  r_env_poke(shared_xy_env, r_syms.y, y);
+  r_env_bind(shared_xy_env, r_syms.x, x);
+  r_env_bind(shared_xy_env, r_syms.y, y);
 
   r_obj* out = KEEP(r_eval(call, shared_xy_env));
 
   // Release for gc
-  r_env_poke(shared_xy_env, r_syms.x, r_null);
-  r_env_poke(shared_xy_env, r_syms.y, r_null);
+  r_env_bind(shared_xy_env, r_syms.x, r_null);
+  r_env_bind(shared_xy_env, r_syms.y, r_null);
 
   FREE(1);
   return out;
 }
 
 r_obj* eval_with_xyz(r_obj* call, r_obj* x, r_obj* y, r_obj* z) {
-  r_env_poke(shared_xyz_env, r_syms.x, x);
-  r_env_poke(shared_xyz_env, r_syms.y, y);
-  r_env_poke(shared_xyz_env, r_syms.z, z);
+  r_env_bind(shared_xyz_env, r_syms.x, x);
+  r_env_bind(shared_xyz_env, r_syms.y, y);
+  r_env_bind(shared_xyz_env, r_syms.z, z);
 
   r_obj* out = KEEP(r_eval(call, shared_xyz_env));
 
   // Release for gc
-  r_env_poke(shared_xyz_env, r_syms.x, r_null);
-  r_env_poke(shared_xyz_env, r_syms.y, r_null);
-  r_env_poke(shared_xyz_env, r_syms.z, r_null);
+  r_env_bind(shared_xyz_env, r_syms.x, r_null);
+  r_env_bind(shared_xyz_env, r_syms.y, r_null);
+  r_env_bind(shared_xyz_env, r_syms.z, r_null);
 
   FREE(1);
   return out;
@@ -135,7 +135,7 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
                                int n,
                                r_obj* env) {
   if (fn_sym != r_null) {
-    r_env_poke(env, fn_sym, fn);
+    r_env_bind(env, fn_sym, fn);
     fn = fn_sym;
   }
 
@@ -154,7 +154,7 @@ r_obj* r_exec_mask_n_call_poke(r_obj* fn_sym,
     } else {
       // If symbol is supplied, assign the value in the environment and
       // use the symbol instead of the value in the list of arguments
-      r_env_poke(env, tag, car);
+      r_env_bind(env, tag, car);
       r_node_poke_car(node, tag);
     }
 

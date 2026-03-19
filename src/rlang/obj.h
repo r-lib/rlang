@@ -56,14 +56,6 @@ void _r_preserve_global(r_obj* x) {
    (void) NULL)
 
 static inline
-void r_mark_object(r_obj* x) {
-  SET_OBJECT(x, 1);
-}
-static inline
-void r_unmark_object(r_obj* x) {
-  SET_OBJECT(x, 0);
-}
-static inline
 bool r_is_object(r_obj* x) {
   return Rf_isObject(x);
 }
@@ -80,10 +72,6 @@ r_obj* r_copy(r_obj* x) {
 static inline
 r_obj* r_clone(r_obj* x) {
   return Rf_shallow_duplicate(x);
-}
-static inline
-r_obj* r_clone_shared(r_obj* x) {
-  return r_is_shared(x) ? r_clone(x) : x;
 }
 
 // These also clone names

@@ -332,6 +332,7 @@ call_print_fine_type <- function(call) {
     `repeat` = ,
     `if` = "control",
     `(` = ,
+    `{{` = ,
     `{` = "delim",
     `[` = ,
     `[[` = "subset",

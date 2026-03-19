@@ -1,43 +1,70 @@
 ## revdepcheck results
 
-We checked 8473 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+We checked 3370 reverse dependencies (3365 from CRAN + 5 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 4 new problems
- * We failed to check 17 packages
+ * We saw 2 new problems
+ * We failed to check 50 packages
 
 Issues with CRAN packages are summarised below.
 
 ### New problems
 (This reports the first line of each new failure)
 
-* codebookr
-  checking tests ... ERROR
-
-* Haplin
+* polmineR
   checking installed package size ... NOTE
 
-* keras
-  checking installed package size ... NOTE
-
-* pivottabler
-  checking installed package size ... NOTE
+* rpaleoclim
+  checking examples ... ERROR
 
 ### Failed to check
 
-* arealDB          (NA)
-* bayesdfa         (NA)
-* ctsem            (NA)
-* EcoEnsemble      (NA)
-* FAIRmaterials    (NA)
-* fio              (NA)
-* loon.shiny       (NA)
-* metabolic        (NA)
-* metajam          (NA)
-* multinma         (NA)
-* nesRdata         (NA)
-* ontologics       (NA)
-* rdflib           (NA)
-* rmsb             (NA)
-* rstanarm         (NA)
-* streamDAG        (NA)
-* TriDimRegression (NA)
+* arcgisplaces  (NA)
+* bayesdfa      (NA)
+* brms          (NA)
+* bullseye      (NA)
+* ceramic       (NA)
+* ClustAssess   (NA)
+* copulaSim     (NA)
+* cylcop        (NA)
+* detourr       (NA)
+* dySEM         (NA)
+* enderecobr    (NA)
+* ferrn         (NA)
+* fio           (NA)
+* genekitr      (NA)
+* ggiraph       (NA)
+* ggsem         (NA)
+* grandR        (NA)
+* gvcR          (NA)
+* h3o           (NA)
+* ivolcano      (NA)
+* lcsm          (NA)
+* margaret      (NA)
+* measureR      (NA)
+* metrica       (NA)
+* mineSweepR    (NA)
+* MiscMetabar   (NA)
+* morepls       (NA)
+* OlinkAnalyze  (NA)
+* outstandR     (NA)
+* pandemonium   (NA)
+* pcutils       (NA)
+* PKbioanalysis (NA)
+* precommit     (NA)
+* projectLSA    (NA)
+* psychonetrics (NA)
+* rdss          (NA)
+* ready4        (NA)
+* RegDDM        (NA)
+* scholar       (NA)
+* SCpubr        (NA)
+* semptools     (NA)
+* Signac        (NA)
+* spareg        (NA)
+* spinebil      (NA)
+* SRscore       (NA)
+* tabs          (NA)
+* tidycomm      (NA)
+* tidylearn     (NA)
+* TransProR     (NA)
+* wmwAUC        (NA)

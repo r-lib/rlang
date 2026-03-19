@@ -53,13 +53,15 @@ const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
 r_obj* new_splice_box(r_obj* x) {
   r_obj* out = KEEP(r_alloc_list(1));
   r_list_poke(out, 0, x);
-  r_poke_attrib(out, splice_box_attrib);
-  r_mark_object(out);
+
+  // Shallow-clone attributes from the prototype for fast construction
+  r_attrib_clone_from(out, spliced_box_prototype);
+
   FREE(1);
   return out;
 }
 bool is_splice_box(r_obj* x) {
-  return r_attrib(x) == splice_box_attrib;
+  return r_inherits(x, "rlang_box_splice");
 }
 r_obj* ffi_is_splice_box(r_obj* x) {
   return r_lgl(is_splice_box(x));
@@ -543,7 +545,7 @@ static inline
 void ignore(struct dots_capture_info* p_capture_info,
             r_obj* node) {
   p_capture_info->needs_expansion = true;
-  r_node_poke_car(node, empty_spliced_arg);
+  r_node_poke_car(node, spliced_box_prototype);
 }
 
 
@@ -642,7 +644,7 @@ r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
   for (r_ssize count = 0; dots != r_null; dots = r_node_cdr(dots)) {
     r_obj* elt = r_node_car(dots);
 
-    if (elt == empty_spliced_arg) {
+    if (elt == spliced_box_prototype) {
       continue;
     }
 
@@ -687,7 +689,7 @@ r_obj* dots_as_pairlist(r_obj* dots, struct dots_capture_info* capture_info) {
   while (dots != r_null) {
     r_obj* elt = r_node_car(dots);
 
-    if (elt == empty_spliced_arg) {
+    if (elt == spliced_box_prototype) {
       dots = r_node_cdr(dots);
       r_node_poke_cdr(prev, dots);
       continue;
@@ -791,7 +793,7 @@ r_obj* ffi_unescape_character(r_obj*);
 static
 r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   int n_prot = 0;
-  r_obj* nms = r_names(dots);
+  r_obj* nms = KEEP_N(r_names(dots), &n_prot);
 
   // Here handle minimal vs none
   switch (capture_info->named) {
@@ -877,10 +879,11 @@ r_obj* ffi_quos_interp(r_obj* frame_env,
   dots = KEEP(dots_as_list(dots, &capture_info));
   dots = KEEP(dots_finalise(&capture_info, dots));
 
-  r_obj* attrib = KEEP(r_new_node(r_names(dots), r_clone(quosures_attrib)));
-  r_node_poke_tag(attrib, r_syms.names);
-  r_poke_attrib(dots, attrib);
-  r_mark_object(dots);
+  r_obj* nms = KEEP(r_names(dots));
+  r_attrib_clone_from(dots, quosures_prototype);
+  if (nms != r_null) {
+    r_attrib_poke_names(dots, nms);
+  }
 
   FREE(4);
   return dots;
@@ -1107,36 +1110,19 @@ void rlang_init_dots(r_obj* ns) {
   r_preserve(abort_dots_homonyms_ns_sym);
 
   {
-    r_obj* splice_box_class = KEEP(r_alloc_character(2));
-    r_chr_poke(splice_box_class, 0, r_str("rlang_box_splice"));
-    r_chr_poke(splice_box_class, 1, r_str("rlang_box"));
-
-    splice_box_attrib = r_pairlist(splice_box_class);
-    r_preserve(splice_box_attrib);
-    r_mark_shared(splice_box_attrib);
-
-    r_node_poke_tag(splice_box_attrib, r_syms.class_);
+    spliced_box_prototype = KEEP(r_alloc_list(1));
+    r_list_poke(spliced_box_prototype, 0, r_alloc_list(0));
+    r_attrib_poke_class(spliced_box_prototype, r_chr_n((const char*[]){"rlang_box_splice", "rlang_box"}, 2));
+    r_preserve(spliced_box_prototype);
+    r_mark_shared(spliced_box_prototype);
     FREE(1);
   }
 
   {
-    r_obj* list = KEEP(r_alloc_list(0));
-    empty_spliced_arg = new_splice_box(list);
-    r_preserve(empty_spliced_arg);
-    r_mark_shared(empty_spliced_arg);
-    FREE(1);
-  }
-
-  {
-    r_obj* quosures_class = KEEP(r_alloc_character(2));
-    r_chr_poke(quosures_class, 0, r_str("quosures"));
-    r_chr_poke(quosures_class, 1, r_str("list"));
-
-    quosures_attrib = r_pairlist(quosures_class);
-    r_preserve(quosures_attrib);
-    r_mark_shared(quosures_attrib);
-
-    r_node_poke_tag(quosures_attrib, r_syms.class_);
+    quosures_prototype = KEEP(r_alloc_list(0));
+    r_attrib_poke_class(quosures_prototype, r_chr_n((const char*[]){"quosures", "list"}, 2));
+    r_preserve(quosures_prototype);
+    r_mark_shared(quosures_prototype);
     FREE(1);
   }
 
@@ -1151,13 +1137,90 @@ void rlang_init_dots(r_obj* ns) {
 }
 
 static r_obj* auto_name_call = NULL;
-static r_obj* empty_spliced_arg = NULL;
+static r_obj* spliced_box_prototype = NULL;
 static r_obj* glue_embrace_fn = NULL;
 static r_obj* dots_homonyms_values = NULL;
 static r_obj* dots_ignore_empty_values = NULL;
-static r_obj* quosures_attrib = NULL;
-static r_obj* splice_box_attrib = NULL;
+static r_obj* quosures_prototype = NULL;
+
 static r_obj* abort_dots_homonyms_ns_sym = NULL;
 
 static struct r_lazy dots_homonyms_arg = { 0 };
 static struct r_lazy dots_ignore_empty_arg = { 0 };
+
+
+// FFI wrappers for dots-info API ---
+
+r_obj* ffi_env_dots_exist(r_obj* env) {
+    return r_lgl(r_env_dots_exist(env));
+}
+
+r_obj* ffi_env_dots_length(r_obj* env) {
+    return r_int(r_env_dots_length(env));
+}
+
+r_obj* ffi_env_dots_names(r_obj* env) {
+    return r_env_dots_names(env);
+}
+
+r_obj* ffi_env_dot_get(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
+    return r_env_dot_get(env, i);
+}
+
+r_obj* ffi_env_dot_type(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
+    r_dot_type_t type = r_env_dot_type(env, i);
+
+    switch (type) {
+    case DOT_TYPE_value:   return r_chr("value");
+    case DOT_TYPE_missing: return r_chr("missing");
+    case DOT_TYPE_delayed: return r_chr("delayed");
+    case DOT_TYPE_forced:  return r_chr("forced");
+    default:               r_abort("unreachable");
+    }
+}
+
+r_obj* ffi_env_dot_delayed_expr(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
+    return r_env_dot_delayed_expr(env, i);
+}
+
+r_obj* ffi_env_dot_delayed_env(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
+    return r_env_dot_delayed_env(env, i);
+}
+
+r_obj* ffi_env_dot_forced_expr(r_obj* ffi_i, r_obj* env) {
+    r_ssize i = r_int_get(ffi_i, 0) - 1;
+    return r_env_dot_forced_expr(env, i);
+}
+
+
+// FFI wrappers for env-binding accessors ---
+
+r_obj* ffi_env_binding_type(r_obj* sym, r_obj* env) {
+    enum r_env_binding_type type = r_env_binding_type(env, sym);
+
+    switch (type) {
+    case R_ENV_BINDING_TYPE_value:   return r_chr("value");
+    case R_ENV_BINDING_TYPE_missing: return r_chr("missing");
+    case R_ENV_BINDING_TYPE_delayed: return r_chr("delayed");
+    case R_ENV_BINDING_TYPE_forced:  return r_chr("forced");
+    case R_ENV_BINDING_TYPE_active:  return r_chr("active");
+    case R_ENV_BINDING_TYPE_unbound: return r_chr("unbound");
+    default:                         r_abort("unreachable");
+    }
+}
+
+r_obj* ffi_env_binding_delayed_expr(r_obj* sym, r_obj* env) {
+    return r_env_binding_delayed_expr(env, sym);
+}
+
+r_obj* ffi_env_binding_delayed_env(r_obj* sym, r_obj* env) {
+    return r_env_binding_delayed_env(env, sym);
+}
+
+r_obj* ffi_env_binding_forced_expr(r_obj* sym, r_obj* env) {
+    return r_env_binding_forced_expr(env, sym);
+}

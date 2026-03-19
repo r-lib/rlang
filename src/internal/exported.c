@@ -725,64 +725,6 @@ r_obj* ffi_obj_address(r_obj* x) {
   return r_str_as_character(r_obj_address(x));
 }
 
-r_obj* ffi_mark_object(r_obj* x) {
-  SET_OBJECT(x, 1);
-  return x;
-}
-r_obj* ffi_unmark_object(r_obj* x) {
-  SET_OBJECT(x, 0);
-  return x;
-}
-
-r_obj* rlang_get_promise(r_obj* x, r_obj* env) {
-  switch (r_typeof(x)) {
-  case R_TYPE_promise:
-    return x;
-  case R_TYPE_character:
-    if (r_length(x) == 1) {
-      x = r_sym(r_chr_get_c_string(x, 0));
-    } else {
-      goto error;
-    }
-    // fallthrough
-  case R_TYPE_symbol: {
-    r_obj* prom = r_env_find_anywhere(env, x);
-    if (r_typeof(prom) == R_TYPE_promise) {
-      return prom;
-    }
-    // fallthrough
-  }
-  error:
-  default:
-    r_abort("`x` must be or refer to a local promise");
-  }
-}
-
-r_obj* ffi_promise_expr(r_obj* x, r_obj* env) {
-  r_obj* prom = rlang_get_promise(x, env);
-  return PREXPR(prom);
-}
-r_obj* ffi_promise_env(r_obj* x, r_obj* env) {
-  r_obj* prom = rlang_get_promise(x, env);
-  return PRENV(prom);
-}
-r_obj* ffi_promise_value(r_obj* x, r_obj* env) {
-  r_obj* prom = rlang_get_promise(x, env);
-  r_obj* value = PRVALUE(prom);
-  if (value == r_syms.unbound) {
-    return r_sym("R_UnboundValue");
-  } else {
-    return value;
-  }
-}
-
-r_obj* ffi_find_var(r_obj* env, r_obj* sym) {
-  return Rf_findVar(sym, env);
-}
-r_obj* ffi_find_var_in_frame(r_obj* env, r_obj* sym) {
-  return Rf_findVarInFrame(env, sym);
-}
-
 r_obj* ffi_chr_get(r_obj* x, r_obj* i) {
   if (r_typeof(i) != R_TYPE_integer || r_length(i) != 1) {
     r_abort("`i` must be an integer value.");
@@ -817,7 +759,7 @@ r_obj* ffi_unpreserve(r_obj* x) {
 // vec.h
 
 r_obj* ffi_vec_alloc(r_obj* type, r_obj* n) {
-  return Rf_allocVector(Rf_str2type(r_chr_get_c_string(type, 0)), r_int_get(n, 0));
+  return r_alloc_vector(Rf_str2type(r_chr_get_c_string(type, 0)), r_int_get(n, 0));
 }
 r_obj* ffi_vec_coerce(r_obj* x, r_obj* type) {
   return Rf_coerceVector(x, Rf_str2type(r_chr_get_c_string(type, 0)));
@@ -1008,6 +950,15 @@ r_obj* ffi_list_poke(r_obj* x, r_obj* i, r_obj* value) {
 
 // walk.c
 
+r_obj* ffi_has_private_accessors(void) {
+#ifdef RLANG_USE_PRIVATE_ACCESSORS
+  return r_true;
+#else
+  return r_false;
+#endif
+}
+
+#ifdef RLANG_USE_PRIVATE_ACCESSORS
 static inline
 r_obj* protect_missing(r_obj* x) {
   // FIXME: Include in `exec_` functions?
@@ -1019,16 +970,6 @@ r_obj* protect_missing(r_obj* x) {
     return x;
   }
 }
-
-r_obj* ffi_has_private_accessors(void) {
-#ifdef RLANG_USE_PRIVATE_ACCESSORS
-  return r_true;
-#else
-  return r_false;
-#endif
-}
-
-#ifdef RLANG_USE_PRIVATE_ACCESSORS
 
 // [[ register() ]]
 r_obj* ffi_sexp_iterate(r_obj* x, r_obj* fn) {

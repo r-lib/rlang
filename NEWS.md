@@ -1,9 +1,21 @@
 # rlang (development version)
 
 * `arg_match()` now throws better error messages if `multiple = TRUE` or if a single value is allowed (@olivroy, #1635, #1682).
+
+* New type-checking functions exported from rlang: `check_bool()`,
+  `check_string()`, `check_name()`, `check_number_decimal()`,
+  `check_number_whole()`, and `check_data_frame()`. These were
+  previously only available via the `standalone-types-check.R`
+  standalone file. `stop_input_type()` is also now exported.
+
+* Fixed a protection issue discovered by rchk (#1865).
+
+
+# rlang 1.1.7
+
 * Progress towards making rlang conformant with the public C API of R.
 
-* R >=4.0.0 is now required. This is still more permissive than the general tidyverse policy of supporting the [5 most recent versions of R](https://www.tidyverse.org/blog/2019/04/r-version-support/).
+* R >=4.0.0 is now required. This is still more permissive than the general tidyverse policy of supporting the [5 most recent versions of R](https://tidyverse.org/blog/2019/04/r-version-support/).
 
 * `list2()` is now a little faster (#1837).
 

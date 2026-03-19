@@ -14,76 +14,88 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
   return out;
 }
 
-#define RESIZE(R_TYPE, C_TYPE, CONST_DEREF, DEREF)              \
-  do {                                                          \
-    r_ssize x_size = r_length(x);                               \
-    if (x_size == size) {                                       \
-      return x;                                                 \
-    }                                                           \
-    if (!ALTREP(x) && size < x_size) {                          \
-      SETLENGTH(x, size);                                       \
-      SET_TRUELENGTH(x, x_size);                                \
-      SET_GROWABLE_BIT(x);                                      \
-      return x;                                                 \
-    }                                                           \
-                                                                \
-    const C_TYPE* p_x = CONST_DEREF(x);                         \
-    r_obj* out = KEEP(r_alloc_vector(R_TYPE, size));            \
-    C_TYPE* p_out = DEREF(out);                                 \
-                                                                \
-    r_ssize cpy_size = (size > x_size) ? x_size : size;         \
-    r_memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));            \
-                                                                \
-    FREE(1);                                                    \
-    return out;                                                 \
+#define RESIZE(R_TYPE, C_TYPE, CONST_DEREF, DEREF)                  \
+  do {                                                              \
+    r_ssize old_size = r_length(x);                                 \
+    if (old_size == new_size) {                                     \
+      return x;                                                     \
+    }                                                               \
+    if (!ALTREP(x) && new_size < old_size) {                        \
+      return vec_shrink(x, new_size, old_size);                     \
+    }                                                               \
+                                                                    \
+    const C_TYPE* p_x = CONST_DEREF(x);                             \
+    r_obj* out = KEEP(r_alloc_vector(R_TYPE, new_size));            \
+    C_TYPE* p_out = DEREF(out);                                     \
+                                                                    \
+    r_ssize cpy_size = (new_size > old_size) ? old_size : new_size; \
+    r_memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));                \
+                                                                    \
+    FREE(1);                                                        \
+    return out;                                                     \
   } while (0)
 
-#define RESIZE_BARRIER(R_TYPE, CONST_DEREF, SET)                \
-  do {                                                          \
-    r_ssize x_size = r_length(x);                               \
-    if (x_size == size) {                                       \
-      return x;                                                 \
-    }                                                           \
-    if (!ALTREP(x) && size < x_size) {                          \
-      SETLENGTH(x, size);                                       \
-      SET_TRUELENGTH(x, x_size);                                \
-      SET_GROWABLE_BIT(x);                                      \
-      return x;                                                 \
-    }                                                           \
-                                                                \
-    r_obj* const * p_x = CONST_DEREF(x);                        \
-    r_obj* out = KEEP(r_alloc_vector(R_TYPE, size));            \
-                                                                \
-    r_ssize cpy_size = (size > x_size) ? x_size : size;         \
-    for (r_ssize i = 0; i < cpy_size; ++i) {                    \
-      SET(out, i, p_x[i]);                                      \
-    }                                                           \
-                                                                \
-    FREE(1);                                                    \
-    return out;                                                 \
+#define RESIZE_BARRIER(R_TYPE, CONST_DEREF, SET)                    \
+  do {                                                              \
+    r_ssize old_size = r_length(x);                                 \
+    if (old_size == new_size) {                                     \
+      return x;                                                     \
+    }                                                               \
+    if (!ALTREP(x) && new_size < old_size) {                        \
+      return vec_shrink(x, new_size, old_size);                     \
+    }                                                               \
+                                                                    \
+    r_obj* const * p_x = CONST_DEREF(x);                            \
+    r_obj* out = KEEP(r_alloc_vector(R_TYPE, new_size));            \
+                                                                    \
+    r_ssize cpy_size = (new_size > old_size) ? old_size : new_size; \
+    for (r_ssize i = 0; i < cpy_size; ++i) {                        \
+      SET(out, i, p_x[i]);                                          \
+    }                                                               \
+                                                                    \
+    FREE(1);                                                        \
+    return out;                                                     \
   } while (0)
+
+// Assumption on older R: `new_size` smaller than `old_size`
+static inline
+r_obj* vec_shrink(r_obj* x, r_ssize new_size, r_ssize old_size) {
+#if R_VERSION >= R_Version(4, 6, 0)
+  if (R_isResizable(x)) {
+    R_resizeVector(x, new_size);
+    return x;
+  } else {
+    return Rf_xlengthgets(x, new_size);
+  }
+#else
+  SETLENGTH(x, new_size);
+  SET_TRUELENGTH(x, old_size);
+  SET_GROWABLE_BIT(x);
+  return x;
+#endif
+}
 
 // Compared to `Rf_xlengthgets()` this does not initialise the new
 // extended locations with `NA`
-r_obj* r_lgl_resize(r_obj* x, r_ssize size) {
+r_obj* r_lgl_resize(r_obj* x, r_ssize new_size) {
   RESIZE(R_TYPE_logical, int, r_lgl_cbegin, r_lgl_begin);
 }
-r_obj* r_int_resize(r_obj* x, r_ssize size) {
+r_obj* r_int_resize(r_obj* x, r_ssize new_size) {
   RESIZE(R_TYPE_integer, int, r_int_cbegin, r_int_begin);
 }
-r_obj* r_dbl_resize(r_obj* x, r_ssize size) {
+r_obj* r_dbl_resize(r_obj* x, r_ssize new_size) {
   RESIZE(R_TYPE_double, double, r_dbl_cbegin, r_dbl_begin);
 }
-r_obj* r_cpl_resize(r_obj* x, r_ssize size) {
+r_obj* r_cpl_resize(r_obj* x, r_ssize new_size) {
   RESIZE(R_TYPE_complex, r_complex, r_cpl_cbegin, r_cpl_begin);
 }
-r_obj* r_raw_resize(r_obj* x, r_ssize size) {
+r_obj* r_raw_resize(r_obj* x, r_ssize new_size) {
   RESIZE(R_TYPE_raw, unsigned char, r_raw_cbegin, r_raw_begin);
 }
-r_obj* r_chr_resize(r_obj* x, r_ssize size) {
+r_obj* r_chr_resize(r_obj* x, r_ssize new_size) {
   RESIZE_BARRIER(R_TYPE_character, r_chr_cbegin, r_chr_poke);
 }
-r_obj* r_list_resize(r_obj* x, r_ssize size) {
+r_obj* r_list_resize(r_obj* x, r_ssize new_size) {
   RESIZE_BARRIER(R_TYPE_list, r_list_cbegin, r_list_poke);
 }
 
