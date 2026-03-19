@@ -2,6 +2,19 @@
 
 ## rlang (development version)
 
+- New type-checking functions exported from rlang:
+  [`check_bool()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md),
+  [`check_string()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md),
+  [`check_name()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md),
+  [`check_number_decimal()`](https://rlang.r-lib.org/dev/reference/check_type_number.md),
+  [`check_number_whole()`](https://rlang.r-lib.org/dev/reference/check_type_number.md),
+  and
+  [`check_data_frame()`](https://rlang.r-lib.org/dev/reference/check_data_frame.md).
+  These were previously only available via the
+  `standalone-types-check.R` standalone file.
+  [`stop_input_type()`](https://rlang.r-lib.org/dev/reference/stop_input_type.md)
+  is also now exported.
+
 - Fixed a protection issue discovered by rchk
   ([\#1865](https://github.com/r-lib/rlang/issues/1865)).
 
@@ -121,9 +134,9 @@ CRAN release: 2023-04-28
 
 - Fix for CRAN checks.
 
-- `stop_input_type()` now handles
-  [`I()`](https://rdrr.io/r/base/AsIs.html) input literally in `arg`
-  ([\#1607](https://github.com/r-lib/rlang/issues/1607),
+- [`stop_input_type()`](https://rlang.r-lib.org/dev/reference/stop_input_type.md)
+  now handles [`I()`](https://rdrr.io/r/base/AsIs.html) input literally
+  in `arg` ([\#1607](https://github.com/r-lib/rlang/issues/1607),
   [@simonpcouch](https://github.com/simonpcouch)).
 
 - [`parse_expr()`](https://rlang.r-lib.org/dev/reference/parse_expr.md)
@@ -228,12 +241,14 @@ CRAN release: 2023-03-14
 
 ### Miscellaneous fixes and features
 
-- New `check_data_frame()` and `check_logical()` functions in
-  `standalone-types-check.R`
+- New
+  [`check_data_frame()`](https://rlang.r-lib.org/dev/reference/check_data_frame.md)
+  and `check_logical()` functions in `standalone-types-check.R`
   ([\#1587](https://github.com/r-lib/rlang/issues/1587),
   [@mgirlich](https://github.com/mgirlich)).
 
-- Added `allow_infinite` argument to `check_number_whole()`
+- Added `allow_infinite` argument to
+  [`check_number_whole()`](https://rlang.r-lib.org/dev/reference/check_type_number.md)
   ([\#1588](https://github.com/r-lib/rlang/issues/1588),
   [@mgirlich](https://github.com/mgirlich)).
 
