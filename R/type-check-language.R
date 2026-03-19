@@ -14,7 +14,7 @@
 #'
 #' @return `NULL` invisibly if the check passes, throws an error otherwise.
 #'
-#' @seealso [check_type_scalar], [check_data_frame]
+#' @family input checkers
 #'
 #' @examples
 #' # Succeeds

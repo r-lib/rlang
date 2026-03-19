@@ -13,7 +13,7 @@
 #'
 #' @return `NULL` invisibly if the check passes, throws an error otherwise.
 #'
-#' @seealso [check_type_scalar], [check_type_lang]
+#' @family input checkers
 #'
 #' @examples
 #' check_data_frame(mtcars)

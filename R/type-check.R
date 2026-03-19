@@ -23,8 +23,7 @@
 #'
 #' @return Throws an error, does not return.
 #'
-#' @seealso [check_type_scalar], [check_type_number], [check_type_lang],
-#'   [check_data_frame]
+#' @family input checkers
 #'
 #' @examples
 #' check_character <- function(

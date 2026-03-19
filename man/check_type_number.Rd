@@ -74,5 +74,10 @@ try(check_number_whole(3.5))
 
 }
 \seealso{
-\link{check_type_scalar}, \link{check_type_lang}, \link{check_data_frame}
+Other input checkers: 
+\code{\link{check_data_frame}()},
+\code{\link{check_type_lang}},
+\code{\link{check_type_scalar}},
+\code{\link{stop_input_type}()}
 }
+\concept{input checkers}
