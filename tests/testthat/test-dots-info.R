@@ -438,55 +438,41 @@ test_that("environment validation works", {
 })
 
 
-# Parent environment lookup -----------------------------------------------
+# Frame-only lookup -------------------------------------------------------
 
-test_that("env_dots_exist() finds dots in parent env", {
+test_that("env_dots_exist() does not reach into parent envs", {
   fn <- function(...) local(env_dots_exist())
-  fn_no_dots <- function() local(env_dots_exist())
-
-  expect_true(fn(1))
-  expect_false(fn_no_dots())
+  expect_false(fn(1))
 })
 
-test_that("env_dots_length() finds dots in parent env", {
+test_that("env_dots_length() does not reach into parent envs", {
   fn <- function(...) local(env_dots_length())
-  expect_equal(fn(1, 2, 3), 3L)
+  expect_error(fn(1, 2, 3), "incorrect context")
 })
 
-test_that("env_dots_names() finds dots in parent env", {
+test_that("env_dots_names() does not reach into parent envs", {
   fn <- function(...) local(env_dots_names())
-  expect_equal(fn(a = 1, b = 2), c("a", "b"))
+  expect_error(fn(a = 1, b = 2), "incorrect context")
 })
 
-test_that("env_dot_get() finds dots in parent env", {
+test_that("env_dot_get() does not reach into parent envs", {
   fn <- function(...) local(env_dot_get(environment(), 1))
-  expect_equal(fn(42), 42)
+  expect_error(fn(42), "incorrect context")
 })
 
-test_that("env_dot_type() finds dots in parent env", {
+test_that("env_dot_type() does not reach into parent envs", {
   fn <- function(...) local(env_dot_type(environment(), 1))
-  expect_equal(fn(x), "delayed")
+  expect_error(fn(x), "incorrect context")
 })
 
-test_that("env_dot_delayed_expr() finds dots in parent env", {
+test_that("env_dot_delayed_expr() does not reach into parent envs", {
   fn <- function(...) local(env_dot_delayed_expr(environment(), 1))
-  expect_equal(fn(x + y), quote(x + y))
+  expect_error(fn(x + y), "incorrect context")
 })
 
-test_that("env_dot_delayed_env() finds dots in parent env", {
+test_that("env_dot_delayed_env() does not reach into parent envs", {
   fn <- function(...) local(env_dot_delayed_env(environment(), 1))
-  e <- new.env()
-  result <- with(e, fn(x + 1))
-  expect_identical(result, e)
-})
-
-test_that("env_dot_forced_expr() finds dots in parent env", {
-  fn <- function(...) {
-    env <- environment()
-    force(..1)
-    local(env_dot_forced_expr(env, 1))
-  }
-  expect_no_error(fn(1 + 1))
+  expect_error(fn(x + 1), "incorrect context")
 })
 
 
