@@ -806,3 +806,28 @@ test_that("embraced empty arg are detected consistently (#1421)", {
   expect_equal(fn_quos(.ignore_empty = "trailing"), quos())
   expect_equal(fn_enquos(.ignore_empty = "trailing"), quos())
 })
+
+test_that("enquos() returns literal values for forced bindings from S3 dispatch (#1886)", {
+  `+.myclass` <- function(lhs, rhs) {
+    qs <- enquos(lhs, rhs)
+    list(
+      lhs_expr = quo_get_expr(qs[[1]]),
+      rhs_expr = quo_get_expr(qs[[2]]),
+      lhs_env = quo_get_env(qs[[1]]),
+      rhs_env = quo_get_env(qs[[2]])
+    )
+  }
+
+  a <- structure(1, class = "myclass")
+  b <- structure(2, class = "myclass")
+
+  out <- a + b
+
+  # Primitive S3 dispatch pre-evaluates arguments via SET_PRVALUE(),
+  # making the bindings forced. Forced bindings have no environment,
+  # so enquos() returns the literal values in empty-env quosures.
+  expect_identical(out$lhs_expr, a)
+  expect_identical(out$rhs_expr, b)
+  expect_identical(out$lhs_env, empty_env())
+  expect_identical(out$rhs_env, empty_env())
+})
