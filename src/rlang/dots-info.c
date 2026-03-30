@@ -27,7 +27,7 @@ r_obj* env_dot_find(r_obj* env, r_ssize i) {
 
     r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
 
-    if (dots == r_syms.unbound) {
+    if (dots == R_UnboundValue) {
         r_abort("'...' used in an incorrect context");
     }
 
@@ -58,7 +58,7 @@ bool r_env_dots_exist(r_obj* env) {
     return R_DotsExist(env);
 #else
     r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
-    return dots != r_syms.unbound;
+    return dots != R_UnboundValue;
 #endif
 }
 
@@ -79,7 +79,7 @@ r_ssize r_env_dots_length(r_obj* env) {
 #else
     r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
 
-    if (dots == r_syms.unbound) {
+    if (dots == R_UnboundValue) {
         r_abort("incorrect context: the current call has no '...' to look in");
     }
 
@@ -99,7 +99,7 @@ r_obj* r_env_dots_names(r_obj* env) {
 #else
     r_obj* dots = KEEP(Rf_findVarInFrame(env, r_syms.dots));
 
-    if (dots == r_syms.unbound) {
+    if (dots == R_UnboundValue) {
         r_abort("incorrect context: the current call has no '...' to look in");
     }
 

@@ -963,7 +963,7 @@ static inline
 r_obj* protect_missing(r_obj* x) {
   // FIXME: Include in `exec_` functions?
   if (x == r_missing_arg ||
-      x == r_syms.unbound ||
+      x == R_UnboundValue ||
       r_typeof(x) == R_TYPE_promise) {
     return r_expr_protect(x);
   } else {

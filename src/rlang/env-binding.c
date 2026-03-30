@@ -132,7 +132,7 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
 
   r_obj* value = env_find(env, sym);
 
-  if (value == r_syms.unbound) {
+  if (value == R_UnboundValue) {
     return R_ENV_BINDING_TYPE_unbound;
   }
 
@@ -194,7 +194,7 @@ void r_env_bind_delayed(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
   r_obj* promise = KEEP(Rf_allocSExp(PROMSXP));
   SET_PRCODE(promise, expr);
   SET_PRENV(promise, eval_env);
-  SET_PRVALUE(promise, r_syms.unbound);
+  SET_PRVALUE(promise, R_UnboundValue);
   Rf_defineVar(sym, promise, env);
   FREE(1);
 #endif
