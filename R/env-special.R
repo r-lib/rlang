@@ -85,7 +85,7 @@ search_envs <- function() {
 #' @rdname search_envs
 #' @export
 search_env <- function(name) {
-  check_name(name)
+  check_string(name, allow_empty = FALSE)
 
   if (!is_attached(name)) {
     abort(paste_line(

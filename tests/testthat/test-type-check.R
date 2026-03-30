@@ -33,23 +33,6 @@ test_that("`check_string()` checks", {
   })
 })
 
-test_that("`check_name()` checks", {
-  expect_null(check_name("foo"))
-  expect_null(check_name(NULL, allow_null = TRUE))
-
-  expect_snapshot({
-    err(checker("", check_name))
-    err(checker(, check_name))
-    err(checker(NA, check_name))
-    err(checker(na_chr, check_name))
-    err(checker(NULL, check_name))
-    err(checker(chr(), check_name, allow_null = TRUE))
-    err(checker(na_chr, check_name))
-    err(checker(c("", ""), check_name, allow_null = TRUE))
-    err(checker(1, check_name))
-  })
-})
-
 test_that("`check_number_whole()` checks", {
   expect_null(check_number_whole(10))
   expect_null(check_number_whole(10L))

@@ -4,7 +4,6 @@
 \alias{check_type_scalar}
 \alias{check_bool}
 \alias{check_string}
-\alias{check_name}
 \title{Check argument type (scalar)}
 \usage{
 check_bool(
@@ -21,14 +20,6 @@ check_string(
   ...,
   allow_empty = TRUE,
   allow_na = FALSE,
-  allow_null = FALSE,
-  arg = caller_arg(x),
-  call = caller_env()
-)
-
-check_name(
-  x,
-  ...,
   allow_null = FALSE,
   arg = caller_arg(x),
   call = caller_env()

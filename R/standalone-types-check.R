@@ -8,14 +8,16 @@
 # ---
 #
 # ## Changelog
+# 2026-03-30:
+# - `check_name()` has been removed from the standalone file because of a
+#   conflict with `recipes::check_name()`.
 #
 # 2026-03-17:
-# - `check_bool()`, `check_string()`, `check_name()`,
-#   `check_number_decimal()`, `check_number_whole()`, and
-#   `check_data_frame()` are now exported from rlang. Language type
-#   checkers (`check_symbol()`, `check_call()`, etc.), column type
-#   checkers (`check_character()`, `check_logical()`), and
-#   `check_arg()` remain in the standalone file.
+# - `check_bool()`, `check_string()`, `check_number_decimal()`,
+#   `check_number_whole()`, and `check_data_frame()` are now exported
+#   from rlang. Language type checkers (`check_symbol()`,
+#   `check_call()`, etc.), column type checkers (`check_character()`,
+#   `check_logical()`), and `check_arg()` remain in the standalone file.
 # - `check_formula()` now requires an evaluated formula, not a defused one.
 #
 # 2025-09-19:

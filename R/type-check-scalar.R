@@ -95,38 +95,6 @@ check_string <- function(
   )
 }
 
-#' @rdname check_type_scalar
-#' @export
-check_name <- function(
-  x,
-  ...,
-  allow_null = FALSE,
-  arg = caller_arg(x),
-  call = caller_env()
-) {
-  if (!missing(x)) {
-    is_string <- .rlang_check_is_string(
-      x,
-      allow_empty = FALSE,
-      allow_na = FALSE,
-      allow_null = allow_null
-    )
-    if (is_string) {
-      return(invisible(NULL))
-    }
-  }
-
-  stop_input_type(
-    x,
-    "a valid name",
-    ...,
-    allow_na = FALSE,
-    allow_null = allow_null,
-    arg = arg,
-    call = call
-  )
-}
-
 .rlang_check_is_string <- function(x, allow_empty, allow_na, allow_null) {
   if (is_string(x)) {
     if (allow_empty || !is_string(x, "")) {
