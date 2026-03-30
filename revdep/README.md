@@ -1,52 +1,55 @@
 # Revdeps
 
-## Failed to check (55)
+## Failed to check (60)
 
 |package       |version |error |warning |note |
 |:-------------|:-------|:-----|:-------|:----|
+|a5R           |0.3.1   |1     |        |     |
 |arcgisplaces  |0.1.2   |1     |        |     |
 |bayesdfa      |1.3.4   |1     |        |     |
+|bmm           |?       |      |        |     |
 |brms          |?       |      |        |     |
 |bullseye      |?       |      |        |     |
-|ceramic       |0.9.5   |1     |        |     |
 |ClustAssess   |?       |      |        |     |
+|ClustImpute   |?       |      |        |     |
 |colleyRstats  |?       |      |        |     |
 |copulaSim     |?       |      |        |     |
-|cylcop        |0.2.1   |1     |        |     |
+|cylcop        |?       |      |        |     |
 |detourr       |?       |      |        |     |
 |dymo          |?       |      |        |     |
 |dySEM         |?       |      |        |     |
+|ecorisk       |?       |      |        |     |
 |enderecobr    |0.5.0   |1     |        |     |
 |eye           |?       |      |        |     |
 |ferrn         |?       |      |        |     |
-|fio           |0.1.6   |1     |        |     |
+|ffp           |?       |      |        |     |
+|fio           |1.0.0   |1     |        |     |
 |genekitr      |?       |      |        |     |
-|ggiraph       |0.9.5   |1     |        |     |
 |ggsem         |?       |      |        |     |
+|gMOIP         |?       |      |        |     |
 |grandR        |?       |      |        |     |
+|gratia        |?       |      |        |     |
 |gvcR          |0.4.0   |1     |        |     |
 |h3o           |0.3.0   |1     |        |     |
 |ivolcano      |?       |      |        |     |
 |lcsm          |?       |      |        |     |
-|margaret      |0.1.4   |1     |        |     |
+|LMMstar       |?       |      |        |     |
 |measureR      |?       |      |        |     |
 |metrica       |?       |      |        |     |
 |mineSweepR    |?       |      |        |     |
 |MiscMetabar   |?       |      |        |     |
+|MixMashNet    |?       |      |        |     |
 |morepls       |?       |      |        |     |
+|multinma      |?       |      |        |     |
+|neo4r         |?       |      |        |     |
 |OlinkAnalyze  |?       |      |        |     |
-|outstandR     |1.0.0   |1     |        |     |
+|outstandR     |?       |      |        |     |
 |pandemonium   |?       |      |        |     |
 |pcutils       |?       |      |        |     |
-|PKbioanalysis |0.5.0   |1     |        |     |
-|precommit     |0.4.3   |1     |        |     |
 |projectLSA    |?       |      |        |     |
 |psychonetrics |?       |      |        |     |
-|rdss          |1.0.14  |1     |        |     |
-|ready4        |0.1.19  |1     |        |     |
 |RegDDM        |?       |      |        |     |
 |rollout       |?       |      |        |     |
-|scholar       |0.2.5   |1     |        |     |
 |SCpubr        |?       |      |        |     |
 |semptools     |?       |      |        |     |
 |Signac        |?       |      |        |     |
@@ -54,16 +57,30 @@
 |sparsevar     |?       |      |        |     |
 |spinebil      |?       |      |        |     |
 |SRscore       |?       |      |        |     |
-|tabs          |0.1.1   |1     |        |     |
+|tepr          |?       |      |        |     |
+|tidybins      |?       |      |        |     |
 |tidycomm      |?       |      |        |     |
 |tidylearn     |?       |      |        |     |
 |TransProR     |?       |      |        |     |
+|univariateML  |?       |      |        |     |
 |wmwAUC        |?       |      |        |     |
 
-## New problems (2)
+## New problems (14)
 
-|package    |version |error  |warning |note   |
-|:----------|:-------|:------|:-------|:------|
-|[polmineR](problems.md#polminer)|0.8.9   |       |        |__+1__ |
-|[rpaleoclim](problems.md#rpaleoclim)|1.1.0   |__+1__ |        |       |
+|package       |version |error  |warning |note |
+|:-------------|:-------|:------|:-------|:----|
+|[AzureKusto](problems.md#azurekusto)|1.1.4   |__+1__ |        |     |
+|[coursekata](problems.md#coursekata)|0.19.2  |__+2__ |        |     |
+|[DeclareDesign](problems.md#declaredesign)|1.1.0   |__+1__ |        |     |
+|[dtplyr](problems.md#dtplyr)|1.3.3   |__+1__ |        |     |
+|[embed](problems.md#embed)|1.2.2   |       |__+1__  |1    |
+|[ggplot2](problems.md#ggplot2)|4.0.2   |__+1__ |        |2    |
+|[important](problems.md#important)|0.2.1   |       |__+1__  |     |
+|[mosaic](problems.md#mosaic)|1.9.2   |__+1__ |1       |3    |
+|[pkggraph](problems.md#pkggraph)|0.3.0   |       |__+1__  |     |
+|[rsimsum](problems.md#rsimsum)|0.13.0  |       |__+1__  |1    |
+|[tf](problems.md#tf)|0.4.0   |       |__+1__  |     |
+|[tidynorm](problems.md#tidynorm)|0.4.0   |       |__+1__  |2    |
+|[tidytable](problems.md#tidytable)|0.11.2  |__+2__ |        |     |
+|[uteals](problems.md#uteals)|0.0.2   |       |__+1__  |     |
 

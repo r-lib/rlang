@@ -1,3 +1,81 @@
+# a5R
+
+<details>
+
+* Version: 0.3.1
+* GitHub: https://github.com/belian-earth/a5R
+* Source code: https://github.com/cran/a5R
+* Date/Publication: 2026-03-26 12:30:02 UTC
+* Number of recursive dependencies: 65
+
+Run `revdepcheck::cloud_details(, "a5R")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘a5R’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/tmp/workdir/a5R/new/a5R.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘a5R’ ...
+** package ‘a5R’ successfully unpacked and MD5 sums checked
+** using staged installation
+Using cargo 1.75.0
+Using rustc 1.75.0 (82e1608df 2023-12-21) (built from a source tarball)
+Building for CRAN.
+Writing `src/Makevars`.
+`tools/config.R` has finished.
+** libs
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+...
+
+Caused by:
+  feature `edition2024` is required
+
+  The package requires the Cargo feature called `edition2024`, but that feature is not stabilized in this version of Cargo (1.75.0).
+  Consider trying a more recent nightly release.
+  See https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#edition-2024 for more information about the status of this feature.
+make: *** [Makevars:26: rust/target/release/liba5R.a] Error 101
+ERROR: compilation failed for package ‘a5R’
+* removing ‘/tmp/workdir/a5R/new/a5R.Rcheck/a5R’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘a5R’ ...
+** package ‘a5R’ successfully unpacked and MD5 sums checked
+** using staged installation
+Using cargo 1.75.0
+Using rustc 1.75.0 (82e1608df 2023-12-21) (built from a source tarball)
+Building for CRAN.
+Writing `src/Makevars`.
+`tools/config.R` has finished.
+** libs
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+...
+
+Caused by:
+  feature `edition2024` is required
+
+  The package requires the Cargo feature called `edition2024`, but that feature is not stabilized in this version of Cargo (1.75.0).
+  Consider trying a more recent nightly release.
+  See https://doc.rust-lang.org/nightly/cargo/reference/unstable.html#edition-2024 for more information about the status of this feature.
+make: *** [Makevars:26: rust/target/release/liba5R.a] Error 101
+ERROR: compilation failed for package ‘a5R’
+* removing ‘/tmp/workdir/a5R/old/a5R.Rcheck/a5R’
+
+
+```
 # arcgisplaces
 
 <details>
@@ -39,10 +117,10 @@ using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
 export CARGO_HOME=/tmp/workdir/arcgisplaces/new/arcgisplaces.Rcheck/00_pkg_src/arcgisplaces/src/.cargo && \
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target
-error: package `native-tls v0.2.14` cannot be built because it requires rustc 1.80.0 or newer, while the currently active rustc version is 1.75.0
-Either upgrade to rustc 1.80.0 or newer, or use
-cargo update native-tls@0.2.14 --precise ver
-where `ver` is the latest version of `native-tls` supporting rustc 1.75.0
+error: package `zerofrom v0.1.6` cannot be built because it requires rustc 1.81 or newer, while the currently active rustc version is 1.75.0
+Either upgrade to rustc 1.81 or newer, or use
+cargo update zerofrom@0.1.6 --precise ver
+where `ver` is the latest version of `zerofrom` supporting rustc 1.75.0
 make: *** [Makevars:28: rust/target/release/libarcgisplaces.a] Error 101
 ERROR: compilation failed for package ‘arcgisplaces’
 * removing ‘/tmp/workdir/arcgisplaces/new/arcgisplaces.Rcheck/arcgisplaces’
@@ -66,10 +144,10 @@ using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
 export CARGO_HOME=/tmp/workdir/arcgisplaces/old/arcgisplaces.Rcheck/00_pkg_src/arcgisplaces/src/.cargo && \
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target
-error: package `litemap v0.7.5` cannot be built because it requires rustc 1.81 or newer, while the currently active rustc version is 1.75.0
-Either upgrade to rustc 1.81 or newer, or use
-cargo update litemap@0.7.5 --precise ver
-where `ver` is the latest version of `litemap` supporting rustc 1.75.0
+error: package `native-tls v0.2.14` cannot be built because it requires rustc 1.80.0 or newer, while the currently active rustc version is 1.75.0
+Either upgrade to rustc 1.80.0 or newer, or use
+cargo update native-tls@0.2.14 --precise ver
+where `ver` is the latest version of `native-tls` supporting rustc 1.75.0
 make: *** [Makevars:28: rust/target/release/libarcgisplaces.a] Error 101
 ERROR: compilation failed for package ‘arcgisplaces’
 * removing ‘/tmp/workdir/arcgisplaces/old/arcgisplaces.Rcheck/arcgisplaces’
@@ -128,6 +206,82 @@ ERROR: configuration failed for package ‘bayesdfa’
 
 
 ```
+# bmm
+
+<details>
+
+* Version: 1.3.0
+* GitHub: https://github.com/venpopov/bmm
+* Source code: https://github.com/cran/bmm
+* Date/Publication: 2026-03-30 11:00:09 UTC
+* Number of recursive dependencies: 137
+
+Run `revdepcheck::cloud_details(, "bmm")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/bmm/new/bmm.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘bmm/DESCRIPTION’ ... OK
+...
+* this is package ‘bmm’ version ‘1.3.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rtdists’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/bmm/old/bmm.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘bmm/DESCRIPTION’ ... OK
+...
+* this is package ‘bmm’ version ‘1.3.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rtdists’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
 # brms
 
 <details>
@@ -158,16 +312,16 @@ Run `revdepcheck::cloud_details(, "brms")` for more info
 * using option ‘--no-manual’
 * checking for file ‘brms/DESCRIPTION’ ... OK
 ...
-SUMMARY: processing the following files failed:
-  ‘brms_customfamilies.Rmd’ ‘brms_distreg.Rmd’ ‘brms_families.Rmd’
-  ‘brms_missings.Rmd’ ‘brms_monotonic.Rmd’ ‘brms_multivariate.Rmd’
-  ‘brms_nonlinear.Rmd’ ‘brms_phylogenetics.Rmd’ ‘brms_threading.Rmd’
-
-Error: Vignette re-building failed.
-Execution halted
-
+  
+  [ FAIL 1 | WARN 0 | SKIP 11 | PASS 2731 ]
+  Error:
+  ! Test failures.
+  Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
 * DONE
-Status: 2 ERRORs, 3 NOTEs
+Status: 1 ERROR, 3 NOTEs
 
 
 
@@ -188,16 +342,16 @@ Status: 2 ERRORs, 3 NOTEs
 * using option ‘--no-manual’
 * checking for file ‘brms/DESCRIPTION’ ... OK
 ...
-SUMMARY: processing the following files failed:
-  ‘brms_customfamilies.Rmd’ ‘brms_distreg.Rmd’ ‘brms_families.Rmd’
-  ‘brms_missings.Rmd’ ‘brms_monotonic.Rmd’ ‘brms_multivariate.Rmd’
-  ‘brms_nonlinear.Rmd’ ‘brms_phylogenetics.Rmd’ ‘brms_threading.Rmd’
-
-Error: Vignette re-building failed.
-Execution halted
-
+  
+  [ FAIL 1 | WARN 0 | SKIP 11 | PASS 2731 ]
+  Error:
+  ! Test failures.
+  Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
 * DONE
-Status: 2 ERRORs, 3 NOTEs
+Status: 1 ERROR, 3 NOTEs
 
 
 
@@ -280,84 +434,6 @@ Status: 2 ERRORs, 2 NOTEs
 
 
 ```
-# ceramic
-
-<details>
-
-* Version: 0.9.5
-* GitHub: https://github.com/hypertidy/ceramic
-* Source code: https://github.com/cran/ceramic
-* Date/Publication: 2024-02-27 06:30:02 UTC
-* Number of recursive dependencies: 64
-
-Run `revdepcheck::cloud_details(, "ceramic")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘ceramic’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/ceramic/new/ceramic.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘ceramic’ ...
-** package ‘ceramic’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-...
-Warning in normalizePath(rappdirs::user_cache_dir()) :
-  path[1]="/root/.cache": No such file or directory
-Error: package or namespace load failed for ‘ceramic’:
- .onLoad failed in loadNamespace() for 'ceramic', details:
-  call: NULL
-  error: [EROFS] Failed to make directory '/root/.cache': read-only file system
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/tmp/workdir/ceramic/new/ceramic.Rcheck/ceramic’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘ceramic’ ...
-** package ‘ceramic’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-...
-Warning in normalizePath(rappdirs::user_cache_dir()) :
-  path[1]="/root/.cache": No such file or directory
-Error: package or namespace load failed for ‘ceramic’:
- .onLoad failed in loadNamespace() for 'ceramic', details:
-  call: NULL
-  error: [EROFS] Failed to make directory '/root/.cache': read-only file system
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/tmp/workdir/ceramic/old/ceramic.Rcheck/ceramic’
-
-
-```
 # ClustAssess
 
 <details>
@@ -397,7 +473,7 @@ Run `revdepcheck::cloud_details(, "ClustAssess")` for more info
 * checking tests ... OK
   Running ‘testthat.R’
 * DONE
-Status: 1 NOTE
+Status: 2 NOTEs
 
 
 
@@ -434,6 +510,82 @@ Status: 2 NOTEs
 
 
 ```
+# ClustImpute
+
+<details>
+
+* Version: 0.2.4
+* GitHub: NA
+* Source code: https://github.com/cran/ClustImpute
+* Date/Publication: 2021-05-31 07:40:11 UTC
+* Number of recursive dependencies: 115
+
+Run `revdepcheck::cloud_details(, "ClustImpute")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/ClustImpute/new/ClustImpute.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘ClustImpute/DESCRIPTION’ ... OK
+...
+* this is package ‘ClustImpute’ version ‘0.2.4’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/ClustImpute/old/ClustImpute.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘ClustImpute/DESCRIPTION’ ... OK
+...
+* this is package ‘ClustImpute’ version ‘0.2.4’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
 # colleyRstats
 
 <details>
@@ -441,7 +593,7 @@ Status: 2 NOTEs
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/colleyRstats
-* Number of recursive dependencies: 238
+* Number of recursive dependencies: 225
 
 Run `revdepcheck::cloud_details(, "colleyRstats")` for more info
 
@@ -559,49 +711,65 @@ Run `revdepcheck::cloud_details(, "cylcop")` for more info
 
 </details>
 
-## In both
-
-*   checking whether package ‘cylcop’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/cylcop/new/cylcop.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
+## Error before installation
 
 ### Devel
 
 ```
-* installing *source* package ‘cylcop’ ...
-** package ‘cylcop’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘gsl’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘cylcop’
-* removing ‘/tmp/workdir/cylcop/new/cylcop.Rcheck/cylcop’
+* using log directory ‘/tmp/workdir/cylcop/new/cylcop.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘cylcop/DESCRIPTION’ ... OK
+...
+* this is package ‘cylcop’ version ‘0.2.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
 ### CRAN
 
 ```
-* installing *source* package ‘cylcop’ ...
-** package ‘cylcop’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘gsl’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘cylcop’
-* removing ‘/tmp/workdir/cylcop/old/cylcop.Rcheck/cylcop’
+* using log directory ‘/tmp/workdir/cylcop/old/cylcop.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘cylcop/DESCRIPTION’ ... OK
+...
+* this is package ‘cylcop’ version ‘0.2.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
@@ -792,6 +960,41 @@ Status: 1 ERROR
 
 
 ```
+# ecorisk
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/ecorisk
+* Number of recursive dependencies: 145
+
+Run `revdepcheck::cloud_details(, "ecorisk")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
 # enderecobr
 
 <details>
@@ -913,7 +1116,7 @@ Run `revdepcheck::cloud_details(, "eye")` for more info
 * GitHub: https://github.com/huizezhang-sherry/ferrn
 * Source code: https://github.com/cran/ferrn
 * Date/Publication: 2025-11-20 22:10:10 UTC
-* Number of recursive dependencies: 147
+* Number of recursive dependencies: 146
 
 Run `revdepcheck::cloud_details(, "ferrn")` for more info
 
@@ -981,15 +1184,91 @@ Status: OK
 
 
 ```
+# ffp
+
+<details>
+
+* Version: 0.2.2
+* GitHub: https://github.com/Reckziegel/FFP
+* Source code: https://github.com/cran/ffp
+* Date/Publication: 2022-09-29 15:10:06 UTC
+* Number of recursive dependencies: 104
+
+Run `revdepcheck::cloud_details(, "ffp")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/ffp/new/ffp.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘ffp/DESCRIPTION’ ... OK
+...
+--- failed re-building ‘views.Rmd’
+
+SUMMARY: processing the following file failed:
+  ‘views.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
+* DONE
+Status: 1 ERROR, 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/ffp/old/ffp.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘ffp/DESCRIPTION’ ... OK
+...
+--- failed re-building ‘views.Rmd’
+
+SUMMARY: processing the following file failed:
+  ‘views.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
+* DONE
+Status: 1 ERROR, 1 NOTE
+
+
+
+
+
+```
 # fio
 
 <details>
 
-* Version: 0.1.6
+* Version: 1.0.0
 * GitHub: https://github.com/albersonmiranda/fio
 * Source code: https://github.com/cran/fio
-* Date/Publication: 2025-04-06 07:50:02 UTC
-* Number of recursive dependencies: 87
+* Date/Publication: 2026-02-27 08:40:02 UTC
+* Number of recursive dependencies: 89
 
 Run `revdepcheck::cloud_details(, "fio")` for more info
 
@@ -1013,7 +1292,7 @@ Run `revdepcheck::cloud_details(, "fio")` for more info
 ** using staged installation
 Error in eval(ei, envir) : 
 ------------------ [UNSUPPORTED RUST VERSION]------------------
-- Minimum supported Rust version is 1.77.
+- Minimum supported Rust version is 1.84.
 - Installed Rust version is 1.75.0.
 ---------------------------------------------------------------
 Calls: source -> withVisible -> eval -> eval
@@ -1031,7 +1310,7 @@ ERROR: configuration failed for package ‘fio’
 ** using staged installation
 Error in eval(ei, envir) : 
 ------------------ [UNSUPPORTED RUST VERSION]------------------
-- Minimum supported Rust version is 1.77.
+- Minimum supported Rust version is 1.84.
 - Installed Rust version is 1.75.0.
 ---------------------------------------------------------------
 Calls: source -> withVisible -> eval -> eval
@@ -1117,84 +1396,6 @@ Status: 1 ERROR
 
 
 ```
-# ggiraph
-
-<details>
-
-* Version: 0.9.5
-* GitHub: https://github.com/davidgohel/ggiraph
-* Source code: https://github.com/cran/ggiraph
-* Date/Publication: 2026-02-17 06:10:33 UTC
-* Number of recursive dependencies: 87
-
-Run `revdepcheck::cloud_details(, "ggiraph")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘ggiraph’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/ggiraph/new/ggiraph.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘ggiraph’ ...
-** package ‘ggiraph’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-using C++ compiler: ‘g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c a_color.cpp -o a_color.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c clip.cpp -o clip.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c dsvg.cpp -o dsvg.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c dsvg_dev.cpp -o dsvg_dev.o
-...
-installing to /tmp/workdir/ggiraph/new/ggiraph.Rcheck/00LOCK-ggiraph/00new/ggiraph/libs
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in file.copy(from = list.files(system.file(package = "fontLiberation",  : 
-  more 'from' files than 'to' files
-Error: unable to load R code in package ‘ggiraph’
-Execution halted
-ERROR: lazy loading failed for package ‘ggiraph’
-* removing ‘/tmp/workdir/ggiraph/new/ggiraph.Rcheck/ggiraph’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘ggiraph’ ...
-** package ‘ggiraph’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-using C++ compiler: ‘g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c a_color.cpp -o a_color.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c clip.cpp -o clip.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c dsvg.cpp -o dsvg.o
-g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG -DRCPP_NO_MASK_RF_ERROR -I'/tmp/r-deps/Rcpp/include' -I'/tmp/r-deps/systemfonts/include' -I/usr/local/include    -fpic  -g -O2   -c dsvg_dev.cpp -o dsvg_dev.o
-...
-installing to /tmp/workdir/ggiraph/old/ggiraph.Rcheck/00LOCK-ggiraph/00new/ggiraph/libs
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in file.copy(from = list.files(system.file(package = "fontLiberation",  : 
-  more 'from' files than 'to' files
-Error: unable to load R code in package ‘ggiraph’
-Execution halted
-ERROR: lazy loading failed for package ‘ggiraph’
-* removing ‘/tmp/workdir/ggiraph/old/ggiraph.Rcheck/ggiraph’
-
-
-```
 # ggsem
 
 <details>
@@ -1271,6 +1472,41 @@ Status: 1 ERROR
 
 
 ```
+# gMOIP
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/gMOIP
+* Number of recursive dependencies: 108
+
+Run `revdepcheck::cloud_details(, "gMOIP")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
 # grandR
 
 <details>
@@ -1341,6 +1577,82 @@ Status: 2 NOTEs
 * checking re-building of vignette outputs ... OK
 * DONE
 Status: 2 NOTEs
+
+
+
+
+
+```
+# gratia
+
+<details>
+
+* Version: 0.11.2
+* GitHub: https://github.com/gavinsimpson/gratia
+* Source code: https://github.com/cran/gratia
+* Date/Publication: 2026-02-07 06:10:36 UTC
+* Number of recursive dependencies: 176
+
+Run `revdepcheck::cloud_details(, "gratia")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/gratia/new/gratia.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘gratia/DESCRIPTION’ ... OK
+...
+  'soap-films/draw-smooth-estimates-so-soap-film-bndry.svg', and
+  'soap-films/draw-smooth-estimates-so-soap-film.svg'
+  Error:
+  ! Test failures.
+  Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/gratia/old/gratia.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘gratia/DESCRIPTION’ ... OK
+...
+  'soap-films/draw-smooth-estimates-so-soap-film-bndry.svg', and
+  'soap-films/draw-smooth-estimates-so-soap-film.svg'
+  Error:
+  ! Test failures.
+  Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 ERROR
 
 
 
@@ -1515,16 +1827,16 @@ Run `revdepcheck::cloud_details(, "ivolcano")` for more info
 * using option ‘--no-manual’
 * checking for file ‘ivolcano/DESCRIPTION’ ... OK
 ...
-+ )
-Error in file.copy(from = list.files(system.file(package = "fontLiberation",  : 
-  more 'from' files than 'to' files
-Calls: <Anonymous> ... process_font_role -> dep_fn -> liberationsans_to_cache -> file.copy
-Execution halted
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 1 ERROR, 2 NOTEs
+Status: 2 NOTEs
 
 
 
@@ -1545,16 +1857,16 @@ Status: 1 ERROR, 2 NOTEs
 * using option ‘--no-manual’
 * checking for file ‘ivolcano/DESCRIPTION’ ... OK
 ...
-+ )
-Error in file.copy(from = list.files(system.file(package = "fontLiberation",  : 
-  more 'from' files than 'to' files
-Calls: <Anonymous> ... process_font_role -> dep_fn -> liberationsans_to_cache -> file.copy
-Execution halted
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 1 ERROR, 2 NOTEs
+Status: 2 NOTEs
 
 
 
@@ -1637,65 +1949,79 @@ Status: 1 ERROR
 
 
 ```
-# margaret
+# LMMstar
 
 <details>
 
-* Version: 0.1.4
-* GitHub: https://github.com/coreofscience/margaret
-* Source code: https://github.com/cran/margaret
-* Date/Publication: 2022-10-03 21:50:02 UTC
-* Number of recursive dependencies: 178
+* Version: 1.1.0
+* GitHub: https://github.com/bozenne/LMMstar
+* Source code: https://github.com/cran/LMMstar
+* Date/Publication: 2024-05-12 21:43:11 UTC
+* Number of recursive dependencies: 170
 
-Run `revdepcheck::cloud_details(, "margaret")` for more info
+Run `revdepcheck::cloud_details(, "LMMstar")` for more info
 
 </details>
 
-## In both
-
-*   checking whether package ‘margaret’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/margaret/new/margaret.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
+## Error before installation
 
 ### Devel
 
 ```
-* installing *source* package ‘margaret’ ...
-** package ‘margaret’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** byte-compile and prepare package for lazy loading
-Error: .onLoad failed in loadNamespace() for 'R.cache', details:
-  call: mkdirs.default(parent, mustWork = mustWork, maxTries = maxTries, 
-  error: Failed to create directory (tried 5 times), most likely because of lack of file permissions (directory '/root' exists but nothing beyond): /root/.cache
-Execution halted
-ERROR: lazy loading failed for package ‘margaret’
-* removing ‘/tmp/workdir/margaret/new/margaret.Rcheck/margaret’
+* using log directory ‘/tmp/workdir/LMMstar/new/LMMstar.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘LMMstar/DESCRIPTION’ ... OK
+...
+* this is package ‘LMMstar’ version ‘1.1.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
 ### CRAN
 
 ```
-* installing *source* package ‘margaret’ ...
-** package ‘margaret’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** byte-compile and prepare package for lazy loading
-Error: .onLoad failed in loadNamespace() for 'R.cache', details:
-  call: mkdirs.default(parent, mustWork = mustWork, maxTries = maxTries, 
-  error: Failed to create directory (tried 5 times), most likely because of lack of file permissions (directory '/root' exists but nothing beyond): /root/.cache
-Execution halted
-ERROR: lazy loading failed for package ‘margaret’
-* removing ‘/tmp/workdir/margaret/old/margaret.Rcheck/margaret’
+* using log directory ‘/tmp/workdir/LMMstar/old/LMMstar.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘LMMstar/DESCRIPTION’ ... OK
+...
+* this is package ‘LMMstar’ version ‘1.1.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
@@ -1707,7 +2033,7 @@ ERROR: lazy loading failed for package ‘margaret’
 * GitHub: https://github.com/hdmeasure/measureR
 * Source code: https://github.com/cran/measureR
 * Date/Publication: 2026-02-13 15:10:02 UTC
-* Number of recursive dependencies: 216
+* Number of recursive dependencies: 217
 
 Run `revdepcheck::cloud_details(, "measureR")` for more info
 
@@ -1733,7 +2059,7 @@ Run `revdepcheck::cloud_details(, "measureR")` for more info
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
-Package required but not available: ‘semPlot’
+Packages required but not available: 'semPlot', 'semptools'
 
 See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
 manual.
@@ -1763,7 +2089,7 @@ Status: 1 ERROR
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
-Package required but not available: ‘semPlot’
+Packages required but not available: 'semPlot', 'semptools'
 
 See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
 manual.
@@ -1779,10 +2105,10 @@ Status: 1 ERROR
 
 <details>
 
-* Version: 2.1.0
+* Version: 2.1.1
 * GitHub: https://github.com/adriancorrendo/metrica
 * Source code: https://github.com/cran/metrica
-* Date/Publication: 2024-06-30 14:20:02 UTC
+* Date/Publication: 2026-03-18 06:12:46 UTC
 * Number of recursive dependencies: 85
 
 Run `revdepcheck::cloud_details(, "metrica")` for more info
@@ -1805,7 +2131,7 @@ Run `revdepcheck::cloud_details(, "metrica")` for more info
 * using option ‘--no-manual’
 * checking for file ‘metrica/DESCRIPTION’ ... OK
 ...
-* this is package ‘metrica’ version ‘2.1.0’
+* this is package ‘metrica’ version ‘2.1.1’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -1835,7 +2161,7 @@ Status: 1 ERROR
 * using option ‘--no-manual’
 * checking for file ‘metrica/DESCRIPTION’ ... OK
 ...
-* this is package ‘metrica’ version ‘2.1.0’
+* this is package ‘metrica’ version ‘2.1.1’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -1935,7 +2261,7 @@ Status: OK
 * GitHub: https://github.com/adrientaudiere/MiscMetabar
 * Source code: https://github.com/cran/MiscMetabar
 * Date/Publication: 2025-09-30 15:30:02 UTC
-* Number of recursive dependencies: 427
+* Number of recursive dependencies: 424
 
 Run `revdepcheck::cloud_details(, "MiscMetabar")` for more info
 
@@ -1997,6 +2323,82 @@ Status: 3 NOTEs
 * checking re-building of vignette outputs ... OK
 * DONE
 Status: 3 NOTEs
+
+
+
+
+
+```
+# MixMashNet
+
+<details>
+
+* Version: 0.6.0
+* GitHub: https://github.com/ARCbiostat/MixMashNet
+* Source code: https://github.com/cran/MixMashNet
+* Date/Publication: 2026-03-03 10:40:09 UTC
+* Number of recursive dependencies: 201
+
+Run `revdepcheck::cloud_details(, "MixMashNet")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/MixMashNet/new/MixMashNet.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘MixMashNet/DESCRIPTION’ ... OK
+...
+* this is package ‘MixMashNet’ version ‘0.6.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘EGAnet’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/MixMashNet/old/MixMashNet.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘MixMashNet/DESCRIPTION’ ... OK
+...
+* this is package ‘MixMashNet’ version ‘0.6.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘EGAnet’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
 
 
 
@@ -2079,14 +2481,125 @@ Status: 1 ERROR, 2 NOTEs
 
 
 ```
+# multinma
+
+<details>
+
+* Version: 0.8.1
+* GitHub: https://github.com/dmphillippo/multinma
+* Source code: https://github.com/cran/multinma
+* Date/Publication: 2025-05-31 00:00:02 UTC
+* Number of recursive dependencies: 152
+
+Run `revdepcheck::cloud_details(, "multinma")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/multinma/new/multinma.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘multinma/DESCRIPTION’ ... OK
+...
+* this is package ‘multinma’ version ‘0.8.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/multinma/old/multinma.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘multinma/DESCRIPTION’ ... OK
+...
+* this is package ‘multinma’ version ‘0.8.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+# neo4r
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/neo4r
+* Number of recursive dependencies: 54
+
+Run `revdepcheck::cloud_details(, "neo4r")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
 # OlinkAnalyze
 
 <details>
 
-* Version: 4.5.0
+* Version: 5.0.0
 * GitHub: https://github.com/Olink-Proteomics/OlinkRPackage
 * Source code: https://github.com/cran/OlinkAnalyze
-* Date/Publication: 2026-01-28 17:50:02 UTC
+* Date/Publication: 2026-03-28 12:00:02 UTC
 * Number of recursive dependencies: 221
 
 Run `revdepcheck::cloud_details(, "OlinkAnalyze")` for more info
@@ -2163,57 +2676,71 @@ Status: 1 NOTE
 * GitHub: https://github.com/StatisticsHealthEconomics/outstandR
 * Source code: https://github.com/cran/outstandR
 * Date/Publication: 2026-01-21 20:00:02 UTC
-* Number of recursive dependencies: 152
+* Number of recursive dependencies: 153
 
 Run `revdepcheck::cloud_details(, "outstandR")` for more info
 
 </details>
 
-## In both
-
-*   checking whether package ‘outstandR’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/outstandR/new/outstandR.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
+## Error before installation
 
 ### Devel
 
 ```
-* installing *source* package ‘outstandR’ ...
-** package ‘outstandR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘gsl’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘outstandR’
-* removing ‘/tmp/workdir/outstandR/new/outstandR.Rcheck/outstandR’
+* using log directory ‘/tmp/workdir/outstandR/new/outstandR.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘outstandR/DESCRIPTION’ ... OK
+...
+* this is package ‘outstandR’ version ‘1.0.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
 ### CRAN
 
 ```
-* installing *source* package ‘outstandR’ ...
-** package ‘outstandR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘gsl’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘outstandR’
-* removing ‘/tmp/workdir/outstandR/old/outstandR.Rcheck/outstandR’
+* using log directory ‘/tmp/workdir/outstandR/old/outstandR.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘outstandR/DESCRIPTION’ ... OK
+...
+* this is package ‘outstandR’ version ‘1.0.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘copula’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
@@ -2301,7 +2828,7 @@ Status: OK
 * GitHub: https://github.com/Asa12138/pcutils
 * Source code: https://github.com/cran/pcutils
 * Date/Publication: 2025-03-27 06:10:02 UTC
-* Number of recursive dependencies: 317
+* Number of recursive dependencies: 310
 
 Run `revdepcheck::cloud_details(, "pcutils")` for more info
 
@@ -2369,144 +2896,6 @@ Status: 1 NOTE
 
 
 ```
-# PKbioanalysis
-
-<details>
-
-* Version: 0.5.0
-* GitHub: https://github.com/OmarAshkar/PKbioanalysis
-* Source code: https://github.com/cran/PKbioanalysis
-* Date/Publication: 2026-02-17 21:40:07 UTC
-* Number of recursive dependencies: 172
-
-Run `revdepcheck::cloud_details(, "PKbioanalysis")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘PKbioanalysis’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/PKbioanalysis/new/PKbioanalysis.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘PKbioanalysis’ ...
-** package ‘PKbioanalysis’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Warning in ans * length(l) + if1 :
-  longer object length is not a multiple of shorter object length
-Warning in ans * length(l) + if1 :
-  longer object length is not a multiple of shorter object length
-...
-Warning in file.create(to[okay]) :
-  cannot create file '/root/.config/R/PKbioanalysis/config.yaml', reason 'No such file or directory'
-Error: package or namespace load failed for ‘PKbioanalysis’:
- .onLoad failed in loadNamespace() for 'PKbioanalysis', details:
-  call: file(file, "rt", encoding = fileEncoding)
-  error: cannot open the connection
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/tmp/workdir/PKbioanalysis/new/PKbioanalysis.Rcheck/PKbioanalysis’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘PKbioanalysis’ ...
-** package ‘PKbioanalysis’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Warning in ans * length(l) + if1 :
-  longer object length is not a multiple of shorter object length
-Warning in ans * length(l) + if1 :
-  longer object length is not a multiple of shorter object length
-...
-Warning in file.create(to[okay]) :
-  cannot create file '/root/.config/R/PKbioanalysis/config.yaml', reason 'No such file or directory'
-Error: package or namespace load failed for ‘PKbioanalysis’:
- .onLoad failed in loadNamespace() for 'PKbioanalysis', details:
-  call: file(file, "rt", encoding = fileEncoding)
-  error: cannot open the connection
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/tmp/workdir/PKbioanalysis/old/PKbioanalysis.Rcheck/PKbioanalysis’
-
-
-```
-# precommit
-
-<details>
-
-* Version: 0.4.3
-* GitHub: https://github.com/lorenzwalthert/precommit
-* Source code: https://github.com/cran/precommit
-* Date/Publication: 2024-07-22 22:20:05 UTC
-* Number of recursive dependencies: 97
-
-Run `revdepcheck::cloud_details(, "precommit")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘precommit’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/precommit/new/precommit.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘precommit’ ...
-** package ‘precommit’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: .onLoad failed in loadNamespace() for 'R.cache', details:
-  call: mkdirs.default(parent, mustWork = mustWork, maxTries = maxTries, 
-  error: Failed to create directory (tried 5 times), most likely because of lack of file permissions (directory '/root' exists but nothing beyond): /root/.cache
-Execution halted
-ERROR: lazy loading failed for package ‘precommit’
-* removing ‘/tmp/workdir/precommit/new/precommit.Rcheck/precommit’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘precommit’ ...
-** package ‘precommit’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: .onLoad failed in loadNamespace() for 'R.cache', details:
-  call: mkdirs.default(parent, mustWork = mustWork, maxTries = maxTries, 
-  error: Failed to create directory (tried 5 times), most likely because of lack of file permissions (directory '/root' exists but nothing beyond): /root/.cache
-Execution halted
-ERROR: lazy loading failed for package ‘precommit’
-* removing ‘/tmp/workdir/precommit/old/precommit.Rcheck/precommit’
-
-
-```
 # projectLSA
 
 <details>
@@ -2515,7 +2904,7 @@ ERROR: lazy loading failed for package ‘precommit’
 * GitHub: https://github.com/hdmeasure/projectLSA
 * Source code: https://github.com/cran/projectLSA
 * Date/Publication: 2026-02-07 23:20:03 UTC
-* Number of recursive dependencies: 233
+* Number of recursive dependencies: 254
 
 Run `revdepcheck::cloud_details(, "projectLSA")` for more info
 
@@ -2541,7 +2930,7 @@ Run `revdepcheck::cloud_details(, "projectLSA")` for more info
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
-Package required but not available: ‘semPlot’
+Packages required but not available: 'semPlot', 'semptools'
 
 See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
 manual.
@@ -2571,7 +2960,7 @@ Status: 1 ERROR
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
-Package required but not available: ‘semPlot’
+Packages required but not available: 'semPlot', 'semptools'
 
 See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
 manual.
@@ -2587,10 +2976,10 @@ Status: 1 ERROR
 
 <details>
 
-* Version: 0.13.2
+* Version: 0.15
 * GitHub: https://github.com/SachaEpskamp/psychonetrics
 * Source code: https://github.com/cran/psychonetrics
-* Date/Publication: 2025-10-22 05:10:02 UTC
+* Date/Publication: 2026-02-27 06:40:02 UTC
 * Number of recursive dependencies: 140
 
 Run `revdepcheck::cloud_details(, "psychonetrics")` for more info
@@ -2656,140 +3045,6 @@ Status: 2 NOTEs
 
 
 
-
-
-```
-# rdss
-
-<details>
-
-* Version: 1.0.14
-* GitHub: NA
-* Source code: https://github.com/cran/rdss
-* Date/Publication: 2025-01-09 12:10:02 UTC
-* Number of recursive dependencies: 237
-
-Run `revdepcheck::cloud_details(, "rdss")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘rdss’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/rdss/new/rdss.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘rdss’ ...
-** package ‘rdss’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** byte-compile and prepare package for lazy loading
-Warning in dir.create(cache_path, recursive = TRUE) :
-  cannot create dir '/root/.cache/R', reason 'No such file or directory'
-Warning in cache_path() : 'dataverse' failed to create a 'disk' cache
-Error: .onLoad failed in loadNamespace() for 'dataverse', details:
-  call: fun(libname, pkgname)
-  error: object 'get_disk' not found
-Execution halted
-ERROR: lazy loading failed for package ‘rdss’
-* removing ‘/tmp/workdir/rdss/new/rdss.Rcheck/rdss’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘rdss’ ...
-** package ‘rdss’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** byte-compile and prepare package for lazy loading
-Warning in dir.create(cache_path, recursive = TRUE) :
-  cannot create dir '/root/.cache/R', reason 'No such file or directory'
-Warning in cache_path() : 'dataverse' failed to create a 'disk' cache
-Error: .onLoad failed in loadNamespace() for 'dataverse', details:
-  call: fun(libname, pkgname)
-  error: object 'get_disk' not found
-Execution halted
-ERROR: lazy loading failed for package ‘rdss’
-* removing ‘/tmp/workdir/rdss/old/rdss.Rcheck/rdss’
-
-
-```
-# ready4
-
-<details>
-
-* Version: 0.1.19
-* GitHub: https://github.com/ready4-dev/ready4
-* Source code: https://github.com/cran/ready4
-* Date/Publication: 2025-12-10 08:10:09 UTC
-* Number of recursive dependencies: 146
-
-Run `revdepcheck::cloud_details(, "ready4")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘ready4’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/ready4/new/ready4.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘ready4’ ...
-** package ‘ready4’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Warning in dir.create(cache_path, recursive = TRUE) :
-  cannot create dir '/root/.cache/R', reason 'No such file or directory'
-Warning in cache_path() : 'dataverse' failed to create a 'disk' cache
-Error: .onLoad failed in loadNamespace() for 'dataverse', details:
-  call: fun(libname, pkgname)
-  error: object 'get_disk' not found
-Execution halted
-ERROR: lazy loading failed for package ‘ready4’
-* removing ‘/tmp/workdir/ready4/new/ready4.Rcheck/ready4’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘ready4’ ...
-** package ‘ready4’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Warning in dir.create(cache_path, recursive = TRUE) :
-  cannot create dir '/root/.cache/R', reason 'No such file or directory'
-Warning in cache_path() : 'dataverse' failed to create a 'disk' cache
-Error: .onLoad failed in loadNamespace() for 'dataverse', details:
-  call: fun(libname, pkgname)
-  error: object 'get_disk' not found
-Execution halted
-ERROR: lazy loading failed for package ‘ready4’
-* removing ‘/tmp/workdir/ready4/old/ready4.Rcheck/ready4’
 
 
 ```
@@ -2904,66 +3159,6 @@ Run `revdepcheck::cloud_details(, "rollout")` for more info
 
 
 ```
-# scholar
-
-<details>
-
-* Version: 0.2.5
-* GitHub: https://github.com/YuLab-SMU/scholar
-* Source code: https://github.com/cran/scholar
-* Date/Publication: 2025-06-26 08:10:02 UTC
-* Number of recursive dependencies: 98
-
-Run `revdepcheck::cloud_details(, "scholar")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘scholar’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/scholar/new/scholar.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘scholar’ ...
-** package ‘scholar’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: .onLoad failed in loadNamespace() for 'R.cache', details:
-  call: mkdirs.default(parent, mustWork = mustWork, maxTries = maxTries, 
-  error: Failed to create directory (tried 5 times), most likely because of lack of file permissions (directory '/root' exists but nothing beyond): /root/.cache
-Execution halted
-ERROR: lazy loading failed for package ‘scholar’
-* removing ‘/tmp/workdir/scholar/new/scholar.Rcheck/scholar’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘scholar’ ...
-** package ‘scholar’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: .onLoad failed in loadNamespace() for 'R.cache', details:
-  call: mkdirs.default(parent, mustWork = mustWork, maxTries = maxTries, 
-  error: Failed to create directory (tried 5 times), most likely because of lack of file permissions (directory '/root' exists but nothing beyond): /root/.cache
-Execution halted
-ERROR: lazy loading failed for package ‘scholar’
-* removing ‘/tmp/workdir/scholar/old/scholar.Rcheck/scholar’
-
-
-```
 # SCpubr
 
 <details>
@@ -3044,10 +3239,10 @@ Status: 1 NOTE
 
 <details>
 
-* Version: 0.3.2
+* Version: 0.3.3
 * GitHub: https://github.com/sfcheung/semptools
 * Source code: https://github.com/cran/semptools
-* Date/Publication: 2025-07-12 08:20:02 UTC
+* Date/Publication: 2026-03-17 12:20:02 UTC
 * Number of recursive dependencies: 121
 
 Run `revdepcheck::cloud_details(, "semptools")` for more info
@@ -3070,7 +3265,7 @@ Run `revdepcheck::cloud_details(, "semptools")` for more info
 * using option ‘--no-manual’
 * checking for file ‘semptools/DESCRIPTION’ ... OK
 ...
-* this is package ‘semptools’ version ‘0.3.2’
+* this is package ‘semptools’ version ‘0.3.3’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -3100,7 +3295,7 @@ Status: 1 ERROR
 * using option ‘--no-manual’
 * checking for file ‘semptools/DESCRIPTION’ ... OK
 ...
-* this is package ‘semptools’ version ‘0.3.2’
+* this is package ‘semptools’ version ‘0.3.3’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -3455,81 +3650,155 @@ Status: 1 NOTE
 
 
 ```
-# tabs
+# tepr
 
 <details>
 
-* Version: 0.1.1
+* Version: 1.1.15
 * GitHub: NA
-* Source code: https://github.com/cran/tabs
-* Date/Publication: 2025-04-29 17:30:02 UTC
-* Number of recursive dependencies: 136
+* Source code: https://github.com/cran/tepr
+* Date/Publication: 2026-03-06 10:20:02 UTC
+* Number of recursive dependencies: 123
 
-Run `revdepcheck::cloud_details(, "tabs")` for more info
+Run `revdepcheck::cloud_details(, "tepr")` for more info
 
 </details>
 
-## In both
-
-*   checking whether package ‘tabs’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/tmp/workdir/tabs/new/tabs.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
+## Error before installation
 
 ### Devel
 
 ```
-* installing *source* package ‘tabs’ ...
-** package ‘tabs’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
+* using log directory ‘/tmp/workdir/tepr/new/tepr.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘tepr/DESCRIPTION’ ... OK
 ...
-Warning in gzfile(file, "wb") :
-  cannot open compressed file '/root/.local/share/R/config/.Roptions.Rdata', probable reason 'No such file or directory'
-Error: package or namespace load failed for ‘tabs’:
- .onLoad failed in loadNamespace() for 'tabs', details:
-  call: gzfile(file, "wb")
-  error: cannot open the connection
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/tmp/workdir/tabs/new/tabs.Rcheck/tabs’
+* this is package ‘tepr’ version ‘1.1.15’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rtracklayer’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
 ### CRAN
 
 ```
-* installing *source* package ‘tabs’ ...
-** package ‘tabs’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
+* using log directory ‘/tmp/workdir/tepr/old/tepr.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘tepr/DESCRIPTION’ ... OK
 ...
-Warning in gzfile(file, "wb") :
-  cannot open compressed file '/root/.local/share/R/config/.Roptions.Rdata', probable reason 'No such file or directory'
-Error: package or namespace load failed for ‘tabs’:
- .onLoad failed in loadNamespace() for 'tabs', details:
-  call: gzfile(file, "wb")
-  error: cannot open the connection
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/tmp/workdir/tabs/old/tabs.Rcheck/tabs’
+* this is package ‘tepr’ version ‘1.1.15’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rtracklayer’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+# tidybins
+
+<details>
+
+* Version: 0.1.2
+* GitHub: https://github.com/Harrison4192/tidybins
+* Source code: https://github.com/cran/tidybins
+* Date/Publication: 2026-03-05 12:30:02 UTC
+* Number of recursive dependencies: 222
+
+Run `revdepcheck::cloud_details(, "tidybins")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/tidybins/new/tidybins.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘tidybins/DESCRIPTION’ ... OK
+...
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 3 NOTEs
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/tidybins/old/tidybins.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘tidybins/DESCRIPTION’ ... OK
+...
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 3 NOTEs
+
+
+
 
 
 ```
@@ -3541,7 +3810,7 @@ ERROR: loading failed
 * GitHub: https://github.com/tidycomm/tidycomm
 * Source code: https://github.com/cran/tidycomm
 * Date/Publication: 2025-08-27 12:00:02 UTC
-* Number of recursive dependencies: 149
+* Number of recursive dependencies: 148
 
 Run `revdepcheck::cloud_details(, "tidycomm")` for more info
 
@@ -3613,11 +3882,11 @@ Status: 1 ERROR
 
 <details>
 
-* Version: 0.1.0
+* Version: 0.2.0
 * GitHub: https://github.com/ces0491/tidylearn
 * Source code: https://github.com/cran/tidylearn
-* Date/Publication: 2026-02-06 13:50:02 UTC
-* Number of recursive dependencies: 248
+* Date/Publication: 2026-03-16 08:00:08 UTC
+* Number of recursive dependencies: 257
 
 Run `revdepcheck::cloud_details(, "tidylearn")` for more info
 
@@ -3755,6 +4024,82 @@ See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
 manual.
 * DONE
 Status: 1 ERROR
+
+
+
+
+
+```
+# univariateML
+
+<details>
+
+* Version: 1.5.0
+* GitHub: https://github.com/JonasMoss/univariateML
+* Source code: https://github.com/cran/univariateML
+* Date/Publication: 2025-03-04 13:30:02 UTC
+* Number of recursive dependencies: 104
+
+Run `revdepcheck::cloud_details(, "univariateML")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/univariateML/new/univariateML.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘univariateML/DESCRIPTION’ ... OK
+...
+--- finished re-building ‘overview.Rmd’
+
+SUMMARY: processing the following file failed:
+  ‘copula.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
+* DONE
+Status: 1 ERROR, 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/univariateML/old/univariateML.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘univariateML/DESCRIPTION’ ... OK
+...
+--- finished re-building ‘overview.Rmd’
+
+SUMMARY: processing the following file failed:
+  ‘copula.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
+* DONE
+Status: 1 ERROR, 1 NOTE
 
 
 

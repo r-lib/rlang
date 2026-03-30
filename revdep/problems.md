@@ -1,38 +1,55 @@
-# polmineR
+# AzureKusto
 
 <details>
 
-* Version: 0.8.9
-* GitHub: https://github.com/PolMine/polmineR
-* Source code: https://github.com/cran/polmineR
-* Date/Publication: 2023-10-29 21:50:02 UTC
-* Number of recursive dependencies: 97
+* Version: 1.1.4
+* GitHub: https://github.com/Azure/AzureKusto
+* Source code: https://github.com/cran/AzureKusto
+* Date/Publication: 2025-09-10 06:41:05 UTC
+* Number of recursive dependencies: 69
 
-Run `revdepcheck::cloud_details(, "polmineR")` for more info
+Run `revdepcheck::cloud_details(, "AzureKusto")` for more info
 
 </details>
 
 ## Newly broken
 
-*   checking installed package size ... NOTE
+*   checking tests ... ERROR
     ```
-      installed size is  5.3Mb
-      sub-directories of 1Mb or more:
-        R         2.0Mb
-        extdata   1.9Mb
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(AzureKusto)
+      
+      Attaching package: 'AzureKusto'
+      
+      The following object is masked from 'package:stats':
+      
+    ...
+       5.   ├─rlang::switch_type(...)
+       6.   └─rlang::`f_rhs<-`(...)
+       7.     └─rlang:::check_formula(x, arg = "LHS")
+       8.       └─cli::cli_abort(...)
+       9.         └─rlang::abort(...)
+      
+      [ FAIL 1 | WARN 4 | SKIP 7 | PASS 111 ]
+      Error:
+      ! Test failures.
+      Execution halted
     ```
 
-# rpaleoclim
+# coursekata
 
 <details>
 
-* Version: 1.1.0
-* GitHub: https://github.com/joeroe/rpaleoclim
-* Source code: https://github.com/cran/rpaleoclim
-* Date/Publication: 2025-09-30 09:00:02 UTC
-* Number of recursive dependencies: 54
+* Version: 0.19.2
+* GitHub: https://github.com/coursekata/coursekata-r
+* Source code: https://github.com/cran/coursekata
+* Date/Publication: 2026-03-10 17:10:13 UTC
+* Number of recursive dependencies: 133
 
-Run `revdepcheck::cloud_details(, "rpaleoclim")` for more info
+Run `revdepcheck::cloud_details(, "coursekata")` for more info
 
 </details>
 
@@ -40,26 +57,542 @@ Run `revdepcheck::cloud_details(, "rpaleoclim")` for more info
 
 *   checking examples ... ERROR
     ```
-    Running examples in ‘rpaleoclim-Ex.R’ failed
+    Running examples in ‘coursekata-Ex.R’ failed
     The error most likely occurred in:
     
-    > ### Name: load_paleoclim
-    > ### Title: Load data from PaleoClim
-    > ### Aliases: load_paleoclim
+    > ### Name: middle
+    > ### Title: Find a percentage of a distribution
+    > ### Aliases: middle tails outer lower upper
     > 
     > ### ** Examples
     > 
-    > file <- system.file("testdata", "LH_v1_10m_cropped.zip",
+    > 
+    ...
+     22. │   └─base::data.frame(x = x, original_pos = seq_along(x))
+     23. │     ├─base::as.data.frame(x[[i]], optional = TRUE)
+     24. │     └─base::as.data.frame.default(x[[i]], optional = TRUE)
+     25. │       └─base::stop(...)
+     26. └─base::.handleSimpleError(...)
+     27.   └─rlang (local) h(simpleError(msg, call))
+     28.     └─handlers[[1L]](cnd)
+     29.       └─cli::cli_abort(...)
+     30.         └─rlang::abort(...)
+    Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘gf-squareplot.Rmd’ using rmarkdown
+    
+    Quitting from gf-squareplot.Rmd:106-114 [dgp]
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    <error/rlang_error>
+    Error in `gf_squareplot()`:
+    ! `x` must be numeric.
+    ---
     ...
     
-     *** caught segfault ***
-    address 0x270, cause 'memory not mapped'
+    Error: processing vignette 'gf-squareplot.Rmd' failed with diagnostics:
+    `x` must be numeric.
+    --- failed re-building ‘gf-squareplot.Rmd’
     
-    Traceback:
-     1: dir_map(old, identity, all, recurse, type, fail)
-     2: fs::dir_ls(tmpdir, recurse = TRUE, glob = "*.tif")
-     3: load_paleoclim(file)
-    An irrecoverable exception occurred. R is aborting now ...
-    Segmentation fault (core dumped)
+    SUMMARY: processing the following file failed:
+      ‘gf-squareplot.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+# DeclareDesign
+
+<details>
+
+* Version: 1.1.0
+* GitHub: https://github.com/DeclareDesign/DeclareDesign
+* Source code: https://github.com/cran/DeclareDesign
+* Date/Publication: 2025-10-15 08:30:15 UTC
+* Number of recursive dependencies: 190
+
+Run `revdepcheck::cloud_details(, "DeclareDesign")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(DeclareDesign)
+      Loading required package: randomizr
+      Loading required package: fabricatr
+      Loading required package: estimatr
+      > 
+      > library(AER)
+    ...
+        │ 
+        │ estimator <- declare_estimator(Y ~ Z, inquiry = my_inquiry) 
+        │ 
+        │ my_design <- construct_design(steps = steps) 
+        │ 
+      
+      [ FAIL 9 | WARN 0 | SKIP 7 | PASS 638 ]
+      Error:
+      ! Test failures.
+      Execution halted
+    ```
+
+# dtplyr
+
+<details>
+
+* Version: 1.3.3
+* GitHub: https://github.com/tidyverse/dtplyr
+* Source code: https://github.com/cran/dtplyr
+* Date/Publication: 2026-02-11 06:10:52 UTC
+* Number of recursive dependencies: 64
+
+Run `revdepcheck::cloud_details(, "dtplyr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(dtplyr)
+      > 
+      > test_check("dtplyr")
+      Saving _problems/test-tidyeval-174.R
+      [ FAIL 1 | WARN 0 | SKIP 35 | PASS 754 ]
+      
+    ...
+       10.             └─dtplyr (local) FUN(X[[i]], ...)
+       11.               └─rlang::`f_lhs<-`(x = `*tmp*`, value = lhs)
+       12.                 └─rlang:::check_formula(x, arg = "LHS")
+       13.                   └─cli::cli_abort(...)
+       14.                     └─rlang::abort(...)
+      
+      [ FAIL 1 | WARN 0 | SKIP 35 | PASS 754 ]
+      Error:
+      ! Test failures.
+      Execution halted
+    ```
+
+# embed
+
+<details>
+
+* Version: 1.2.2
+* GitHub: https://github.com/tidymodels/embed
+* Source code: https://github.com/cran/embed
+* Date/Publication: 2026-01-29 21:50:07 UTC
+* Number of recursive dependencies: 191
+
+Run `revdepcheck::cloud_details(, "embed")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking whether package ‘embed’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘recipes::check_name’ by ‘rlang::check_name’ when loading ‘embed’
+    See ‘/tmp/workdir/embed/new/embed.Rcheck/00install.out’ for details.
+    ```
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘textrecipes’
+    ```
+
+# ggplot2
+
+<details>
+
+* Version: 4.0.2
+* GitHub: https://github.com/tidyverse/ggplot2
+* Source code: https://github.com/cran/ggplot2
+* Date/Publication: 2026-02-03 08:50:23 UTC
+* Number of recursive dependencies: 128
+
+Run `revdepcheck::cloud_details(, "ggplot2")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(ggplot2)
+      > 
+      > test_check("ggplot2")
+      Saving _problems/test-plot-4.R
+      [ FAIL 1 | WARN 0 | SKIP 270 | PASS 1777 ]
+      
+    ...
+      'geom-dotplot/bin-y-dodged-coord-flip.svg', 'geom-dotplot/bin-y-dodged.svg',
+      'geom-dotplot/bin-y-dodging-3-stackgroups-histodot.svg',
+      'geom-dotplot/bin-y-three-x-groups-bins-aligned-across-groups.svg',
+      'geom-dotplot/bin-y-three-x-groups-bins-aligned-coord-flip.svg',
+      'geom-dotplot/bin-y-three-x-groups-fill-and-dodge.svg', …,
+      'theme/vertical-legends-placed-apart.svg', and
+      'theme/width-is-3-times-height.svg'
+      Error:
+      ! Test failures.
+      Execution halted
+    ```
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package which this enhances but not available for checking: ‘sp’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 14.6Mb
+      sub-directories of 1Mb or more:
+        R      3.5Mb
+        data   1.5Mb
+        doc    7.6Mb
+        help   1.7Mb
+    ```
+
+# important
+
+<details>
+
+* Version: 0.2.1
+* GitHub: https://github.com/tidymodels/important
+* Source code: https://github.com/cran/important
+* Date/Publication: 2025-10-06 18:40:02 UTC
+* Number of recursive dependencies: 121
+
+Run `revdepcheck::cloud_details(, "important")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking whether package ‘important’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘recipes::check_name’ by ‘rlang::check_name’ when loading ‘important’
+    See ‘/tmp/workdir/important/new/important.Rcheck/00install.out’ for details.
+    ```
+
+# mosaic
+
+<details>
+
+* Version: 1.9.2
+* GitHub: https://github.com/ProjectMOSAIC/mosaic
+* Source code: https://github.com/cran/mosaic
+* Date/Publication: 2025-07-30 17:20:02 UTC
+* Number of recursive dependencies: 143
+
+Run `revdepcheck::cloud_details(, "mosaic")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(mosaic)
+      Registered S3 method overwritten by 'mosaic':
+        method                           from   
+        fortify.SpatialPolygonsDataFrame ggplot2
+      
+      The 'mosaic' package masks several functions from core packages in order to add 
+    ...
+      Expected `names(do(2) * var(~cesd, data = mosaicData::HELPrct))` to equal "var".
+      Differences:
+      `actual`:   "result"
+      `expected`: "var"   
+      
+      
+      [ FAIL 2 | WARN 3 | SKIP 18 | PASS 246 ]
+      Error:
+      ! Test failures.
+      Execution halted
+    ```
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘Resampling.Rmd’ using rmarkdown
+    
+    Quitting from Resampling.Rmd:271-274 [hist]
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    <error/rlang_error>
+    Error:
+    ! Problem while computing aesthetics.
+    ℹ Error occurred in the 1st layer.
+    Caused by error:
+    ...
+    l.71 \pagestyle
+                   {fancy}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘MinimalRgg.Rnw’
+    
+    SUMMARY: processing the following files failed:
+      ‘Resampling.Rmd’ ‘MinimalRgg.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package which this enhances but not available for checking: ‘manipulate’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.9Mb
+      sub-directories of 1Mb or more:
+        R     5.0Mb
+        doc   1.2Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘cubature’
+    ```
+
+# pkggraph
+
+<details>
+
+* Version: 0.3.0
+* GitHub: https://github.com/talegari/pkggraph
+* Source code: https://github.com/cran/pkggraph
+* Date/Publication: 2026-02-23 14:30:02 UTC
+* Number of recursive dependencies: 69
+
+Run `revdepcheck::cloud_details(, "pkggraph")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking whether package ‘pkggraph’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘pkggraph’
+      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘pkggraph’
+    See ‘/tmp/workdir/pkggraph/new/pkggraph.Rcheck/00install.out’ for details.
+    ```
+
+# rsimsum
+
+<details>
+
+* Version: 0.13.0
+* GitHub: https://github.com/ellessenne/rsimsum
+* Source code: https://github.com/cran/rsimsum
+* Date/Publication: 2024-03-03 09:40:02 UTC
+* Number of recursive dependencies: 128
+
+Run `revdepcheck::cloud_details(, "rsimsum")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking whether package ‘rsimsum’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘rsimsum’
+      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘rsimsum’
+    See ‘/tmp/workdir/rsimsum/new/rsimsum.Rcheck/00install.out’ for details.
+    ```
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.5Mb
+      sub-directories of 1Mb or more:
+        data   2.0Mb
+        doc    1.9Mb
+        help   1.3Mb
+    ```
+
+# tf
+
+<details>
+
+* Version: 0.4.0
+* GitHub: https://github.com/tidyfun/tf
+* Source code: https://github.com/cran/tf
+* Date/Publication: 2026-03-17 17:00:02 UTC
+* Number of recursive dependencies: 136
+
+Run `revdepcheck::cloud_details(, "tf")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking whether package ‘tf’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘tf’
+      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘tf’
+    See ‘/tmp/workdir/tf/new/tf.Rcheck/00install.out’ for details.
+    ```
+
+# tidynorm
+
+<details>
+
+* Version: 0.4.0
+* GitHub: https://github.com/JoFrhwld/tidynorm
+* Source code: https://github.com/cran/tidynorm
+* Date/Publication: 2025-10-26 19:50:02 UTC
+* Number of recursive dependencies: 81
+
+Run `revdepcheck::cloud_details(, "tidynorm")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking whether package ‘tidynorm’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘tidynorm’
+      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘tidynorm’
+    See ‘/tmp/workdir/tidynorm/new/tidynorm.Rcheck/00install.out’ for details.
+    ```
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.2Mb
+      sub-directories of 1Mb or more:
+        doc    1.3Mb
+        libs   2.2Mb
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 6748 marked UTF-8 strings
+    ```
+
+# tidytable
+
+<details>
+
+* Version: 0.11.2
+* GitHub: https://github.com/markfairbanks/tidytable
+* Source code: https://github.com/cran/tidytable
+* Date/Publication: 2024-12-11 10:20:02 UTC
+* Number of recursive dependencies: 48
+
+Run `revdepcheck::cloud_details(, "tidytable")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘tidytable-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: recode
+    > ### Title: Recode values
+    > ### Aliases: recode
+    > ### Keywords: internal
+    > 
+    > ### ** Examples
+    > 
+    ...
+     1. └─tidytable::recode(char_vec, a = "Apple", b = "Banana")
+     2.   └─tidytable::case_match(.x, !!!dots, .default = .default)
+     3.     └─tidytable::map(dots, prep_case_match_dot, .x)
+     4.       └─base::lapply(.x, .f, ...)
+     5.         └─tidytable (local) FUN(X[[i]], ...)
+     6.           └─rlang::`f_lhs<-`(x = `*tmp*`, value = lhs)
+     7.             └─rlang:::check_formula(x, arg = "LHS")
+     8.               └─cli::cli_abort(...)
+     9.                 └─rlang::abort(...)
+    Execution halted
+    ```
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(tidytable)
+      
+      Attaching package: 'tidytable'
+      
+      The following objects are masked from 'package:stats':
+      
+    ...
+        8.         └─tidytable (local) FUN(X[[i]], ...)
+        9.           └─rlang::`f_lhs<-`(x = `*tmp*`, value = lhs)
+       10.             └─rlang:::check_formula(x, arg = "LHS")
+       11.               └─cli::cli_abort(...)
+       12.                 └─rlang::abort(...)
+      
+      [ FAIL 4 | WARN 0 | SKIP 0 | PASS 1330 ]
+      Error:
+      ! Test failures.
+      Execution halted
+    ```
+
+# uteals
+
+<details>
+
+* Version: 0.0.2
+* GitHub: https://github.com/phuse-org/uteals
+* Source code: https://github.com/cran/uteals
+* Date/Publication: 2026-02-17 15:40:02 UTC
+* Number of recursive dependencies: 270
+
+Run `revdepcheck::cloud_details(, "uteals")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking whether package ‘uteals’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘uteals’
+      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘uteals’
+    See ‘/tmp/workdir/uteals/new/uteals.Rcheck/00install.out’ for details.
     ```
 
