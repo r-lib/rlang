@@ -52,10 +52,13 @@ see \ifelse{html}{\link[=topic-inject-out-of-context]{What happens if I use inje
 Take a function like \code{\link[base:cbind]{base::rbind()}} that takes data in \code{...}. This
 sort of functions takes a variable number of arguments.
 
-\if{html}{\out{<div class="sourceCode {r, comment = "#>", collapse = TRUE}">}}\preformatted{df1 <- data.frame(x = 1)
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{df1 <- data.frame(x = 1)
 df2 <- data.frame(x = 2)
 
 rbind(df1, df2)
+#>   x
+#> 1 1
+#> 2 2
 }\if{html}{\out{</div>}}
 
 Passing individual arguments is only possible for a fixed amount of
@@ -63,29 +66,49 @@ arguments. When the arguments are in a list whose length is
 variable (and potentially very large), we need a programmatic
 approach like the splicing syntax \verb{!!!}:
 
-\if{html}{\out{<div class="sourceCode {r, comment = "#>", collapse = TRUE}">}}\preformatted{dfs <- list(df1, df2)
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(df1, df2)
 
 inject(rbind(!!!dfs))
+#>   x
+#> 1 1
+#> 2 2
 }\if{html}{\out{</div>}}
 
 Because \code{rbind()} is a base function we used \code{\link[=inject]{inject()}} to
 explicitly enable \verb{!!!}. However, many functions implement \link[=list2]{dynamic dots} with \verb{!!!} implicitly enabled out of the box.
 
-\if{html}{\out{<div class="sourceCode {r, include = FALSE}">}}\preformatted{# Work around pkgload collision messages
-is_installed("tidyr")
-}\if{html}{\out{</div>}}
-
-\if{html}{\out{<div class="sourceCode {r, comment = "#>", collapse = TRUE}">}}\preformatted{tidyr::expand_grid(x = 1:2, y = c("a", "b"))
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(x = 1:2, y = c("a", "b"))
+#> # A tibble: 4 x 2
+#>       x y    
+#>   <int> <chr>
+#> 1     1 a    
+#> 2     1 b    
+#> 3     2 a    
+#> 4     2 b
 
 xs <- list(x = 1:2, y = c("a", "b"))
 tidyr::expand_grid(!!!xs)
+#> # A tibble: 4 x 2
+#>       x y    
+#>   <int> <chr>
+#> 1     1 a    
+#> 2     1 b    
+#> 3     2 a    
+#> 4     2 b
 }\if{html}{\out{</div>}}
 
 Note how the expanded grid has the right column names. That's
 because we spliced a \emph{named} list. Splicing causes each name of the
 list to become an argument name.
 
-\if{html}{\out{<div class="sourceCode {r, comment = "#>", collapse = TRUE}">}}\preformatted{tidyr::expand_grid(!!!set_names(xs, toupper))
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{tidyr::expand_grid(!!!set_names(xs, toupper))
+#> # A tibble: 4 x 2
+#>       X Y    
+#>   <int> <chr>
+#> 1     1 a    
+#> 2     1 b    
+#> 3     2 a    
+#> 4     2 b
 }\if{html}{\out{</div>}}
 }
 
