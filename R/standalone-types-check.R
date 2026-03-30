@@ -234,6 +234,7 @@ check_formula <- function(
   x,
   ...,
   allow_null = FALSE,
+  allow_unevaluated = FALSE,
   arg = caller_arg(x),
   call = caller_env()
 ) {
@@ -241,10 +242,11 @@ check_formula <- function(
     if (allow_null && is_null(x)) {
       return(invisible(NULL))
     }
-    if (is_formula(x, scoped = TRUE)) {
+    scoped <- if (allow_unevaluated) NULL else TRUE
+    if (is_formula(x, scoped = scoped)) {
       return(invisible(NULL))
     }
-    if (is_formula(x)) {
+    if (!allow_unevaluated && is_formula(x)) {
       cli::cli_abort(
         "{.arg {arg}} must be an evaluated formula, not a defused one.",
         arg = arg,

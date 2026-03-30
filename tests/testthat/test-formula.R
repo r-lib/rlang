@@ -44,6 +44,21 @@ test_that("can replace both sides of two-sided formula", {
   expect_equal(f, x2 ~ y2)
 })
 
+test_that("f_rhs<- and f_lhs<- accept unscoped formulas", {
+  f <- quote(~x1)
+
+  f_rhs(f) <- quote(x2)
+  expect_equal(f_rhs(f), quote(x2))
+
+  f <- quote(x1 ~ y1)
+
+  f_lhs(f) <- quote(x2)
+  expect_equal(f_lhs(f), quote(x2))
+
+  f_rhs(f) <- quote(y2)
+  expect_equal(f_rhs(f), quote(y2))
+})
+
 test_that("can remove lhs of two-sided formula", {
   f <- x ~ y
   f_lhs(f) <- NULL

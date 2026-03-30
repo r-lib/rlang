@@ -445,6 +445,15 @@
       Error in `checker()`:
       ! `foo` must be an evaluated formula, not a defused one.
 
+# `check_formula(allow_unevaluated = TRUE)` accepts unevaluated formulas
+
+    Code
+      err(checker(TRUE, check_formula, allow_unevaluated = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a formula, not `TRUE`.
+
 # non-numeric types are not numbers
 
     Code

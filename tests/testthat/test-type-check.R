@@ -167,6 +167,23 @@ test_that("`check_formula()` checks", {
   })
 })
 
+test_that("`check_formula(allow_unevaluated = TRUE)` accepts unevaluated formulas", {
+  # Unevaluated formula (no environment)
+  f <- quote(~foo)
+
+  # Default `allow_unevaluated = FALSE` rejects unevaluated formulas
+  expect_error(check_formula(f), "evaluated formula")
+
+  # `allow_unevaluated = TRUE` accepts any formula
+  expect_null(check_formula(f, allow_unevaluated = TRUE))
+  expect_null(check_formula(~foo, allow_unevaluated = TRUE))
+
+  # Non-formulas are still rejected
+  expect_snapshot({
+    err(checker(TRUE, check_formula, allow_unevaluated = TRUE))
+  })
+})
+
 test_that("non-numeric types are not numbers", {
   expect_snapshot({
     (expect_error(check_number_whole(factor("a"))))

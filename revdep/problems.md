@@ -1,44 +1,3 @@
-# AzureKusto
-
-<details>
-
-* Version: 1.1.4
-* GitHub: https://github.com/Azure/AzureKusto
-* Source code: https://github.com/cran/AzureKusto
-* Date/Publication: 2025-09-10 06:41:05 UTC
-* Number of recursive dependencies: 69
-
-Run `revdepcheck::cloud_details(, "AzureKusto")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(AzureKusto)
-      
-      Attaching package: 'AzureKusto'
-      
-      The following object is masked from 'package:stats':
-      
-    ...
-       5.   ├─rlang::switch_type(...)
-       6.   └─rlang::`f_rhs<-`(...)
-       7.     └─rlang:::check_formula(x, arg = "LHS")
-       8.       └─cli::cli_abort(...)
-       9.         └─rlang::abort(...)
-      
-      [ FAIL 1 | WARN 4 | SKIP 7 | PASS 111 ]
-      Error:
-      ! Test failures.
-      Execution halted
-    ```
-
 # coursekata
 
 <details>
@@ -141,47 +100,6 @@ Run `revdepcheck::cloud_details(, "DeclareDesign")` for more info
         │ 
       
       [ FAIL 9 | WARN 0 | SKIP 7 | PASS 638 ]
-      Error:
-      ! Test failures.
-      Execution halted
-    ```
-
-# dtplyr
-
-<details>
-
-* Version: 1.3.3
-* GitHub: https://github.com/tidyverse/dtplyr
-* Source code: https://github.com/cran/dtplyr
-* Date/Publication: 2026-02-11 06:10:52 UTC
-* Number of recursive dependencies: 64
-
-Run `revdepcheck::cloud_details(, "dtplyr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(dtplyr)
-      > 
-      > test_check("dtplyr")
-      Saving _problems/test-tidyeval-174.R
-      [ FAIL 1 | WARN 0 | SKIP 35 | PASS 754 ]
-      
-    ...
-       10.             └─dtplyr (local) FUN(X[[i]], ...)
-       11.               └─rlang::`f_lhs<-`(x = `*tmp*`, value = lhs)
-       12.                 └─rlang:::check_formula(x, arg = "LHS")
-       13.                   └─cli::cli_abort(...)
-       14.                     └─rlang::abort(...)
-      
-      [ FAIL 1 | WARN 0 | SKIP 35 | PASS 754 ]
       Error:
       ! Test failures.
       Execution halted
@@ -504,72 +422,6 @@ Run `revdepcheck::cloud_details(, "tidynorm")` for more info
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 6748 marked UTF-8 strings
-    ```
-
-# tidytable
-
-<details>
-
-* Version: 0.11.2
-* GitHub: https://github.com/markfairbanks/tidytable
-* Source code: https://github.com/cran/tidytable
-* Date/Publication: 2024-12-11 10:20:02 UTC
-* Number of recursive dependencies: 48
-
-Run `revdepcheck::cloud_details(, "tidytable")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tidytable-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: recode
-    > ### Title: Recode values
-    > ### Aliases: recode
-    > ### Keywords: internal
-    > 
-    > ### ** Examples
-    > 
-    ...
-     1. └─tidytable::recode(char_vec, a = "Apple", b = "Banana")
-     2.   └─tidytable::case_match(.x, !!!dots, .default = .default)
-     3.     └─tidytable::map(dots, prep_case_match_dot, .x)
-     4.       └─base::lapply(.x, .f, ...)
-     5.         └─tidytable (local) FUN(X[[i]], ...)
-     6.           └─rlang::`f_lhs<-`(x = `*tmp*`, value = lhs)
-     7.             └─rlang:::check_formula(x, arg = "LHS")
-     8.               └─cli::cli_abort(...)
-     9.                 └─rlang::abort(...)
-    Execution halted
-    ```
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(tidytable)
-      
-      Attaching package: 'tidytable'
-      
-      The following objects are masked from 'package:stats':
-      
-    ...
-        8.         └─tidytable (local) FUN(X[[i]], ...)
-        9.           └─rlang::`f_lhs<-`(x = `*tmp*`, value = lhs)
-       10.             └─rlang:::check_formula(x, arg = "LHS")
-       11.               └─cli::cli_abort(...)
-       12.                 └─rlang::abort(...)
-      
-      [ FAIL 4 | WARN 0 | SKIP 0 | PASS 1330 ]
-      Error:
-      ! Test failures.
-      Execution halted
     ```
 
 # uteals

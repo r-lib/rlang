@@ -65,14 +65,12 @@
 |univariateML  |?       |      |        |     |
 |wmwAUC        |?       |      |        |     |
 
-## New problems (14)
+## New problems (11)
 
 |package       |version |error  |warning |note |
 |:-------------|:-------|:------|:-------|:----|
-|[AzureKusto](problems.md#azurekusto)|1.1.4   |__+1__ |        |     |
 |[coursekata](problems.md#coursekata)|0.19.2  |__+2__ |        |     |
 |[DeclareDesign](problems.md#declaredesign)|1.1.0   |__+1__ |        |     |
-|[dtplyr](problems.md#dtplyr)|1.3.3   |__+1__ |        |     |
 |[embed](problems.md#embed)|1.2.2   |       |__+1__  |1    |
 |[ggplot2](problems.md#ggplot2)|4.0.2   |__+1__ |        |2    |
 |[important](problems.md#important)|0.2.1   |       |__+1__  |     |
@@ -81,6 +79,4 @@
 |[rsimsum](problems.md#rsimsum)|0.13.0  |       |__+1__  |1    |
 |[tf](problems.md#tf)|0.4.0   |       |__+1__  |     |
 |[tidynorm](problems.md#tidynorm)|0.4.0   |       |__+1__  |2    |
-|[tidytable](problems.md#tidytable)|0.11.2  |__+2__ |        |     |
 |[uteals](problems.md#uteals)|0.0.2   |       |__+1__  |     |
-
