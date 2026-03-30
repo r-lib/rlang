@@ -208,7 +208,6 @@ The programmable data-masking framework developed for the tidyverse.
   : Check that argument is supplied
 - [`check_bool()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md)
   [`check_string()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md)
-  [`check_name()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md)
   **\[experimental\]** : Check argument type (scalar)
 - [`check_number_decimal()`](https://rlang.r-lib.org/dev/reference/check_type_number.md)
   [`check_number_whole()`](https://rlang.r-lib.org/dev/reference/check_type_number.md)

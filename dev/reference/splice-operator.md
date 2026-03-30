@@ -55,14 +55,25 @@ Take a function like
 [`base::rbind()`](https://rdrr.io/r/base/cbind.html) that takes data in
 `...`. This sort of functions takes a variable number of arguments.
 
-", collapse = TRUE}"\>
+    df1 <- data.frame(x = 1)
+    df2 <- data.frame(x = 2)
+
+    rbind(df1, df2)
+    #>   x
+    #> 1 1
+    #> 2 2
 
 Passing individual arguments is only possible for a fixed amount of
 arguments. When the arguments are in a list whose length is variable
 (and potentially very large), we need a programmatic approach like the
 splicing syntax `!!!`:
 
-", collapse = TRUE}"\>
+    dfs <- list(df1, df2)
+
+    inject(rbind(!!!dfs))
+    #>   x
+    #> 1 1
+    #> 2 2
 
 Because [`rbind()`](https://rdrr.io/r/base/cbind.html) is a base
 function we used
@@ -71,13 +82,37 @@ explicitly enable `!!!`. However, many functions implement [dynamic
 dots](https://rlang.r-lib.org/dev/reference/list2.md) with `!!!`
 implicitly enabled out of the box.
 
-", collapse = TRUE}"\>
+    tidyr::expand_grid(x = 1:2, y = c("a", "b"))
+    #> # A tibble: 4 x 2
+    #>       x y
+    #>   <int> <chr>
+    #> 1     1 a
+    #> 2     1 b
+    #> 3     2 a
+    #> 4     2 b
+
+    xs <- list(x = 1:2, y = c("a", "b"))
+    tidyr::expand_grid(!!!xs)
+    #> # A tibble: 4 x 2
+    #>       x y
+    #>   <int> <chr>
+    #> 1     1 a
+    #> 2     1 b
+    #> 3     2 a
+    #> 4     2 b
 
 Note how the expanded grid has the right column names. That's because we
 spliced a *named* list. Splicing causes each name of the list to become
 an argument name.
 
-", collapse = TRUE}"\>
+    tidyr::expand_grid(!!!set_names(xs, toupper))
+    #> # A tibble: 4 x 2
+    #>       X Y
+    #>   <int> <chr>
+    #> 1     1 a
+    #> 2     1 b
+    #> 3     2 a
+    #> 4     2 b
 
 ## Splicing a list of expressions
 

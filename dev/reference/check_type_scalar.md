@@ -26,14 +26,6 @@ check_string(
   arg = caller_arg(x),
   call = caller_env()
 )
-
-check_name(
-  x,
-  ...,
-  allow_null = FALSE,
-  arg = caller_arg(x),
-  call = caller_env()
-)
 ```
 
 ## Arguments
