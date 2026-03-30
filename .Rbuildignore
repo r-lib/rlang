@@ -27,3 +27,4 @@
 ^[\.]?air\.toml$
 ^dev-notes$
 ^\.jj$
+^\.claude$
