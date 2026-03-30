@@ -134,7 +134,7 @@ args <- list(1, missing_arg(), 3, missing_arg())
 quo(fn(!!! args))
 #> <quosure>
 #> expr: ^fn(1, , 3, )
-#> env:  0x55979794b3a8
+#> env:  0x55c76cae61e0
 
 # Other ways to create that object include:
 quote(expr = )
