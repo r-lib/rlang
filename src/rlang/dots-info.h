@@ -21,4 +21,6 @@ r_obj* r_env_dot_delayed_expr(r_obj* env, r_ssize i);
 r_obj* r_env_dot_delayed_env(r_obj* env, r_ssize i);
 r_obj* r_env_dot_forced_expr(r_obj* env, r_ssize i);
 
+r_obj* r_env_until_dots(r_obj* env);
+
 #endif /* RLANG_DOTS_INFO_H */

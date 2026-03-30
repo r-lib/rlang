@@ -25,7 +25,7 @@ r_obj* env_dot_find(r_obj* env, r_ssize i) {
         r_abort("indexing '...' with negative index %d", (int) i);
     }
 
-    r_obj* dots = Rf_findVar(r_syms.dots, env);
+    r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
 
     if (dots == r_syms.unbound) {
         r_abort("'...' used in an incorrect context");
@@ -57,9 +57,19 @@ bool r_env_dots_exist(r_obj* env) {
 #if RLANG_HAS_R_DOTS_API
     return R_DotsExist(env);
 #else
-    r_obj* dots = Rf_findVar(r_syms.dots, env);
+    r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
     return dots != r_syms.unbound;
 #endif
+}
+
+r_obj* r_env_until_dots(r_obj* env) {
+    while (env != r_envs.empty) {
+        if (r_env_dots_exist(env)) {
+            return env;
+        }
+        env = r_env_parent(env);
+    }
+    return r_envs.empty;
 }
 
 // R API: R_DotsLength
@@ -67,7 +77,7 @@ r_ssize r_env_dots_length(r_obj* env) {
 #if RLANG_HAS_R_DOTS_API
     return (r_ssize) R_DotsLength(env);
 #else
-    r_obj* dots = Rf_findVar(r_syms.dots, env);
+    r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
 
     if (dots == r_syms.unbound) {
         r_abort("incorrect context: the current call has no '...' to look in");
@@ -87,7 +97,7 @@ r_obj* r_env_dots_names(r_obj* env) {
 #if RLANG_HAS_R_DOTS_API
     return R_DotsNames(env);
 #else
-    r_obj* dots = KEEP(Rf_findVar(r_syms.dots, env));
+    r_obj* dots = KEEP(Rf_findVarInFrame(env, r_syms.dots));
 
     if (dots == r_syms.unbound) {
         r_abort("incorrect context: the current call has no '...' to look in");

@@ -492,6 +492,27 @@ test_that("enquo() works with lexically scoped arguments", {
   expect_identical(capture(foo), quo(foo))
 })
 
+test_that("enquo(..N) works with lexically scoped dots", {
+  capture <- function(...) {
+    eval_bare(quote(enquo(..1)), child_env(env()))
+  }
+  caller_env <- current_env()
+  result <- capture(foo)
+  expect_equal(quo_get_expr(result), quote(foo))
+  expect_identical(quo_get_env(result), caller_env)
+})
+
+test_that("enquo() follows ..N through lexically scoped env", {
+  capture <- function(x) enquo0(x)
+  fn <- function(...) {
+    eval_bare(quote(capture(..1)), child_env(env()))
+  }
+  caller_env <- current_env()
+  result <- fn(x + y)
+  expect_equal(quo_get_expr(result), quote(x + y))
+  expect_identical(quo_get_env(result), caller_env)
+})
+
 test_that("closures are captured with their calling environment", {
   expect_reference(quo_get_env(quo(!!function() NULL)), environment())
 })

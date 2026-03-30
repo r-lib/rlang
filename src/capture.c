@@ -43,6 +43,7 @@ r_obj* capture_delayed(r_obj* expr, r_obj* expr_env) {
         if (dd <= 0) {
             break;
         }
+        expr_env = r_env_until_dots(expr_env);
         if (!r_env_dots_exist(expr_env)) {
             r_abort("'...' used in an incorrect context");
         }
@@ -116,6 +117,7 @@ r_obj* rlang_capturearginfo(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
     int dd = dotDotVal(sym);
 
     if (dd) {
+        frame = r_env_until_dots(frame);
         if (!r_env_dots_exist(frame)) {
             r_abort("'...' used in an incorrect context");
         }
@@ -178,6 +180,11 @@ r_obj* rlang_capturearginfo(r_obj* call, r_obj* op, r_obj* args, r_obj* rho)
 }
 
 r_obj* capturedots(r_obj* frame) {
+    frame = r_env_until_dots(frame);
+    if (!r_env_dots_exist(frame)) {
+        r_stop_internal("Expected `...` in scope");
+    }
+
     r_ssize n = r_env_dots_length(frame);
 
     if (n == 0) {
