@@ -133,7 +133,7 @@ void CLEAR_ATTRIB(SEXP x) {
 }
 #endif
 
-#if 1 || R_VERSION < R_Version(4, 6, 0)
+#if R_VERSION < R_Version(4, 6, 0)
 static inline
 bool rlang_promise_is_forced(r_obj* x) {
   return PRVALUE(x) != R_UnboundValue;
