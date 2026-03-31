@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `ns_registry_env()` is defunct in R >= 4.6.0 for compliance with the C API of R.
+
 * New type-checking functions exported from rlang: `check_bool()`,
   `check_string()`, `check_name()`, `check_number_decimal()`,
   `check_number_whole()`, and `check_data_frame()`. These were

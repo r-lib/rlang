@@ -342,7 +342,17 @@ env_label <- function(env) {
   }
 }
 
-
+#' Return the namespace registry env
+#' @description
+#' `r lifecycle::badge("defunct")`
+#' @keywords internal
+#' @export
+ns_registry_env <- function() {
+  if (getRversion() >= "4.6") {
+    deprecate_stop("`ns_registry_env()` is defunct.")
+  }
+  .Call(ffi_ns_registry_env)
+}
 
 on_load({
   base_ns_env <- ns_env("base")
