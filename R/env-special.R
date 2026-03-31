@@ -342,18 +342,7 @@ env_label <- function(env) {
   }
 }
 
-#' Return the namespace registry env
-#'
-#' Note that the namespace registry does not behave like a normal
-#' environment because the parent is `NULL` instead of the empty
-#' environment. This is exported for expert usage in development tools
-#' only.
-#'
-#' @keywords internal
-#' @export
-ns_registry_env <- function() {
-  .Call(ffi_ns_registry_env)
-}
+
 
 on_load({
   base_ns_env <- ns_env("base")
