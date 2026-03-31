@@ -157,7 +157,7 @@ r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
 bool r__env_has(r_obj* env, r_obj* sym) {
   // `exists("")` errors on older R
   if (sym == R_MissingArg) {
-    return Rf_findVarInFrame3(env, sym, FALSE) != r_syms.unbound;
+    return Rf_findVarInFrame3(env, sym, FALSE) != R_UnboundValue;
   }
   r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
   r_obj* out = eval_with_xyz(exists_call, env, nm, r_false);
@@ -168,7 +168,7 @@ bool r__env_has(r_obj* env, r_obj* sym) {
 bool r__env_has_anywhere(r_obj* env, r_obj* sym) {
   // `exists("")` errors on older R
   if (sym == R_MissingArg) {
-    return Rf_findVar(sym, env) != r_syms.unbound;
+    return Rf_findVar(sym, env) != R_UnboundValue;
   }
   r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
   r_obj* out = eval_with_xyz(exists_call, env, nm, r_true);

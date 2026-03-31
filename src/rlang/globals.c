@@ -81,7 +81,6 @@ void r_init_library_globals_syms(void) {
   r_syms.dim_names = R_DimNamesSymbol;
   r_syms.row_names = R_RowNamesSymbol;
   r_syms.stack_overflow_error = r_sym("stackOverflowError");
-  r_syms.unbound = R_UnboundValue;
   r_syms.warning = r_sym("warning");
 
   r_syms.dot_environment = r_sym(".Environment");
