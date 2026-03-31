@@ -6,12 +6,15 @@ r_obj* rlang_ns_env;
 
 
 r_obj* r_ns_env(const char* pkg) {
-  r_obj* pkg_sym = r_sym(pkg);
-  if (!r_env_has(R_NamespaceRegistry, pkg_sym)) {
+  r_obj* pkg_str = KEEP(r_chr(pkg));
+  r_obj* ns = r_eval_with_x(get_ns_call, pkg_str, r_envs.base);
+  FREE(1);
+
+  if (ns == r_null) {
     r_abort("Can't find namespace `%s`", pkg);
   }
 
-  return r_env_get(R_NamespaceRegistry, pkg_sym);
+  return ns;
 }
 
 r_obj* r_base_ns_get(const char* name) {
@@ -278,6 +281,9 @@ void r_init_library_env(void) {
   r_preserve(remove_call);
 
   r_methods_ns_env = r_parse_eval("asNamespace('methods')", r_envs.base);
+
+  get_ns_call = r_parse(".getNamespace(x)");
+  r_preserve(get_ns_call);
 }
 
 r_obj* rlang_ns_env = NULL;
@@ -308,3 +314,6 @@ r_obj* list2env_call = NULL;
 
 static
 r_obj* missing_prim = NULL;
+
+static
+r_obj* get_ns_call = NULL;

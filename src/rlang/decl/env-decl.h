@@ -29,4 +29,7 @@ static
 r_obj* missing_prim;
 
 static
+r_obj* get_ns_call;
+
+static
 void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* nms);

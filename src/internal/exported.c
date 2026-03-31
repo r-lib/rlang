@@ -509,11 +509,6 @@ r_obj* ffi_env_bind_list(r_obj* env, r_obj* names, r_obj* data) {
   return r_null;
 }
 
-r_obj* ffi_ns_registry_env(void) {
-  return R_NamespaceRegistry;
-}
-
-
 // eval.c
 
 r_obj* ffi_eval(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
