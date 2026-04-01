@@ -93,8 +93,12 @@ r_obj* r_env_binding_types(r_obj* env, r_obj* bindings) {
   return types;
 }
 
-// This does an extra alloc, see https://bugs.r-project.org/show_bug.cgi?id=18928#c2
+// R API: R_envSymbols
 r_obj* r_env_syms(r_obj* env) {
+#if RLANG_HAS_R_BINDING_API
+  return R_envSymbols(env);
+#else
+  // This does an extra alloc, as does the initial implementation in https://github.com/r-devel/r-svn/commit/ee6dc5080845f911d7a884398213d22f3de63fe2
   r_obj* nms = KEEP(r_env_names(env));
   r_ssize n = r_length(nms);
 
@@ -107,6 +111,7 @@ r_obj* r_env_syms(r_obj* env) {
 
   FREE(2);
   return out;
+#endif
 }
 
 

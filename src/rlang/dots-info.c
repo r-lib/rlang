@@ -58,7 +58,7 @@ bool r_env_dots_exist(r_obj* env) {
     return R_DotsExist(env);
 #else
     r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
-    return dots != R_UnboundValue;
+    return dots != R_UnboundValue && (dots == r_syms.missing || r_typeof(dots) == R_TYPE_dots);
 #endif
 }
 
