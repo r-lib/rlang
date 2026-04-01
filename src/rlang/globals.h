@@ -78,7 +78,6 @@ struct r_globals_syms {
   r_obj* row_names;
   r_obj* stack_overflow_error;
   r_obj* tilde;
-  r_obj* unbound;
   r_obj* w;
   r_obj* warning;
   r_obj* wholeSrcref;
