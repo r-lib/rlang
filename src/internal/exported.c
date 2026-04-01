@@ -510,7 +510,11 @@ r_obj* ffi_env_bind_list(r_obj* env, r_obj* names, r_obj* data) {
 }
 
 r_obj* ffi_ns_registry_env(void) {
+#if R_VERSION < R_Version(4, 6, 0)
   return R_NamespaceRegistry;
+#else
+  r_abort("`ns_registry_env()` is defunct as of R 4.6.");
+#endif
 }
 
 

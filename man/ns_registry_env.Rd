@@ -7,9 +7,6 @@
 ns_registry_env()
 }
 \description{
-Note that the namespace registry does not behave like a normal
-environment because the parent is \code{NULL} instead of the empty
-environment. This is exported for expert usage in development tools
-only.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#defunct}{\figure{lifecycle-defunct.svg}{options: alt='[Defunct]'}}}{\strong{[Defunct]}}
 }
 \keyword{internal}
