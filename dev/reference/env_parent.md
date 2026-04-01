@@ -69,7 +69,7 @@ env_tail(global_env())
 # current evaluation frame. If called at top-level (the global
 # frame), the following two expressions are equivalent:
 env_parent()
-#> <environment: 0x55cab753d6b0>
+#> <environment: 0x55b6c8d0ee30>
 env_parent(base_env())
 #> <environment: R_EmptyEnv>
 

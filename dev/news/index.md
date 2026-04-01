@@ -2,6 +2,9 @@
 
 ## rlang (development version)
 
+- [`ns_registry_env()`](https://rlang.r-lib.org/dev/reference/ns_registry_env.md)
+  is defunct in R \>= 4.6.0 for compliance with the C API of R.
+
 - New type-checking functions exported from rlang:
   [`check_bool()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md),
   [`check_string()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md),
