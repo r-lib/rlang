@@ -165,7 +165,7 @@ r_obj* r_env_get(r_obj* env, r_obj* sym) {
   }
 
 #if R_VERSION >= R_Version(4, 5, 0)
-  return R_getVar(sym, env, TRUE);
+  return R_getVar(sym, env, FALSE);
 #else
   r_obj* value = env_find(env, sym);
   if (r_typeof(value) == R_TYPE_dots) {
