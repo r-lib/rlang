@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,9 +76,16 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.7/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/r-lib/rlang/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.2.0" id="rlang-120">rlang 1.2.0<a class="anchor" aria-label="anchor" href="#rlang-120"></a></h2>
+<ul><li><p>rlang and tidyeval are now fully backed by official C APIs of R! Thanks to the R core team for collaborating with us on this.</p></li>
+<li><p><code><a href="../reference/ns_registry_env.html">ns_registry_env()</a></code> is defunct in R &gt;= 4.6.0 for compliance with the C API of R.</p></li>
+<li><p>New type-checking functions exported from rlang: <code><a href="../reference/check_type_scalar.html">check_bool()</a></code>, <code><a href="../reference/check_type_scalar.html">check_string()</a></code>, <code>check_name()</code>, <code><a href="../reference/check_type_number.html">check_number_decimal()</a></code>, <code><a href="../reference/check_type_number.html">check_number_whole()</a></code>, and <code><a href="../reference/check_data_frame.html">check_data_frame()</a></code>. These were previously only available via the <code>standalone-types-check.R</code> standalone file. <code><a href="../reference/stop_input_type.html">stop_input_type()</a></code> is also now exported.</p></li>
+<li><p>Fixed a protection issue discovered by rchk (<a href="https://github.com/r-lib/rlang/issues/1865" class="external-link">#1865</a>).</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.7" id="rlang-117">rlang 1.1.7<a class="anchor" aria-label="anchor" href="#rlang-117"></a></h2><p class="text-muted">CRAN release: 2026-01-09</p>
 <ul><li><p>Progress towards making rlang conformant with the public C API of R.</p></li>
@@ -120,7 +127,7 @@
 <h2 class="pkg-version" data-toc-text="1.1.1" id="rlang-111">rlang 1.1.1<a class="anchor" aria-label="anchor" href="#rlang-111"></a></h2><p class="text-muted">CRAN release: 2023-04-28</p>
 <ul><li><p><code><a href="../reference/englue.html">englue()</a></code> now allows omitting <code>{{</code>. This is to make it easier to embed in external functions that need to support either <code>{</code> and <code>{{</code> (<a href="https://github.com/r-lib/rlang/issues/1601" class="external-link">#1601</a>).</p></li>
 <li><p>Fix for CRAN checks.</p></li>
-<li><p><code>stop_input_type()</code> now handles <code><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I()</a></code> input literally in <code>arg</code> (<a href="https://github.com/r-lib/rlang/issues/1607" class="external-link">#1607</a>, <a href="https://github.com/simonpcouch" class="external-link">@simonpcouch</a>).</p></li>
+<li><p><code><a href="../reference/stop_input_type.html">stop_input_type()</a></code> now handles <code><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I()</a></code> input literally in <code>arg</code> (<a href="https://github.com/r-lib/rlang/issues/1607" class="external-link">#1607</a>, <a href="https://github.com/simonpcouch" class="external-link">@simonpcouch</a>).</p></li>
 <li><p><code><a href="../reference/parse_expr.html">parse_expr()</a></code> and <code><a href="../reference/parse_expr.html">parse_exprs()</a></code> are now faster when <code>getOption("keep.source")</code> is <code>TRUE</code> (<a href="https://github.com/r-lib/rlang/issues/1603" class="external-link">#1603</a>).</p></li>
 </ul></div>
     <div class="section level2">
@@ -152,8 +159,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="miscellaneous-fixes-and-features-1-1-0">Miscellaneous fixes and features<a class="anchor" aria-label="anchor" href="#miscellaneous-fixes-and-features-1-1-0"></a></h3>
-<ul><li><p>New <code>check_data_frame()</code> and <code>check_logical()</code> functions in <code>standalone-types-check.R</code> (<a href="https://github.com/r-lib/rlang/issues/1587" class="external-link">#1587</a>, <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</p></li>
-<li><p>Added <code>allow_infinite</code> argument to <code>check_number_whole()</code> (<a href="https://github.com/r-lib/rlang/issues/1588" class="external-link">#1588</a>, <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</p></li>
+<ul><li><p>New <code><a href="../reference/check_data_frame.html">check_data_frame()</a></code> and <code>check_logical()</code> functions in <code>standalone-types-check.R</code> (<a href="https://github.com/r-lib/rlang/issues/1587" class="external-link">#1587</a>, <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</p></li>
+<li><p>Added <code>allow_infinite</code> argument to <code><a href="../reference/check_type_number.html">check_number_whole()</a></code> (<a href="https://github.com/r-lib/rlang/issues/1588" class="external-link">#1588</a>, <a href="https://github.com/mgirlich" class="external-link">@mgirlich</a>).</p></li>
 <li><p>The lifecycle standalone file has been updated to match the modern lifecycle tools.</p></li>
 <li><p><code><a href="../reference/parse_expr.html">parse_expr()</a></code> now supports vectors of lines (<a href="https://github.com/r-lib/rlang/issues/1540" class="external-link">#1540</a>).</p></li>
 <li><p>Quosures can now be consistently concatenated to lists of quosures (<a href="https://github.com/r-lib/rlang/issues/1446" class="external-link">#1446</a>).</p></li>

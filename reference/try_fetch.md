@@ -18,13 +18,23 @@ A condition handler can:
       # Recover with the value 0
       try_fetch(1 + "", error = function(cnd) 0)
 
-- **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`. See the
+- **Rethrow conditions**, e.g. using `abort(msg, parent = cnd)`. The
   `parent` argument of
-  [`abort()`](https://rlang.r-lib.org/reference/abort.md). This is
-  typically done to add information to low-level errors about the
-  high-level context in which they occurred.
+  [`abort()`](https://rlang.r-lib.org/reference/abort.md),
+  [`warn()`](https://rlang.r-lib.org/reference/abort.md), and
+  [`inform()`](https://rlang.r-lib.org/reference/abort.md) can be used
+  to chain conditions. This is typically done to add information to
+  low-level errors about the high-level context in which they occurred.
 
       try_fetch(1 + "", error = function(cnd) abort("Failed.", parent = cnd))
+
+      try_fetch(
+        1 + "",
+        error = function(cnd) {
+          warn("Failed. Returning 1", parent = cnd)
+          1L
+        }
+      )
 
 - **Inspect conditions**, for instance to log data about warnings or
   errors. In this case, the handler must return the

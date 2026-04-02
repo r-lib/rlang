@@ -25,7 +25,7 @@ This works well when abort() is called directly within the failing function. How
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@ This works well when abort() is called directly within the failing function. How
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Including function calls in error messages</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.7/R/topic-errors.R" class="external-link"><code>R/topic-errors.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/topic-errors.R" class="external-link"><code>R/topic-errors.R</code></a></small>
       <div class="d-none name"><code>topic-error-call.Rd</code></div>
     </div>
 
@@ -125,7 +125,7 @@ This works well when abort() is called directly within the failing function. How
 <span><span class="op">}</span></span></code></pre><p></p></div></li>
 </ul><p>In both cases, the default error call is not very helpful to the end user because it reflects an internal function rather than a user function:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">check_string</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/check_type_scalar.html">check_string</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>  <span class="fu">stop_my_class</span><span class="op">(</span><span class="st">"Unimplemented"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre><p></p></div>
 <p></p><div class="sourceCode r"><pre><code><span><span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>
@@ -163,7 +163,7 @@ This works well when abort() is called directly within the failing function. How
 <span><span class="op">}</span></span></code></pre><p></p></div>
 <p>It is a combination of <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code> and <code><a href="as_label.html">rlang::as_label()</a></code> which provides a more generally applicable default:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">my_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">my_arg</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu">check_string</span><span class="op">(</span><span class="va">my_arg</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/check_type_scalar.html">check_string</a></span><span class="op">(</span><span class="va">my_arg</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">my_function</span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span></span>

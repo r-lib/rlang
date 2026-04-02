@@ -36,12 +36,15 @@
 <url><loc>https://rlang.r-lib.org/reference/call_standardise.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/caller_arg.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/catch_cnd.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_data_frame.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/check_dots_empty.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/check_dots_empty0.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/check_dots_unnamed.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/check_dots_used.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/check_exclusive.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/check_required.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_type_number.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/check_type_scalar.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/child_env.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/chr_unserialise_unicode.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/cnd.html</loc></url>
@@ -194,6 +197,7 @@
 <url><loc>https://rlang.r-lib.org/reference/splice.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/stack-deprecated.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/stack.html</loc></url>
+<url><loc>https://rlang.r-lib.org/reference/stop_input_type.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/string.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/switch_type.html</loc></url>
 <url><loc>https://rlang.r-lib.org/reference/sym.html</loc></url>

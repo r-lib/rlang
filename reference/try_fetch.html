@@ -14,10 +14,19 @@ catching site instead.
 try_fetch(1 + &quot;&quot;, error = function(cnd) 0)
 
 Rethrow conditions, e.g. using abort(msg, parent = cnd).
-See the parent argument of abort(). This is typically done to
+The parent argument of abort(), warn(), and inform()
+can be used to chain conditions. This is typically done to
 add information to low-level errors about the high-level context
 in which they occurred.
 try_fetch(1 + &quot;&quot;, error = function(cnd) abort(&quot;Failed.&quot;, parent = cnd))
+
+try_fetch(
+  1 + &quot;&quot;,
+  error = function(cnd) {
+    warn(&quot;Failed. Returning 1&quot;, parent = cnd)
+    1L
+  }
+)
 
 Inspect conditions, for instance to log data about warnings
 or errors. In this case, the handler must return the zap()
@@ -62,10 +71,19 @@ catching site instead.
 try_fetch(1 + &quot;&quot;, error = function(cnd) 0)
 
 Rethrow conditions, e.g. using abort(msg, parent = cnd).
-See the parent argument of abort(). This is typically done to
+The parent argument of abort(), warn(), and inform()
+can be used to chain conditions. This is typically done to
 add information to low-level errors about the high-level context
 in which they occurred.
 try_fetch(1 + &quot;&quot;, error = function(cnd) abort(&quot;Failed.&quot;, parent = cnd))
+
+try_fetch(
+  1 + &quot;&quot;,
+  error = function(cnd) {
+    warn(&quot;Failed. Returning 1&quot;, parent = cnd)
+    1L
+  }
+)
 
 Inspect conditions, for instance to log data about warnings
 or errors. In this case, the handler must return the zap()
@@ -103,7 +121,7 @@ to message) are not matched across parents."><meta property="og:image" content="
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -172,7 +190,7 @@ to message) are not matched across parents."><meta property="og:image" content="
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Try an expression with condition handlers</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.7/R/cnd-handlers.R" class="external-link"><code>R/cnd-handlers.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/cnd-handlers.R" class="external-link"><code>R/cnd-handlers.R</code></a></small>
       <div class="d-none name"><code>try_fetch.Rd</code></div>
     </div>
 
@@ -190,10 +208,19 @@ catching site instead.</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Recover with the value 0</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">try_fetch</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="st">""</span>, <span class="at">error =</span> <span class="cf">function</span>(cnd) <span class="dv">0</span>)</span></code></pre><p></p></div></li>
 <li><p><strong>Rethrow conditions</strong>, e.g. using <code>abort(msg, parent = cnd)</code>.
-See the <code>parent</code> argument of <code><a href="abort.html">abort()</a></code>. This is typically done to
+The <code>parent</code> argument of <code><a href="abort.html">abort()</a></code>, <code><a href="abort.html">warn()</a></code>, and <code><a href="abort.html">inform()</a></code>
+can be used to chain conditions. This is typically done to
 add information to low-level errors about the high-level context
 in which they occurred.</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">try_fetch</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="st">""</span>, <span class="at">error =</span> <span class="cf">function</span>(cnd) <span class="fu">abort</span>(<span class="st">"Failed."</span>, <span class="at">parent =</span> cnd))</span></code></pre><p></p></div></li>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">try_fetch</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="st">""</span>, <span class="at">error =</span> <span class="cf">function</span>(cnd) <span class="fu">abort</span>(<span class="st">"Failed."</span>, <span class="at">parent =</span> cnd))</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">try_fetch</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">+</span> <span class="st">""</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="at">error =</span> <span class="cf">function</span>(cnd) {</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="fu">warn</span>(<span class="st">"Failed. Returning 1"</span>, <span class="at">parent =</span> cnd)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    <span class="dv">1</span><span class="dt">L</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  }</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>)</span></code></pre><p></p></div></li>
 <li><p><strong>Inspect conditions</strong>, for instance to log data about warnings
 or errors. In this case, the handler must return the <code><a href="zap.html">zap()</a></code>
 sentinel to instruct <code>try_fetch()</code> to ignore (or zap) that

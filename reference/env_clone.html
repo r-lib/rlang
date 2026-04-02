@@ -25,7 +25,7 @@ Both these functions preserve active bindings and promises."><meta property="og:
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +94,7 @@ Both these functions preserve active bindings and promises."><meta property="og:
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Clone or coalesce an environment</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/v1.1.7/R/env.R" class="external-link"><code>R/env.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/rlang/blob/main/R/env.R" class="external-link"><code>R/env.R</code></a></small>
       <div class="d-none name"><code>env_clone.Rd</code></div>
     </div>
 
@@ -140,14 +140,14 @@ in the LHS, those are kept as is.</p></li>
 <span class="r-in"><span><span class="va">clone</span> <span class="op">&lt;-</span> <span class="fu">env_clone</span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">clone</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559cffcc3c60&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559d00314c30&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x55ad3f4d6ed0&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x55ad3f563900&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
 <span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559cffbae128&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559d00314c30&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x55ad3f52f068&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x55ad3f563900&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
@@ -157,15 +157,15 @@ in the LHS, those are kept as is.</p></li>
 <span class="r-in"><span><span class="fu"><a href="env_bind.html">env_bind</a></span><span class="op">(</span><span class="va">clone</span>, a <span class="op">=</span> <span class="st">"foo"</span>, c <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">clone</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559cffcc3c60&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559d00314c30&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x55ad3f4d6ed0&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x55ad3f563900&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;chr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> c: &lt;dbl&gt;</span>
 <span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559cffbae128&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559d00314c30&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x55ad3f52f068&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x55ad3f563900&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;dbl&gt;</span>
@@ -176,8 +176,8 @@ in the LHS, those are kept as is.</p></li>
 <span class="r-in"><span><span class="va">rhs</span> <span class="op">&lt;-</span> <span class="fu"><a href="env.html">env</a></span><span class="op">(</span>a <span class="op">=</span> <span class="st">"a"</span>, b <span class="op">=</span> <span class="st">"b"</span>, c <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">env_coalesce</span><span class="op">(</span><span class="va">lhs</span>, <span class="va">rhs</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">lhs</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559d00236bc8&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559d00314c30&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x55ad43013b78&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x55ad3f563900&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;dbl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;chr&gt;</span>
@@ -188,8 +188,8 @@ in the LHS, those are kept as is.</p></li>
 <span class="r-in"><span><span class="fu"><a href="env_unbind.html">env_unbind</a></span><span class="op">(</span><span class="va">lhs</span>, <span class="fu"><a href="env_names.html">env_names</a></span><span class="op">(</span><span class="va">rhs</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">env_coalesce</span><span class="op">(</span><span class="va">lhs</span>, <span class="va">rhs</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="env_print.html">env_print</a></span><span class="op">(</span><span class="va">lhs</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x559d00236bc8&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x559d00314c30&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">&lt;environment: 0x55ad43013b78&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Parent: &lt;environment: 0x55ad3f563900&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bindings:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> a: &lt;chr&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> b: &lt;chr&gt;</span>

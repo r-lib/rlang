@@ -204,6 +204,16 @@ The programmable data-masking framework developed for the tidyverse.
   : Check that arguments are mutually exclusive
 - [`check_required()`](https://rlang.r-lib.org/reference/check_required.md)
   : Check that argument is supplied
+- [`check_bool()`](https://rlang.r-lib.org/reference/check_type_scalar.md)
+  [`check_string()`](https://rlang.r-lib.org/reference/check_type_scalar.md)
+  **\[experimental\]** : Check argument type (scalar)
+- [`check_number_decimal()`](https://rlang.r-lib.org/reference/check_type_number.md)
+  [`check_number_whole()`](https://rlang.r-lib.org/reference/check_type_number.md)
+  **\[experimental\]** : Check argument type (numbers)
+- [`check_data_frame()`](https://rlang.r-lib.org/reference/check_data_frame.md)
+  **\[experimental\]** : Check argument type (data frame)
+- [`stop_input_type()`](https://rlang.r-lib.org/reference/stop_input_type.md)
+  **\[experimental\]** : Throw a type mismatch error
 - [`missing_arg()`](https://rlang.r-lib.org/reference/missing_arg.md)
   [`is_missing()`](https://rlang.r-lib.org/reference/missing_arg.md)
   [`maybe_missing()`](https://rlang.r-lib.org/reference/missing_arg.md)
