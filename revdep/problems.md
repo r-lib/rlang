@@ -105,36 +105,6 @@ Run `revdepcheck::cloud_details(, "DeclareDesign")` for more info
       Execution halted
     ```
 
-# embed
-
-<details>
-
-* Version: 1.2.2
-* GitHub: https://github.com/tidymodels/embed
-* Source code: https://github.com/cran/embed
-* Date/Publication: 2026-01-29 21:50:07 UTC
-* Number of recursive dependencies: 191
-
-Run `revdepcheck::cloud_details(, "embed")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘embed’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘recipes::check_name’ by ‘rlang::check_name’ when loading ‘embed’
-    See ‘/tmp/workdir/embed/new/embed.Rcheck/00install.out’ for details.
-    ```
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘textrecipes’
-    ```
-
 # ggplot2
 
 <details>
@@ -191,29 +161,6 @@ Run `revdepcheck::cloud_details(, "ggplot2")` for more info
         data   1.5Mb
         doc    7.6Mb
         help   1.7Mb
-    ```
-
-# important
-
-<details>
-
-* Version: 0.2.1
-* GitHub: https://github.com/tidymodels/important
-* Source code: https://github.com/cran/important
-* Date/Publication: 2025-10-06 18:40:02 UTC
-* Number of recursive dependencies: 121
-
-Run `revdepcheck::cloud_details(, "important")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘important’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘recipes::check_name’ by ‘rlang::check_name’ when loading ‘important’
-    See ‘/tmp/workdir/important/new/important.Rcheck/00install.out’ for details.
     ```
 
 # mosaic
@@ -324,6 +271,47 @@ Run `revdepcheck::cloud_details(, "pkggraph")` for more info
       Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘pkggraph’
       Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘pkggraph’
     See ‘/tmp/workdir/pkggraph/new/pkggraph.Rcheck/00install.out’ for details.
+    ```
+
+# prt
+
+<details>
+
+* Version: 0.2.1
+* GitHub: https://github.com/nbenn/prt
+* Source code: https://github.com/cran/prt
+* Date/Publication: 2025-09-03 21:50:16 UTC
+* Number of recursive dependencies: 63
+
+Run `revdepcheck::cloud_details(, "prt")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(prt)
+      > 
+      > if (requireNamespace("xml2")) {
+      +   test_check("prt", reporter = MultiReporter$new(reporters = list(JunitReporter$new(file = "test-results.xml"), CheckReporter$new())))
+      + } else {
+      +   test_check("prt")
+    ...
+        9.     └─prt:::prt_lapply(...)
+       10.       └─base::lapply(unclass(x), ...)
+       11.         └─prt (local) FUN(X[[i]], ...)
+       12.           └─prt:::fst_read(x, rows = rows, columns = j)
+       13.             └─fst::read_fst(...)
+      
+      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 255 ]
+      Error:
+      ! Test failures.
+      Execution halted
     ```
 
 # rsimsum

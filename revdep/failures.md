@@ -76,6 +76,82 @@ ERROR: compilation failed for package ‘a5R’
 
 
 ```
+# AnanseSeurat
+
+<details>
+
+* Version: 1.2.0
+* GitHub: https://github.com/JGASmits/AnanseSeurat
+* Source code: https://github.com/cran/AnanseSeurat
+* Date/Publication: 2023-11-11 21:43:17 UTC
+* Number of recursive dependencies: 212
+
+Run `revdepcheck::cloud_details(, "AnanseSeurat")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/AnanseSeurat/new/AnanseSeurat.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘AnanseSeurat/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/AnanseSeurat/old/AnanseSeurat.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.3 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘AnanseSeurat/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
 # arcgisplaces
 
 <details>
@@ -203,6 +279,66 @@ Calls: loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
 Execution halted
 ERROR: configuration failed for package ‘bayesdfa’
 * removing ‘/tmp/workdir/bayesdfa/old/bayesdfa.Rcheck/bayesdfa’
+
+
+```
+# bigMICE
+
+<details>
+
+* Version: 1.0.0
+* GitHub: NA
+* Source code: https://github.com/cran/bigMICE
+* Date/Publication: 2026-02-25 10:20:14 UTC
+* Number of recursive dependencies: 72
+
+Run `revdepcheck::cloud_details(, "bigMICE")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘bigMICE’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/tmp/workdir/bigMICE/new/bigMICE.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘bigMICE’ ...
+** package ‘bigMICE’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘pillar’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘bigMICE’
+* removing ‘/tmp/workdir/bigMICE/new/bigMICE.Rcheck/bigMICE’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘bigMICE’ ...
+** package ‘bigMICE’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘pillar’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘bigMICE’
+* removing ‘/tmp/workdir/bigMICE/old/bigMICE.Rcheck/bigMICE’
 
 
 ```
@@ -431,6 +567,70 @@ Status: 2 ERRORs, 2 NOTEs
 
 
 
+
+
+```
+# chronicler
+
+<details>
+
+* Version: 0.3.0
+* GitHub: NA
+* Source code: https://github.com/cran/chronicler
+* Date/Publication: 2025-08-18 09:20:33 UTC
+* Number of recursive dependencies: 70
+
+Run `revdepcheck::cloud_details(, "chronicler")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘chronicler’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/tmp/workdir/chronicler/new/chronicler.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘chronicler’ ...
+** package ‘chronicler’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘crayon’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘chronicler’
+* removing ‘/tmp/workdir/chronicler/new/chronicler.Rcheck/chronicler’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘chronicler’ ...
+** package ‘chronicler’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘crayon’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘chronicler’
+* removing ‘/tmp/workdir/chronicler/old/chronicler.Rcheck/chronicler’
 
 
 ```
@@ -2033,7 +2233,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/hdmeasure/measureR
 * Source code: https://github.com/cran/measureR
 * Date/Publication: 2026-02-13 15:10:02 UTC
-* Number of recursive dependencies: 217
+* Number of recursive dependencies: 221
 
 Run `revdepcheck::cloud_details(, "measureR")` for more info
 
@@ -2557,41 +2757,6 @@ Status: 1 ERROR
 
 
 ```
-# neo4r
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/neo4r
-* Number of recursive dependencies: 54
-
-Run `revdepcheck::cloud_details(, "neo4r")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # OlinkAnalyze
 
 <details>
@@ -2904,7 +3069,7 @@ Status: 1 NOTE
 * GitHub: https://github.com/hdmeasure/projectLSA
 * Source code: https://github.com/cran/projectLSA
 * Date/Publication: 2026-02-07 23:20:03 UTC
-* Number of recursive dependencies: 254
+* Number of recursive dependencies: 258
 
 Run `revdepcheck::cloud_details(, "projectLSA")` for more info
 
@@ -3315,11 +3480,11 @@ Status: 1 ERROR
 
 <details>
 
-* Version: 1.16.0
+* Version: 1.17.0
 * GitHub: https://github.com/stuart-lab/signac
 * Source code: https://github.com/cran/Signac
-* Date/Publication: 2025-10-10 09:10:07 UTC
-* Number of recursive dependencies: 229
+* Date/Publication: 2026-04-01 10:00:03 UTC
+* Number of recursive dependencies: 228
 
 Run `revdepcheck::cloud_details(, "Signac")` for more info
 
@@ -3341,16 +3506,16 @@ Run `revdepcheck::cloud_details(, "Signac")` for more info
 * using option ‘--no-manual’
 * checking for file ‘Signac/DESCRIPTION’ ... OK
 ...
-* checking for GNU extensions in Makefiles ... OK
-* checking for portable use of $(BLAS_LIBS) and $(LAPACK_LIBS) ... OK
-* checking use of PKG_*FLAGS in Makefiles ... OK
-* checking compiled code ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+* checking package dependencies ... ERROR
+Package required but not available: ‘Seqinfo’
+
+Packages suggested but not available for checking:
+  'TFBSTools', 'motifmatchr'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: 3 NOTEs
+Status: 1 ERROR
 
 
 
@@ -3371,16 +3536,16 @@ Status: 3 NOTEs
 * using option ‘--no-manual’
 * checking for file ‘Signac/DESCRIPTION’ ... OK
 ...
-* checking for GNU extensions in Makefiles ... OK
-* checking for portable use of $(BLAS_LIBS) and $(LAPACK_LIBS) ... OK
-* checking use of PKG_*FLAGS in Makefiles ... OK
-* checking compiled code ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+* checking package dependencies ... ERROR
+Package required but not available: ‘Seqinfo’
+
+Packages suggested but not available for checking:
+  'TFBSTools', 'motifmatchr'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: 3 NOTEs
+Status: 1 ERROR
 
 
 

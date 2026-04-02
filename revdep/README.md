@@ -1,15 +1,18 @@
 # Revdeps
 
-## Failed to check (60)
+## Failed to check (62)
 
 |package       |version |error |warning |note |
 |:-------------|:-------|:-----|:-------|:----|
 |a5R           |0.3.1   |1     |        |     |
+|AnanseSeurat  |?       |      |        |     |
 |arcgisplaces  |0.1.2   |1     |        |     |
 |bayesdfa      |1.3.4   |1     |        |     |
+|bigMICE       |1.0.0   |1     |        |     |
 |bmm           |?       |      |        |     |
 |brms          |?       |      |        |     |
 |bullseye      |?       |      |        |     |
+|chronicler    |0.3.0   |1     |        |     |
 |ClustAssess   |?       |      |        |     |
 |ClustImpute   |?       |      |        |     |
 |colleyRstats  |?       |      |        |     |
@@ -41,7 +44,6 @@
 |MixMashNet    |?       |      |        |     |
 |morepls       |?       |      |        |     |
 |multinma      |?       |      |        |     |
-|neo4r         |?       |      |        |     |
 |OlinkAnalyze  |?       |      |        |     |
 |outstandR     |?       |      |        |     |
 |pandemonium   |?       |      |        |     |
@@ -65,18 +67,18 @@
 |univariateML  |?       |      |        |     |
 |wmwAUC        |?       |      |        |     |
 
-## New problems (11)
+## New problems (10)
 
 |package       |version |error  |warning |note |
 |:-------------|:-------|:------|:-------|:----|
 |[coursekata](problems.md#coursekata)|0.19.2  |__+2__ |        |     |
 |[DeclareDesign](problems.md#declaredesign)|1.1.0   |__+1__ |        |     |
-|[embed](problems.md#embed)|1.2.2   |       |__+1__  |1    |
 |[ggplot2](problems.md#ggplot2)|4.0.2   |__+1__ |        |2    |
-|[important](problems.md#important)|0.2.1   |       |__+1__  |     |
 |[mosaic](problems.md#mosaic)|1.9.2   |__+1__ |1       |3    |
 |[pkggraph](problems.md#pkggraph)|0.3.0   |       |__+1__  |     |
+|[prt](problems.md#prt)|0.2.1   |__+1__ |        |     |
 |[rsimsum](problems.md#rsimsum)|0.13.0  |       |__+1__  |1    |
 |[tf](problems.md#tf)|0.4.0   |       |__+1__  |     |
 |[tidynorm](problems.md#tidynorm)|0.4.0   |       |__+1__  |2    |
 |[uteals](problems.md#uteals)|0.0.2   |       |__+1__  |     |
+
