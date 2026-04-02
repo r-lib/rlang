@@ -105,6 +105,54 @@ Run `revdepcheck::cloud_details(, "DeclareDesign")` for more info
       Execution halted
     ```
 
+# ebvcube
+
+<details>
+
+* Version: 0.5.2
+* GitHub: https://github.com/EBVcube/ebvcube
+* Source code: https://github.com/cran/ebvcube
+* Date/Publication: 2025-07-29 19:20:15 UTC
+* Number of recursive dependencies: 114
+
+Run `revdepcheck::cloud_details(, "ebvcube")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ... ERROR
+    ```
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > # This file is part of the standard setup for testthat.
+      > # It is recommended that you do not modify it.
+      > #
+      > # Where should you do additional test configuration?
+      > # Learn more about the roles of various files in:
+      > # * https://r-pkgs.org/tests.html
+      > # * https://testthat.r-lib.org/reference/test_package.html#special-files
+    ...
+       3.     └─jsonlite:::parse_and_simplify(...)
+       4.       └─jsonlite:::parseJSON(txt, bigint_as_char)
+       5.         └─jsonlite:::parse_con(txt, bigint_as_char)
+       6.           ├─base::open(con, "rb")
+       7.           └─base::open.connection(con, "rb")
+      
+      [ FAIL 1 | WARN 11 | SKIP 0 | PASS 239 ]
+      Error:
+      ! Test failures.
+      Execution halted
+    ```
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 2 marked UTF-8 strings
+    ```
+
 # ggplot2
 
 <details>
@@ -163,276 +211,64 @@ Run `revdepcheck::cloud_details(, "ggplot2")` for more info
         help   1.7Mb
     ```
 
-# mosaic
+# MedDataSets
 
 <details>
 
-* Version: 1.9.2
-* GitHub: https://github.com/ProjectMOSAIC/mosaic
-* Source code: https://github.com/cran/mosaic
-* Date/Publication: 2025-07-30 17:20:02 UTC
-* Number of recursive dependencies: 143
+* Version: 0.1.0
+* GitHub: https://github.com/lightbluetitan/meddatasets
+* Source code: https://github.com/cran/MedDataSets
+* Date/Publication: 2024-10-24 14:20:02 UTC
+* Number of recursive dependencies: 107
 
-Run `revdepcheck::cloud_details(, "mosaic")` for more info
+Run `revdepcheck::cloud_details(, "MedDataSets")` for more info
 
 </details>
 
 ## Newly broken
 
-*   checking tests ... ERROR
+*   checking installed package size ... NOTE
     ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(mosaic)
-      Registered S3 method overwritten by 'mosaic':
-        method                           from   
-        fortify.SpatialPolygonsDataFrame ggplot2
-      
-      The 'mosaic' package masks several functions from core packages in order to add 
-    ...
-      Expected `names(do(2) * var(~cesd, data = mosaicData::HELPrct))` to equal "var".
-      Differences:
-      `actual`:   "result"
-      `expected`: "var"   
-      
-      
-      [ FAIL 2 | WARN 3 | SKIP 18 | PASS 246 ]
-      Error:
-      ! Test failures.
-      Execution halted
+      installed size is  7.4Mb
+      sub-directories of 1Mb or more:
+        R      3.5Mb
+        data   3.5Mb
+    ```
+
+# SmarterPoland
+
+<details>
+
+* Version: 1.8.1
+* GitHub: NA
+* Source code: https://github.com/cran/SmarterPoland
+* Date/Publication: 2023-08-20 21:22:35 UTC
+* Number of recursive dependencies: 29
+
+Run `revdepcheck::cloud_details(, "SmarterPoland")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 12.6Mb
+      sub-directories of 1Mb or more:
+        data  12.5Mb
     ```
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking Rd files ... NOTE
     ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘Resampling.Rmd’ using rmarkdown
-    
-    Quitting from Resampling.Rmd:271-274 [hist]
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    <error/rlang_error>
-    Error:
-    ! Problem while computing aesthetics.
-    ℹ Error occurred in the 1st layer.
-    Caused by error:
-    ...
-    l.71 \pagestyle
-                   {fancy}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    --- failed re-building ‘MinimalRgg.Rnw’
-    
-    SUMMARY: processing the following files failed:
-      ‘Resampling.Rmd’ ‘MinimalRgg.Rnw’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package which this enhances but not available for checking: ‘manipulate’
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.9Mb
-      sub-directories of 1Mb or more:
-        R     5.0Mb
-        doc   1.2Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘cubature’
-    ```
-
-# pkggraph
-
-<details>
-
-* Version: 0.3.0
-* GitHub: https://github.com/talegari/pkggraph
-* Source code: https://github.com/cran/pkggraph
-* Date/Publication: 2026-02-23 14:30:02 UTC
-* Number of recursive dependencies: 69
-
-Run `revdepcheck::cloud_details(, "pkggraph")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘pkggraph’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘pkggraph’
-      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘pkggraph’
-    See ‘/tmp/workdir/pkggraph/new/pkggraph.Rcheck/00install.out’ for details.
-    ```
-
-# prt
-
-<details>
-
-* Version: 0.2.1
-* GitHub: https://github.com/nbenn/prt
-* Source code: https://github.com/cran/prt
-* Date/Publication: 2025-09-03 21:50:16 UTC
-* Number of recursive dependencies: 63
-
-Run `revdepcheck::cloud_details(, "prt")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(prt)
-      > 
-      > if (requireNamespace("xml2")) {
-      +   test_check("prt", reporter = MultiReporter$new(reporters = list(JunitReporter$new(file = "test-results.xml"), CheckReporter$new())))
-      + } else {
-      +   test_check("prt")
-    ...
-        9.     └─prt:::prt_lapply(...)
-       10.       └─base::lapply(unclass(x), ...)
-       11.         └─prt (local) FUN(X[[i]], ...)
-       12.           └─prt:::fst_read(x, rows = rows, columns = j)
-       13.             └─fst::read_fst(...)
-      
-      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 255 ]
-      Error:
-      ! Test failures.
-      Execution halted
-    ```
-
-# rsimsum
-
-<details>
-
-* Version: 0.13.0
-* GitHub: https://github.com/ellessenne/rsimsum
-* Source code: https://github.com/cran/rsimsum
-* Date/Publication: 2024-03-03 09:40:02 UTC
-* Number of recursive dependencies: 128
-
-Run `revdepcheck::cloud_details(, "rsimsum")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘rsimsum’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘rsimsum’
-      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘rsimsum’
-    See ‘/tmp/workdir/rsimsum/new/rsimsum.Rcheck/00install.out’ for details.
-    ```
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.5Mb
-      sub-directories of 1Mb or more:
-        data   2.0Mb
-        doc    1.9Mb
-        help   1.3Mb
-    ```
-
-# tf
-
-<details>
-
-* Version: 0.4.0
-* GitHub: https://github.com/tidyfun/tf
-* Source code: https://github.com/cran/tf
-* Date/Publication: 2026-03-17 17:00:02 UTC
-* Number of recursive dependencies: 136
-
-Run `revdepcheck::cloud_details(, "tf")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘tf’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘tf’
-      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘tf’
-    See ‘/tmp/workdir/tf/new/tf.Rcheck/00install.out’ for details.
-    ```
-
-# tidynorm
-
-<details>
-
-* Version: 0.4.0
-* GitHub: https://github.com/JoFrhwld/tidynorm
-* Source code: https://github.com/cran/tidynorm
-* Date/Publication: 2025-10-26 19:50:02 UTC
-* Number of recursive dependencies: 81
-
-Run `revdepcheck::cloud_details(, "tidynorm")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘tidynorm’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘tidynorm’
-      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘tidynorm’
-    See ‘/tmp/workdir/tidynorm/new/tidynorm.Rcheck/00install.out’ for details.
-    ```
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.2Mb
-      sub-directories of 1Mb or more:
-        doc    1.3Mb
-        libs   2.2Mb
+    checkRd: (-1) cities_lon_lat.Rd:6: Lost braces
+         6 | A subset of world.cities{maps}. Extracted in order to shink number of dependencies. 
+           |                         ^
     ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
-      Note: found 6748 marked UTF-8 strings
-    ```
-
-# uteals
-
-<details>
-
-* Version: 0.0.2
-* GitHub: https://github.com/phuse-org/uteals
-* Source code: https://github.com/cran/uteals
-* Date/Publication: 2026-02-17 15:40:02 UTC
-* Number of recursive dependencies: 270
-
-Run `revdepcheck::cloud_details(, "uteals")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘uteals’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: replacing previous import ‘checkmate::check_data_frame’ by ‘rlang::check_data_frame’ when loading ‘uteals’
-      Warning: replacing previous import ‘checkmate::check_string’ by ‘rlang::check_string’ when loading ‘uteals’
-    See ‘/tmp/workdir/uteals/new/uteals.Rcheck/00install.out’ for details.
+      Note: found 1122 marked UTF-8 strings
     ```
 

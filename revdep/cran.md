@@ -1,9 +1,9 @@
 ## revdepcheck results
 
-We checked 3495 reverse dependencies (3488 from CRAN + 7 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 5509 reverse dependencies (5493 from CRAN + 16 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 10 new problems
- * We failed to check 55 packages
+ * We saw 6 new problems
+ * We failed to check 134 packages
 
 Issues with CRAN packages are summarised below.
 
@@ -17,84 +17,151 @@ Issues with CRAN packages are summarised below.
 * DeclareDesign
   checking tests ... ERROR
 
+* ebvcube
+  checking tests ... ERROR
+
 * ggplot2
   checking tests ... ERROR
 
-* mosaic
-  checking tests ... ERROR
+* MedDataSets
+  checking installed package size ... NOTE
 
-* pkggraph
-  checking whether package ‘pkggraph’ can be installed ... WARNING
-
-* prt
-  checking tests ... ERROR
-
-* rsimsum
-  checking whether package ‘rsimsum’ can be installed ... WARNING
-
-* tf
-  checking whether package ‘tf’ can be installed ... WARNING
-
-* tidynorm
-  checking whether package ‘tidynorm’ can be installed ... WARNING
-
-* uteals
-  checking whether package ‘uteals’ can be installed ... WARNING
+* SmarterPoland
+  checking installed package size ... NOTE
 
 ### Failed to check
 
-* a5R           (NA)
-* AnanseSeurat  (NA)
-* arcgisplaces  (NA)
-* bayesdfa      (NA)
-* bigMICE       (NA)
-* bmm           (NA)
-* brms          (NA)
-* bullseye      (NA)
-* chronicler    (NA)
-* ClustAssess   (NA)
-* ClustImpute   (NA)
-* copulaSim     (NA)
-* cylcop        (NA)
-* detourr       (NA)
-* dySEM         (NA)
-* enderecobr    (NA)
-* ferrn         (NA)
-* ffp           (NA)
-* fio           (NA)
-* genekitr      (NA)
-* ggsem         (NA)
-* grandR        (NA)
-* gratia        (NA)
-* gvcR          (NA)
-* h3o           (NA)
-* ivolcano      (NA)
-* lcsm          (NA)
-* LMMstar       (NA)
-* measureR      (NA)
-* metrica       (NA)
-* mineSweepR    (NA)
-* MiscMetabar   (NA)
-* MixMashNet    (NA)
-* morepls       (NA)
-* multinma      (NA)
-* OlinkAnalyze  (NA)
-* outstandR     (NA)
-* pandemonium   (NA)
-* pcutils       (NA)
-* projectLSA    (NA)
-* psychonetrics (NA)
-* RegDDM        (NA)
-* SCpubr        (NA)
-* semptools     (NA)
-* Signac        (NA)
-* spareg        (NA)
-* spinebil      (NA)
-* SRscore       (NA)
-* tepr          (NA)
-* tidybins      (NA)
-* tidycomm      (NA)
-* tidylearn     (NA)
-* TransProR     (NA)
-* univariateML  (NA)
-* wmwAUC        (NA)
+* a5R                   (NA)
+* AnanseSeurat          (NA)
+* apa                   (NA)
+* apaTables             (NA)
+* apaText               (NA)
+* apsimx                (NA)
+* arcgisplaces          (NA)
+* aridagri              (NA)
+* AssumpSure            (NA)
+* autovi                (NA)
+* AVGAS                 (NA)
+* bayesdfa              (NA)
+* BayesPET              (NA)
+* bfboinet              (NA)
+* BGGM                  (NA)
+* BGmisc                (NA)
+* bipd                  (NA)
+* bmm                   (NA)
+* boinet                (NA)
+* brms                  (NA)
+* BSL                   (NA)
+* bullseye              (NA)
+* cases                 (NA)
+* cassowaryr            (NA)
+* cdcatR                (NA)
+* cdmTools              (NA)
+* cheem                 (NA)
+* ChillModels           (NA)
+* chouca                (NA)
+* cinaR                 (NA)
+* ClustAssess           (NA)
+* ClusterGVis           (NA)
+* clusterMI             (NA)
+* ClustImpute           (NA)
+* CompAREdesign         (NA)
+* copulaSim             (NA)
+* correlation           (NA)
+* coveR2                (NA)
+* cowbell               (NA)
+* ctsem                 (NA)
+* cylcop                (NA)
+* daltoolbox            (NA)
+* DataSimilarity        (NA)
+* decisionSupport       (NA)
+* deepSTRAPP            (NA)
+* detourr               (NA)
+* DFD                   (NA)
+* dimRed                (NA)
+* dMrs                  (NA)
+* DstarM                (NA)
+* dySEM                 (NA)
+* easybgm               (NA)
+* easyEWAS              (NA)
+* eda4treeR             (NA)
+* EFDR                  (NA)
+* effectcheck           (NA)
+* EGAnet                (NA)
+* enderecobr            (NA)
+* ER                    (NA)
+* FAfA                  (NA)
+* fastei                (NA)
+* fastqrs               (NA)
+* FCPS                  (NA)
+* fddm                  (NA)
+* FeatureImpCluster     (NA)
+* ferrn                 (NA)
+* ffp                   (NA)
+* fio                   (NA)
+* fitteR                (NA)
+* fozziejoin            (NA)
+* gasmodel              (NA)
+* GDINA                 (NA)
+* gemR                  (NA)
+* genekitr              (NA)
+* GeneralizedUmatrixGPU (NA)
+* ggpicrust2            (NA)
+* ggsem                 (NA)
+* GJRM                  (NA)
+* grandR                (NA)
+* gratia                (NA)
+* GRIDCOPULA            (NA)
+* gvcR                  (NA)
+* h3o                   (NA)
+* harbinger             (NA)
+* hbsaems               (NA)
+* heimdall              (NA)
+* imt                   (NA)
+* IndGenErrors          (NA)
+* intervalpsych         (NA)
+* irt                   (NA)
+* irtQ                  (NA)
+* Kcop                  (NA)
+* LMMstar               (NA)
+* LongDecompHE          (NA)
+* MD2sample             (NA)
+* MDgof                 (NA)
+* MiscMetabar           (NA)
+* MixedIndTests         (NA)
+* MixMashNet            (NA)
+* ModStatR              (NA)
+* MVN                   (NA)
+* OlinkAnalyze          (NA)
+* OpenMx                (NA)
+* PPbigdata             (NA)
+* QFASA                 (NA)
+* QuadratiK             (NA)
+* RCTrep                (NA)
+* RegDDM                (NA)
+* ReporterScore         (NA)
+* Revticulate           (NA)
+* RGENERATEPREC         (NA)
+* RMOPI                 (NA)
+* RSP                   (NA)
+* RulesTools            (NA)
+* SCpubr                (NA)
+* SeuratExplorer        (NA)
+* Signac                (NA)
+* SimDesign             (NA)
+* Spower                (NA)
+* SRscore               (NA)
+* STCCGEV               (NA)
+* STCYP                 (NA)
+* SurprisalAnalysis     (NA)
+* Surrogate             (NA)
+* TCIU                  (NA)
+* TDAkit                (NA)
+* TELP                  (NA)
+* TestAnaAPP            (NA)
+* TransProR             (NA)
+* TriDimRegression      (NA)
+* VecDep                (NA)
+* WINS                  (NA)
+* WQM                   (NA)
+* XYomics               (NA)
