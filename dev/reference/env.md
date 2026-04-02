@@ -116,5 +116,5 @@ env_parent(env)
 
 # Like other new_ constructors, it takes an object rather than dots:
 new_environment(list(a = "foo", b = "bar"))
-#> <environment: 0x56363749dd60>
+#> <environment: 0x5555bd2158a8>
 ```
