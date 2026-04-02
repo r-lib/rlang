@@ -42,7 +42,7 @@ quo <- quo(wrapper(!!quo(wrappee)))
 quo
 #> <quosure>
 #> expr: ^wrapper(^wrappee)
-#> env:  0x5555bd12ee90
+#> env:  0x562fba455fd0
 
 # quo_squash() flattens all the quosures and returns a simple expression:
 quo_squash(quo)
