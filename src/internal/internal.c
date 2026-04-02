@@ -272,8 +272,6 @@ static const R_CallMethodDef r_callables[] = {
   {"ffi_ns_registry_env",              (DL_FUNC) &ffi_ns_registry_env, 0},
   {"ffi_obj_address",                  (DL_FUNC) &ffi_obj_address, 1},
   {"ffi_pairlist_rev",                 (DL_FUNC) &r_pairlist_rev, 1},
-  {"ffi_peek_srcref",                  (DL_FUNC) &ffi_peek_srcref, 0},
-
   {"ffi_precious_dict",                (DL_FUNC) &ffi_precious_dict, 0},
   {"ffi_preserve",                     (DL_FUNC) &ffi_preserve, 1},
   {"ffi_quo_get_env",                  (DL_FUNC) &ffi_quo_get_env, 1},

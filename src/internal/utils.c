@@ -258,14 +258,6 @@ r_obj* chr_detect_dups(r_obj* x) {
   return out;
 }
 
-r_obj* ffi_peek_srcref(void) {
-  if (R_Srcref) {
-    return R_Srcref;
-  } else {
-    return rlang_syms.c_null;
-  }
-}
-
 r_obj* ffi_has_local_precious_list(void) {
   return r_lgl(_r_use_local_precious_list);
 }

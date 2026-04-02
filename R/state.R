@@ -161,6 +161,3 @@ knitr_in_progress <- function() {
   is_true(peek_option("knitr.in.progress"))
 }
 
-peek_srcref <- function() {
-  .Call(ffi_peek_srcref)
-}
