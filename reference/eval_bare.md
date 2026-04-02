@@ -115,18 +115,18 @@ deep <- function(eval_fn, eval_env) {
 # With eval_bare(), we do get the expected environment:
 fn(rlang::eval_bare)
 #> $returned_env
-#> <environment: 0x55ad42f8d0f0>
+#> <environment: 0x555fad00a520>
 #> 
 #> $actual_env
-#> <environment: 0x55ad42f8d0f0>
+#> <environment: 0x555fad00a520>
 #> 
 
 # But that's not the case with base::eval():
 fn(base::eval)
 #> $returned_env
-#> <environment: 0x55ad421cfe50>
+#> <environment: 0x555fac4ee0f0>
 #> 
 #> $actual_env
-#> <environment: 0x55ad421d0390>
+#> <environment: 0x555fac4ee5f8>
 #> 
 ```
