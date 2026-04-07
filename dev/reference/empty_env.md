@@ -16,5 +16,5 @@ empty_env()
 ``` r
 # Create environments with nothing in scope:
 child_env(empty_env())
-#> <environment: 0x562fb52224c0>
+#> <environment: 0x55ae88da7e88>
 ```

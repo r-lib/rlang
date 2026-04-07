@@ -2,6 +2,13 @@
 
 ## rlang (development version)
 
+## rlang 1.2.0
+
+CRAN release: 2026-04-06
+
+- rlang and tidyeval are now fully backed by official C APIs of R!
+  Thanks to the R core team for collaborating with us on this.
+
 - [`ns_registry_env()`](https://rlang.r-lib.org/dev/reference/ns_registry_env.md)
   is defunct in R \>= 4.6.0 for compliance with the C API of R.
 
