@@ -18,7 +18,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/r-lib/rlang/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/r-lib/rlang/blob/v1.2.0/DESCRIPTION)
 
 Henry L, Wickham H (2026). *rlang: Functions for Base Types and Core R
 and 'Tidyverse' Features*. R package version 1.2.0,

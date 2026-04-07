@@ -74,7 +74,7 @@ as_closure(`+`)
 #>         .x
 #>     else .x + .y
 #> }
-#> <environment: 0x555faa3e81a8>
+#> <environment: 0x55f05d420448>
 as_closure(`~`)
 #> function (.x, .y) 
 #> {
@@ -85,6 +85,6 @@ as_closure(`~`)
 #>         new_formula(substitute(.x), substitute(.y), caller_env())
 #>     }
 #> }
-#> <bytecode: 0x555faa5b1c18>
-#> <environment: 0x555faa3172f0>
+#> <bytecode: 0x55f05d391fc8>
+#> <environment: 0x55f05d4587d8>
 ```
