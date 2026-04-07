@@ -1,3 +1,5 @@
+# rlang (development version)
+
 # rlang 1.2.0
 
 * rlang and tidyeval are now fully backed by official C APIs of R!
