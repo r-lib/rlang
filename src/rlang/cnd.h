@@ -27,7 +27,7 @@ extern const char* (*r_obj_type_friendly_full)(
 );
 
 static inline const char* r_obj_type_friendly(r_obj* x) {
-  return r_obj_type_friendly_full(x, true, false);
+    return r_obj_type_friendly_full(x, true, false);
 }
 
 extern r_no_return void (*r_stop_internal)(
@@ -41,36 +41,36 @@ extern r_no_return void (*r_stop_internal)(
 r_obj* r_peek_frame(void);
 
 #define r_stop_internal(...)                                                   \
-  (r_stop_internal)(__FILE__, __LINE__, r_peek_frame(), __VA_ARGS__)
+    (r_stop_internal)(__FILE__, __LINE__, r_peek_frame(), __VA_ARGS__)
 
 #define r_stop_unreachable()                                                   \
-  (r_stop_internal)(                                                           \
-      __FILE__,                                                                \
-      __LINE__,                                                                \
-      r_peek_frame(),                                                          \
-      "Reached the unreachable"                                                \
-  )
+    (r_stop_internal)(                                                         \
+        __FILE__,                                                              \
+        __LINE__,                                                              \
+        r_peek_frame(),                                                        \
+        "Reached the unreachable"                                              \
+    )
 
 #define r_stop_unimplemented_type(TYPE)                                        \
-  (r_stop_internal)(                                                           \
-      __FILE__,                                                                \
-      __LINE__,                                                                \
-      r_peek_frame(),                                                          \
-      "Unimplemented type `%s`.",                                              \
-      Rf_type2char(TYPE)                                                       \
-  )
+    (r_stop_internal)(                                                         \
+        __FILE__,                                                              \
+        __LINE__,                                                              \
+        r_peek_frame(),                                                        \
+        "Unimplemented type `%s`.",                                            \
+        Rf_type2char(TYPE)                                                     \
+    )
 
 #define r_stop_unexpected_type(TYPE)                                           \
-  (r_stop_internal)(                                                           \
-      __FILE__,                                                                \
-      __LINE__,                                                                \
-      r_peek_frame(),                                                          \
-      "Unexpected type `%s`.",                                                 \
-      Rf_type2char(TYPE)                                                       \
-  )
+    (r_stop_internal)(                                                         \
+        __FILE__,                                                              \
+        __LINE__,                                                              \
+        r_peek_frame(),                                                        \
+        "Unexpected type `%s`.",                                               \
+        Rf_type2char(TYPE)                                                     \
+    )
 
 static inline bool r_is_condition(r_obj* x) {
-  return r_typeof(x) == R_TYPE_list && r_inherits(x, "condition");
+    return r_typeof(x) == R_TYPE_list && r_inherits(x, "condition");
 }
 
 void r_cnd_signal(r_obj* cnd);
@@ -79,11 +79,11 @@ void r_cnd_warn(r_obj* cnd, bool mufflable);
 void r_cnd_abort(r_obj* cnd, bool mufflable);
 
 enum r_cnd_type {
-  R_CND_TYPE_condition = 0,
-  R_CND_TYPE_message = 1,
-  R_CND_TYPE_warning = 2,
-  R_CND_TYPE_error = 3,
-  R_CND_TYPE_interrupt = 4
+    R_CND_TYPE_condition = 0,
+    R_CND_TYPE_message = 1,
+    R_CND_TYPE_warning = 2,
+    R_CND_TYPE_error = 3,
+    R_CND_TYPE_interrupt = 4
 };
 
 enum r_cnd_type r_cnd_type(r_obj* cnd);

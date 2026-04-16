@@ -4,10 +4,10 @@
 #include "rlang-types.h"
 
 typedef enum {
-  DOT_TYPE_value = 0,
-  DOT_TYPE_missing = 1,
-  DOT_TYPE_delayed = 2,
-  DOT_TYPE_forced = 3
+    DOT_TYPE_value = 0,
+    DOT_TYPE_missing = 1,
+    DOT_TYPE_delayed = 2,
+    DOT_TYPE_forced = 3
 } r_dot_type_t;
 
 bool r_env_dots_exist(r_obj* env);

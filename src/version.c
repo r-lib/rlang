@@ -23,5 +23,5 @@ const char* rlang_version = "1.2.0.9000";
 
 // [[ register() ]]
 SEXP rlang_linked_version(void) {
-  return Rf_mkString(rlang_version);
+    return Rf_mkString(rlang_version);
 }

@@ -11,17 +11,17 @@
  */
 
 struct r_dict {
-  r_obj* shelter;
+    r_obj* shelter;
 
-  /* private: */
-  r_obj* buckets;
-  r_obj* const* p_buckets;
+    /* private: */
+    r_obj* buckets;
+    r_obj* const* p_buckets;
 
-  r_ssize n_buckets;
-  r_ssize n_entries;
+    r_ssize n_buckets;
+    r_ssize n_entries;
 
-  // For testing collisions
-  bool prevent_resize;
+    // For testing collisions
+    bool prevent_resize;
 };
 
 struct r_dict* r_new_dict(r_ssize size);
@@ -40,15 +40,15 @@ r_obj* r_dict_as_df_list(struct r_dict* p_dict);
 r_obj* r_dict_as_list(struct r_dict* p_dict);
 
 struct r_dict_iterator {
-  r_obj* shelter;
-  r_obj* key;
-  r_obj* value;
+    r_obj* shelter;
+    r_obj* key;
+    r_obj* value;
 
-  /* private: */
-  r_ssize i;
-  r_ssize n;
-  r_obj* const* v_buckets;
-  r_obj* node;
+    /* private: */
+    r_ssize i;
+    r_ssize n;
+    r_obj* const* v_buckets;
+    r_obj* node;
 };
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict);

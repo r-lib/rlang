@@ -1,3 +1,5 @@
+IndentWidth: 4
+ContinuationIndentWidth: 4
 AlignAfterOpenBracket: BlockIndent
 AllowAllParametersOfDeclarationOnNextLine: false
 BinPackArguments: false

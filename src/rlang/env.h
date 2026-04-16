@@ -13,32 +13,32 @@
 extern r_obj* r_methods_ns_env;
 
 static inline r_obj* r_env_names(r_obj* env) {
-  return R_lsInternal3(env, TRUE, FALSE);
+    return R_lsInternal3(env, TRUE, FALSE);
 }
 
 static inline r_ssize r_env_length(r_obj* env) {
-  if (r_typeof(env) != R_TYPE_environment) {
-    r_abort("Expected an environment");
-  }
-  return Rf_xlength(env);
+    if (r_typeof(env) != R_TYPE_environment) {
+        r_abort("Expected an environment");
+    }
+    return Rf_xlength(env);
 }
 
 static inline r_obj* r_env_parent(r_obj* env) {
-  if (env == r_envs.empty) {
-    r_stop_internal("Can't take the parent of the empty environment.");
-  }
+    if (env == r_envs.empty) {
+        r_stop_internal("Can't take the parent of the empty environment.");
+    }
 #if R_VERSION >= R_Version(4, 5, 0)
-  return R_ParentEnv(env);
+    return R_ParentEnv(env);
 #else
-  return ENCLOS(env);
+    return ENCLOS(env);
 #endif
 }
 
 static inline bool r_is_environment(r_obj* x) {
-  return TYPEOF(x) == ENVSXP;
+    return TYPEOF(x) == ENVSXP;
 }
 static inline bool r_is_namespace(r_obj* x) {
-  return R_IsNamespaceEnv(x);
+    return R_IsNamespaceEnv(x);
 }
 
 r_obj* r_env_until(r_obj* env, r_obj* sym, r_obj* last);
@@ -49,25 +49,25 @@ bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last);
 
 static inline bool r_env_has(r_obj* env, r_obj* sym) {
 #if RLANG_USE_R_EXISTS
-  bool r__env_has(r_obj*, r_obj*);
-  return r__env_has(env, sym);
+    bool r__env_has(r_obj*, r_obj*);
+    return r__env_has(env, sym);
 #else
-  return R_existsVarInFrame(env, sym);
+    return R_existsVarInFrame(env, sym);
 #endif
 }
 
 static inline bool r_env_has_anywhere(r_obj* env, r_obj* sym) {
 #if RLANG_USE_R_EXISTS
-  bool r__env_has_anywhere(r_obj*, r_obj*);
-  return r__env_has_anywhere(env, sym);
+    bool r__env_has_anywhere(r_obj*, r_obj*);
+    return r__env_has_anywhere(env, sym);
 #else
-  while (env != r_envs.empty) {
-    if (r_env_has(env, sym)) {
-      return true;
+    while (env != r_envs.empty) {
+        if (r_env_has(env, sym)) {
+            return true;
+        }
+        env = r_env_parent(env);
     }
-    env = r_env_parent(env);
-  }
-  return false;
+    return false;
 #endif
 }
 
@@ -79,16 +79,16 @@ r_obj* r_base_ns_get(const char* name);
 r_obj* r_alloc_environment(r_ssize size, r_obj* parent);
 
 static inline r_obj* r_alloc_empty_environment(r_obj* parent) {
-  // Non-hashed environment.
-  // Very fast and useful when you aren't getting/setting from the result.
+    // Non-hashed environment.
+    // Very fast and useful when you aren't getting/setting from the result.
 #if R_VERSION >= R_Version(4, 1, 0)
-  const int hash = 0;
-  const int size = 0; // Not used when `hash = 0`
-  return R_NewEnv(parent, hash, size);
+    const int hash = 0;
+    const int size = 0; // Not used when `hash = 0`
+    return R_NewEnv(parent, hash, size);
 #else
-  r_obj* env = Rf_allocSExp(R_TYPE_environment);
-  SET_ENCLOS(env, parent);
-  return env;
+    r_obj* env = Rf_allocSExp(R_TYPE_environment);
+    SET_ENCLOS(env, parent);
+    return env;
 #endif
 }
 

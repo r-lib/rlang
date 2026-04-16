@@ -4,10 +4,10 @@
 #include <rlang.h>
 
 struct rlang_globals_syms {
-  r_obj* c_null;
-  r_obj* handlers;
-  r_obj* tryCatch;
-  r_obj* withCallingHandlers;
+    r_obj* c_null;
+    r_obj* handlers;
+    r_obj* tryCatch;
+    r_obj* withCallingHandlers;
 };
 
 extern r_obj* rlang_zap;
@@ -36,16 +36,16 @@ r_obj* dots_values_node_impl(
 );
 
 static inline r_obj* rlang_dots(r_obj* env) {
-  return dots_values_node_impl(
-      env,
-      r_false,
-      rlang_objs_trailing,
-      r_true,
-      r_true,
-      rlang_objs_keep,
-      r_false,
-      true
-  );
+    return dots_values_node_impl(
+        env,
+        r_false,
+        rlang_objs_trailing,
+        r_true,
+        r_true,
+        rlang_objs_keep,
+        r_false,
+        true
+    );
 }
 
 r_obj* ffi_replace_na(r_obj* x, r_obj* replacement);

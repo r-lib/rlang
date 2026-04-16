@@ -31,7 +31,7 @@ r_obj* r_init_library(r_obj* ns);
 r_ssize r_arg_as_ssize(r_obj* n, const char* arg);
 
 static inline r_ssize r_as_ssize(r_obj* n) {
-  return r_arg_as_ssize(n, "n");
+    return r_arg_as_ssize(n, "n");
 }
 
 extern bool _r_use_local_precious_list;
@@ -72,6 +72,6 @@ extern bool _r_use_local_precious_list;
 // IWYU pragma: end_exports
 
 #define r_abort_lazy_call(LAZY, ...)                                           \
-  r_abort_call(KEEP(r_lazy_eval(LAZY)), __VA_ARGS__)
+    r_abort_call(KEEP(r_lazy_eval(LAZY)), __VA_ARGS__)
 
 #endif

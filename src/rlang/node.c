@@ -1,67 +1,67 @@
 #include "rlang.h"
 
 r_obj* r_new_pairlist(const struct r_pair* args, int n, r_obj** tail) {
-  r_obj* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
-  r_obj* node = shelter;
+    r_obj* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
+    r_obj* node = shelter;
 
-  for (int i = 0; i < n; ++i) {
-    struct r_pair arg = args[i];
-    r_obj* tag = arg.x;
-    r_obj* car = arg.y;
+    for (int i = 0; i < n; ++i) {
+        struct r_pair arg = args[i];
+        r_obj* tag = arg.x;
+        r_obj* car = arg.y;
 
-    r_obj* cdr = r_new_node(car, r_null);
-    r_node_poke_tag(cdr, tag);
+        r_obj* cdr = r_new_node(car, r_null);
+        r_node_poke_tag(cdr, tag);
 
-    r_node_poke_cdr(node, cdr);
-    node = cdr;
-  }
+        r_node_poke_cdr(node, cdr);
+        node = cdr;
+    }
 
-  if (n && tail) {
-    *tail = node;
-  }
+    if (n && tail) {
+        *tail = node;
+    }
 
-  FREE(1);
-  return r_node_cdr(shelter);
+    FREE(1);
+    return r_node_cdr(shelter);
 }
 
 // Shallow copy of a node tree. Other objects are not cloned.
 r_obj* r_node_tree_clone(r_obj* x) {
-  enum r_type type = r_typeof(x);
-  if (type != R_TYPE_pairlist && type != R_TYPE_call) {
-    return x;
-  }
-
-  x = KEEP(r_clone(x));
-
-  r_obj* rest = x;
-  while (rest != r_null) {
-    r_obj* head = r_node_car(rest);
-    enum r_type head_type = r_typeof(head);
-
-    if (head_type == R_TYPE_pairlist || head_type == R_TYPE_call) {
-      r_node_poke_car(rest, r_node_tree_clone(head));
+    enum r_type type = r_typeof(x);
+    if (type != R_TYPE_pairlist && type != R_TYPE_call) {
+        return x;
     }
-    rest = r_node_cdr(rest);
-  }
 
-  FREE(1);
-  return x;
+    x = KEEP(r_clone(x));
+
+    r_obj* rest = x;
+    while (rest != r_null) {
+        r_obj* head = r_node_car(rest);
+        enum r_type head_type = r_typeof(head);
+
+        if (head_type == R_TYPE_pairlist || head_type == R_TYPE_call) {
+            r_node_poke_car(rest, r_node_tree_clone(head));
+        }
+        rest = r_node_cdr(rest);
+    }
+
+    FREE(1);
+    return x;
 }
 
 r_obj* r_pairlist_rev(r_obj* node) {
-  if (node == r_null) {
-    return node;
-  }
+    if (node == r_null) {
+        return node;
+    }
 
-  r_obj* prev = r_null;
-  r_obj* tail = node;
-  r_obj* next;
-  while (tail != r_null) {
-    next = r_node_cdr(tail);
-    r_node_poke_cdr(tail, prev);
-    prev = tail;
-    tail = next;
-  }
+    r_obj* prev = r_null;
+    r_obj* tail = node;
+    r_obj* next;
+    while (tail != r_null) {
+        next = r_node_cdr(tail);
+        r_node_poke_cdr(tail, prev);
+        prev = tail;
+        tail = next;
+    }
 
-  return prev;
+    return prev;
 }

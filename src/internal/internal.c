@@ -46,51 +46,51 @@ r_obj* fns_function = NULL;
 r_obj* fns_quote = NULL;
 
 void rlang_init_internal(r_obj* ns) {
-  rlang_init_globals(ns);
+    rlang_init_globals(ns);
 
-  rlang_init_utils();
-  rlang_init_arg(ns);
-  rlang_init_attr(ns);
-  rlang_init_call(ns);
-  rlang_init_cnd(ns);
-  rlang_init_cnd_handlers(ns);
-  rlang_init_dots(ns);
-  rlang_init_env();
-  rlang_init_expr_interp();
-  rlang_init_eval_tidy();
-  rlang_init_fn();
-  rlang_init_tests();
+    rlang_init_utils();
+    rlang_init_arg(ns);
+    rlang_init_attr(ns);
+    rlang_init_call(ns);
+    rlang_init_cnd(ns);
+    rlang_init_cnd_handlers(ns);
+    rlang_init_dots(ns);
+    rlang_init_env();
+    rlang_init_expr_interp();
+    rlang_init_eval_tidy();
+    rlang_init_fn();
+    rlang_init_tests();
 
-  rlang_syms.c_null = r_sym(".__C_NULL__.");
-  rlang_syms.handlers = r_sym("handlers");
-  rlang_syms.tryCatch = r_sym("tryCatch");
-  rlang_syms.withCallingHandlers = r_sym("withCallingHandlers");
+    rlang_syms.c_null = r_sym(".__C_NULL__.");
+    rlang_syms.handlers = r_sym("handlers");
+    rlang_syms.tryCatch = r_sym("tryCatch");
+    rlang_syms.withCallingHandlers = r_sym("withCallingHandlers");
 
-  rlang_zap = rlang_ns_get("zap!");
+    rlang_zap = rlang_ns_get("zap!");
 
-  rlang_as_list_call = r_parse("rlang_as_list(x)");
-  r_preserve(rlang_as_list_call);
+    rlang_as_list_call = r_parse("rlang_as_list(x)");
+    r_preserve(rlang_as_list_call);
 
-  rlang_objs_keep = r_chr("keep");
-  r_preserve(rlang_objs_keep);
+    rlang_objs_keep = r_chr("keep");
+    r_preserve(rlang_objs_keep);
 
-  rlang_objs_trailing = r_chr("trailing");
-  r_preserve(rlang_objs_trailing);
+    rlang_objs_trailing = r_chr("trailing");
+    r_preserve(rlang_objs_trailing);
 
-  fns_function = r_eval(r_sym("function"), r_envs.base);
-  fns_quote = r_eval(r_sym("quote"), r_envs.base);
+    fns_function = r_eval(r_sym("function"), r_envs.base);
+    fns_quote = r_eval(r_sym("quote"), r_envs.base);
 
-  /* dots.c - enum dots_op */
-  RLANG_ASSERT(DOTS_OP_MAX == DOTS_COLLECT_MAX * INJECTION_OP_MAX);
+    /* dots.c - enum dots_op */
+    RLANG_ASSERT(DOTS_OP_MAX == DOTS_COLLECT_MAX * INJECTION_OP_MAX);
 }
 
 static r_obj* ffi_init_rlang(r_obj* ns) {
-  rlang_init_internal(ns);
-  return r_null;
+    rlang_init_internal(ns);
+    return r_null;
 }
 
 static r_obj* ffi_fini_rlang(void) {
-  return r_null;
+    return r_null;
 }
 
 // From version.c
@@ -359,129 +359,149 @@ const struct r_test tests[] = {
 extern uint64_t XXH3_64bits(const void*, size_t);
 
 r_visible void R_init_rlang(DllInfo* dll) {
-  R_RegisterCCallable("rlang", "rlang_arg_match", (DL_FUNC) &arg_match_legacy);
-  R_RegisterCCallable("rlang", "rlang_arg_match_2", (DL_FUNC) &cci_arg_match);
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_as_data_mask_3.0.0",
-      (DL_FUNC) &ffi_as_data_mask
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_as_data_pronoun",
-      (DL_FUNC) &ffi_as_data_pronoun
-  );
-  R_RegisterCCallable("rlang", "rlang_env_unbind", (DL_FUNC) &r_env_unbind);
-  R_RegisterCCallable("rlang", "rlang_eval_tidy", (DL_FUNC) &rlang_eval_tidy);
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_format_error_arg",
-      (DL_FUNC) &rlang_format_error_arg
-  );
-  R_RegisterCCallable("rlang", "rlang_is_quosure", (DL_FUNC) &is_quosure);
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_names_as_unique",
-      (DL_FUNC) &names_as_unique
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_new_data_mask_3.0.0",
-      (DL_FUNC) &ffi_new_data_mask
-  );
-  R_RegisterCCallable("rlang", "rlang_new_quosure", (DL_FUNC) &ffi_new_quosure);
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_obj_type_friendly_full",
-      (DL_FUNC) &rlang_obj_type_friendly_full
-  );
-  R_RegisterCCallable("rlang", "rlang_quo_get_env", (DL_FUNC) &ffi_quo_get_env);
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_quo_get_expr",
-      (DL_FUNC) &ffi_quo_get_expr
-  );
-  R_RegisterCCallable("rlang", "rlang_quo_set_env", (DL_FUNC) &ffi_quo_set_env);
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_quo_set_expr",
-      (DL_FUNC) &ffi_quo_set_expr
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_stop_internal",
-      (DL_FUNC) &rlang_stop_internal
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_stop_internal2",
-      (DL_FUNC) &rlang_stop_internal2
-  );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_arg_match",
+        (DL_FUNC) &arg_match_legacy
+    );
+    R_RegisterCCallable("rlang", "rlang_arg_match_2", (DL_FUNC) &cci_arg_match);
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_as_data_mask_3.0.0",
+        (DL_FUNC) &ffi_as_data_mask
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_as_data_pronoun",
+        (DL_FUNC) &ffi_as_data_pronoun
+    );
+    R_RegisterCCallable("rlang", "rlang_env_unbind", (DL_FUNC) &r_env_unbind);
+    R_RegisterCCallable("rlang", "rlang_eval_tidy", (DL_FUNC) &rlang_eval_tidy);
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_format_error_arg",
+        (DL_FUNC) &rlang_format_error_arg
+    );
+    R_RegisterCCallable("rlang", "rlang_is_quosure", (DL_FUNC) &is_quosure);
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_names_as_unique",
+        (DL_FUNC) &names_as_unique
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_new_data_mask_3.0.0",
+        (DL_FUNC) &ffi_new_data_mask
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_new_quosure",
+        (DL_FUNC) &ffi_new_quosure
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_obj_type_friendly_full",
+        (DL_FUNC) &rlang_obj_type_friendly_full
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_quo_get_env",
+        (DL_FUNC) &ffi_quo_get_env
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_quo_get_expr",
+        (DL_FUNC) &ffi_quo_get_expr
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_quo_set_env",
+        (DL_FUNC) &ffi_quo_set_env
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_quo_set_expr",
+        (DL_FUNC) &ffi_quo_set_expr
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_stop_internal",
+        (DL_FUNC) &rlang_stop_internal
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_stop_internal2",
+        (DL_FUNC) &rlang_stop_internal2
+    );
 
-  r_obj* r_as_function(r_obj * x, const char* arg);
-  R_RegisterCCallable("rlang", "rlang_as_function", (DL_FUNC) &r_as_function);
+    r_obj* r_as_function(r_obj * x, const char* arg);
+    R_RegisterCCallable("rlang", "rlang_as_function", (DL_FUNC) &r_as_function);
 
-  R_RegisterCCallable("rlang", "rlang_xxh3_64bits", (DL_FUNC) &XXH3_64bits);
+    R_RegisterCCallable("rlang", "rlang_xxh3_64bits", (DL_FUNC) &XXH3_64bits);
 
-  // Maturing
-  R_RegisterCCallable("rlang", "rlang_is_splice_box", (DL_FUNC) &is_splice_box);
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_obj_encode_utf8",
-      (DL_FUNC) &obj_encode_utf8
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_str_as_symbol",
-      (DL_FUNC) &r_str_as_symbol
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_sym_as_character",
-      (DL_FUNC) &ffi_sym_as_character
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_sym_as_string",
-      (DL_FUNC) &ffi_sym_as_string
-  );
-  R_RegisterCCallable("rlang", "rlang_unbox", (DL_FUNC) &rlang_unbox);
+    // Maturing
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_is_splice_box",
+        (DL_FUNC) &is_splice_box
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_obj_encode_utf8",
+        (DL_FUNC) &obj_encode_utf8
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_str_as_symbol",
+        (DL_FUNC) &r_str_as_symbol
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_sym_as_character",
+        (DL_FUNC) &ffi_sym_as_character
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_sym_as_string",
+        (DL_FUNC) &ffi_sym_as_string
+    );
+    R_RegisterCCallable("rlang", "rlang_unbox", (DL_FUNC) &rlang_unbox);
 
-  // Experimental
-  R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &r_squash_if);
+    // Experimental
+    R_RegisterCCallable("rlang", "rlang_squash_if", (DL_FUNC) &r_squash_if);
 
-  // Deprecated
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_env_dots_list",
-      (DL_FUNC) &rlang_env_dots_list
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_env_dots_values",
-      (DL_FUNC) &rlang_env_dots_values
-  );
+    // Deprecated
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_env_dots_list",
+        (DL_FUNC) &rlang_env_dots_list
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_env_dots_values",
+        (DL_FUNC) &rlang_env_dots_values
+    );
 
-  // Compatibility
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_as_data_mask",
-      (DL_FUNC) &ffi_as_data_mask_compat
-  );
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_new_data_mask",
-      (DL_FUNC) &ffi_new_data_mask_compat
-  );
+    // Compatibility
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_as_data_mask",
+        (DL_FUNC) &ffi_as_data_mask_compat
+    );
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_new_data_mask",
+        (DL_FUNC) &ffi_new_data_mask_compat
+    );
 
-  // Only for debugging - no stability guaranteed
-  R_RegisterCCallable(
-      "rlang",
-      "rlang_print_backtrace",
-      (DL_FUNC) &rlang_print_backtrace
-  );
-  R_RegisterCCallable("rlang", "rlang_env_print", (DL_FUNC) &rlang_env_print);
+    // Only for debugging - no stability guaranteed
+    R_RegisterCCallable(
+        "rlang",
+        "rlang_print_backtrace",
+        (DL_FUNC) &rlang_print_backtrace
+    );
+    R_RegisterCCallable("rlang", "rlang_env_print", (DL_FUNC) &rlang_env_print);
 
-  R_registerRoutines(dll, NULL, r_callables, NULL, externals);
-  R_useDynamicSymbols(dll, FALSE);
+    R_registerRoutines(dll, NULL, r_callables, NULL, externals);
+    R_useDynamicSymbols(dll, FALSE);
 }

@@ -4,9 +4,9 @@
 #include <rlang.h>
 
 enum option_bool {
-  OPTION_BOOL_false = -1,
-  OPTION_BOOL_null = 0,
-  OPTION_BOOL_true = 1
+    OPTION_BOOL_false = -1,
+    OPTION_BOOL_null = 0,
+    OPTION_BOOL_true = 1
 };
 
 bool r_is_vector(r_obj* x, r_ssize n);

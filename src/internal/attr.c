@@ -5,155 +5,158 @@
 #include "decl/attr-decl.h"
 
 r_obj* ffi_names2(r_obj* x, r_obj* env) {
-  const enum r_type type = r_typeof(x);
+    const enum r_type type = r_typeof(x);
 
-  if (type == R_TYPE_environment) {
-    r_abort("Use `env_names()` for environments.");
-  }
+    if (type == R_TYPE_environment) {
+        r_abort("Use `env_names()` for environments.");
+    }
 
-  // Handle pairlists and language objects specially like `getAttrib()`
-  // does. `r_names()` will not find these names because it has a guarantee
-  // to never allocate.
-  if (type == R_TYPE_pairlist || type == R_TYPE_call) {
-    return node_names(x);
-  }
+    // Handle pairlists and language objects specially like `getAttrib()`
+    // does. `r_names()` will not find these names because it has a guarantee
+    // to never allocate.
+    if (type == R_TYPE_pairlist || type == R_TYPE_call) {
+        return node_names(x);
+    }
 
-  r_obj* nms;
-  if (r_is_object(x)) {
-    nms = KEEP(names_dispatch(x, env));
-  } else {
-    nms = KEEP(r_names(x));
-  }
+    r_obj* nms;
+    if (r_is_object(x)) {
+        nms = KEEP(names_dispatch(x, env));
+    } else {
+        nms = KEEP(r_names(x));
+    }
 
-  if (nms == r_null) {
-    r_ssize n = r_length(x);
-    nms = KEEP(r_alloc_character(n));
-    r_chr_fill(nms, r_strs.empty, n);
-  } else {
-    nms = KEEP(ffi_replace_na(nms, r_chrs.empty_string));
-  }
+    if (nms == r_null) {
+        r_ssize n = r_length(x);
+        nms = KEEP(r_alloc_character(n));
+        r_chr_fill(nms, r_strs.empty, n);
+    } else {
+        nms = KEEP(ffi_replace_na(nms, r_chrs.empty_string));
+    }
 
-  FREE(2);
-  return nms;
+    FREE(2);
+    return nms;
 }
 
 static r_obj* node_names(r_obj* x) {
-  r_ssize n = r_length(x);
+    r_ssize n = r_length(x);
 
-  r_obj* out = KEEP(r_alloc_character(n));
+    r_obj* out = KEEP(r_alloc_character(n));
 
-  int i = 0;
+    int i = 0;
 
-  for (; x != r_null; x = r_node_cdr(x), ++i) {
-    r_obj* tag = r_node_tag(x);
+    for (; x != r_null; x = r_node_cdr(x), ++i) {
+        r_obj* tag = r_node_tag(x);
 
-    if (tag == r_null) {
-      r_chr_poke(out, i, r_strs.empty);
-    } else {
-      r_chr_poke(out, i, PRINTNAME(tag));
+        if (tag == r_null) {
+            r_chr_poke(out, i, r_strs.empty);
+        } else {
+            r_chr_poke(out, i, PRINTNAME(tag));
+        }
     }
-  }
 
-  FREE(1);
-  return out;
+    FREE(1);
+    return out;
 }
 
 r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
-  int n_kept = 0;
+    int n_kept = 0;
 
-  r_obj* dots = KEEP_N(rlang_dots(env), &n_kept);
+    r_obj* dots = KEEP_N(rlang_dots(env), &n_kept);
 
-  if (!r_is_vector(x, -1)) {
-    r_abort("`x` must be a vector");
-  }
+    if (!r_is_vector(x, -1)) {
+        r_abort("`x` must be a vector");
+    }
 
-  if (nm == r_null) {
-    x = set_names_dispatch(x, r_null, env);
+    if (nm == r_null) {
+        x = set_names_dispatch(x, r_null, env);
+
+        FREE(n_kept);
+        return x;
+    }
+
+    if (r_is_function(nm) || r_is_formula(nm, -1, -1)) {
+        if (r_names(mold) == r_null) {
+            mold = KEEP_N(eval_as_character(mold, env), &n_kept);
+        } else {
+            mold = KEEP_N(ffi_names2(mold, env), &n_kept);
+        }
+
+        nm = KEEP_N(rlang_as_function(nm, env), &n_kept);
+        nm = KEEP_N(eval_fn_dots(nm, mold, dots, env), &n_kept);
+    } else {
+        if (r_length(dots) > 0) {
+            nm = KEEP_N(eval_fn_dots(c_fn, nm, dots, env), &n_kept);
+        }
+
+        nm = KEEP_N(eval_as_character(nm, env), &n_kept);
+    }
+
+    r_ssize n;
+    if (r_is_object(x)) {
+        n = length_dispatch(x, env);
+    } else {
+        n = r_length(x);
+    }
+
+    if (r_typeof(nm) != R_TYPE_character) {
+        r_abort("`nm` must be `NULL` or a character vector.");
+    }
+
+    r_ssize nm_n = r_length(nm);
+    if (nm_n != n) {
+        if (nm_n != 1) {
+            r_abort(
+                "The size of `nm` (%d) must be compatible with the size of `x` "
+                "(%d).",
+                nm_n,
+                n
+            );
+        }
+
+        // Recycle names vector of size 1.
+        // TODO: ALTREP repetitions?
+        r_obj* val = r_chr_get(nm, 0);
+        nm = KEEP_N(r_alloc_character(n), &n_kept);
+        r_chr_fill(nm, val, n);
+    }
+
+    if (!is_character(nm, n, OPTION_BOOL_null, OPTION_BOOL_null)) {
+        r_abort(
+            "`nm` must be `NULL` or a character vector the same length as `x`"
+        );
+    }
+
+    x = set_names_dispatch(x, nm, env);
 
     FREE(n_kept);
     return x;
-  }
-
-  if (r_is_function(nm) || r_is_formula(nm, -1, -1)) {
-    if (r_names(mold) == r_null) {
-      mold = KEEP_N(eval_as_character(mold, env), &n_kept);
-    } else {
-      mold = KEEP_N(ffi_names2(mold, env), &n_kept);
-    }
-
-    nm = KEEP_N(rlang_as_function(nm, env), &n_kept);
-    nm = KEEP_N(eval_fn_dots(nm, mold, dots, env), &n_kept);
-  } else {
-    if (r_length(dots) > 0) {
-      nm = KEEP_N(eval_fn_dots(c_fn, nm, dots, env), &n_kept);
-    }
-
-    nm = KEEP_N(eval_as_character(nm, env), &n_kept);
-  }
-
-  r_ssize n;
-  if (r_is_object(x)) {
-    n = length_dispatch(x, env);
-  } else {
-    n = r_length(x);
-  }
-
-  if (r_typeof(nm) != R_TYPE_character) {
-    r_abort("`nm` must be `NULL` or a character vector.");
-  }
-
-  r_ssize nm_n = r_length(nm);
-  if (nm_n != n) {
-    if (nm_n != 1) {
-      r_abort(
-          "The size of `nm` (%d) must be compatible with the size of `x` (%d).",
-          nm_n,
-          n
-      );
-    }
-
-    // Recycle names vector of size 1.
-    // TODO: ALTREP repetitions?
-    r_obj* val = r_chr_get(nm, 0);
-    nm = KEEP_N(r_alloc_character(n), &n_kept);
-    r_chr_fill(nm, val, n);
-  }
-
-  if (!is_character(nm, n, OPTION_BOOL_null, OPTION_BOOL_null)) {
-    r_abort("`nm` must be `NULL` or a character vector the same length as `x`");
-  }
-
-  x = set_names_dispatch(x, nm, env);
-
-  FREE(n_kept);
-  return x;
 }
 
 static r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env) {
-  r_obj* args = KEEP(r_new_node(r_syms.dot_x, dots));
-  r_obj* call = KEEP(r_new_call(r_syms.dot_fn, args));
+    r_obj* args = KEEP(r_new_node(r_syms.dot_x, dots));
+    r_obj* call = KEEP(r_new_call(r_syms.dot_fn, args));
 
-  // This evaluates `.fn(.x, ...)`
-  // `.x` is the first input, x
-  // `.fn` is the function, fn
-  // The dots are a pairlist already in the call
-  r_env_bind(env, r_syms.dot_x, x);
-  r_env_bind(env, r_syms.dot_fn, fn);
+    // This evaluates `.fn(.x, ...)`
+    // `.x` is the first input, x
+    // `.fn` is the function, fn
+    // The dots are a pairlist already in the call
+    r_env_bind(env, r_syms.dot_x, x);
+    r_env_bind(env, r_syms.dot_fn, fn);
 
-  r_obj* out = r_eval(call, env);
+    r_obj* out = r_eval(call, env);
 
-  FREE(2);
-  return out;
+    FREE(2);
+    return out;
 }
 
 static inline r_obj* eval_as_character(r_obj* x, r_obj* env) {
-  r_env_bind(env, r_syms.dot_x, x);
-  return r_eval(as_character_call, env);
+    r_env_bind(env, r_syms.dot_x, x);
+    return r_eval(as_character_call, env);
 }
 
 static inline r_obj* names_dispatch(r_obj* x, r_obj* env) {
-  r_env_bind(env, r_syms.dot_x, x);
-  return r_eval(names_call, env);
+    r_env_bind(env, r_syms.dot_x, x);
+    return r_eval(names_call, env);
 }
 
 // Use `names<-()` rather than setting names directly with
@@ -161,126 +164,126 @@ static inline r_obj* names_dispatch(r_obj* x, r_obj* env) {
 // duplicate `x`'s attributes using ALTREP wrappers, which is not in R's public
 // API.
 static inline r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env) {
-  r_env_bind(env, r_syms.dot_x, x);
-  r_env_bind(env, r_syms.dot_y, nm);
-  return r_eval(set_names_call, env);
+    r_env_bind(env, r_syms.dot_x, x);
+    r_env_bind(env, r_syms.dot_y, nm);
+    return r_eval(set_names_call, env);
 }
 
 static inline r_ssize length_dispatch(r_obj* x, r_obj* env) {
-  r_env_bind(env, r_syms.dot_x, x);
-  r_obj* n = KEEP(r_eval(length_call, env));
+    r_env_bind(env, r_syms.dot_x, x);
+    r_obj* n = KEEP(r_eval(length_call, env));
 
-  if (r_length(n) != 1) {
-    r_abort("Object length must have size 1, not %i", r_length(n));
-  }
+    if (r_length(n) != 1) {
+        r_abort("Object length must have size 1, not %i", r_length(n));
+    }
 
-  r_ssize out;
+    r_ssize out;
 
-  switch (r_typeof(n)) {
-  case R_TYPE_integer:
-    out = (r_ssize) r_int_begin(n)[0];
-    break;
-  case R_TYPE_double:
-    out = r_dbl_begin(n)[0];
-    break;
-  default:
-    r_abort(
-        "Object length has unknown type %s",
-        r_type_as_c_string(r_typeof(n))
-    );
-  }
+    switch (r_typeof(n)) {
+    case R_TYPE_integer:
+        out = (r_ssize) r_int_begin(n)[0];
+        break;
+    case R_TYPE_double:
+        out = r_dbl_begin(n)[0];
+        break;
+    default:
+        r_abort(
+            "Object length has unknown type %s",
+            r_type_as_c_string(r_typeof(n))
+        );
+    }
 
-  FREE(1);
-  return out;
+    FREE(1);
+    return out;
 }
 
 r_obj* zap_srcref(r_obj* x) {
-  switch (r_typeof(x)) {
-  case R_TYPE_call:
-    return call_zap_srcref(x);
-  case R_TYPE_closure:
-    return fn_zap_srcref(x);
-  case R_TYPE_expression:
-    return expr_vec_zap_srcref(x);
-  default:
-    return x;
-  }
+    switch (r_typeof(x)) {
+    case R_TYPE_call:
+        return call_zap_srcref(x);
+    case R_TYPE_closure:
+        return fn_zap_srcref(x);
+    case R_TYPE_expression:
+        return expr_vec_zap_srcref(x);
+    default:
+        return x;
+    }
 }
 
 static r_obj* fn_zap_srcref(r_obj* x) {
-  r_obj* formals = r_fn_formals(x);
-  r_obj* body = r_fn_body(x);
-  r_obj* env = r_fn_env(x);
+    r_obj* formals = r_fn_formals(x);
+    r_obj* body = r_fn_body(x);
+    r_obj* env = r_fn_env(x);
 
-  body = KEEP(zap_srcref(body));
+    body = KEEP(zap_srcref(body));
 
-  r_obj* out = KEEP(r_new_function(formals, body, env));
+    r_obj* out = KEEP(r_new_function(formals, body, env));
 
-  r_attrib_clone_from(out, x);
-  r_attrib_zap(out, r_syms.srcref);
+    r_attrib_clone_from(out, x);
+    r_attrib_zap(out, r_syms.srcref);
 
-  FREE(2);
-  return out;
+    FREE(2);
+    return out;
 }
 
 static r_obj* call_zap_srcref(r_obj* x) {
-  x = KEEP(r_clone(x));
+    x = KEEP(r_clone(x));
 
-  attrib_zap_srcref(x);
+    attrib_zap_srcref(x);
 
-  if (r_node_car(x) == r_syms.function) {
-    // Remove `call[[4]]` where the parser stores srcref information
-    // for calls to `function`
-    r_node_poke_cdr(r_node_cddr(x), r_null);
-  }
+    if (r_node_car(x) == r_syms.function) {
+        // Remove `call[[4]]` where the parser stores srcref information
+        // for calls to `function`
+        r_node_poke_cdr(r_node_cddr(x), r_null);
+    }
 
-  for (r_obj* node = x; node != r_null; node = r_node_cdr(node)) {
-    r_node_poke_car(node, zap_srcref(r_node_car(node)));
-  }
+    for (r_obj* node = x; node != r_null; node = r_node_cdr(node)) {
+        r_node_poke_car(node, zap_srcref(r_node_car(node)));
+    }
 
-  FREE(1);
-  return x;
+    FREE(1);
+    return x;
 }
 
 static r_obj* expr_vec_zap_srcref(r_obj* x) {
-  x = KEEP(r_clone(x));
+    x = KEEP(r_clone(x));
 
-  attrib_zap_srcref(x);
+    attrib_zap_srcref(x);
 
-  // `VECTOR_PTR_RO()` (i.e. `r_list_cbegin()`) doesn't allow `EXPRSXP`, so we
-  // use rlang equivalents of `Rf_xlength()`, `VECTOR_ELT()`, and
-  // `SET_VECTOR_ELT()` instead
-  r_ssize n = r_length(x);
+    // `VECTOR_PTR_RO()` (i.e. `r_list_cbegin()`) doesn't allow `EXPRSXP`, so we
+    // use rlang equivalents of `Rf_xlength()`, `VECTOR_ELT()`, and
+    // `SET_VECTOR_ELT()` instead
+    r_ssize n = r_length(x);
 
-  for (r_ssize i = 0; i < n; ++i) {
-    r_obj* elt = r_list_get(x, i);
-    r_list_poke(x, i, zap_srcref(elt));
-  }
+    for (r_ssize i = 0; i < n; ++i) {
+        r_obj* elt = r_list_get(x, i);
+        r_list_poke(x, i, zap_srcref(elt));
+    }
 
-  FREE(1);
-  return x;
+    FREE(1);
+    return x;
 }
 
 static void attrib_zap_srcref(r_obj* x) {
-  r_attrib_zap(x, r_syms.srcfile);
-  r_attrib_zap(x, r_syms.srcref);
-  r_attrib_zap(x, r_syms.wholeSrcref);
+    r_attrib_zap(x, r_syms.srcfile);
+    r_attrib_zap(x, r_syms.srcref);
+    r_attrib_zap(x, r_syms.wholeSrcref);
 }
 
 void rlang_init_attr(r_obj* ns) {
-  c_fn = r_eval(r_sym("c"), r_envs.base);
+    c_fn = r_eval(r_sym("c"), r_envs.base);
 
-  as_character_call = r_parse("as.character(.x)");
-  r_preserve(as_character_call);
+    as_character_call = r_parse("as.character(.x)");
+    r_preserve(as_character_call);
 
-  names_call = r_parse("names(.x)");
-  r_preserve(names_call);
+    names_call = r_parse("names(.x)");
+    r_preserve(names_call);
 
-  set_names_call = r_parse("`names<-`(.x, .y)");
-  r_preserve(set_names_call);
+    set_names_call = r_parse("`names<-`(.x, .y)");
+    r_preserve(set_names_call);
 
-  length_call = r_parse("length(.x)");
-  r_preserve(length_call);
+    length_call = r_parse("length(.x)");
+    r_preserve(length_call);
 }
 
 static r_obj* c_fn = NULL;
