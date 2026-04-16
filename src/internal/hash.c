@@ -109,6 +109,8 @@ static void hash_object(struct hash_ctx* ctx, r_obj* x) {
 
     case R_TYPE_closure: {
         hash_object(ctx, r_fn_formals(x));
+        // `r_fn_body()` calls `R_ClosureExpr()` which unwraps bytecode,
+        // so compiled and uncompiled closures hash identically.
         hash_object(ctx, r_fn_body(x));
         hash_feed_ptr(ctx->p_state, (const void*) r_fn_env(x));
         break;

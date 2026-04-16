@@ -11,7 +11,8 @@
 #' although that should be rare. Reference-like objects (environments, external
 #' pointers, builtins) are hashed by identity, so their hashes are only stable
 #' within a session. Closures hash their formals, body, and environment
-#' identity.
+#' identity. Byte-compiled and uncompiled closures hash identically
+#' because the body is always hashed from the original language tree.
 #'
 #' By default, source references are stripped before hashing so that
 #' closures and calls that are textually identical produce the same

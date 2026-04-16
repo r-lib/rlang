@@ -158,6 +158,12 @@ test_that("closures in different environments hash differently", {
   expect_false(hash(f1) == hash(f2))
 })
 
+test_that("byte-compiled closures hash identically to uncompiled ones", {
+  f <- function(x) x + 1
+  g <- compiler::cmpfun(f)
+  expect_identical(hash(f), hash(g))
+})
+
 test_that("srcrefs are ignored by default for closures", {
   e <- new.env(parent = baseenv())
   with_srcref("f1 <- function(x) x + 1", env = e)

@@ -1,6 +1,6 @@
 # rlang (development version)
 
-* `hash()` now uses its own walking strategy to make it independent of pecularities of the R serialiser. This fixes a stability issue with shrinkable vectors on R 4.6.0 (#1681).
+* `hash()` now uses its own walking strategy to make it independent of pecularities of the R serialiser. This fixes stability issues with function bytecode and shrinkable vectors on R 4.6.0 (#1681).
 
 * Fixed `env_get()` issue causing double evaluation of active bindings on older R versions <= 4.4 (#1893).
 
