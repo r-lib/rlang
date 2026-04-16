@@ -186,9 +186,13 @@ r_obj* r_env_get(r_obj* env, r_obj* sym) {
 #if R_VERSION >= R_Version(4, 5, 0)
     return R_getVar(sym, env, FALSE);
 #else
-    r_obj* value = env_find(env, sym);
-    if (r_typeof(value) == R_TYPE_dots) {
-        return value;
+    // `Rf_findVarInFrame3()` evaluates active bindings via `BINDING_VALUE()`
+    // on R < 4.5, so skip `env_find()` to avoid evaluating them twice (#1893)
+    if (type != R_ENV_BINDING_TYPE_active) {
+        r_obj* value = env_find(env, sym);
+        if (r_typeof(value) == R_TYPE_dots) {
+            return value;
+        }
     }
 
     // Handles value, delayed, forced, and active bindings
