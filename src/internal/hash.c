@@ -13,6 +13,16 @@
 #include <stdio.h>    // sprintf()
 #include <inttypes.h> // PRIx64
 
+struct hash_ctx {
+    XXH3_state_t* p_state;
+    bool zap_srcref;
+};
+
+static inline bool is_srcref_tag(r_obj* tag) {
+    return tag == r_syms.srcref || tag == r_syms.srcfile ||
+        tag == r_syms.wholeSrcref;
+}
+
 #include "decl/hash-decl.h"
 
 // Finalize the hash state into a 128-bit digest and format it as a
@@ -50,10 +60,12 @@ static inline void hash_feed_ptr(XXH3_state_t* p_state, const void* ptr) {
     hash_feed(p_state, &ptr, sizeof(ptr));
 }
 
+// -----------------------------------------------------------------------------
+
 // Feed the type tag, then user-visible data, then attributes
-static void hash_object(XXH3_state_t* p_state, r_obj* x) {
+static void hash_object(struct hash_ctx* ctx, r_obj* x) {
     int type = r_typeof(x);
-    hash_feed_int(p_state, type);
+    hash_feed_int(ctx->p_state, type);
 
     switch (type) {
     case R_TYPE_null:
@@ -68,27 +80,37 @@ static void hash_object(XXH3_state_t* p_state, r_obj* x) {
     case R_TYPE_list:
     case R_TYPE_expression: {
         r_ssize n = r_length(x);
-        hash_feed_ssize(p_state, n);
-        hash_feed_vector_data(p_state, x, type, n);
+        hash_feed_ssize(ctx->p_state, n);
+        hash_feed_vector_data(ctx, x, type, n);
         break;
     }
 
     case R_TYPE_pairlist:
     case R_TYPE_call:
     case R_TYPE_dots: {
+        // The parser stores srcref info as a 4th element on `function` calls.
+        // When zapping srcrefs, stop after the 3rd node (formals, body, env).
+        bool is_fn_call = ctx->zap_srcref && type == R_TYPE_call &&
+            r_node_car(x) == r_syms.function;
         r_ssize n = r_length(x);
-        hash_feed_ssize(p_state, n);
-        for (r_obj* node = x; node != r_null; node = r_node_cdr(node)) {
-            hash_object(p_state, r_node_tag(node));
-            hash_object(p_state, r_node_car(node));
+        if (is_fn_call && n > 3) {
+            n = 3;
+        }
+        hash_feed_ssize(ctx->p_state, n);
+        r_ssize i = 0;
+        for (r_obj* node = x; node != r_null && i < n;
+             node = r_node_cdr(node)) {
+            hash_object(ctx, r_node_tag(node));
+            hash_object(ctx, r_node_car(node));
+            ++i;
         }
         break;
     }
 
     case R_TYPE_closure: {
-        hash_object(p_state, r_fn_formals(x));
-        hash_object(p_state, r_fn_body(x));
-        hash_feed_ptr(p_state, (const void*) r_fn_env(x));
+        hash_object(ctx, r_fn_formals(x));
+        hash_object(ctx, r_fn_body(x));
+        hash_feed_ptr(ctx->p_state, (const void*) r_fn_env(x));
         break;
     }
 
@@ -99,8 +121,8 @@ static void hash_object(XXH3_state_t* p_state, r_obj* x) {
     case R_TYPE_symbol: {
         const char* name = r_sym_c_string(x);
         int len = strlen(name);
-        hash_feed_int(p_state, len);
-        hash_feed(p_state, name, (size_t) len);
+        hash_feed_int(ctx->p_state, len);
+        hash_feed(ctx->p_state, name, (size_t) len);
         break;
     }
 
@@ -108,21 +130,24 @@ static void hash_object(XXH3_state_t* p_state, r_obj* x) {
     case R_TYPE_builtin:
     case R_TYPE_special:
     case R_TYPE_pointer:
-        hash_feed_ptr(p_state, (const void*) x);
+        hash_feed_ptr(ctx->p_state, (const void*) x);
         break;
 
     default:
-        hash_feed_ptr(p_state, (const void*) x);
+        hash_feed_ptr(ctx->p_state, (const void*) x);
         break;
     }
 
-    r_attrib_map(x, &hash_attribs_cb, p_state);
+    r_attrib_map(x, &hash_attribs_cb, ctx);
 }
 
 static r_obj* hash_attribs_cb(r_obj* tag, r_obj* value, void* data) {
-    XXH3_state_t* p_state = (XXH3_state_t*) data;
-    hash_object(p_state, tag);
-    hash_object(p_state, value);
+    struct hash_ctx* ctx = (struct hash_ctx*) data;
+    if (ctx->zap_srcref && is_srcref_tag(tag)) {
+        return NULL;
+    }
+    hash_object(ctx, tag);
+    hash_object(ctx, value);
     return NULL;
 }
 
@@ -144,7 +169,7 @@ static inline double hash_normalise_dbl(double x) {
 }
 
 static void hash_feed_vector_data(
-    XXH3_state_t* p_state,
+    struct hash_ctx* ctx,
     r_obj* x,
     int type,
     r_ssize n
@@ -152,14 +177,14 @@ static void hash_feed_vector_data(
     switch (type) {
     case R_TYPE_logical:
     case R_TYPE_integer:
-        hash_feed(p_state, r_vec_cbegin(x), (size_t) n * sizeof(int));
+        hash_feed(ctx->p_state, r_vec_cbegin(x), (size_t) n * sizeof(int));
         break;
 
     case R_TYPE_double: {
         const double* p_x = r_dbl_cbegin(x);
         for (r_ssize i = 0; i < n; ++i) {
             double val = hash_normalise_dbl(p_x[i]);
-            hash_feed(p_state, &val, sizeof(double));
+            hash_feed(ctx->p_state, &val, sizeof(double));
         }
         break;
     }
@@ -169,14 +194,14 @@ static void hash_feed_vector_data(
         for (r_ssize i = 0; i < n; ++i) {
             double re = hash_normalise_dbl(p_x[i].r);
             double im = hash_normalise_dbl(p_x[i].i);
-            hash_feed(p_state, &re, sizeof(double));
-            hash_feed(p_state, &im, sizeof(double));
+            hash_feed(ctx->p_state, &re, sizeof(double));
+            hash_feed(ctx->p_state, &im, sizeof(double));
         }
         break;
     }
 
     case R_TYPE_raw:
-        hash_feed(p_state, r_raw_cbegin(x), (size_t) n);
+        hash_feed(ctx->p_state, r_raw_cbegin(x), (size_t) n);
         break;
 
     case R_TYPE_character: {
@@ -184,14 +209,14 @@ static void hash_feed_vector_data(
         for (r_ssize i = 0; i < n; ++i) {
             r_obj* elt = p_x[i];
             if (elt == NA_STRING) {
-                hash_feed_int(p_state, 1);
+                hash_feed_int(ctx->p_state, 1);
             } else {
-                hash_feed_int(p_state, 0);
+                hash_feed_int(ctx->p_state, 0);
                 int enc = (int) Rf_getCharCE(elt);
                 int len = LENGTH(elt);
-                hash_feed_int(p_state, enc);
-                hash_feed_int(p_state, len);
-                hash_feed(p_state, r_str_c_string(elt), (size_t) len);
+                hash_feed_int(ctx->p_state, enc);
+                hash_feed_int(ctx->p_state, len);
+                hash_feed(ctx->p_state, r_str_c_string(elt), (size_t) len);
             }
         }
         break;
@@ -200,7 +225,7 @@ static void hash_feed_vector_data(
     case R_TYPE_list:
     case R_TYPE_expression:
         for (r_ssize i = 0; i < n; ++i) {
-            hash_object(p_state, r_list_get(x, i));
+            hash_object(ctx, r_list_get(x, i));
         }
         break;
 
@@ -214,12 +239,17 @@ static void hash_feed_vector_data(
 struct exec_data {
     r_obj* x;
     XXH3_state_t* p_xx_state;
+    bool zap_srcref;
 };
 
-r_obj* ffi_hash(r_obj* x) {
+r_obj* ffi_hash(r_obj* x, r_obj* ffi_zap_srcref) {
     XXH3_state_t* p_xx_state = XXH3_createState();
 
-    struct exec_data data = {.x = x, .p_xx_state = p_xx_state};
+    struct exec_data data = {
+        .x = x,
+        .p_xx_state = p_xx_state,
+        .zap_srcref = r_arg_as_bool(ffi_zap_srcref, "zap_srcref"),
+    };
 
     return R_ExecWithCleanup(hash_impl, &data, hash_cleanup, &data);
 }
@@ -234,7 +264,12 @@ static r_obj* hash_impl(void* p_data) {
         r_abort("Can't initialize hash state.");
     }
 
-    hash_object(p_xx_state, x);
+    struct hash_ctx ctx = {
+        .p_state = p_xx_state,
+        .zap_srcref = p_exec_data->zap_srcref,
+    };
+
+    hash_object(&ctx, x);
 
     r_obj* value = KEEP(hash_value(p_xx_state));
     r_obj* out = r_str_as_character(value);
@@ -254,7 +289,11 @@ static void hash_cleanup(void* p_data) {
 r_obj* ffi_hash_file(r_obj* path) {
     XXH3_state_t* p_xx_state = XXH3_createState();
 
-    struct exec_data data = {.x = path, .p_xx_state = p_xx_state};
+    struct exec_data data = {
+        .x = path,
+        .p_xx_state = p_xx_state,
+        .zap_srcref = false,
+    };
 
     return R_ExecWithCleanup(hash_file_impl, &data, hash_cleanup, &data);
 }
@@ -319,7 +358,6 @@ static inline void hasher_finalizer(r_obj* x) {
     void* p_x = R_ExternalPtrAddr(x);
 
     if (!p_x) {
-        // Defensively exit if the external pointer resolves to `NULL`
         return;
     }
 

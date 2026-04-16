@@ -147,9 +147,6 @@ test_that("closures with same body/formals/env hash the same", {
   e <- new.env(parent = baseenv())
   f1 <- local(function(x) x + 1, envir = e)
   f2 <- local(function(x) x + 1, envir = e)
-  # Strip srcref so the attributes match
-  attr(f1, "srcref") <- NULL
-  attr(f2, "srcref") <- NULL
   expect_identical(hash(f1), hash(f2))
 })
 
@@ -161,12 +158,39 @@ test_that("closures in different environments hash differently", {
   expect_false(hash(f1) == hash(f2))
 })
 
-test_that("closures with different srcref hash differently", {
+test_that("srcrefs are ignored by default for closures", {
   e <- new.env(parent = baseenv())
-  f1 <- local(function(x) x + 1, envir = e)
-  f2 <- local(function(x) x + 1, envir = e)
-  # Same body/formals/env but srcref attributes differ
-  expect_false(hash(f1) == hash(f2))
+  with_srcref("f1 <- function(x) x + 1", env = e)
+  with_srcref("f2 <- function(x) x + 1", env = e)
+  expect_identical(hash(e$f1), hash(e$f2))
+  expect_false(hash(e$f1, zap_srcref = FALSE) == hash(e$f2, zap_srcref = FALSE))
+})
+
+test_that("srcrefs are ignored by default for quoted function calls", {
+  e <- new.env(parent = baseenv())
+  with_srcref("q1 <- quote(function(x) x + 1)", env = e)
+  with_srcref("q2 <- quote(function(x) x + 1)", env = e)
+  # Parser stores srcref as 4th element on `function` calls
+  expect_length(e$q1, 4)
+  expect_identical(hash(e$q1), hash(e$q2))
+  expect_false(hash(e$q1, zap_srcref = FALSE) == hash(e$q2, zap_srcref = FALSE))
+})
+
+test_that("srcrefs are ignored by default for calls with srcref attributes", {
+  e <- new.env(parent = baseenv())
+  with_srcref("b1 <- quote({ 1; 2 })", env = e)
+  with_srcref("b2 <- quote({ 1; 2 })", env = e)
+  expect_true("srcref" %in% names(attributes(e$b1)))
+  expect_identical(hash(e$b1), hash(e$b2))
+  expect_false(hash(e$b1, zap_srcref = FALSE) == hash(e$b2, zap_srcref = FALSE))
+})
+
+test_that("srcrefs are ignored by default for expression vectors", {
+  x1 <- parse(text = "1 + 2; 3 + 4", keep.source = TRUE)
+  x2 <- parse(text = "1 + 2; 3 + 4", keep.source = TRUE)
+  expect_true("srcref" %in% names(attributes(x1)))
+  expect_identical(hash(x1), hash(x2))
+  expect_false(hash(x1, zap_srcref = FALSE) == hash(x2, zap_srcref = FALSE))
 })
 
 test_that("NA_character_ hashes distinctly from the string \"NA\"", {

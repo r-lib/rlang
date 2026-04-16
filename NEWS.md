@@ -1,7 +1,8 @@
 # rlang (development version)
 
-* Fixed `env_get()` issue causing double evaluation of active bindings on older R versions <= 4.4 (#1893).
+* `hash()` now uses its own walking strategy to make it independent of pecularities of the R serialiser. This fixes a stability issue with shrinkable vectors on R 4.6.0 (#1681).
 
+* Fixed `env_get()` issue causing double evaluation of active bindings on older R versions <= 4.4 (#1893).
 
 # rlang 1.2.0
 
