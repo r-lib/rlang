@@ -19,6 +19,7 @@
 ^pkgdown$
 ^CODE_OF_CONDUCT\.md$
 ^src/.clang_complete$
+^src/\.clang-format$
 ^CRAN-SUBMISSION$
 ^\.cache$
 ^\.vscode$
@@ -28,3 +29,4 @@
 ^dev-notes$
 ^\.jj$
 ^\.claude$
+^\.git-blame-ignore-revs$
