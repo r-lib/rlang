@@ -296,7 +296,7 @@ r_obj* ffi_hasher_init(void) {
   R_RegisterCFinalizerEx(out, hasher_finalizer, TRUE);
 
   FREE(1);
-  return (out);
+  return out;
 }
 
 r_obj* ffi_hasher_update(r_obj* x, r_obj* data) {

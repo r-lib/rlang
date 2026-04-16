@@ -872,7 +872,7 @@ r_obj* ffi_is_integerish(r_obj* x, r_obj* n_, r_obj* finite_) {
 
 static enum option_bool as_option_bool(r_obj* x) {
   if (x == r_null) {
-    return (OPTION_BOOL_null);
+    return OPTION_BOOL_null;
   }
   if (r_as_bool(x)) {
     return OPTION_BOOL_true;

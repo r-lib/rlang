@@ -100,12 +100,12 @@ found_name:
 
 static bool call_is_namespaced(r_obj* x, r_obj* ns) {
   if (r_typeof(x) != R_TYPE_call) {
-    return (false);
+    return false;
   }
 
   r_obj* car = r_node_car(x);
   if (r_typeof(car) != R_TYPE_call) {
-    return (false);
+    return false;
   }
 
   if (ns != r_null) {

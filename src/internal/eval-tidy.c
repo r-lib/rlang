@@ -405,7 +405,7 @@ r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
     return base_tilde_eval(tilde, caller_frame);
   }
   if (quo_is_missing(tilde)) {
-    return (r_missing_arg);
+    return r_missing_arg;
   }
 
   r_obj* expr = quo_get_expr(tilde);
