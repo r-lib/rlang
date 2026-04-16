@@ -2,7 +2,6 @@
 #include "call.h"
 #include "internal.h"
 
-
 r_obj* ffi_exec(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
   args = r_node_cdr(args);
 

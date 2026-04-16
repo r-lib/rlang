@@ -28,9 +28,15 @@ r_obj* obj_encode_utf8(r_obj* x) {
   r_obj* out;
 
   switch (r_typeof(x)) {
-  case R_TYPE_character: out = chr_encode_utf8(x); break;
-  case R_TYPE_list: out = list_encode_utf8(x); break;
-  default: out = x; break;
+  case R_TYPE_character:
+    out = chr_encode_utf8(x);
+    break;
+  case R_TYPE_list:
+    out = list_encode_utf8(x);
+    break;
+  default:
+    out = x;
+    break;
   }
 
   if (r_attrib_has_any(out)) {
@@ -47,8 +53,7 @@ r_obj* obj_encode_utf8(r_obj* x) {
 
 // -----------------------------------------------------------------------------
 
-static
-r_obj* chr_encode_utf8(r_obj* x) {
+static r_obj* chr_encode_utf8(r_obj* x) {
   r_ssize size = r_length(x);
   r_ssize start = chr_find_encoding_start(x, size);
 
@@ -74,8 +79,7 @@ r_obj* chr_encode_utf8(r_obj* x) {
   return x;
 }
 
-static inline
-r_ssize chr_find_encoding_start(r_obj* x, r_ssize size) {
+static inline r_ssize chr_find_encoding_start(r_obj* x, r_ssize size) {
   r_obj* const* p_x = r_chr_cbegin(x);
 
   for (r_ssize i = 0; i < size; ++i) {
@@ -91,8 +95,7 @@ r_ssize chr_find_encoding_start(r_obj* x, r_ssize size) {
 
 // -----------------------------------------------------------------------------
 
-static
-r_obj* list_encode_utf8(r_obj* x) {
+static r_obj* list_encode_utf8(r_obj* x) {
   bool owned = false;
 
   r_keep_loc pi;
@@ -155,19 +158,14 @@ static r_obj* obj_attrib_encode_utf8_cb(r_obj* tag, r_obj* old, void* data) {
   return NULL;
 }
 
-static
-r_obj* obj_attrib_encode_utf8(r_obj* x, bool owned) {
+static r_obj* obj_attrib_encode_utf8(r_obj* x, bool owned) {
   // `out` pointer may be updated in place by callback
   r_obj* out = x;
 
   r_keep_loc shelter;
   KEEP_HERE(out, &shelter);
 
-  struct cb_data data = {
-    .p_out = &out,
-    .shelter = shelter,
-    .p_owned = &owned
-  };
+  struct cb_data data = {.p_out = &out, .shelter = shelter, .p_owned = &owned};
 
   r_attrib_map(x, obj_attrib_encode_utf8_cb, &data);
 
@@ -179,19 +177,19 @@ r_obj* obj_attrib_encode_utf8(r_obj* x, bool owned) {
 
 // String encoding normalization
 // From https://github.com/r-lib/vctrs/pull/2085
-static inline
-bool str_is_ascii_or_utf8(r_obj* x) {
+static inline bool str_is_ascii_or_utf8(r_obj* x) {
 #if (R_VERSION >= R_Version(4, 5, 0))
-  return Rf_charIsASCII(x) || (Rf_getCharCE(x) == CE_UTF8) || (x == r_globals.na_str);
+  return Rf_charIsASCII(x) || (Rf_getCharCE(x) == CE_UTF8) ||
+      (x == r_globals.na_str);
 #else
   const int mask_ascii = 8;
   const int mask_utf8 = 64;
   const int levels = LEVELS(x);
-  return (levels & mask_ascii) || (levels & mask_utf8) || (x == r_globals.na_str);
+  return (levels & mask_ascii) || (levels & mask_utf8) ||
+      (x == r_globals.na_str);
 #endif
 }
 
-static inline
-r_obj* str_as_utf8(r_obj* x) {
+static inline r_obj* str_as_utf8(r_obj* x) {
   return Rf_mkCharCE(Rf_translateCharUTF8(x), CE_UTF8);
 }

@@ -25,7 +25,7 @@ FILE* r_fopen(r_obj* path, const char* mode) {
     r_abort("Can't convert file to Unicode: %s.", path_c);
   }
 
-  wchar_t* buf = (wchar_t*)R_alloc(len, sizeof(wchar_t));
+  wchar_t* buf = (wchar_t*) R_alloc(len, sizeof(wchar_t));
   if (buf == NULL) {
     r_abort("Can't allocate buffer of size %ll.", len);
   }

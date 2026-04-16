@@ -9,10 +9,7 @@ enum is_number {
 
 #include "decl/standalone-types-check-decl.h"
 
-
-r_obj* ffi_standalone_is_bool(r_obj* x,
-                              r_obj* allow_na,
-                              r_obj* allow_null) {
+r_obj* ffi_standalone_is_bool(r_obj* x, r_obj* allow_na, r_obj* allow_null) {
   if (x == r_null) {
     return r_lgl(r_as_bool(allow_null));
   }
@@ -28,13 +25,15 @@ r_obj* ffi_standalone_is_bool(r_obj* x,
   return r_true;
 }
 
-r_obj* ffi_standalone_check_number(r_obj* x,
-                                   r_obj* allow_decimal,
-                                   r_obj* min,
-                                   r_obj* max,
-                                   r_obj* allow_infinite,
-                                   r_obj* allow_na,
-                                   r_obj* allow_null) {
+r_obj* ffi_standalone_check_number(
+    r_obj* x,
+    r_obj* allow_decimal,
+    r_obj* min,
+    r_obj* max,
+    r_obj* allow_infinite,
+    r_obj* allow_na,
+    r_obj* allow_null
+) {
   int out = IS_NUMBER_false;
 
   switch (r_typeof(x)) {
@@ -49,21 +48,19 @@ r_obj* ffi_standalone_check_number(r_obj* x,
     break;
 
   case R_TYPE_integer:
-    out = int_standalone_check_number(x,
-                                      min,
-                                      max,
-                                      allow_na,
-                                      allow_null);
+    out = int_standalone_check_number(x, min, max, allow_na, allow_null);
     break;
 
   case R_TYPE_double:
-    out = dbl_standalone_check_number(x,
-                                      allow_decimal,
-                                      min,
-                                      max,
-                                      allow_infinite,
-                                      allow_na,
-                                      allow_null);
+    out = dbl_standalone_check_number(
+        x,
+        allow_decimal,
+        min,
+        max,
+        allow_infinite,
+        allow_na,
+        allow_null
+    );
     break;
 
   default:
@@ -73,8 +70,7 @@ r_obj* ffi_standalone_check_number(r_obj* x,
   return r_int(out);
 }
 
-static
-bool is_numeric(r_obj* x) {
+static bool is_numeric(r_obj* x) {
   if (!r_is_object(x)) {
     return true;
   }
@@ -88,8 +84,7 @@ bool is_numeric(r_obj* x) {
   return out;
 }
 
-static inline
-double as_min_or_max(r_obj* ffi_x, const char* arg, double dflt) {
+static inline double as_min_or_max(r_obj* ffi_x, const char* arg, double dflt) {
   if (ffi_x == r_null) {
     return dflt;
   }
@@ -103,12 +98,13 @@ double as_min_or_max(r_obj* ffi_x, const char* arg, double dflt) {
   return out;
 }
 
-static
-enum is_number int_standalone_check_number(r_obj* x,
-                                           r_obj* ffi_min,
-                                           r_obj* ffi_max,
-                                           r_obj* allow_na,
-                                           r_obj* allow_null) {
+static enum is_number int_standalone_check_number(
+    r_obj* x,
+    r_obj* ffi_min,
+    r_obj* ffi_max,
+    r_obj* allow_na,
+    r_obj* allow_null
+) {
   if (r_length(x) != 1) {
     return IS_NUMBER_false;
   }
@@ -134,14 +130,15 @@ enum is_number int_standalone_check_number(r_obj* x,
   return IS_NUMBER_true;
 }
 
-static
-enum is_number dbl_standalone_check_number(r_obj* x,
-                                           r_obj* allow_decimal,
-                                           r_obj* ffi_min,
-                                           r_obj* ffi_max,
-                                           r_obj* allow_infinite,
-                                           r_obj* allow_na,
-                                           r_obj* allow_null) {
+static enum is_number dbl_standalone_check_number(
+    r_obj* x,
+    r_obj* allow_decimal,
+    r_obj* ffi_min,
+    r_obj* ffi_max,
+    r_obj* allow_infinite,
+    r_obj* allow_na,
+    r_obj* allow_null
+) {
   if (r_length(x) != 1) {
     return IS_NUMBER_false;
   }

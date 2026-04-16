@@ -3,7 +3,6 @@
 
 #include <rlang.h>
 
-
 // This only includes operators that actually appear in the AST.
 // Examples of silent operators are `else` and `in`.
 enum r_operator {
@@ -61,7 +60,6 @@ enum r_operator {
 enum r_operator r_which_operator(r_obj* call);
 const char* r_op_as_c_string(enum r_operator op);
 
-
 /**
  * struct r_op_precedence - Information about operator precedence
  *
@@ -95,18 +93,20 @@ bool r_op_has_precedence(enum r_operator x, enum r_operator parent);
 bool r_rhs_op_has_precedence(enum r_operator rhs, enum r_operator parent);
 bool r_lhs_op_has_precedence(enum r_operator lhs, enum r_operator parent);
 
-static inline
-bool r_call_has_precedence(r_obj* x, r_obj* parent) {
+static inline bool r_call_has_precedence(r_obj* x, r_obj* parent) {
   return r_op_has_precedence(r_which_operator(x), r_which_operator(parent));
 }
-static inline
-bool r_lhs_call_has_precedence(r_obj* lhs, r_obj* parent) {
-  return r_lhs_op_has_precedence(r_which_operator(lhs), r_which_operator(parent));
+static inline bool r_lhs_call_has_precedence(r_obj* lhs, r_obj* parent) {
+  return r_lhs_op_has_precedence(
+      r_which_operator(lhs),
+      r_which_operator(parent)
+  );
 }
-static inline
-bool r_rhs_call_has_precedence(r_obj* rhs, r_obj* parent) {
-  return r_rhs_op_has_precedence(r_which_operator(rhs), r_which_operator(parent));
+static inline bool r_rhs_call_has_precedence(r_obj* rhs, r_obj* parent) {
+  return r_rhs_op_has_precedence(
+      r_which_operator(rhs),
+      r_which_operator(parent)
+  );
 }
-
 
 #endif

@@ -38,5 +38,4 @@ enum dots_op {
   DOTS_OP_MAX
 };
 
-
 #endif

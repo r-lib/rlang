@@ -11,5 +11,4 @@ void r_browse(r_obj* x);
 void r_browse_at(r_obj* env);
 void r_dbg_str(r_obj* x);
 
-
 #endif

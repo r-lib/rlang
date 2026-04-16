@@ -1,15 +1,17 @@
 #include "rlang.h"
 
-
 r_obj* r_f_rhs(r_obj* f) {
   if (r_typeof(f) != LANGSXP) {
     r_abort("`x` must be a formula");
   }
 
   switch (r_length(f)) {
-  case 2: return r_node_cadr(f);
-  case 3: return CADDR(f);
-  default: r_abort("Invalid formula");
+  case 2:
+    return r_node_cadr(f);
+  case 3:
+    return CADDR(f);
+  default:
+    r_abort("Invalid formula");
   }
 }
 r_obj* r_f_lhs(r_obj* f) {
@@ -18,9 +20,12 @@ r_obj* r_f_lhs(r_obj* f) {
   }
 
   switch (r_length(f)) {
-  case 2: return r_null;
-  case 3: return r_node_cadr(f);
-  default: r_abort("Invalid formula");
+  case 2:
+    return r_null;
+  case 3:
+    return r_node_cadr(f);
+  default:
+    r_abort("Invalid formula");
   }
 }
 r_obj* r_f_env(r_obj* f) {

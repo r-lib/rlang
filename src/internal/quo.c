@@ -1,7 +1,6 @@
 #include <rlang.h>
 
-static
-const char* quo_tags[2] = { "quosure", "formula" };
+static const char* quo_tags[2] = {"quosure", "formula"};
 
 r_obj* new_raw_formula(r_obj* lhs, r_obj* rhs, r_obj* env);
 

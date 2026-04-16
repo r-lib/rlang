@@ -10,25 +10,20 @@
 
 #define RLANG_USE_R_EXISTS (R_VERSION < R_Version(4, 2, 0))
 
-
 extern r_obj* r_methods_ns_env;
 
-
-static inline
-r_obj* r_env_names(r_obj* env) {
+static inline r_obj* r_env_names(r_obj* env) {
   return R_lsInternal3(env, TRUE, FALSE);
 }
 
-static inline
-r_ssize r_env_length(r_obj* env) {
+static inline r_ssize r_env_length(r_obj* env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("Expected an environment");
   }
   return Rf_xlength(env);
 }
 
-static inline
-r_obj* r_env_parent(r_obj* env) {
+static inline r_obj* r_env_parent(r_obj* env) {
   if (env == r_envs.empty) {
     r_stop_internal("Can't take the parent of the empty environment.");
   }
@@ -39,12 +34,10 @@ r_obj* r_env_parent(r_obj* env) {
 #endif
 }
 
-static inline
-bool r_is_environment(r_obj* x) {
+static inline bool r_is_environment(r_obj* x) {
   return TYPEOF(x) == ENVSXP;
 }
-static inline
-bool r_is_namespace(r_obj* x) {
+static inline bool r_is_namespace(r_obj* x) {
   return R_IsNamespaceEnv(x);
 }
 
@@ -54,8 +47,7 @@ r_obj* r_env_get_anywhere(r_obj* env, r_obj* sym);
 r_obj* r_env_get_until(r_obj* env, r_obj* sym, r_obj* last);
 bool r_env_has_until(r_obj* env, r_obj* sym, r_obj* last);
 
-static inline
-bool r_env_has(r_obj* env, r_obj* sym) {
+static inline bool r_env_has(r_obj* env, r_obj* sym) {
 #if RLANG_USE_R_EXISTS
   bool r__env_has(r_obj*, r_obj*);
   return r__env_has(env, sym);
@@ -64,8 +56,7 @@ bool r_env_has(r_obj* env, r_obj* sym) {
 #endif
 }
 
-static inline
-bool r_env_has_anywhere(r_obj* env, r_obj* sym) {
+static inline bool r_env_has_anywhere(r_obj* env, r_obj* sym) {
 #if RLANG_USE_R_EXISTS
   bool r__env_has_anywhere(r_obj*, r_obj*);
   return r__env_has_anywhere(env, sym);
@@ -87,8 +78,7 @@ r_obj* r_base_ns_get(const char* name);
 
 r_obj* r_alloc_environment(r_ssize size, r_obj* parent);
 
-static inline
-r_obj* r_alloc_empty_environment(r_obj* parent) {
+static inline r_obj* r_alloc_empty_environment(r_obj* parent) {
   // Non-hashed environment.
   // Very fast and useful when you aren't getting/setting from the result.
 #if R_VERSION >= R_Version(4, 1, 0)
@@ -108,8 +98,6 @@ r_obj* r_env_clone(r_obj* env, r_obj* parent);
 
 void r_env_coalesce(r_obj* env, r_obj* from);
 
-
 bool r_env_inherits(r_obj* env, r_obj* ancestor, r_obj* top);
-
 
 #endif

@@ -3,7 +3,6 @@
 #include "nse-inject.h"
 #include "ast-rotate.h"
 
-
 /**
  * struct ast_rotation_info - Rotation data gathered while recursing over AST
  *
@@ -26,7 +25,6 @@ struct ast_rotation_info {
 };
 
 #include "decl/ast-rotate-decl.h"
-
 
 /**
  * DOC: Interpolation in operator calls whose precedence might need fixup
@@ -244,21 +242,17 @@ struct ast_rotation_info {
  * reach a problematic operator.
  */
 
-
-static
-bool op_is_unary(enum r_operator op) {
+static bool op_is_unary(enum r_operator op) {
   if (op == R_OP_NONE || op > R_OP_MAX) {
     r_abort("Internal error: `enum r_operator` out of bounds");
   }
   return r_ops_precedence[op].unary;
 }
-static
-bool is_unary(r_obj* x) {
+static bool is_unary(r_obj* x) {
   return op_is_unary(r_which_operator(x));
 }
 
-static
-bool op_is_unary_plusminus(enum r_operator op) {
+static bool op_is_unary_plusminus(enum r_operator op) {
   switch (op) {
   case R_OP_PLUS_UNARY:
   case R_OP_MINUS_UNARY:
@@ -267,13 +261,11 @@ bool op_is_unary_plusminus(enum r_operator op) {
     return false;
   }
 }
-static
-bool is_unary_plusminus(r_obj* x) {
+static bool is_unary_plusminus(r_obj* x) {
   return op_is_unary_plusminus(r_which_operator(x));
 }
 
-static
-void initialise_rotation_info(struct ast_rotation_info* info) {
+static void initialise_rotation_info(struct ast_rotation_info* info) {
   info->upper_pivot_op = R_OP_NONE;
   info->upper_pivot = NULL;
   info->lower_pivot = NULL;
@@ -295,10 +287,11 @@ void initialise_rotation_info(struct ast_rotation_info* info) {
  * of `!` on the AST corresponds to the implicit grouping (e.g. with
  * `1 + !!2 * 3`).
  */
-static
-r_obj* maybe_rotate(r_obj* op,
-                    r_obj* env,
-                    struct ast_rotation_info* info) {
+static r_obj* maybe_rotate(
+    r_obj* op,
+    r_obj* env,
+    struct ast_rotation_info* info
+) {
   if (info->upper_pivot_op == R_OP_NONE) {
     return op;
   }
@@ -367,8 +360,8 @@ r_obj* fixup_interp(r_obj* x, r_obj* env) {
 r_obj* fixup_interp_first(r_obj* x, r_obj* env) {
   r_obj* parent = NULL; // `parent` will always be initialised in the loop
   r_obj* target = x;
-  while (is_problematic_op((parent = target, target = r_node_cadr(target)))
-         && !is_unary(target)) {
+  while (is_problematic_op((parent = target, target = r_node_cadr(target))) &&
+         !is_unary(target)) {
     r_obj* rhs = r_node_cddr(target);
     r_node_poke_car(rhs, call_interp(r_node_car(rhs), env));
   };
@@ -394,8 +387,7 @@ r_obj* fixup_interp_first(r_obj* x, r_obj* env) {
  * in &ast_rotation_info->upper_pivot_op and
  * &ast_rotation_info->upper_pivot within @info.
  */
-static
-void find_upper_pivot(r_obj* x, struct ast_rotation_info* info) {
+static void find_upper_pivot(r_obj* x, struct ast_rotation_info* info) {
   if (!r_is_call(x, "!")) {
     return;
   }
@@ -436,11 +428,12 @@ void find_upper_pivot(r_obj* x, struct ast_rotation_info* info) {
  *
  * Fill in &ast_rotation_info->lower_pivot within @info.
  */
-static
-void find_lower_pivot(r_obj* x,
-                      r_obj* parent_node,
-                      r_obj* env,
-                      struct ast_rotation_info* info) {
+static void find_lower_pivot(
+    r_obj* x,
+    r_obj* parent_node,
+    r_obj* env,
+    struct ast_rotation_info* info
+) {
   r_obj* lhs_node = r_node_cdr(x);
   r_obj* rhs_node = r_node_cdr(lhs_node);
 
@@ -485,9 +478,9 @@ void find_lower_pivot(r_obj* x,
   find_lower_pivot(lhs, lhs_node, env, info);
 }
 
-
 /**
- * node_list_interp_fixup() - Expansion for binary operators that might need fixup
+ * node_list_interp_fixup() - Expansion for binary operators that might need
+ * fixup
  *
  * @x A call to a binary operator with problematic precedence
  *   (between prec(`!`) and prec(`!!`)).
@@ -501,12 +494,13 @@ void find_lower_pivot(r_obj* x,
  *   rotation) it is not necessary to expand the LHS as it was already
  *   visited.
  */
-static
-r_obj* node_list_interp_fixup(r_obj* x,
-                              r_obj* parent,
-                              r_obj* env,
-                              struct ast_rotation_info* info,
-                              bool expand_lhs) {
+static r_obj* node_list_interp_fixup(
+    r_obj* x,
+    r_obj* parent,
+    r_obj* env,
+    struct ast_rotation_info* info,
+    bool expand_lhs
+) {
   r_obj* lhs_node = r_node_cdr(x);
   r_obj* lhs = r_node_car(lhs_node);
 
@@ -515,7 +509,6 @@ r_obj* node_list_interp_fixup(r_obj* x,
     node_list_interp_fixup_rhs(lhs, lhs_node, parent, env, info);
     return x;
   }
-
 
   r_obj* rhs_node = r_node_cddr(x);
   r_obj* rhs = r_node_car(rhs_node);
@@ -530,7 +523,8 @@ r_obj* node_list_interp_fixup(r_obj* x,
 }
 
 /**
- * node_list_interp_fixup_rhs() - Expansion for binary operators that might need fixup
+ * node_list_interp_fixup_rhs() - Expansion for binary operators that might need
+ * fixup
  *
  * @rhs: The right-hand side argument of an operator with problematic
  *   precedence.
@@ -540,12 +534,13 @@ r_obj* node_list_interp_fixup(r_obj* x,
  * @env: The unquoting environment.
  * @info: See &struct ast_rotation_info.
  */
-static
-void node_list_interp_fixup_rhs(r_obj* rhs,
-                                r_obj* rhs_node,
-                                r_obj* parent,
-                                r_obj* env,
-                                struct ast_rotation_info* info) {
+static void node_list_interp_fixup_rhs(
+    r_obj* rhs,
+    r_obj* rhs_node,
+    r_obj* parent,
+    r_obj* env,
+    struct ast_rotation_info* info
+) {
   // Happens with constructed calls like `/`(1)
   if (rhs_node == r_null) {
     return;
@@ -581,8 +576,8 @@ void node_list_interp_fixup_rhs(r_obj* rhs,
     node_list_interp_fixup(rhs, parent, env, info, true);
 
     // This might the upper root around which to rotate
-    if (info->upper_pivot_op
-        && r_lhs_op_has_precedence(r_which_operator(rhs), info->upper_pivot_op)) {
+    if (info->upper_pivot_op &&
+        r_lhs_op_has_precedence(r_which_operator(rhs), info->upper_pivot_op)) {
       info->upper_root = rhs;
       info->root_parent = parent;
     }

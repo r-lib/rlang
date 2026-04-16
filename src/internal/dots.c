@@ -40,15 +40,13 @@ struct dots_capture_info {
   bool splice;
 };
 
-static
-const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
-  [DOTS_IGNORE_EMPTY_trailing] = "trailing",
-  [DOTS_IGNORE_EMPTY_none] = "none",
-  [DOTS_IGNORE_EMPTY_all] = "all"
+static const char* dots_ignore_empty_c_values[DOTS_IGNORE_EMPTY_SIZE] = {
+    [DOTS_IGNORE_EMPTY_trailing] = "trailing",
+    [DOTS_IGNORE_EMPTY_none] = "none",
+    [DOTS_IGNORE_EMPTY_all] = "all"
 };
 
 #include "decl/dots-decl.h"
-
 
 r_obj* new_splice_box(r_obj* x) {
   r_obj* out = KEEP(r_alloc_list(1));
@@ -73,15 +71,17 @@ r_obj* rlang_unbox(r_obj* x) {
   return r_list_get(x, 0);
 }
 
-struct dots_capture_info init_capture_info(enum dots_collect type,
-                                           r_obj* named,
-                                           r_obj* ignore_empty,
-                                           r_obj* preserve_empty,
-                                           r_obj* unquote_names,
-                                           r_obj* homonyms,
-                                           r_obj* check_assign,
-                                           r_obj* (*coercer)(r_obj*),
-                                           bool splice) {
+struct dots_capture_info init_capture_info(
+    enum dots_collect type,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* preserve_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign,
+    r_obj* (*coercer)(r_obj*),
+    bool splice
+) {
   struct dots_capture_info info;
 
   info.type = type;
@@ -99,16 +99,13 @@ struct dots_capture_info init_capture_info(enum dots_collect type,
   return info;
 }
 
-
-static
-bool has_glue = false;
+static bool has_glue = false;
 r_obj* ffi_glue_is_here(void) {
   has_glue = true;
   return r_null;
 }
 
-static
-bool has_curly(const char* str) {
+static bool has_curly(const char* str) {
   for (char c = *str; c != '\0'; ++str, c = *str) {
     if (c == '{') {
       return true;
@@ -123,7 +120,7 @@ r_obj* ffi_chr_has_curly(r_obj* x) {
   }
 
   r_ssize n = r_length(x);
-  r_obj* const * v_data = r_chr_cbegin(x);
+  r_obj* const* v_data = r_chr_cbegin(x);
 
   for (r_ssize i = 0; i < n; ++i) {
     if (has_curly(r_str_c_string(v_data[i]))) {
@@ -134,13 +131,14 @@ r_obj* ffi_chr_has_curly(r_obj* x) {
   return r_false;
 }
 
-static
-void require_glue(void) {
+static void require_glue(void) {
   r_obj* call = KEEP(r_parse("is_installed('glue')"));
   r_obj* out = KEEP(r_eval(call, rlang_ns_env));
 
   if (!r_is_bool(out)) {
-    r_abort("Internal error: Expected scalar logical from `requireNamespace()`.");
+    r_abort(
+        "Internal error: Expected scalar logical from `requireNamespace()`."
+    );
   }
   if (!r_lgl_get(out, 0)) {
     r_abort("Can't use `{` symbols in LHS of `:=` if glue is not installed.");
@@ -149,8 +147,7 @@ void require_glue(void) {
   FREE(2);
 }
 
-static
-r_obj* glue_embrace(r_obj* lhs, r_obj* env) {
+static r_obj* glue_embrace(r_obj* lhs, r_obj* env) {
   if (!r_is_string(lhs) || !has_curly(r_chr_get_c_string(lhs, 0))) {
     return lhs;
   }
@@ -165,8 +162,7 @@ r_obj* glue_embrace(r_obj* lhs, r_obj* env) {
   return lhs;
 }
 
-static
-r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
+static r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   int n_kept = 0;
   r_obj* lhs = r_node_cadr(expr);
 
@@ -200,8 +196,10 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   int err = 0;
   r_obj* out = r_new_symbol(lhs, &err);
   if (err) {
-    r_abort("The LHS of `:=` must be a string, not %s.",
-            r_obj_type_friendly(lhs));
+    r_abort(
+        "The LHS of `:=` must be a string, not %s.",
+        r_obj_type_friendly(lhs)
+    );
   }
 
   FREE(n_kept);
@@ -210,20 +208,19 @@ r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
 
 void signal_retired_splice(void) {
   const char* msg =
-    "Unquoting language objects with `!!!` is deprecated as of rlang 0.4.0.\n"
-    "Please use `!!` instead.\n"
-    "\n"
-    "  # Bad:\n"
-    "  dplyr::select(data, !!!enquo(x))\n"
-    "\n"
-    "  # Good:\n"
-    "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
-    "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
+      "Unquoting language objects with `!!!` is deprecated as of rlang 0.4.0.\n"
+      "Please use `!!` instead.\n"
+      "\n"
+      "  # Bad:\n"
+      "  dplyr::select(data, !!!enquo(x))\n"
+      "\n"
+      "  # Good:\n"
+      "  dplyr::select(data, !!enquo(x))    # Unquote single quosure\n"
+      "  dplyr::select(data, !!!enquos(x))  # Splice list of quosures\n";
   deprecate_warn(msg, msg);
 }
 
-static
-r_obj* dots_big_bang_coerce(r_obj* x) {
+static r_obj* dots_big_bang_coerce(r_obj* x) {
   switch (r_typeof(x)) {
   case R_TYPE_null:
   case R_TYPE_pairlist:
@@ -257,8 +254,8 @@ r_obj* dots_big_bang_coerce(r_obj* x) {
 
   default:
     r_abort(
-      "Can't splice an object of type <%s> because it is not a vector.",
-      r_type_as_c_string(r_typeof(x))
+        "Can't splice an object of type <%s> because it is not a vector.",
+        r_type_as_c_string(r_typeof(x))
     );
   }
 }
@@ -307,22 +304,24 @@ r_obj* big_bang_coerce_pairlist(r_obj* x, bool deep) {
   }
   default:
     r_abort(
-      "Can't splice an object of type `%s` because it is not a vector",
-      r_type_as_c_string(r_typeof(x))
+        "Can't splice an object of type `%s` because it is not a vector",
+        r_type_as_c_string(r_typeof(x))
     );
   }
 
   FREE(n_kept);
   return x;
 }
-static
-r_obj* dots_big_bang_coerce_pairlist(r_obj* x) {
+static r_obj* dots_big_bang_coerce_pairlist(r_obj* x) {
   return big_bang_coerce_pairlist(x, false);
 }
 
-static
-r_obj* dots_big_bang_value(struct dots_capture_info* capture_info,
-                           r_obj* value, r_obj* env, bool quosured) {
+static r_obj* dots_big_bang_value(
+    struct dots_capture_info* capture_info,
+    r_obj* value,
+    r_obj* env,
+    bool quosured
+) {
   value = KEEP(capture_info->big_bang_coerce(value));
 
   r_ssize n = r_length(value);
@@ -352,35 +351,37 @@ r_obj* dots_big_bang_value(struct dots_capture_info* capture_info,
   FREE(1);
   return value;
 }
-static
-r_obj* dots_big_bang(struct dots_capture_info* capture_info,
-                     r_obj* expr, r_obj* env, bool quosured) {
+static r_obj* dots_big_bang(
+    struct dots_capture_info* capture_info,
+    r_obj* expr,
+    r_obj* env,
+    bool quosured
+) {
   r_obj* value = KEEP(r_eval(expr, env));
   r_obj* out = dots_big_bang_value(capture_info, value, env, quosured);
   FREE(1);
   return out;
 }
 
-static inline
-r_obj* dot_get_expr(r_obj* dot) {
+static inline r_obj* dot_get_expr(r_obj* dot) {
   return r_list_get(dot, 0);
 }
-static inline
-r_obj* dot_get_env(r_obj* dot) {
+static inline r_obj* dot_get_env(r_obj* dot) {
   return r_list_get(dot, 1);
 }
 
-static
-r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
+static r_obj* dots_unquote(
+    r_obj* dots,
+    struct dots_capture_info* capture_info
+) {
   capture_info->count = 0;
   r_ssize n = r_length(dots);
   bool unquote_names = capture_info->unquote_names;
 
   // In the case of `dots_list()` we auto-name inputs eagerly while we
   // still have access to the defused expression
-  bool needs_autoname =
-    capture_info->type == DOTS_COLLECT_value &&
-    capture_info->named == ARG_NAMED_auto;
+  bool needs_autoname = capture_info->type == DOTS_COLLECT_value &&
+      capture_info->named == ARG_NAMED_auto;
 
   r_obj* node = dots;
   for (r_ssize i = 0; node != r_null; ++i, node = r_node_cdr(node)) {
@@ -403,21 +404,20 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
       expr = r_node_cadr(r_node_cdr(expr));
     }
 
-    if (capture_info->check_assign
-        && r_is_call(expr, "<-")
-        && r_peek_option("rlang_dots_disable_assign_warning") == r_null) {
+    if (capture_info->check_assign && r_is_call(expr, "<-") &&
+        r_peek_option("rlang_dots_disable_assign_warning") == r_null) {
       r_warn(
-        "Using `<-` as argument is often a mistake.\n"
-        "Do you need to use `=` to match an argument?\n"
-        "\n"
-        "If you really want to use `<-`, please wrap in braces:\n"
-        "\n"
-        "  # Bad:\n"
-        "  fn(a <- 1)\n"
-        "\n"
-        "  # Good:\n"
-        "  fn(a = 1)       # Match 1 to parameter `a`\n"
-        "  fn({ a <- 1 })  # Assign 1 to variable `a`"
+          "Using `<-` as argument is often a mistake.\n"
+          "Do you need to use `=` to match an argument?\n"
+          "\n"
+          "If you really want to use `<-`, please wrap in braces:\n"
+          "\n"
+          "  # Bad:\n"
+          "  fn(a <- 1)\n"
+          "\n"
+          "  # Good:\n"
+          "  fn(a = 1)       # Match 1 to parameter `a`\n"
+          "  fn({ a <- 1 })  # Assign 1 to variable `a`"
       );
     }
 
@@ -426,12 +426,12 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
 
     bool last = i == n - 1;
 
-#define SKIP_MISSING(EXPR, NPROT)                               \
-    if (should_ignore(capture_info, EXPR, name, last)) {        \
-      ignore(capture_info, node);                               \
-      FREE(NPROT);                                              \
-      continue;                                                 \
-    }
+#define SKIP_MISSING(EXPR, NPROT)                                              \
+  if (should_ignore(capture_info, EXPR, name, last)) {                         \
+    ignore(capture_info, node);                                                \
+    FREE(NPROT);                                                               \
+    continue;                                                                  \
+  }
 
     switch (dots_op) {
     case DOTS_OP_expr_none:
@@ -525,56 +525,59 @@ r_obj* dots_unquote(r_obj* dots, struct dots_capture_info* capture_info) {
   return dots;
 }
 
-static inline
-bool should_ignore(struct dots_capture_info* p_capture_info,
-                   r_obj* expr,
-                   r_obj* name,
-                   bool last) {
-  if (expr != r_syms.missing ||
-      (name != r_null && name != r_strs.empty)) {
+static inline bool should_ignore(
+    struct dots_capture_info* p_capture_info,
+    r_obj* expr,
+    r_obj* name,
+    bool last
+) {
+  if (expr != r_syms.missing || (name != r_null && name != r_strs.empty)) {
     return false;
   }
 
   switch (p_capture_info->ignore_empty) {
-  case DOTS_IGNORE_EMPTY_all: return true;
-  case DOTS_IGNORE_EMPTY_trailing: return last;
-  default: return false;
+  case DOTS_IGNORE_EMPTY_all:
+    return true;
+  case DOTS_IGNORE_EMPTY_trailing:
+    return last;
+  default:
+    return false;
   }
 }
-static inline
-void ignore(struct dots_capture_info* p_capture_info,
-            r_obj* node) {
+static inline void ignore(
+    struct dots_capture_info* p_capture_info,
+    r_obj* node
+) {
   p_capture_info->needs_expansion = true;
   r_node_poke_car(node, spliced_box_prototype);
 }
 
-
-static
-enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty) {
-  return r_arg_match(ignore_empty,
-                     dots_ignore_empty_values,
-                     dots_ignore_empty_arg,
-                     r_lazy_missing_arg);
+static enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty) {
+  return r_arg_match(
+      ignore_empty,
+      dots_ignore_empty_values,
+      dots_ignore_empty_arg,
+      r_lazy_missing_arg
+  );
 }
 
-static
-const char* dots_homonyms_c_values[DOTS_HOMONYMS_SIZE] = {
-  [DOTS_HOMONYMS_keep] = "keep",
-  [DOTS_HOMONYMS_first] = "first",
-  [DOTS_HOMONYMS_last] = "last",
-  [DOTS_HOMONYMS_error] = "error"
+static const char* dots_homonyms_c_values[DOTS_HOMONYMS_SIZE] = {
+    [DOTS_HOMONYMS_keep] = "keep",
+    [DOTS_HOMONYMS_first] = "first",
+    [DOTS_HOMONYMS_last] = "last",
+    [DOTS_HOMONYMS_error] = "error"
 };
 
-static
-enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
-  return r_arg_match(homonyms,
-                     dots_homonyms_values,
-                     dots_homonyms_arg,
-                     r_lazy_missing_arg);
+static enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
+  return r_arg_match(
+      homonyms,
+      dots_homonyms_values,
+      dots_homonyms_arg,
+      r_lazy_missing_arg
+  );
 }
 
-static
-enum arg_named arg_match_named(r_obj* named) {
+static enum arg_named arg_match_named(r_obj* named) {
   if (named == r_null) {
     return ARG_NAMED_none;
   }
@@ -584,8 +587,7 @@ enum arg_named arg_match_named(r_obj* named) {
   return r_lgl_get(named, 0) ? ARG_NAMED_auto : ARG_NAMED_minimal;
 }
 
-static
-r_obj* maybe_auto_name(r_obj* x, enum arg_named named) {
+static r_obj* maybe_auto_name(r_obj* x, enum arg_named named) {
   r_obj* names = r_names(x);
 
   if (named == ARG_NAMED_auto && (names == r_null || r_chr_has(names, ""))) {
@@ -595,8 +597,7 @@ r_obj* maybe_auto_name(r_obj* x, enum arg_named named) {
   return x;
 }
 
-static
-bool any_name(r_obj* x, bool splice) {
+static bool any_name(r_obj* x, bool splice) {
   while (x != r_null) {
     if (r_node_tag(x) != r_null) {
       return true;
@@ -616,10 +617,10 @@ bool any_name(r_obj* x, bool splice) {
   return false;
 }
 
-static
-void check_named_splice(r_obj* node) {
+static void check_named_splice(r_obj* node) {
   if (r_node_tag(node) != r_null) {
-    const char* msg = "`!!!` can't be supplied with a name. Only the operand's names are retained.";
+    const char* msg = "`!!!` can't be supplied with a name. Only the operand's "
+                      "names are retained.";
     deprecate_stop(msg);
   }
 }
@@ -627,7 +628,8 @@ void check_named_splice(r_obj* node) {
 r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
   int n_kept = 0;
 
-  if (r_names(dots) == r_null && r_node_cdr(dots) == r_null && is_splice_box(r_node_car(dots))) {
+  if (r_names(dots) == r_null && r_node_cdr(dots) == r_null &&
+      is_splice_box(r_node_car(dots))) {
     r_obj* out = rlang_unbox(r_node_car(dots));
     r_mark_shared(out);
     return out;
@@ -636,7 +638,8 @@ r_obj* dots_as_list(r_obj* dots, struct dots_capture_info* capture_info) {
   r_obj* out = KEEP_N(r_alloc_list(capture_info->count), &n_kept);
 
   r_obj* out_names = r_null;
-  if (capture_info->named != ARG_NAMED_none || any_name(dots, capture_info->splice)) {
+  if (capture_info->named != ARG_NAMED_none ||
+      any_name(dots, capture_info->splice)) {
     out_names = KEEP_N(r_alloc_character(capture_info->count), &n_kept);
     r_attrib_poke_names(out, out_names);
   }
@@ -724,9 +727,7 @@ r_obj* dots_as_pairlist(r_obj* dots, struct dots_capture_info* capture_info) {
   return r_node_cdr(out);
 }
 
-
-static
-r_obj* dots_keep(r_obj* dots, r_obj* nms, bool first) {
+static r_obj* dots_keep(r_obj* dots, r_obj* nms, bool first) {
   r_ssize n = r_length(dots);
 
   r_obj* dups = KEEP(nms_are_duplicated(nms, !first));
@@ -736,7 +737,7 @@ r_obj* dots_keep(r_obj* dots, r_obj* nms, bool first) {
   r_obj* out_nms = KEEP(r_alloc_character(out_n));
   r_attrib_poke_names(out, out_nms);
 
-  r_obj* const * p_nms = r_chr_cbegin(nms);
+  r_obj* const* p_nms = r_chr_cbegin(nms);
   const int* p_dups = r_lgl_cbegin(dups);
 
   for (r_ssize i = 0, out_i = 0; i < n; ++i) {
@@ -751,8 +752,7 @@ r_obj* dots_keep(r_obj* dots, r_obj* nms, bool first) {
   return out;
 }
 
-static
-void dots_check_homonyms(r_obj* dots, r_obj* nms) {
+static void dots_check_homonyms(r_obj* dots, r_obj* nms) {
   r_obj* dups = KEEP(nms_are_duplicated(nms, false));
 
   if (r_lgl_sum(dups, false)) {
@@ -761,27 +761,21 @@ void dots_check_homonyms(r_obj* dots, r_obj* nms) {
     r_obj* env = KEEP(r_peek_frame());
     env = KEEP(r_caller_env(env));
 
-    struct r_pair args[] = {
-      { r_sym("dots"), dots },
-      { r_sym("dups"), dups }
-    };
-    r_exec_n(r_null,
-             abort_dots_homonyms_ns_sym,
-             args,
-             R_ARR_SIZEOF(args),
-             env);
+    struct r_pair args[] = {{r_sym("dots"), dots}, {r_sym("dups"), dups}};
+    r_exec_n(r_null, abort_dots_homonyms_ns_sym, args, R_ARR_SIZEOF(args), env);
     r_stop_unreachable();
   }
 
   FREE(1);
 }
 
-
 // From capture.c
 r_obj* capturedots(r_obj* frame);
 
-static
-r_obj* dots_capture(struct dots_capture_info* capture_info, r_obj* frame_env) {
+static r_obj* dots_capture(
+    struct dots_capture_info* capture_info,
+    r_obj* frame_env
+) {
   r_obj* dots = KEEP(capturedots(frame_env));
   dots = dots_unquote(dots, capture_info);
   FREE(1);
@@ -790,8 +784,10 @@ r_obj* dots_capture(struct dots_capture_info* capture_info, r_obj* frame_env) {
 
 r_obj* ffi_unescape_character(r_obj*);
 
-static
-r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
+static r_obj* dots_finalise(
+    struct dots_capture_info* capture_info,
+    r_obj* dots
+) {
   int n_prot = 0;
   r_obj* nms = KEEP_N(r_names(dots), &n_prot);
 
@@ -817,11 +813,19 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
     dots = KEEP(maybe_auto_name(dots, capture_info->named));
 
     switch (capture_info->homonyms) {
-    case DOTS_HOMONYMS_keep: break;
-    case DOTS_HOMONYMS_first: dots = dots_keep(dots, nms, true); break;
-    case DOTS_HOMONYMS_last: dots = dots_keep(dots, nms, false); break;
-    case DOTS_HOMONYMS_error: dots_check_homonyms(dots, nms); break;
-    default: r_stop_unreachable();
+    case DOTS_HOMONYMS_keep:
+      break;
+    case DOTS_HOMONYMS_first:
+      dots = dots_keep(dots, nms, true);
+      break;
+    case DOTS_HOMONYMS_last:
+      dots = dots_keep(dots, nms, false);
+      break;
+    case DOTS_HOMONYMS_error:
+      dots_check_homonyms(dots, nms);
+      break;
+    default:
+      r_stop_unreachable();
     }
 
     FREE(2);
@@ -831,23 +835,26 @@ r_obj* dots_finalise(struct dots_capture_info* capture_info, r_obj* dots) {
   return dots;
 }
 
-
-r_obj* ffi_exprs_interp(r_obj* frame_env,
-                        r_obj* named,
-                        r_obj* ignore_empty,
-                        r_obj* unquote_names,
-                        r_obj* homonyms,
-                        r_obj* check_assign) {
+r_obj* ffi_exprs_interp(
+    r_obj* frame_env,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign
+) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_COLLECT_expr,
-                                   named,
-                                   ignore_empty,
-                                   r_true,
-                                   unquote_names,
-                                   homonyms,
-                                   check_assign,
-                                   &dots_big_bang_coerce,
-                                   true);
+  capture_info = init_capture_info(
+      DOTS_COLLECT_expr,
+      named,
+      ignore_empty,
+      r_true,
+      unquote_names,
+      homonyms,
+      check_assign,
+      &dots_big_bang_coerce,
+      true
+  );
 
   r_obj* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
@@ -857,22 +864,26 @@ r_obj* ffi_exprs_interp(r_obj* frame_env,
   FREE(2);
   return dots;
 }
-r_obj* ffi_quos_interp(r_obj* frame_env,
-                       r_obj* named,
-                       r_obj* ignore_empty,
-                       r_obj* unquote_names,
-                       r_obj* homonyms,
-                       r_obj* check_assign) {
+r_obj* ffi_quos_interp(
+    r_obj* frame_env,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign
+) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_COLLECT_quo,
-                                   named,
-                                   ignore_empty,
-                                   r_true,
-                                   unquote_names,
-                                   homonyms,
-                                   check_assign,
-                                   &dots_big_bang_coerce,
-                                   true);
+  capture_info = init_capture_info(
+      DOTS_COLLECT_quo,
+      named,
+      ignore_empty,
+      r_true,
+      unquote_names,
+      homonyms,
+      check_assign,
+      &dots_big_bang_coerce,
+      true
+  );
 
   r_obj* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
@@ -889,8 +900,7 @@ r_obj* ffi_quos_interp(r_obj* frame_env,
   return dots;
 }
 
-static
-bool is_spliced_bare_dots_value(r_obj* x) {
+static bool is_spliced_bare_dots_value(r_obj* x) {
   if (r_typeof(x) != R_TYPE_list) {
     return false;
   }
@@ -903,25 +913,28 @@ bool is_spliced_bare_dots_value(r_obj* x) {
   return true;
 }
 
-static
-r_obj* dots_values_impl(r_obj* frame_env,
-                        r_obj* named,
-                        r_obj* ignore_empty,
-                        r_obj* preserve_empty,
-                        r_obj* unquote_names,
-                        r_obj* homonyms,
-                        r_obj* check_assign,
-                        bool splice) {
+static r_obj* dots_values_impl(
+    r_obj* frame_env,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* preserve_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign,
+    bool splice
+) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_COLLECT_value,
-                                   named,
-                                   ignore_empty,
-                                   preserve_empty,
-                                   unquote_names,
-                                   homonyms,
-                                   check_assign,
-                                   &dots_big_bang_coerce,
-                                   splice);
+  capture_info = init_capture_info(
+      DOTS_COLLECT_value,
+      named,
+      ignore_empty,
+      preserve_empty,
+      unquote_names,
+      homonyms,
+      check_assign,
+      &dots_big_bang_coerce,
+      splice
+  );
   r_obj* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
 
@@ -940,22 +953,30 @@ r_obj* dots_values_impl(r_obj* frame_env,
 r_obj* ffi_dots_values(r_obj* args) {
   args = r_node_cdr(args);
 
-  r_obj* env =            r_node_car(args); args = r_node_cdr(args);
-  r_obj* named =          r_node_car(args); args = r_node_cdr(args);
-  r_obj* ignore_empty =   r_node_car(args); args = r_node_cdr(args);
-  r_obj* preserve_empty = r_node_car(args); args = r_node_cdr(args);
-  r_obj* unquote_names =  r_node_car(args); args = r_node_cdr(args);
-  r_obj* homonyms =       r_node_car(args); args = r_node_cdr(args);
-  r_obj* check_assign =   r_node_car(args);
+  r_obj* env = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* named = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* ignore_empty = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* preserve_empty = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* unquote_names = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* homonyms = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* check_assign = r_node_car(args);
 
-  r_obj* out = dots_values_impl(env,
-                                named,
-                                ignore_empty,
-                                preserve_empty,
-                                unquote_names,
-                                homonyms,
-                                check_assign,
-                                false);
+  r_obj* out = dots_values_impl(
+      env,
+      named,
+      ignore_empty,
+      preserve_empty,
+      unquote_names,
+      homonyms,
+      check_assign,
+      false
+  );
 
   return out;
 }
@@ -964,28 +985,32 @@ r_obj* ffi_dots_values(r_obj* args) {
 // Used by vctrs <= 0.6.5, so can't easily remove.
 // [[ export() ]]
 r_obj* rlang_env_dots_values(r_obj* env) {
-  return dots_values_impl(env,
-                          r_null,
-                          rlang_objs_trailing,
-                          r_false,
-                          r_true,
-                          rlang_objs_keep,
-                          r_false,
-                          false);
+  return dots_values_impl(
+      env,
+      r_null,
+      rlang_objs_trailing,
+      r_false,
+      r_true,
+      rlang_objs_keep,
+      r_false,
+      false
+  );
 }
 
 // Deprecated
 // Used by vctrs <= 0.6.5, so can't easily remove.
 // [[ export() ]]
 r_obj* rlang_env_dots_list(r_obj* env) {
-  r_obj* out = KEEP(dots_values_impl(env,
-                                     r_null,
-                                     rlang_objs_trailing,
-                                     r_false,
-                                     r_true,
-                                     rlang_objs_keep,
-                                     r_false,
-                                     true));
+  r_obj* out = KEEP(dots_values_impl(
+      env,
+      r_null,
+      rlang_objs_trailing,
+      r_false,
+      r_true,
+      rlang_objs_keep,
+      r_false,
+      true
+  ));
   // Deprecated due to this clone being unnecessary.
   // `rlang_env_dots_list()` has the exact same defaults as `list2()`, and
   // `list2()` avoids the clone, so in vctrs we now just use that instead.
@@ -999,49 +1024,59 @@ r_obj* rlang_env_dots_list(r_obj* env) {
 // faster than `.Call()` and gives us `frame_env` for free rather than needing
 // an R level `environment()` call
 r_obj* ffi_list2(r_obj* call, r_obj* op, r_obj* args, r_obj* frame_env) {
-  return dots_values_impl(frame_env,
-                          r_null,
-                          rlang_objs_trailing,
-                          r_false,
-                          r_true,
-                          rlang_objs_keep,
-                          r_false,
-                          true);
+  return dots_values_impl(
+      frame_env,
+      r_null,
+      rlang_objs_trailing,
+      r_false,
+      r_true,
+      rlang_objs_keep,
+      r_false,
+      true
+  );
 }
-r_obj* ffi_dots_list(r_obj* frame_env,
-                     r_obj* named,
-                     r_obj* ignore_empty,
-                     r_obj* preserve_empty,
-                     r_obj* unquote_names,
-                     r_obj* homonyms,
-                     r_obj* check_assign) {
-  return dots_values_impl(frame_env,
-                          named,
-                          ignore_empty,
-                          preserve_empty,
-                          unquote_names,
-                          homonyms,
-                          check_assign,
-                          true);
+r_obj* ffi_dots_list(
+    r_obj* frame_env,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* preserve_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign
+) {
+  return dots_values_impl(
+      frame_env,
+      named,
+      ignore_empty,
+      preserve_empty,
+      unquote_names,
+      homonyms,
+      check_assign,
+      true
+  );
 }
-r_obj* ffi_dots_flat_list(r_obj* frame_env,
-                          r_obj* named,
-                          r_obj* ignore_empty,
-                          r_obj* preserve_empty,
-                          r_obj* unquote_names,
-                          r_obj* homonyms,
-                          r_obj* check_assign) {
+r_obj* ffi_dots_flat_list(
+    r_obj* frame_env,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* preserve_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign
+) {
 
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_COLLECT_value,
-                                   named,
-                                   ignore_empty,
-                                   preserve_empty,
-                                   unquote_names,
-                                   homonyms,
-                                   check_assign,
-                                   &dots_big_bang_coerce,
-                                   true);
+  capture_info = init_capture_info(
+      DOTS_COLLECT_value,
+      named,
+      ignore_empty,
+      preserve_empty,
+      unquote_names,
+      homonyms,
+      check_assign,
+      &dots_big_bang_coerce,
+      true
+  );
 
   r_obj* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
@@ -1054,24 +1089,28 @@ r_obj* ffi_dots_flat_list(r_obj* frame_env,
   return dots;
 }
 
-r_obj* dots_values_node_impl(r_obj* frame_env,
-                             r_obj* named,
-                             r_obj* ignore_empty,
-                             r_obj* preserve_empty,
-                             r_obj* unquote_names,
-                             r_obj* homonyms,
-                             r_obj* check_assign,
-                             bool splice) {
+r_obj* dots_values_node_impl(
+    r_obj* frame_env,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* preserve_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign,
+    bool splice
+) {
   struct dots_capture_info capture_info;
-  capture_info = init_capture_info(DOTS_COLLECT_value,
-                                   named,
-                                   ignore_empty,
-                                   preserve_empty,
-                                   unquote_names,
-                                   homonyms,
-                                   check_assign,
-                                   &dots_big_bang_coerce_pairlist,
-                                   splice);
+  capture_info = init_capture_info(
+      DOTS_COLLECT_value,
+      named,
+      ignore_empty,
+      preserve_empty,
+      unquote_names,
+      homonyms,
+      check_assign,
+      &dots_big_bang_coerce_pairlist,
+      splice
+  );
 
   r_obj* dots;
   dots = KEEP(dots_capture(&capture_info, frame_env));
@@ -1083,21 +1122,25 @@ r_obj* dots_values_node_impl(r_obj* frame_env,
   FREE(2);
   return dots;
 }
-r_obj* ffi_dots_pairlist(r_obj* frame_env,
-                         r_obj* named,
-                         r_obj* ignore_empty,
-                         r_obj* preserve_empty,
-                         r_obj* unquote_names,
-                         r_obj* homonyms,
-                         r_obj* check_assign) {
-  return dots_values_node_impl(frame_env,
-                               named,
-                               ignore_empty,
-                               preserve_empty,
-                               unquote_names,
-                               homonyms,
-                               check_assign,
-                               true);
+r_obj* ffi_dots_pairlist(
+    r_obj* frame_env,
+    r_obj* named,
+    r_obj* ignore_empty,
+    r_obj* preserve_empty,
+    r_obj* unquote_names,
+    r_obj* homonyms,
+    r_obj* check_assign
+) {
+  return dots_values_node_impl(
+      frame_env,
+      named,
+      ignore_empty,
+      preserve_empty,
+      unquote_names,
+      homonyms,
+      check_assign,
+      true
+  );
 }
 
 void rlang_init_dots(r_obj* ns) {
@@ -1112,7 +1155,10 @@ void rlang_init_dots(r_obj* ns) {
   {
     spliced_box_prototype = KEEP(r_alloc_list(1));
     r_list_poke(spliced_box_prototype, 0, r_alloc_list(0));
-    r_attrib_poke_class(spliced_box_prototype, r_chr_n((const char*[]){"rlang_box_splice", "rlang_box"}, 2));
+    r_attrib_poke_class(
+        spliced_box_prototype,
+        r_chr_n((const char*[]) {"rlang_box_splice", "rlang_box"}, 2)
+    );
     r_preserve(spliced_box_prototype);
     r_mark_shared(spliced_box_prototype);
     FREE(1);
@@ -1120,20 +1166,25 @@ void rlang_init_dots(r_obj* ns) {
 
   {
     quosures_prototype = KEEP(r_alloc_list(0));
-    r_attrib_poke_class(quosures_prototype, r_chr_n((const char*[]){"quosures", "list"}, 2));
+    r_attrib_poke_class(
+        quosures_prototype,
+        r_chr_n((const char*[]) {"quosures", "list"}, 2)
+    );
     r_preserve(quosures_prototype);
     r_mark_shared(quosures_prototype);
     FREE(1);
   }
 
-  dots_ignore_empty_values = r_chr_n(dots_ignore_empty_c_values, DOTS_IGNORE_EMPTY_SIZE);
+  dots_ignore_empty_values =
+      r_chr_n(dots_ignore_empty_c_values, DOTS_IGNORE_EMPTY_SIZE);
   r_preserve_global(dots_ignore_empty_values);
 
   dots_homonyms_values = r_chr_n(dots_homonyms_c_values, DOTS_HOMONYMS_SIZE);
   r_preserve_global(dots_homonyms_values);
 
-  dots_ignore_empty_arg = (struct r_lazy) { .x = r_sym(".ignore_empty"), .env = r_null };
-  dots_homonyms_arg = (struct r_lazy) { .x = r_sym(".homonyms"), .env = r_null };
+  dots_ignore_empty_arg =
+      (struct r_lazy) {.x = r_sym(".ignore_empty"), .env = r_null};
+  dots_homonyms_arg = (struct r_lazy) {.x = r_sym(".homonyms"), .env = r_null};
 }
 
 static r_obj* auto_name_call = NULL;
@@ -1145,82 +1196,92 @@ static r_obj* quosures_prototype = NULL;
 
 static r_obj* abort_dots_homonyms_ns_sym = NULL;
 
-static struct r_lazy dots_homonyms_arg = { 0 };
-static struct r_lazy dots_ignore_empty_arg = { 0 };
-
+static struct r_lazy dots_homonyms_arg = {0};
+static struct r_lazy dots_ignore_empty_arg = {0};
 
 // FFI wrappers for dots-info API ---
 
 r_obj* ffi_env_dots_exist(r_obj* env) {
-    return r_lgl(r_env_dots_exist(env));
+  return r_lgl(r_env_dots_exist(env));
 }
 
 r_obj* ffi_env_dots_length(r_obj* env) {
-    return r_int(r_env_dots_length(env));
+  return r_int(r_env_dots_length(env));
 }
 
 r_obj* ffi_env_dots_names(r_obj* env) {
-    return r_env_dots_names(env);
+  return r_env_dots_names(env);
 }
 
 r_obj* ffi_env_dot_get(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_get(env, i);
+  r_ssize i = r_int_get(ffi_i, 0) - 1;
+  return r_env_dot_get(env, i);
 }
 
 r_obj* ffi_env_dot_type(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    r_dot_type_t type = r_env_dot_type(env, i);
+  r_ssize i = r_int_get(ffi_i, 0) - 1;
+  r_dot_type_t type = r_env_dot_type(env, i);
 
-    switch (type) {
-    case DOT_TYPE_value:   return r_chr("value");
-    case DOT_TYPE_missing: return r_chr("missing");
-    case DOT_TYPE_delayed: return r_chr("delayed");
-    case DOT_TYPE_forced:  return r_chr("forced");
-    default:               r_abort("unreachable");
-    }
+  switch (type) {
+  case DOT_TYPE_value:
+    return r_chr("value");
+  case DOT_TYPE_missing:
+    return r_chr("missing");
+  case DOT_TYPE_delayed:
+    return r_chr("delayed");
+  case DOT_TYPE_forced:
+    return r_chr("forced");
+  default:
+    r_abort("unreachable");
+  }
 }
 
 r_obj* ffi_env_dot_delayed_expr(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_delayed_expr(env, i);
+  r_ssize i = r_int_get(ffi_i, 0) - 1;
+  return r_env_dot_delayed_expr(env, i);
 }
 
 r_obj* ffi_env_dot_delayed_env(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_delayed_env(env, i);
+  r_ssize i = r_int_get(ffi_i, 0) - 1;
+  return r_env_dot_delayed_env(env, i);
 }
 
 r_obj* ffi_env_dot_forced_expr(r_obj* ffi_i, r_obj* env) {
-    r_ssize i = r_int_get(ffi_i, 0) - 1;
-    return r_env_dot_forced_expr(env, i);
+  r_ssize i = r_int_get(ffi_i, 0) - 1;
+  return r_env_dot_forced_expr(env, i);
 }
-
 
 // FFI wrappers for env-binding accessors ---
 
 r_obj* ffi_env_binding_type(r_obj* sym, r_obj* env) {
-    enum r_env_binding_type type = r_env_binding_type(env, sym);
+  enum r_env_binding_type type = r_env_binding_type(env, sym);
 
-    switch (type) {
-    case R_ENV_BINDING_TYPE_value:   return r_chr("value");
-    case R_ENV_BINDING_TYPE_missing: return r_chr("missing");
-    case R_ENV_BINDING_TYPE_delayed: return r_chr("delayed");
-    case R_ENV_BINDING_TYPE_forced:  return r_chr("forced");
-    case R_ENV_BINDING_TYPE_active:  return r_chr("active");
-    case R_ENV_BINDING_TYPE_unbound: return r_chr("unbound");
-    default:                         r_abort("unreachable");
-    }
+  switch (type) {
+  case R_ENV_BINDING_TYPE_value:
+    return r_chr("value");
+  case R_ENV_BINDING_TYPE_missing:
+    return r_chr("missing");
+  case R_ENV_BINDING_TYPE_delayed:
+    return r_chr("delayed");
+  case R_ENV_BINDING_TYPE_forced:
+    return r_chr("forced");
+  case R_ENV_BINDING_TYPE_active:
+    return r_chr("active");
+  case R_ENV_BINDING_TYPE_unbound:
+    return r_chr("unbound");
+  default:
+    r_abort("unreachable");
+  }
 }
 
 r_obj* ffi_env_binding_delayed_expr(r_obj* sym, r_obj* env) {
-    return r_env_binding_delayed_expr(env, sym);
+  return r_env_binding_delayed_expr(env, sym);
 }
 
 r_obj* ffi_env_binding_delayed_env(r_obj* sym, r_obj* env) {
-    return r_env_binding_delayed_env(env, sym);
+  return r_env_binding_delayed_env(env, sym);
 }
 
 r_obj* ffi_env_binding_forced_expr(r_obj* sym, r_obj* env) {
-    return r_env_binding_forced_expr(env, sym);
+  return r_env_binding_forced_expr(env, sym);
 }

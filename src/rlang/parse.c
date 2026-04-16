@@ -1,7 +1,6 @@
 #include "rlang.h"
 #include <R_ext/Parse.h>
 
-
 static void abort_parse(r_obj* code, const char* why) {
   if (r_peek_option("rlang__verbose_errors") != r_null) {
     r_obj_print(code);

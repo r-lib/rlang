@@ -2,7 +2,6 @@
 
 r_obj* eval_with_x(r_obj* call, r_obj* x);
 
-
 static r_obj* is_installed_call = NULL;
 
 bool r_is_installed(const char* pkg) {
@@ -12,7 +11,6 @@ bool r_is_installed(const char* pkg) {
   FREE(1);
   return out;
 }
-
 
 static r_obj* has_colour_call = NULL;
 
@@ -24,7 +22,6 @@ bool r_has_colour(void) {
   return *r_lgl_begin(r_eval(has_colour_call, r_envs.base));
 }
 
-
 void r_init_library_session(void) {
   is_installed_call = r_parse("requireNamespace(x, quietly = TRUE)");
   r_preserve(is_installed_call);
@@ -33,16 +30,15 @@ void r_init_library_session(void) {
   r_preserve(has_colour_call);
 }
 
-
 #ifdef _WIN32
 
-# include    <windows.h>
-# include    <tlhelp32.h>
+#include <windows.h>
+#include <tlhelp32.h>
 
 r_obj* r_getppid(void) {
   DWORD pid = GetCurrentProcessId();
   HANDLE handle = NULL;
-  PROCESSENTRY32W pe = { 0 };
+  PROCESSENTRY32W pe = {0};
 
   pe.dwSize = sizeof(PROCESSENTRY32W);
   handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
@@ -68,7 +64,7 @@ r_obj* r_getppid(void) {
 
 #else
 
-# include <unistd.h>
+#include <unistd.h>
 
 r_obj* r_getppid(void) {
   return r_int(getppid());

@@ -8,5 +8,4 @@
 r_obj* r_parse(const char* str);
 r_obj* r_parse_eval(const char* str, r_obj* env);
 
-
 #endif

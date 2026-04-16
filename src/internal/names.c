@@ -8,7 +8,6 @@
 // 3 leading '.' + 1 trailing '\0' + 24 characters
 #define MAX_IOTA_SIZE 28
 
-
 r_obj* ffi_names_as_unique(r_obj* names, r_obj* quiet) {
   return names_as_unique(names, r_lgl_get(quiet, 0));
 }
@@ -26,7 +25,7 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
     new_names = r_clone(names);
   }
   KEEP(new_names);
-  r_obj* const * v_new_names = r_chr_cbegin(new_names);
+  r_obj* const* v_new_names = r_chr_cbegin(new_names);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* elt = v_new_names[i];
@@ -72,15 +71,16 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
     r_memcpy(buf, name, size);
     int remaining = buf_size - size;
 
-    int needed = snprintf(buf + size,
-                          remaining,
-                          "...%" R_PRI_SSIZE,
-                          i + 1);
+    int needed = snprintf(buf + size, remaining, "...%" R_PRI_SSIZE, i + 1);
     if (needed >= remaining) {
       stop_large_name();
     }
 
-    r_chr_poke(new_names, i, Rf_mkCharLenCE(buf, size + needed, Rf_getCharCE(elt)));
+    r_chr_poke(
+        new_names,
+        i,
+        Rf_mkCharLenCE(buf, size + needed, Rf_getCharCE(elt))
+    );
   }
 
   if (!quiet) {
@@ -91,14 +91,13 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
   return new_names;
 }
 
-static
-bool is_unique_names(r_obj* names) {
+static bool is_unique_names(r_obj* names) {
   if (r_typeof(names) != R_TYPE_character) {
     r_abort("`names` must be a character vector.");
   }
 
   r_ssize n = r_length(names);
-  r_obj* const * v_names = r_chr_cbegin(names);
+  r_obj* const* v_names = r_chr_cbegin(names);
 
   if (Rf_any_duplicated(names, FALSE)) {
     return false;
@@ -115,10 +114,9 @@ bool is_unique_names(r_obj* names) {
   return true;
 }
 
-static
-bool any_has_suffix(r_obj* names) {
+static bool any_has_suffix(r_obj* names) {
   r_ssize n = r_length(names);
-  r_obj* const * v_names = r_chr_cbegin(names);
+  r_obj* const* v_names = r_chr_cbegin(names);
 
   for (r_ssize i = 0; i < n; ++i) {
     const char* elt = r_str_c_string(v_names[i]);
@@ -131,8 +129,7 @@ bool any_has_suffix(r_obj* names) {
   return false;
 }
 
-static
-ptrdiff_t suffix_pos(const char* name) {
+static ptrdiff_t suffix_pos(const char* name) {
   int n = strlen(name);
 
   const char* suffix_end = NULL;
@@ -181,9 +178,10 @@ ptrdiff_t suffix_pos(const char* name) {
 
     default:
       r_stop_internal("Unexpected state.");
-    }}
+    }
+  }
 
- done:
+done:
   if (suffix_end) {
     return suffix_end - name;
   } else {
@@ -191,17 +189,12 @@ ptrdiff_t suffix_pos(const char* name) {
   }
 }
 
-static
-bool needs_suffix(r_obj* str) {
-  return
-    str == r_strs.na ||
-    str == r_strs.dots ||
-    str == r_strs.empty ||
-    is_dotdotint(r_str_c_string(str));
+static bool needs_suffix(r_obj* str) {
+  return str == r_strs.na || str == r_strs.dots || str == r_strs.empty ||
+      is_dotdotint(r_str_c_string(str));
 }
 
-static
-bool is_dotdotint(const char* name) {
+static bool is_dotdotint(const char* name) {
   int n = strlen(name);
 
   if (n < 3) {
@@ -220,14 +213,13 @@ bool is_dotdotint(const char* name) {
   return (bool) strtol(name, NULL, 10);
 }
 
-static
-void names_inform_repair(r_obj* old_names, r_obj* new_names) {
-  r_obj* call = KEEP(r_call3(r_sym("names_inform_repair"), old_names, new_names));
+static void names_inform_repair(r_obj* old_names, r_obj* new_names) {
+  r_obj* call =
+      KEEP(r_call3(r_sym("names_inform_repair"), old_names, new_names));
   r_eval(call, rlang_ns_env);
   FREE(1);
 }
 
-static
-void stop_large_name(void) {
+static void stop_large_name(void) {
   r_abort("Can't tidy up name because it is too large.");
 }

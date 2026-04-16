@@ -22,8 +22,7 @@ static size_t size_round_power_2(size_t size);
 #define V_DICT_VALUE(V) (V)[1]
 #define V_DICT_CDR(V) (V)[2]
 
-static
-r_obj* new_dict_node(r_obj* key, r_obj* value) {
+static r_obj* new_dict_node(r_obj* key, r_obj* value) {
   r_obj* bucket = r_alloc_list(3);
   DICT_POKE_KEY(bucket, key);
   DICT_POKE_VALUE(bucket, value);
@@ -64,13 +63,13 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
   KEEP(p_new_dict->shelter);
 
   r_ssize n = r_length(p_dict->buckets);
-  r_obj* const * p_buckets = p_dict->p_buckets;
+  r_obj* const* p_buckets = p_dict->p_buckets;
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* bucket = p_buckets[i];
 
     while (bucket != r_null) {
-      r_obj* const * v_bucket = DICT_DEREF(bucket);
+      r_obj* const* v_bucket = DICT_DEREF(bucket);
 
       r_obj* key = V_DICT_KEY(v_bucket);
       r_obj* value = V_DICT_VALUE(v_bucket);
@@ -91,25 +90,21 @@ void r_dict_resize(struct r_dict* p_dict, r_ssize size) {
   FREE(1);
 }
 
-static
-size_t size_round_power_2(size_t size) {
-    size_t out = 1;
-    while (out < size) {
-      out <<= 1;
-    }
-    return out;
+static size_t size_round_power_2(size_t size) {
+  size_t out = 1;
+  while (out < size) {
+    out <<= 1;
+  }
+  return out;
 }
 
-static
-r_ssize dict_hash(const struct r_dict* p_dict, r_obj* key) {
+static r_ssize dict_hash(const struct r_dict* p_dict, r_obj* key) {
   uint64_t hash = r_xxh3_64bits(&key, sizeof(r_obj*));
   return hash % p_dict->n_buckets;
 }
 
 // Returns previous value of `key` if it existed or a C `NULL`
-r_obj* r_dict_poke(struct r_dict* p_dict,
-                   r_obj* key,
-                   r_obj* value) {
+r_obj* r_dict_poke(struct r_dict* p_dict, r_obj* key, r_obj* value) {
   r_ssize hash;
   r_obj* parent;
   r_obj* node = dict_find_node_info(p_dict, key, &hash, &parent);
@@ -139,12 +134,13 @@ bool r_dict_put(struct r_dict* p_dict, r_obj* key, r_obj* value) {
   }
 }
 
-static
-void dict_push(struct r_dict* p_dict,
-               r_ssize hash,
-               r_obj* parent,
-               r_obj* key,
-               r_obj* value) {
+static void dict_push(
+    struct r_dict* p_dict,
+    r_ssize hash,
+    r_obj* parent,
+    r_obj* key,
+    r_obj* value
+) {
   r_obj* node = KEEP(new_dict_node(key, value));
 
   if (parent == r_null) {
@@ -212,13 +208,12 @@ r_obj* r_dict_get0(struct r_dict* p_dict, r_obj* key) {
   }
 }
 
-static
-r_obj* dict_find_node(struct r_dict* p_dict, r_obj* key) {
+static r_obj* dict_find_node(struct r_dict* p_dict, r_obj* key) {
   r_ssize i = dict_hash(p_dict, key);
   r_obj* bucket = p_dict->p_buckets[i];
 
   while (bucket != r_null) {
-    r_obj* const * v_bucket = DICT_DEREF(bucket);
+    r_obj* const* v_bucket = DICT_DEREF(bucket);
     if (V_DICT_KEY(v_bucket) == key) {
       return bucket;
     }
@@ -229,11 +224,12 @@ r_obj* dict_find_node(struct r_dict* p_dict, r_obj* key) {
 }
 
 // Also returns hash and parent node if any
-static
-r_obj* dict_find_node_info(struct r_dict* p_dict,
-                           r_obj* key,
-                           r_ssize* hash,
-                           r_obj** parent) {
+static r_obj* dict_find_node_info(
+    struct r_dict* p_dict,
+    r_obj* key,
+    r_ssize* hash,
+    r_obj** parent
+) {
   r_ssize i = dict_hash(p_dict, key);
   *hash = i;
 
@@ -241,7 +237,7 @@ r_obj* dict_find_node_info(struct r_dict* p_dict,
   *parent = r_null;
 
   while (bucket != r_null) {
-    r_obj* const * v_bucket = DICT_DEREF(bucket);
+    r_obj* const* v_bucket = DICT_DEREF(bucket);
 
     if (V_DICT_KEY(v_bucket) == key) {
       return bucket;
@@ -252,7 +248,6 @@ r_obj* dict_find_node_info(struct r_dict* p_dict,
 
   return r_null;
 }
-
 
 struct r_dict_iterator* r_new_dict_iterator(struct r_dict* p_dict) {
   r_obj* shelter = r_alloc_raw(sizeof(struct r_dict_iterator));
@@ -291,23 +286,15 @@ bool r_dict_next(struct r_dict_iterator* p_it) {
     p_it->node = node;
   }
 
-  r_obj* const * v_node = DICT_DEREF(node);
+  r_obj* const* v_node = DICT_DEREF(node);
   p_it->key = V_DICT_KEY(v_node);
   p_it->value = V_DICT_VALUE(v_node);
   p_it->node = V_DICT_CDR(v_node);
   return true;
 }
 
-static
-const char* v_dict_it_df_names_c_strings[] = {
-  "key",
-  "value"
-};
-static
-const enum r_type v_dict_it_df_types[] = {
-  R_TYPE_list,
-  R_TYPE_list
-};
+static const char* v_dict_it_df_names_c_strings[] = {"key", "value"};
+static const enum r_type v_dict_it_df_types[] = {R_TYPE_list, R_TYPE_list};
 enum dict_it_df_locs {
   DICT_IT_DF_LOCS_key,
   DICT_IT_DF_LOCS_value
@@ -315,13 +302,14 @@ enum dict_it_df_locs {
 #define DICT_IT_DF_SIZE R_ARR_SIZEOF(v_dict_it_df_types)
 
 r_obj* r_dict_as_df_list(struct r_dict* p_dict) {
-  r_obj* nms = KEEP(r_chr_n(v_dict_it_df_names_c_strings,
-                            DICT_IT_DF_SIZE));
+  r_obj* nms = KEEP(r_chr_n(v_dict_it_df_names_c_strings, DICT_IT_DF_SIZE));
 
-  r_obj* out = KEEP(r_alloc_df_list(p_dict->n_entries,
-                                    nms,
-                                    v_dict_it_df_types,
-                                    DICT_IT_DF_SIZE));
+  r_obj* out = KEEP(r_alloc_df_list(
+      p_dict->n_entries,
+      nms,
+      v_dict_it_df_types,
+      DICT_IT_DF_SIZE
+  ));
 
   r_obj* key = r_list_get(out, DICT_IT_DF_LOCS_key);
   r_obj* value = r_list_get(out, DICT_IT_DF_LOCS_value);

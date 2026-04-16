@@ -2,7 +2,6 @@
 
 static r_obj* quote_prim = NULL;
 
-
 bool r_is_call(r_obj* x, const char* name) {
   if (r_typeof(x) != LANGSXP) {
     return false;
@@ -30,8 +29,7 @@ r_obj* r_expr_protect(r_obj* x) {
   }
 }
 
-static inline
-bool is_node(r_obj* x) {
+static inline bool is_node(r_obj* x) {
   switch (r_typeof(x)) {
   case R_TYPE_call:
   case R_TYPE_pairlist:
@@ -60,7 +58,6 @@ r_obj* r_call_clone(r_obj* x) {
   FREE(1);
   return x;
 }
-
 
 void r_init_library_call(void) {
   quote_prim = r_base_ns_get("quote");

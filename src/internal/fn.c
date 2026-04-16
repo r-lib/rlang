@@ -3,7 +3,6 @@
 #include "internal.h"
 #include "utils.h"
 
-
 r_obj* ffi_new_function(r_obj* args, r_obj* body, r_obj* env) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment");
@@ -25,7 +24,6 @@ r_obj* ffi_new_function(r_obj* args, r_obj* body, r_obj* env) {
   FREE(2);
   return out;
 }
-
 
 static r_obj* as_function_call = NULL;
 
