@@ -14,7 +14,9 @@ void r_on_exit(r_obj* expr, r_obj* frame) {
   FREE(1);
 }
 
-r_obj* r_peek_frame(void) { return r_eval(peek_frame_call, r_envs.base); }
+r_obj* r_peek_frame(void) {
+  return r_eval(peek_frame_call, r_envs.base);
+}
 
 r_obj* r_caller_env(r_obj* n) {
   if (r_typeof(n) != R_TYPE_environment) {

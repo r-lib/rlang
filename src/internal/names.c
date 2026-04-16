@@ -77,7 +77,9 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
     }
 
     r_chr_poke(
-        new_names, i, Rf_mkCharLenCE(buf, size + needed, Rf_getCharCE(elt))
+        new_names,
+        i,
+        Rf_mkCharLenCE(buf, size + needed, Rf_getCharCE(elt))
     );
   }
 

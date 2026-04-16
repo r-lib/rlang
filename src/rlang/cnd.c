@@ -86,7 +86,9 @@ void r_interrupt(void) {
 }
 #else
 #include <Rinterface.h>
-void r_interrupt(void) { Rf_onintr(); }
+void r_interrupt(void) {
+  Rf_onintr();
+}
 #endif
 
 enum r_cnd_type r_cnd_type(r_obj* cnd) {
@@ -141,7 +143,11 @@ void r_init_library_cnd(void) {
   // to cast through a typedef.
   // https://stackoverflow.com/questions/9441262/function-pointer-to-attribute-const-function
   typedef r_no_return void (*r_stop_internal_t)(
-      const char*, int, r_obj*, const char* fmt, ...
+      const char*,
+      int,
+      r_obj*,
+      const char* fmt,
+      ...
   );
   r_stop_internal =
       (r_stop_internal_t) R_GetCCallable("rlang", "rlang_stop_internal2");

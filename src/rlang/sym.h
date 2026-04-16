@@ -16,7 +16,9 @@ static inline r_obj* r_sym(const char* c_string) {
   return Rf_install(c_string);
 }
 
-static inline r_obj* r_sym_string(r_obj* sym) { return PRINTNAME(sym); }
+static inline r_obj* r_sym_string(r_obj* sym) {
+  return PRINTNAME(sym);
+}
 static inline const char* r_sym_c_string(r_obj* sym) {
   return CHAR(PRINTNAME(sym));
 }

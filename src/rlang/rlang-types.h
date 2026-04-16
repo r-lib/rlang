@@ -118,7 +118,9 @@ struct r_lazy {
 // Polyfills for R API
 
 #if R_VERSION < R_Version(4, 5, 0)
-static inline int ANY_ATTRIB(SEXP x) { return ATTRIB(x) != R_NilValue; }
+static inline int ANY_ATTRIB(SEXP x) {
+  return ATTRIB(x) != R_NilValue;
+}
 static inline void CLEAR_ATTRIB(SEXP x) {
   SET_ATTRIB(x, R_NilValue);
   SET_OBJECT(x, 0);

@@ -22,7 +22,11 @@ bool test_that_false_is_false(void) {
   }
 }
 
-enum tests_df { TESTS_DF_desc = 0, TESTS_DF_fn_ptr, TESTS_DF_SIZE };
+enum tests_df {
+  TESTS_DF_desc = 0,
+  TESTS_DF_fn_ptr,
+  TESTS_DF_SIZE
+};
 static const char* tests_df_names_c_strings[TESTS_DF_SIZE] =
     {[TESTS_DF_desc] = "desc", [TESTS_DF_fn_ptr] = "fn_ptr"};
 static const enum r_type tests_df_types[TESTS_DF_SIZE] =
@@ -66,7 +70,9 @@ r_obj* ffi_run_c_test(r_obj* fn_ptr) {
 
 // ------------------------------------------------------------------------
 
-r_obj* ffi_r_string(r_obj* str) { return r_chr_get(str, 0); }
+r_obj* ffi_r_string(r_obj* str) {
+  return r_chr_get(str, 0);
+}
 
 // cnd.c
 
@@ -118,11 +124,15 @@ r_obj* ffi_test_parse_eval(r_obj* str, r_obj* env) {
 
 // squash.c
 
-bool rlang_is_clevel_spliceable(r_obj* x) { return Rf_inherits(x, "foo"); }
+bool rlang_is_clevel_spliceable(r_obj* x) {
+  return Rf_inherits(x, "foo");
+}
 
 // stack.c
 
-r_obj* ffi_test_sys_call(r_obj* n) { return r_sys_call(r_int_get(n, 0), NULL); }
+r_obj* ffi_test_sys_call(r_obj* n) {
+  return r_sys_call(r_int_get(n, 0), NULL);
+}
 r_obj* ffi_test_sys_frame(r_obj* n) {
   return r_sys_frame(r_int_get(n, 0), NULL);
 }

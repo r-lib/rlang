@@ -465,7 +465,8 @@ const char* r_sexp_it_relation_as_c_string(enum r_sexp_it_relation rel) {
 
   case R_SEXP_IT_RELATION_none:
     r_stop_internal(
-        "r_sexp_it_relation_as_c_string", "Found `R_SEXP_IT_RELATION_none`."
+        "r_sexp_it_relation_as_c_string",
+        "Found `R_SEXP_IT_RELATION_none`."
     );
   default:
     r_stop_unreachable();

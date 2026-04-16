@@ -5,13 +5,27 @@
 
 #include "rlang-types.h"
 
-static inline r_obj* r_node_car(r_obj* x) { return CAR(x); }
-static inline r_obj* r_node_cdr(r_obj* x) { return CDR(x); }
-static inline r_obj* r_node_tag(r_obj* x) { return TAG(x); }
-static inline r_obj* r_node_caar(r_obj* x) { return CAAR(x); }
-static inline r_obj* r_node_cadr(r_obj* x) { return CADR(x); }
-static inline r_obj* r_node_cdar(r_obj* x) { return CDAR(x); }
-static inline r_obj* r_node_cddr(r_obj* x) { return CDDR(x); }
+static inline r_obj* r_node_car(r_obj* x) {
+  return CAR(x);
+}
+static inline r_obj* r_node_cdr(r_obj* x) {
+  return CDR(x);
+}
+static inline r_obj* r_node_tag(r_obj* x) {
+  return TAG(x);
+}
+static inline r_obj* r_node_caar(r_obj* x) {
+  return CAAR(x);
+}
+static inline r_obj* r_node_cadr(r_obj* x) {
+  return CADR(x);
+}
+static inline r_obj* r_node_cdar(r_obj* x) {
+  return CDAR(x);
+}
+static inline r_obj* r_node_cddr(r_obj* x) {
+  return CDDR(x);
+}
 
 static inline void r_node_poke_car(r_obj* x, r_obj* newcar) {
   SETCAR(x, newcar);
@@ -19,7 +33,9 @@ static inline void r_node_poke_car(r_obj* x, r_obj* newcar) {
 static inline void r_node_poke_cdr(r_obj* x, r_obj* newcdr) {
   SETCDR(x, newcdr);
 }
-static inline void r_node_poke_tag(r_obj* x, r_obj* tag) { SET_TAG(x, tag); }
+static inline void r_node_poke_tag(r_obj* x, r_obj* tag) {
+  SET_TAG(x, tag);
+}
 static inline void r_node_poke_caar(r_obj* x, r_obj* newcaar) {
   SETCAR(CAR(x), newcaar);
 }

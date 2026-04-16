@@ -118,7 +118,8 @@ static int arg_match(
 
   if (arg_len != values_len) {
     r_abort_lazy_call(
-        call, "`arg` must be a string or have the same length as `values`."
+        call,
+        "`arg` must be a string or have the same length as `values`."
     );
   }
 

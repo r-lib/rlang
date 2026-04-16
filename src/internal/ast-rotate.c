@@ -248,7 +248,9 @@ static bool op_is_unary(enum r_operator op) {
   }
   return r_ops_precedence[op].unary;
 }
-static bool is_unary(r_obj* x) { return op_is_unary(r_which_operator(x)); }
+static bool is_unary(r_obj* x) {
+  return op_is_unary(r_which_operator(x));
+}
 
 static bool op_is_unary_plusminus(enum r_operator op) {
   switch (op) {

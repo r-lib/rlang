@@ -10,7 +10,9 @@
 void copy_character(r_obj* tgt, r_obj* src, R_xlen_t len);
 R_xlen_t unescape_character_in_copy(r_obj* tgt, r_obj* src, R_xlen_t i);
 
-r_obj* ffi_symbol(r_obj* chr) { return r_str_as_symbol(r_chr_get(chr, 0)); }
+r_obj* ffi_symbol(r_obj* chr) {
+  return r_str_as_symbol(r_chr_get(chr, 0));
+}
 
 r_obj* ffi_sym_as_string(r_obj* sym) {
   return str_unserialise_unicode(PRINTNAME(sym));

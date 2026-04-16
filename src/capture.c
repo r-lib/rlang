@@ -76,13 +76,15 @@ static r_obj* capture_delayed(r_obj* expr, r_obj* expr_env) {
 
 static r_obj* env_dot_delayed_capture(r_obj* env, r_ssize i) {
   return capture_delayed(
-      r_env_dot_delayed_expr(env, i), r_env_dot_delayed_env(env, i)
+      r_env_dot_delayed_expr(env, i),
+      r_env_dot_delayed_env(env, i)
   );
 }
 
 static r_obj* env_binding_delayed_capture(r_obj* env, r_obj* sym) {
   return capture_delayed(
-      r_env_binding_delayed_expr(env, sym), r_env_binding_delayed_env(env, sym)
+      r_env_binding_delayed_expr(env, sym),
+      r_env_binding_delayed_env(env, sym)
   );
 }
 

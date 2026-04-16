@@ -8,9 +8,13 @@
 
 #define r_missing_arg R_MissingArg
 
-static inline r_ssize r_length(r_obj* x) { return Rf_xlength(x); }
+static inline r_ssize r_length(r_obj* x) {
+  return Rf_xlength(x);
+}
 
-static inline enum r_type r_typeof(r_obj* x) { return (enum r_type) TYPEOF(x); }
+static inline enum r_type r_typeof(r_obj* x) {
+  return (enum r_type) TYPEOF(x);
+}
 
 void _r_preserve(r_obj* x);
 void _r_unpreserve(r_obj* x);
@@ -27,8 +31,12 @@ static r_unused r_obj* _r_placeholder = NULL;
    (_r_unpreserve) (_r_placeholder),                                           \
    (void) NULL)
 
-static inline void r_mark_shared(r_obj* x) { MARK_NOT_MUTABLE(x); }
-static inline bool r_is_shared(r_obj* x) { return MAYBE_REFERENCED(x); }
+static inline void r_mark_shared(r_obj* x) {
+  MARK_NOT_MUTABLE(x);
+}
+static inline bool r_is_shared(r_obj* x) {
+  return MAYBE_REFERENCED(x);
+}
 
 static inline void _r_preserve_global(r_obj* x) {
   (_r_preserve)(x);
@@ -40,14 +48,20 @@ static inline void _r_preserve_global(r_obj* x) {
    (_r_preserve_global) (_r_placeholder),                                      \
    (void) NULL)
 
-static inline bool r_is_object(r_obj* x) { return Rf_isObject(x); }
+static inline bool r_is_object(r_obj* x) {
+  return Rf_isObject(x);
+}
 
 static inline bool r_inherits(r_obj* x, const char* tag) {
   return Rf_inherits(x, tag);
 }
 
-static inline r_obj* r_copy(r_obj* x) { return Rf_duplicate(x); }
-static inline r_obj* r_clone(r_obj* x) { return Rf_shallow_duplicate(x); }
+static inline r_obj* r_copy(r_obj* x) {
+  return Rf_duplicate(x);
+}
+static inline r_obj* r_clone(r_obj* x) {
+  return Rf_shallow_duplicate(x);
+}
 
 // These also clone names
 r_obj* r_vec_clone(r_obj* x);
@@ -74,7 +88,9 @@ static inline bool r_is_symbolic(r_obj* x) {
   return r_typeof(x) == LANGSXP || r_typeof(x) == SYMSXP;
 }
 
-static inline void r_obj_print(r_obj* x) { Rf_PrintValue(x); }
+static inline void r_obj_print(r_obj* x) {
+  Rf_PrintValue(x);
+}
 
 static inline bool r_is_identical(r_obj* x, r_obj* y) {
   // 16 corresponds to base::identical()'s defaults

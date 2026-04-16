@@ -10,11 +10,21 @@
 #include "globals.h"
 #include "obj.h"
 
-static inline int* r_lgl_begin(r_obj* x) { return LOGICAL(x); }
-static inline int* r_int_begin(r_obj* x) { return INTEGER(x); }
-static inline double* r_dbl_begin(r_obj* x) { return REAL(x); }
-static inline r_complex* r_cpl_begin(r_obj* x) { return COMPLEX(x); }
-static inline void* r_raw_begin(r_obj* x) { return RAW(x); }
+static inline int* r_lgl_begin(r_obj* x) {
+  return LOGICAL(x);
+}
+static inline int* r_int_begin(r_obj* x) {
+  return INTEGER(x);
+}
+static inline double* r_dbl_begin(r_obj* x) {
+  return REAL(x);
+}
+static inline r_complex* r_cpl_begin(r_obj* x) {
+  return COMPLEX(x);
+}
+static inline void* r_raw_begin(r_obj* x) {
+  return RAW(x);
+}
 
 static inline const int* r_int_cbegin(r_obj* x) {
   return (const int*) INTEGER(x);
@@ -31,7 +41,9 @@ static inline const r_complex* r_cpl_cbegin(r_obj* x) {
 static inline const void* r_raw_cbegin(r_obj* x) {
   return (const void*) RAW(x);
 }
-static inline r_obj* const* r_chr_cbegin(r_obj* x) { return STRING_PTR_RO(x); }
+static inline r_obj* const* r_chr_cbegin(r_obj* x) {
+  return STRING_PTR_RO(x);
+}
 static inline r_obj* const* r_list_cbegin(r_obj* x) {
 #if (R_VERSION >= R_Version(4, 5, 0))
   return VECTOR_PTR_RO(x);
@@ -108,12 +120,24 @@ static inline int r_vec_elt_sizeof(r_obj* x) {
   return r_vec_elt_sizeof0(r_typeof(x));
 }
 
-static inline int r_lgl_get(r_obj* x, r_ssize i) { return LOGICAL(x)[i]; }
-static inline int r_int_get(r_obj* x, r_ssize i) { return INTEGER(x)[i]; }
-static inline double r_dbl_get(r_obj* x, r_ssize i) { return REAL(x)[i]; }
-static inline r_complex r_cpl_get(r_obj* x, r_ssize i) { return COMPLEX(x)[i]; }
-static inline char r_raw_get(r_obj* x, r_ssize i) { return RAW(x)[i]; }
-static inline r_obj* r_chr_get(r_obj* x, r_ssize i) { return STRING_ELT(x, i); }
+static inline int r_lgl_get(r_obj* x, r_ssize i) {
+  return LOGICAL(x)[i];
+}
+static inline int r_int_get(r_obj* x, r_ssize i) {
+  return INTEGER(x)[i];
+}
+static inline double r_dbl_get(r_obj* x, r_ssize i) {
+  return REAL(x)[i];
+}
+static inline r_complex r_cpl_get(r_obj* x, r_ssize i) {
+  return COMPLEX(x)[i];
+}
+static inline char r_raw_get(r_obj* x, r_ssize i) {
+  return RAW(x)[i];
+}
+static inline r_obj* r_chr_get(r_obj* x, r_ssize i) {
+  return STRING_ELT(x, i);
+}
 static inline const char* r_chr_get_c_string(r_obj* x, r_ssize i) {
   return CHAR(r_chr_get(x, i));
 }
@@ -121,13 +145,21 @@ static inline r_obj* r_list_get(r_obj* x, r_ssize i) {
   return VECTOR_ELT(x, i);
 }
 
-static inline void r_lgl_poke(r_obj* x, r_ssize i, int y) { LOGICAL(x)[i] = y; }
-static inline void r_int_poke(r_obj* x, r_ssize i, int y) { INTEGER(x)[i] = y; }
-static inline void r_dbl_poke(r_obj* x, r_ssize i, double y) { REAL(x)[i] = y; }
+static inline void r_lgl_poke(r_obj* x, r_ssize i, int y) {
+  LOGICAL(x)[i] = y;
+}
+static inline void r_int_poke(r_obj* x, r_ssize i, int y) {
+  INTEGER(x)[i] = y;
+}
+static inline void r_dbl_poke(r_obj* x, r_ssize i, double y) {
+  REAL(x)[i] = y;
+}
 static inline void r_cpl_poke(r_obj* x, r_ssize i, r_complex y) {
   COMPLEX(x)[i] = y;
 }
-static inline void r_raw_poke(r_obj* x, r_ssize i, char y) { RAW(x)[i] = y; }
+static inline void r_raw_poke(r_obj* x, r_ssize i, char y) {
+  RAW(x)[i] = y;
+}
 static inline void r_chr_poke(r_obj* x, r_ssize i, r_obj* y) {
   SET_STRING_ELT(x, i, y);
 }
@@ -204,11 +236,21 @@ static inline r_obj* r_alloc_raw0(r_ssize n) {
   return out;
 }
 
-static inline r_obj* r_lgl(bool x) { return Rf_ScalarLogical(x); }
-static inline r_obj* r_int(int x) { return Rf_ScalarInteger(x); }
-static inline r_obj* r_dbl(double x) { return Rf_ScalarReal(x); }
-static inline r_obj* r_cpl(r_complex x) { return Rf_ScalarComplex(x); }
-static inline r_obj* r_raw(char x) { return Rf_ScalarRaw(x); }
+static inline r_obj* r_lgl(bool x) {
+  return Rf_ScalarLogical(x);
+}
+static inline r_obj* r_int(int x) {
+  return Rf_ScalarInteger(x);
+}
+static inline r_obj* r_dbl(double x) {
+  return Rf_ScalarReal(x);
+}
+static inline r_obj* r_cpl(r_complex x) {
+  return Rf_ScalarComplex(x);
+}
+static inline r_obj* r_raw(char x) {
+  return Rf_ScalarRaw(x);
+}
 static inline r_obj* r_str(const char* c_string) {
   return Rf_mkCharCE(c_string, CE_UTF8);
 }
@@ -292,7 +334,9 @@ static inline bool r_arg_as_bool(r_obj* x, const char* arg) {
   }
   return r_lgl_get(x, 0);
 }
-static inline bool r_as_bool(r_obj* x) { return r_arg_as_bool(x, "x"); }
+static inline bool r_as_bool(r_obj* x) {
+  return r_arg_as_bool(x, "x");
+}
 
 static inline int r_arg_as_int(r_obj* x, const char* arg) {
   if (!r_is_int(x)) {
@@ -300,7 +344,9 @@ static inline int r_arg_as_int(r_obj* x, const char* arg) {
   }
   return r_int_get(x, 0);
 }
-static inline int r_as_int(r_obj* x) { return r_arg_as_int(x, "x"); }
+static inline int r_as_int(r_obj* x) {
+  return r_arg_as_int(x, "x");
+}
 
 static inline double r_arg_as_double(r_obj* x, const char* arg) {
   // TODO: Coercion of int and lgl values
@@ -309,7 +355,9 @@ static inline double r_arg_as_double(r_obj* x, const char* arg) {
   }
   return r_dbl_get(x, 0);
 }
-static inline double r_as_double(r_obj* x) { return r_arg_as_double(x, "x"); }
+static inline double r_as_double(r_obj* x) {
+  return r_arg_as_double(x, "x");
+}
 
 static inline r_complex r_arg_as_complex(r_obj* x, const char* arg) {
   if (!_r_is_complex(x, 1, 1)) {
@@ -327,7 +375,9 @@ static inline char r_arg_as_char(r_obj* x, const char* arg) {
   }
   return r_raw_get(x, 0);
 }
-static inline char r_as_char(r_obj* x) { return r_arg_as_char(x, "x"); }
+static inline char r_as_char(r_obj* x) {
+  return r_arg_as_char(x, "x");
+}
 
 r_obj* r_lgl_resize(r_obj* x, r_ssize new_size);
 r_obj* r_int_resize(r_obj* x, r_ssize new_size);

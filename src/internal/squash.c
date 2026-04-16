@@ -133,7 +133,8 @@ static r_ssize list_squash(
 
 static void squash_warn_names(void) {
   Rf_warningcall(
-      r_null, "Outer names are only allowed for unnamed scalar atomic inputs"
+      r_null,
+      "Outer names are only allowed for unnamed scalar atomic inputs"
   );
 }
 

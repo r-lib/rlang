@@ -80,12 +80,12 @@ r_no_return void rlang_stop_internal2(
   char msg[BUFSIZE];
   INTERP(msg, fmt, ...);
 
-  struct stop_internal_data stop_internal_data = {
-      .file = file, .line = line, .call = call, .msg = msg
-  };
+  struct stop_internal_data stop_internal_data =
+      {.file = file, .line = line, .call = call, .msg = msg};
 
   struct r_pair_callback with_winch_data = {
-      .fn = &stop_internal_cb, .data = &stop_internal_data
+      .fn = &stop_internal_cb,
+      .data = &stop_internal_data
   };
   struct without_winch_data without_winch_data = {
       .old_on_error = KEEP(r_peek_option("rlang_backtrace_on_error")),
@@ -93,7 +93,10 @@ r_no_return void rlang_stop_internal2(
   };
 
   R_ExecWithCleanup(
-      &with_winch, &with_winch_data, &without_winch, &without_winch_data
+      &with_winch,
+      &with_winch_data,
+      &without_winch,
+      &without_winch_data
   );
 
   r_abort("unreachable");

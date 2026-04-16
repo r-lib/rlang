@@ -98,12 +98,14 @@ static inline bool r_call_has_precedence(r_obj* x, r_obj* parent) {
 }
 static inline bool r_lhs_call_has_precedence(r_obj* lhs, r_obj* parent) {
   return r_lhs_op_has_precedence(
-      r_which_operator(lhs), r_which_operator(parent)
+      r_which_operator(lhs),
+      r_which_operator(parent)
   );
 }
 static inline bool r_rhs_call_has_precedence(r_obj* rhs, r_obj* parent) {
   return r_rhs_op_has_precedence(
-      r_which_operator(rhs), r_which_operator(parent)
+      r_which_operator(rhs),
+      r_which_operator(parent)
   );
 }
 

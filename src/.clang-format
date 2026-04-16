@@ -8,3 +8,7 @@ PenaltyReturnTypeOnItsOwnLine: 10000
 PointerAlignment: Left
 SortIncludes: Never
 SpaceAfterCStyleCast: true
+AllowShortFunctionsOnASingleLine: None
+Cpp11BracedListStyle: true
+AllowAllArgumentsOnNextLine: false
+AllowShortEnumsOnASingleLine: false

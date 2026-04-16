@@ -105,9 +105,8 @@ static inline r_obj* r_exec_mask4(
     r_obj* x4,
     r_obj* env
 ) {
-  struct r_pair args[] = {
-      {x1_sym, x1}, {x2_sym, x2}, {x3_sym, x3}, {x4_sym, x4}
-  };
+  struct r_pair args[] =
+      {{x1_sym, x1}, {x2_sym, x2}, {x3_sym, x3}, {x4_sym, x4}};
   return r_exec_mask_n(fn_sym, fn, args, R_ARR_SIZEOF(args), env);
 }
 
@@ -126,9 +125,8 @@ static inline r_obj* r_exec_mask5(
     r_obj* x5,
     r_obj* env
 ) {
-  struct r_pair args[] = {
-      {x1_sym, x1}, {x2_sym, x2}, {x3_sym, x3}, {x4_sym, x4}, {x5_sym, x5}
-  };
+  struct r_pair args[] =
+      {{x1_sym, x1}, {x2_sym, x2}, {x3_sym, x3}, {x4_sym, x4}, {x5_sym, x5}};
   return r_exec_mask_n(fn_sym, fn, args, R_ARR_SIZEOF(args), env);
 }
 

@@ -1,7 +1,11 @@
 #include <rlang.h>
 #include <math.h>
 
-enum is_number { IS_NUMBER_true = 0, IS_NUMBER_false = 1, IS_NUMBER_oob = 2 };
+enum is_number {
+  IS_NUMBER_true = 0,
+  IS_NUMBER_false = 1,
+  IS_NUMBER_oob = 2
+};
 
 #include "decl/standalone-types-check-decl.h"
 
@@ -49,7 +53,13 @@ r_obj* ffi_standalone_check_number(
 
   case R_TYPE_double:
     out = dbl_standalone_check_number(
-        x, allow_decimal, min, max, allow_infinite, allow_na, allow_null
+        x,
+        allow_decimal,
+        min,
+        max,
+        allow_infinite,
+        allow_na,
+        allow_null
     );
     break;
 

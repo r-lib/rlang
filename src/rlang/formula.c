@@ -28,9 +28,13 @@ r_obj* r_f_lhs(r_obj* f) {
     r_abort("Invalid formula");
   }
 }
-r_obj* r_f_env(r_obj* f) { return r_attrib_get(f, r_sym(".Environment")); }
+r_obj* r_f_env(r_obj* f) {
+  return r_attrib_get(f, r_sym(".Environment"));
+}
 
-bool r_f_has_env(r_obj* f) { return r_is_environment(r_f_env(f)); }
+bool r_f_has_env(r_obj* f) {
+  return r_is_environment(r_f_env(f));
+}
 
 bool r_is_formula(r_obj* x, int scoped, int lhs) {
   if (r_typeof(x) != R_TYPE_call) {

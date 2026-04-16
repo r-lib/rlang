@@ -45,7 +45,10 @@ r_obj* r_peek_frame(void);
 
 #define r_stop_unreachable()                                                   \
   (r_stop_internal)(                                                           \
-      __FILE__, __LINE__, r_peek_frame(), "Reached the unreachable"            \
+      __FILE__,                                                                \
+      __LINE__,                                                                \
+      r_peek_frame(),                                                          \
+      "Reached the unreachable"                                                \
   )
 
 #define r_stop_unimplemented_type(TYPE)                                        \

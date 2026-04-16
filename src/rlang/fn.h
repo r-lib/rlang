@@ -16,7 +16,9 @@ static inline r_obj* r_fn_formals(r_obj* fn) {
 
 // Identical to `R_BytecodeExpr(R_ClosureBody(fn))`, which we always want
 // since it matches the R level `body()`
-static inline r_obj* r_fn_body(r_obj* fn) { return R_ClosureExpr(fn); }
+static inline r_obj* r_fn_body(r_obj* fn) {
+  return R_ClosureExpr(fn);
+}
 
 static inline r_obj* r_fn_env(r_obj* fn) {
 #if R_VERSION >= R_Version(4, 5, 0)

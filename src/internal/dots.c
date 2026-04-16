@@ -13,7 +13,11 @@ enum dots_homonyms {
   DOTS_HOMONYMS_SIZE
 };
 
-enum arg_named { ARG_NAMED_none = 0, ARG_NAMED_minimal, ARG_NAMED_auto };
+enum arg_named {
+  ARG_NAMED_none = 0,
+  ARG_NAMED_minimal,
+  ARG_NAMED_auto
+};
 
 enum dots_ignore_empty {
   DOTS_IGNORE_EMPTY_trailing = 0,
@@ -54,8 +58,12 @@ r_obj* new_splice_box(r_obj* x) {
   FREE(1);
   return out;
 }
-bool is_splice_box(r_obj* x) { return r_inherits(x, "rlang_box_splice"); }
-r_obj* ffi_is_splice_box(r_obj* x) { return r_lgl(is_splice_box(x)); }
+bool is_splice_box(r_obj* x) {
+  return r_inherits(x, "rlang_box_splice");
+}
+r_obj* ffi_is_splice_box(r_obj* x) {
+  return r_lgl(is_splice_box(x));
+}
 r_obj* rlang_unbox(r_obj* x) {
   if (r_length(x) != 1) {
     r_abort("Internal error: Expected a list of size 1 in `rlang_unbox()`.");
@@ -189,7 +197,8 @@ static r_obj* def_unquote_name(r_obj* expr, r_obj* env) {
   r_obj* out = r_new_symbol(lhs, &err);
   if (err) {
     r_abort(
-        "The LHS of `:=` must be a string, not %s.", r_obj_type_friendly(lhs)
+        "The LHS of `:=` must be a string, not %s.",
+        r_obj_type_friendly(lhs)
     );
   }
 
@@ -354,8 +363,12 @@ static r_obj* dots_big_bang(
   return out;
 }
 
-static inline r_obj* dot_get_expr(r_obj* dot) { return r_list_get(dot, 0); }
-static inline r_obj* dot_get_env(r_obj* dot) { return r_list_get(dot, 1); }
+static inline r_obj* dot_get_expr(r_obj* dot) {
+  return r_list_get(dot, 0);
+}
+static inline r_obj* dot_get_env(r_obj* dot) {
+  return r_list_get(dot, 1);
+}
 
 static r_obj* dots_unquote(
     r_obj* dots,
@@ -557,7 +570,10 @@ static const char* dots_homonyms_c_values[DOTS_HOMONYMS_SIZE] = {
 
 static enum dots_homonyms arg_match_homonyms(r_obj* homonyms) {
   return r_arg_match(
-      homonyms, dots_homonyms_values, dots_homonyms_arg, r_lazy_missing_arg
+      homonyms,
+      dots_homonyms_values,
+      dots_homonyms_arg,
+      r_lazy_missing_arg
   );
 }
 
@@ -1151,7 +1167,8 @@ void rlang_init_dots(r_obj* ns) {
   {
     quosures_prototype = KEEP(r_alloc_list(0));
     r_attrib_poke_class(
-        quosures_prototype, r_chr_n((const char*[]) {"quosures", "list"}, 2)
+        quosures_prototype,
+        r_chr_n((const char*[]) {"quosures", "list"}, 2)
     );
     r_preserve(quosures_prototype);
     r_mark_shared(quosures_prototype);
@@ -1184,11 +1201,17 @@ static struct r_lazy dots_ignore_empty_arg = {0};
 
 // FFI wrappers for dots-info API ---
 
-r_obj* ffi_env_dots_exist(r_obj* env) { return r_lgl(r_env_dots_exist(env)); }
+r_obj* ffi_env_dots_exist(r_obj* env) {
+  return r_lgl(r_env_dots_exist(env));
+}
 
-r_obj* ffi_env_dots_length(r_obj* env) { return r_int(r_env_dots_length(env)); }
+r_obj* ffi_env_dots_length(r_obj* env) {
+  return r_int(r_env_dots_length(env));
+}
 
-r_obj* ffi_env_dots_names(r_obj* env) { return r_env_dots_names(env); }
+r_obj* ffi_env_dots_names(r_obj* env) {
+  return r_env_dots_names(env);
+}
 
 r_obj* ffi_env_dot_get(r_obj* ffi_i, r_obj* env) {
   r_ssize i = r_int_get(ffi_i, 0) - 1;

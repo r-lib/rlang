@@ -6,7 +6,11 @@
 bool is_splice_box(r_obj* x);
 r_obj* rlang_unbox(r_obj* x);
 
-enum dots_collect { DOTS_COLLECT_expr, DOTS_COLLECT_quo, DOTS_COLLECT_value };
+enum dots_collect {
+  DOTS_COLLECT_expr,
+  DOTS_COLLECT_quo,
+  DOTS_COLLECT_value
+};
 #define DOTS_COLLECT_MAX 3
 
 enum dots_op {

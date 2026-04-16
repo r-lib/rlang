@@ -11,7 +11,9 @@ r_obj* ffi_get_expression(r_obj* x, r_obj* alternate);
 r_obj* ffi_quo_get_env(r_obj* quo);
 r_obj* ffi_quo_get_expr(r_obj* quo);
 
-static inline r_obj* quo_get_expr(r_obj* quo) { return r_node_cadr(quo); }
+static inline r_obj* quo_get_expr(r_obj* quo) {
+  return r_node_cadr(quo);
+}
 
 void check_quosure(r_obj* x);
 bool quo_is_missing(r_obj* quo);

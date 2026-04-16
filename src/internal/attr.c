@@ -185,7 +185,8 @@ static inline r_ssize length_dispatch(r_obj* x, r_obj* env) {
     break;
   default:
     r_abort(
-        "Object length has unknown type %s", r_type_as_c_string(r_typeof(n))
+        "Object length has unknown type %s",
+        r_type_as_c_string(r_typeof(n))
     );
   }
 

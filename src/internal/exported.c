@@ -67,7 +67,10 @@ r_obj* ffi_alloc_data_frame(r_obj* n_rows, r_obj* names, r_obj* types) {
 
   r_ssize n_rows_val = r_int_get(n_rows, 0);
   r_obj* df = KEEP(r_alloc_df_list(
-      n_rows_val, names, (enum r_type*) r_int_begin(types), r_length(names)
+      n_rows_val,
+      names,
+      (enum r_type*) r_int_begin(types),
+      r_length(names)
   ));
   r_init_data_frame(df, n_rows_val);
 
@@ -77,7 +80,9 @@ r_obj* ffi_alloc_data_frame(r_obj* n_rows, r_obj* names, r_obj* types) {
 
 // dict.c
 
-static r_obj* wrap_dict(struct r_dict* p_dict) { return p_dict->shelter; }
+static r_obj* wrap_dict(struct r_dict* p_dict) {
+  return p_dict->shelter;
+}
 
 r_obj* ffi_new_dict(r_obj* size, r_obj* prevent_resize) {
   if (!r_is_int(size)) {
@@ -166,7 +171,8 @@ r_obj* ffi_dict_it_next(r_obj* dict_it) {
 // [[ register() ]]
 r_obj* ffi_new_dyn_vector(r_obj* type, r_obj* capacity) {
   struct r_dyn_array* arr = r_new_dyn_vector(
-      r_chr_as_r_type(type), r_arg_as_ssize(capacity, "capacity")
+      r_chr_as_r_type(type),
+      r_arg_as_ssize(capacity, "capacity")
   );
   return arr->shelter;
 }
@@ -181,15 +187,16 @@ r_obj* ffi_new_dyn_array(r_obj* elt_byte_size, r_obj* capacity) {
 }
 
 // [[ register() ]]
-r_obj* ffi_dyn_unwrap(r_obj* arr) { return r_dyn_unwrap(r_shelter_deref(arr)); }
+r_obj* ffi_dyn_unwrap(r_obj* arr) {
+  return r_dyn_unwrap(r_shelter_deref(arr));
+}
 
 // [[ register() ]]
 r_obj* ffi_dyn_info(r_obj* arr_sexp) {
   struct r_dyn_array* arr = r_shelter_deref(arr_sexp);
 
-  const char* names_c_strs[] = {
-      "count", "capacity", "growth_factor", "type", "elt_byte_size"
-  };
+  const char* names_c_strs[] =
+      {"count", "capacity", "growth_factor", "type", "elt_byte_size"};
   int info_n = R_ARR_SIZEOF(names_c_strs);
 
   r_obj* info = KEEP(r_alloc_list(info_n));
@@ -296,14 +303,18 @@ r_obj* ffi_dyn_int_poke(r_obj* x, r_obj* i, r_obj* value) {
 // [[ register() ]]
 r_obj* ffi_dyn_dbl_poke(r_obj* x, r_obj* i, r_obj* value) {
   r_dyn_dbl_poke(
-      r_shelter_deref(x), r_arg_as_ssize(i, "i"), r_as_double(value)
+      r_shelter_deref(x),
+      r_arg_as_ssize(i, "i"),
+      r_as_double(value)
   );
   return r_null;
 }
 // [[ register() ]]
 r_obj* ffi_dyn_cpl_poke(r_obj* x, r_obj* i, r_obj* value) {
   r_dyn_cpl_poke(
-      r_shelter_deref(x), r_arg_as_ssize(i, "i"), r_as_complex(value)
+      r_shelter_deref(x),
+      r_arg_as_ssize(i, "i"),
+      r_as_complex(value)
   );
   return r_null;
 }
@@ -360,7 +371,9 @@ r_obj* ffi_dyn_list_push_back(r_obj* x, r_obj* value) {
 }
 
 // [[ register() ]]
-r_obj* ffi_has_size_one_bool(void) { return r_lgl(sizeof(bool) == 1); }
+r_obj* ffi_has_size_one_bool(void) {
+  return r_lgl(sizeof(bool) == 1);
+}
 
 // dyn-list-of.c
 
@@ -422,7 +435,9 @@ r_obj* ffi_lof_info(r_obj* lof) {
 }
 
 // [[ register() ]]
-r_obj* ffi_lof_unwrap(r_obj* lof) { return r_lof_unwrap(r_shelter_deref(lof)); }
+r_obj* ffi_lof_unwrap(r_obj* lof) {
+  return r_lof_unwrap(r_shelter_deref(lof));
+}
 
 // [[ register() ]]
 r_obj* ffi_lof_push_back(r_obj* lof) {
@@ -529,13 +544,17 @@ r_obj* ffi_eval_top(r_obj* expr, r_obj* env) {
 
 // fn.c
 
-r_obj* ffi_is_function(r_obj* x) { return r_shared_lgl(r_is_function(x)); }
+r_obj* ffi_is_function(r_obj* x) {
+  return r_shared_lgl(r_is_function(x));
+}
 
 r_obj* ffi_is_closure(r_obj* x) {
   return r_shared_lgl(r_typeof(x) == R_TYPE_closure);
 }
 
-r_obj* ffi_is_primitive(r_obj* x) { return r_shared_lgl(r_is_primitive(x)); }
+r_obj* ffi_is_primitive(r_obj* x) {
+  return r_shared_lgl(r_is_primitive(x));
+}
 r_obj* ffi_is_primitive_lazy(r_obj* x) {
   return r_shared_lgl(r_typeof(x) == R_TYPE_special);
 }
@@ -590,12 +609,24 @@ r_obj* ffi_which_operator(r_obj* call) {
 
 // node.c
 
-r_obj* ffi_node_car(r_obj* x) { return CAR(x); }
-r_obj* ffi_node_cdr(r_obj* x) { return CDR(x); }
-r_obj* ffi_node_caar(r_obj* x) { return CAAR(x); }
-r_obj* ffi_node_cadr(r_obj* x) { return CADR(x); }
-r_obj* ffi_node_cdar(r_obj* x) { return CDAR(x); }
-r_obj* ffi_node_cddr(r_obj* x) { return CDDR(x); }
+r_obj* ffi_node_car(r_obj* x) {
+  return CAR(x);
+}
+r_obj* ffi_node_cdr(r_obj* x) {
+  return CDR(x);
+}
+r_obj* ffi_node_caar(r_obj* x) {
+  return CAAR(x);
+}
+r_obj* ffi_node_cadr(r_obj* x) {
+  return CADR(x);
+}
+r_obj* ffi_node_cdar(r_obj* x) {
+  return CDAR(x);
+}
+r_obj* ffi_node_cddr(r_obj* x) {
+  return CDDR(x);
+}
 r_obj* ffi_node_tail(r_obj* x) {
   while (CDR(x) != r_null) {
     x = CDR(x);
@@ -628,7 +659,9 @@ r_obj* ffi_node_poke_cddr(r_obj* x, r_obj* newcdr) {
   return x;
 }
 
-r_obj* ffi_node_tag(r_obj* x) { return TAG(x); }
+r_obj* ffi_node_tag(r_obj* x) {
+  return TAG(x);
+}
 r_obj* ffi_node_poke_tag(r_obj* x, r_obj* tag) {
   SET_TAG(x, tag);
   return x;
@@ -641,7 +674,9 @@ r_obj* rlang_on_exit(r_obj* expr, r_obj* frame) {
 
 // lang.h
 
-r_obj* ffi_new_call_node(r_obj* car, r_obj* cdr) { return Rf_lcons(car, cdr); }
+r_obj* ffi_new_call_node(r_obj* car, r_obj* cdr) {
+  return Rf_lcons(car, cdr);
+}
 
 // quo.h
 
@@ -670,11 +705,17 @@ r_obj* ffi_quo_is_null(r_obj* quo) {
 
 // sexp.h
 
-r_obj* ffi_length(r_obj* x) { return r_int(r_length(x)); }
+r_obj* ffi_length(r_obj* x) {
+  return r_int(r_length(x));
+}
 
-r_obj* ffi_is_reference(r_obj* x, r_obj* y) { return r_lgl(x == y); }
+r_obj* ffi_is_reference(r_obj* x, r_obj* y) {
+  return r_lgl(x == y);
+}
 
-r_obj* ffi_missing_arg(void) { return R_MissingArg; }
+r_obj* ffi_missing_arg(void) {
+  return R_MissingArg;
+}
 
 r_obj* ffi_duplicate(r_obj* x, r_obj* shallow) {
   if (r_lgl_get(shallow, 0)) {
@@ -725,7 +766,8 @@ r_obj* ffi_unpreserve(r_obj* x) {
 
 r_obj* ffi_vec_alloc(r_obj* type, r_obj* n) {
   return r_alloc_vector(
-      Rf_str2type(r_chr_get_c_string(type, 0)), r_int_get(n, 0)
+      Rf_str2type(r_chr_get_c_string(type, 0)),
+      r_int_get(n, 0)
   );
 }
 r_obj* ffi_vec_coerce(r_obj* x, r_obj* type) {
@@ -780,7 +822,9 @@ static int validate_finite(r_obj* finite) {
   }
 }
 
-r_obj* ffi_is_finite(r_obj* x) { return r_shared_lgl(_r_is_finite(x)); }
+r_obj* ffi_is_finite(r_obj* x) {
+  return r_shared_lgl(_r_is_finite(x));
+}
 
 r_obj* ffi_is_list(r_obj* x, r_obj* n_) {
   r_ssize n = validate_n(n_);

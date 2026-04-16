@@ -91,7 +91,9 @@ static int pop_precious(r_obj* stack) {
 }
 
 // For unit tests
-struct r_dict* rlang__precious_dict(void) { return p_precious_dict; }
+struct r_dict* rlang__precious_dict(void) {
+  return p_precious_dict;
+}
 
 enum r_type r_chr_as_r_type(r_obj* type) {
   if (!r_is_string(type)) {
@@ -118,7 +120,9 @@ void r_init_library_obj(r_obj* ns) {
   p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
   KEEP(p_precious_dict->shelter);
   r_env_bind(
-      ns, r_sym(".__rlang_lib_precious_dict__."), p_precious_dict->shelter
+      ns,
+      r_sym(".__rlang_lib_precious_dict__."),
+      p_precious_dict->shelter
   );
   FREE(1);
 

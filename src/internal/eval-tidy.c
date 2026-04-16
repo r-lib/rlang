@@ -475,7 +475,9 @@ r_obj* ffi_data_mask_clean(r_obj* mask) {
 
   // At this level we only want to remove our own stuff
   r_env_unbind_c_strings(
-      mask, data_mask_objects_names, R_ARR_SIZEOF(data_mask_objects_names)
+      mask,
+      data_mask_objects_names,
+      R_ARR_SIZEOF(data_mask_objects_names)
   );
 
   // Remove everything in the other levels

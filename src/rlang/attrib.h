@@ -6,7 +6,9 @@
 #include "rlang-types.h"
 #include "globals.h"
 
-static inline bool r_attrib_has_any(r_obj* x) { return ANY_ATTRIB(x); }
+static inline bool r_attrib_has_any(r_obj* x) {
+  return ANY_ATTRIB(x);
+}
 
 // Collect attributes into a fresh pairlist
 r_obj* r_attrib_collect(r_obj* x);
@@ -22,7 +24,9 @@ static inline r_obj* r_attrib_map(r_obj* x, r_attrib_map_fn* fn, void* data) {
 static inline void r_attrib_zap(r_obj* x, r_obj* tag) {
   Rf_setAttrib(x, tag, r_null);
 }
-static inline void r_attrib_zap_all(r_obj* x) { CLEAR_ATTRIB(x); }
+static inline void r_attrib_zap_all(r_obj* x) {
+  CLEAR_ATTRIB(x);
+}
 
 static inline void r_attrib_clone_from(r_obj* to, r_obj* from) {
   SHALLOW_DUPLICATE_ATTRIB(to, from);
@@ -38,13 +42,17 @@ static inline r_obj* r_class(r_obj* x) {
 
 void r_attrib_poke_classes(r_obj* x, const char** classes, r_ssize n);
 
-static inline r_obj* r_dim(r_obj* x) { return r_attrib_get(x, r_syms.dim); }
+static inline r_obj* r_dim(r_obj* x) {
+  return r_attrib_get(x, r_syms.dim);
+}
 
 static inline r_obj* r_dim_names(r_obj* x) {
   return r_attrib_get(x, r_syms.dim_names);
 }
 
-static inline r_obj* r_names(r_obj* x) { return r_attrib_get(x, r_syms.names); }
+static inline r_obj* r_names(r_obj* x) {
+  return r_attrib_get(x, r_syms.names);
+}
 
 bool r_is_named(r_obj* x);
 

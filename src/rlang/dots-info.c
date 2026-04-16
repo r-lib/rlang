@@ -4,11 +4,17 @@
 
 #if !RLANG_HAS_R_DOTS_API
 
-static bool is_promise(r_obj* x) { return r_typeof(x) == R_TYPE_promise; }
+static bool is_promise(r_obj* x) {
+  return r_typeof(x) == R_TYPE_promise;
+}
 
-static r_obj* promise_expr(r_obj* x) { return PREXPR(x); }
+static r_obj* promise_expr(r_obj* x) {
+  return PREXPR(x);
+}
 
-static r_obj* promise_env(r_obj* x) { return PRENV(x); }
+static r_obj* promise_env(r_obj* x) {
+  return PRENV(x);
+}
 
 static r_obj* env_dot_find(r_obj* env, r_ssize i) {
   if (i < 0) {

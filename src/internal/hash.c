@@ -125,7 +125,9 @@ static inline struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state) {
   ) {.skip = true, .n_skipped = 0, .n_native_enc = 0, .p_xx_state = p_xx_state};
 }
 
-static inline int hash_version(void) { return 3; }
+static inline int hash_version(void) {
+  return 3;
+}
 
 static inline r_obj* hash_value(XXH3_state_t* p_xx_state) {
   XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);

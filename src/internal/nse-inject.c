@@ -427,4 +427,6 @@ r_obj* ffi_interp(r_obj* x, r_obj* env) {
   return x;
 }
 
-void rlang_init_expr_interp(void) { dot_data_sym = r_sym(".data"); }
+void rlang_init_expr_interp(void) {
+  dot_data_sym = r_sym(".data");
+}

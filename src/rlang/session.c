@@ -66,6 +66,8 @@ r_obj* r_getppid(void) {
 
 #include <unistd.h>
 
-r_obj* r_getppid(void) { return r_int(getppid()); }
+r_obj* r_getppid(void) {
+  return r_int(getppid());
+}
 
 #endif

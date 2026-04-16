@@ -42,7 +42,9 @@ struct r_dyn_list_of* r_new_dyn_list_of(
   struct r_dyn_array* p_moved_shelter_arr =
       r_new_dyn_vector(R_TYPE_list, R_DYN_LOF_INIT_SIZE);
   r_list_poke(
-      shelter, SHELTER_DYN_LOF_moved_shelter_arr, p_moved_shelter_arr->shelter
+      shelter,
+      SHELTER_DYN_LOF_moved_shelter_arr,
+      p_moved_shelter_arr->shelter
   );
 
   r_obj* reserve = r_alloc_vector(type, r_ssize_mult(capacity, width));
@@ -109,7 +111,9 @@ static void r_lof_resize(struct r_dyn_list_of* p_lof, r_ssize capacity) {
 
   // Resize reserve
   r_obj* reserve = r_vec_resize0(
-      p_lof->type, p_lof->reserve, r_ssize_mult(capacity, p_lof->width)
+      p_lof->type,
+      p_lof->reserve,
+      r_ssize_mult(capacity, p_lof->width)
   );
   r_list_poke(p_lof->shelter, SHELTER_DYN_LOF_reserve, reserve);
 

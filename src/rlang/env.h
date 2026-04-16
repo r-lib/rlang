@@ -34,8 +34,12 @@ static inline r_obj* r_env_parent(r_obj* env) {
 #endif
 }
 
-static inline bool r_is_environment(r_obj* x) { return TYPEOF(x) == ENVSXP; }
-static inline bool r_is_namespace(r_obj* x) { return R_IsNamespaceEnv(x); }
+static inline bool r_is_environment(r_obj* x) {
+  return TYPEOF(x) == ENVSXP;
+}
+static inline bool r_is_namespace(r_obj* x) {
+  return R_IsNamespaceEnv(x);
+}
 
 r_obj* r_env_until(r_obj* env, r_obj* sym, r_obj* last);
 

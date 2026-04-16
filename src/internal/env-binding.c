@@ -221,7 +221,11 @@ r_obj* ffi_env_poke(
   return old;
 }
 
-enum bind_type { BIND_TYPE_value, BIND_TYPE_active, BIND_TYPE_lazy };
+enum bind_type {
+  BIND_TYPE_value,
+  BIND_TYPE_active,
+  BIND_TYPE_lazy
+};
 
 enum bind_type parse_bind_type(r_obj* bind_type) {
   switch (*r_chr_get_c_string(bind_type, 0)) {

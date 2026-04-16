@@ -295,14 +295,20 @@ bool r_dict_next(struct r_dict_iterator* p_it) {
 
 static const char* v_dict_it_df_names_c_strings[] = {"key", "value"};
 static const enum r_type v_dict_it_df_types[] = {R_TYPE_list, R_TYPE_list};
-enum dict_it_df_locs { DICT_IT_DF_LOCS_key, DICT_IT_DF_LOCS_value };
+enum dict_it_df_locs {
+  DICT_IT_DF_LOCS_key,
+  DICT_IT_DF_LOCS_value
+};
 #define DICT_IT_DF_SIZE R_ARR_SIZEOF(v_dict_it_df_types)
 
 r_obj* r_dict_as_df_list(struct r_dict* p_dict) {
   r_obj* nms = KEEP(r_chr_n(v_dict_it_df_names_c_strings, DICT_IT_DF_SIZE));
 
   r_obj* out = KEEP(r_alloc_df_list(
-      p_dict->n_entries, nms, v_dict_it_df_types, DICT_IT_DF_SIZE
+      p_dict->n_entries,
+      nms,
+      v_dict_it_df_types,
+      DICT_IT_DF_SIZE
   ));
 
   r_obj* key = r_list_get(out, DICT_IT_DF_LOCS_key);

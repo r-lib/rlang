@@ -37,7 +37,9 @@ r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
 #endif
 }
 
-r_obj* r_env_as_list(r_obj* env) { return eval_with_x(env2list_call, env); }
+r_obj* r_env_as_list(r_obj* env) {
+  return eval_with_x(env2list_call, env);
+}
 
 r_obj* r_env_clone(r_obj* env, r_obj* parent) {
   if (parent == NULL) {
@@ -242,7 +244,9 @@ bool r_env_has_missing(r_obj* env, r_obj* sym) {
   return r_as_bool(out);
 }
 
-void r_init_rlang_ns_env(void) { rlang_ns_env = r_ns_env("rlang"); }
+void r_init_rlang_ns_env(void) {
+  rlang_ns_env = r_ns_env("rlang");
+}
 
 void r_init_library_env(void) {
 #if R_VERSION < R_Version(4, 1, 0)
