@@ -19,7 +19,7 @@
 ^pkgdown$
 ^CODE_OF_CONDUCT\.md$
 ^src/.clang_complete$
-^src/\.clang-format$
+.*\.clang-format$
 ^CRAN-SUBMISSION$
 ^\.cache$
 ^\.vscode$
