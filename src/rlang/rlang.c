@@ -32,7 +32,7 @@
 #include "vendor.c"
 
 #ifdef RLANG_USE_PRIVATE_ACCESSORS
-  #include "walk.c"
+#include "walk.c"
 #endif
 
 // Allows long vectors to be indexed with doubles
@@ -78,9 +78,11 @@ static r_obj* shared_xyz_env;
 // and `.Call()` it from your `.onLoad()` hook.
 r_obj* r_init_library(r_obj* ns) {
   if (!R_IsNamespaceEnv(ns)) {
-    Rf_errorcall(r_null,
-                 "Can't initialise rlang library.\n"
-                 "x `ns` must be a namespace environment.");
+    Rf_errorcall(
+        r_null,
+        "Can't initialise rlang library.\n"
+        "x `ns` must be a namespace environment."
+    );
   }
 
   // Local precious lists are disabled by default because rchk
@@ -88,8 +90,7 @@ r_obj* r_init_library(r_obj* ns) {
   // double-preserve. Still enable it on CI to get that part of the
   // code tested.
   _r_use_local_precious_list =
-    getenv("RLIB_USE_LOCAL_PRECIOUS_LIST") ||
-    getenv("CI");
+      getenv("RLIB_USE_LOCAL_PRECIOUS_LIST") || getenv("CI");
 
   // Need to be first
   r_init_library_vendor(); // Needed for xxh used in `r_preserve()`
@@ -97,13 +98,19 @@ r_obj* r_init_library(r_obj* ns) {
   r_init_library_obj(ns);
   r_init_library_globals(ns);
 
-  shared_x_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
+  shared_x_env = r_parse_eval(
+      "new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base
+  );
   r_preserve(shared_x_env);
 
-  shared_xy_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
+  shared_xy_env = r_parse_eval(
+      "new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base
+  );
   r_preserve(shared_xy_env);
 
-  shared_xyz_env = r_parse_eval("new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base);
+  shared_xyz_env = r_parse_eval(
+      "new.env(hash = FALSE, parent = baseenv(), size = 1L)", r_envs.base
+  );
   r_preserve(shared_xyz_env);
 
   r_init_library_sym();

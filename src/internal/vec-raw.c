@@ -53,5 +53,5 @@ r_obj* ffi_raw_deparse_str(r_obj* x, r_obj* prefix, r_obj* suffix) {
   r_obj* out = KEEP(r_str_as_character(chr_out));
 
   FREE(3);
-  return(out);
+  return (out);
 }

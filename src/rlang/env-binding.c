@@ -11,7 +11,6 @@ static inline r_obj* env_find(r_obj* env, r_obj* sym) {
 }
 #endif
 
-
 static r_obj* new_binding_types(r_ssize n) {
   r_obj* types = r_alloc_integer(n);
 
@@ -20,8 +19,6 @@ static r_obj* new_binding_types(r_ssize n) {
 
   return types;
 }
-
-
 
 static inline r_obj* binding_as_sym(bool list, r_obj* bindings, r_ssize i) {
   if (list) {
@@ -37,15 +34,18 @@ static inline r_obj* binding_as_sym(bool list, r_obj* bindings, r_ssize i) {
   }
 }
 
-static r_ssize detect_special_binding(r_obj* env,
-                                      r_obj* bindings,
-                                      bool symbols) {
+static r_ssize detect_special_binding(
+    r_obj* env,
+    r_obj* bindings,
+    bool symbols
+) {
   r_ssize n = r_length(bindings);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* sym = binding_as_sym(symbols, bindings, i);
     enum r_env_binding_type type = r_env_binding_type(env, sym);
-    if (type == R_ENV_BINDING_TYPE_active || type == R_ENV_BINDING_TYPE_delayed) {
+    if (type == R_ENV_BINDING_TYPE_active ||
+        type == R_ENV_BINDING_TYPE_delayed) {
       return i;
     }
   }
@@ -61,9 +61,16 @@ r_obj* r_env_binding_types(r_obj* env, r_obj* bindings) {
 
   bool symbols;
   switch (r_typeof(bindings)) {
-  case R_TYPE_list: symbols = true; break;
-  case R_TYPE_character: symbols = false; break;
-  default: r_abort("Internal error: Unexpected `bindings` type in `r_env_binding_types()`");
+  case R_TYPE_list:
+    symbols = true;
+    break;
+  case R_TYPE_character:
+    symbols = false;
+    break;
+  default:
+    r_abort(
+        "Internal error: Unexpected `bindings` type in `r_env_binding_types()`"
+    );
   }
 
   r_ssize i = detect_special_binding(env, bindings, symbols);
@@ -98,12 +105,13 @@ r_obj* r_env_syms(r_obj* env) {
 #if RLANG_HAS_R_BINDING_API
   return R_envSymbols(env);
 #else
-  // This does an extra alloc, as does the initial implementation in https://github.com/r-devel/r-svn/commit/ee6dc5080845f911d7a884398213d22f3de63fe2
+  // This does an extra alloc, as does the initial implementation in
+  // https://github.com/r-devel/r-svn/commit/ee6dc5080845f911d7a884398213d22f3de63fe2
   r_obj* nms = KEEP(r_env_names(env));
   r_ssize n = r_length(nms);
 
   r_obj* out = KEEP(r_alloc_list(n));
-  r_obj* const * v_nms = r_chr_cbegin(nms);
+  r_obj* const* v_nms = r_chr_cbegin(nms);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_list_poke(out, i, r_str_as_symbol(v_nms[i]));
@@ -114,19 +122,24 @@ r_obj* r_env_syms(r_obj* env) {
 #endif
 }
 
-
 // Binding type API
 // Implements future R API from https://bugs.r-project.org/show_bug.cgi?id=18928
 
 enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
 #if RLANG_HAS_R_BINDING_API
   switch (R_GetBindingType(sym, env)) {
-  case R_BindingTypeUnbound: return R_ENV_BINDING_TYPE_unbound;
-  case R_BindingTypeValue:   return R_ENV_BINDING_TYPE_value;
-  case R_BindingTypeMissing: return R_ENV_BINDING_TYPE_missing;
-  case R_BindingTypeDelayed: return R_ENV_BINDING_TYPE_delayed;
-  case R_BindingTypeForced:  return R_ENV_BINDING_TYPE_forced;
-  case R_BindingTypeActive:  return R_ENV_BINDING_TYPE_active;
+  case R_BindingTypeUnbound:
+    return R_ENV_BINDING_TYPE_unbound;
+  case R_BindingTypeValue:
+    return R_ENV_BINDING_TYPE_value;
+  case R_BindingTypeMissing:
+    return R_ENV_BINDING_TYPE_missing;
+  case R_BindingTypeDelayed:
+    return R_ENV_BINDING_TYPE_delayed;
+  case R_BindingTypeForced:
+    return R_ENV_BINDING_TYPE_forced;
+  case R_BindingTypeActive:
+    return R_ENV_BINDING_TYPE_active;
   }
   r_stop_unreachable();
 #else
@@ -182,7 +195,6 @@ r_obj* r_env_get(r_obj* env, r_obj* sym) {
 #endif
 }
 
-
 // Binding constructors
 
 void r_env_bind_active(r_obj* env, r_obj* sym, r_obj* fn) {
@@ -226,7 +238,6 @@ void r_env_bind_missing(r_obj* env, r_obj* sym) {
 #endif
 }
 
-
 // Delayed binding accessors
 
 r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
@@ -269,7 +280,6 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
 #endif
 }
 
-
 // Forced binding accessors
 
 r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
@@ -293,7 +303,6 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
 }
 
 // Use `r_env_get()` to get the value of a forced binding
-
 
 // Active binding accessors
 

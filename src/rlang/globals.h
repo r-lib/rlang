@@ -90,7 +90,7 @@ struct r_globals_envs {
   r_obj* empty;
   r_obj* base;
   r_obj* global;
-  r_obj* ns;      // The namespace of the embedding package
+  r_obj* ns; // The namespace of the embedding package
 };
 
 extern struct r_globals r_globals;
@@ -102,6 +102,5 @@ extern struct r_globals_envs r_envs;
 
 extern r_obj* r_true;
 extern r_obj* r_false;
-
 
 #endif

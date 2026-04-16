@@ -6,11 +6,9 @@
 
 #include "decl/arg-decl.h"
 
-
 // Capture ----------------------------------------------------------------
 
-static
-r_obj* capture(r_obj* sym, r_obj* frame, r_obj** arg_env) {
+static r_obj* capture(r_obj* sym, r_obj* frame, r_obj** arg_env) {
   static r_obj* capture_call = NULL;
   if (!capture_call) {
     r_obj* args = KEEP(r_new_node(r_null, r_null));
@@ -71,7 +69,6 @@ r_obj* ffi_ensym(r_obj* sym, r_obj* frame) {
   return expr;
 }
 
-
 r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
   r_obj* env;
   r_obj* expr = KEEP(capture(sym, frame, &env));
@@ -80,15 +77,15 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
   return quo;
 }
 
-
 // Match ------------------------------------------------------------------
 
-static
-int arg_match(r_obj* arg,
-              r_obj* values,
-              struct r_lazy error_arg,
-              struct r_lazy error_call,
-              struct r_lazy call) {
+static int arg_match(
+    r_obj* arg,
+    r_obj* values,
+    struct r_lazy error_arg,
+    struct r_lazy error_call,
+    struct r_lazy call
+) {
   if (r_typeof(values) != R_TYPE_character) {
     r_abort_lazy_call(call, "`values` must be a character vector.");
   }
@@ -106,9 +103,11 @@ int arg_match(r_obj* arg,
   case R_TYPE_symbol:
     return arg_match1(r_sym_string(arg), values, error_arg, error_call);
   default:
-    r_abort_lazy_call(error_call,
-                      "%s must be a string or character vector.",
-                      r_format_lazy_error_arg(error_arg));
+    r_abort_lazy_call(
+        error_call,
+        "%s must be a string or character vector.",
+        r_format_lazy_error_arg(error_arg)
+    );
   }
 
   int arg_len = r_length(arg);
@@ -118,7 +117,9 @@ int arg_match(r_obj* arg,
   }
 
   if (arg_len != values_len) {
-    r_abort_lazy_call(call, "`arg` must be a string or have the same length as `values`.");
+    r_abort_lazy_call(
+        call, "`arg` must be a string or have the same length as `values`."
+    );
   }
 
   r_obj* const* v_values = r_chr_cbegin(values);
@@ -138,7 +139,7 @@ int arg_match(r_obj* arg,
   }
 
   r_obj* my_values = KEEP(r_clone(values));
-  r_obj* const * v_my_values = r_chr_cbegin(my_values);
+  r_obj* const* v_my_values = r_chr_cbegin(my_values);
 
   // Invariant: my_values[i:(len-1)] contains the values we haven't matched yet
   for (; i < arg_len; ++i) {
@@ -152,19 +153,22 @@ int arg_match(r_obj* arg,
       if (current_arg == v_my_values[j]) {
         matched = true;
 
-        // Replace matched value by the element that failed to match at this iteration
+        // Replace matched value by the element that failed to match at this
+        // iteration
         r_chr_poke(my_values, j, v_my_values[i]);
         break;
       }
     }
 
     if (!matched) {
-      r_eval_with_wxyz(stop_arg_match_call,
-                       arg,
-                       values,
-                       KEEP(lazy_wrap_chr(error_arg)),
-                       KEEP(r_lazy_eval(error_call)),
-                       rlang_ns_env);
+      r_eval_with_wxyz(
+          stop_arg_match_call,
+          arg,
+          values,
+          KEEP(lazy_wrap_chr(error_arg)),
+          KEEP(r_lazy_eval(error_call)),
+          rlang_ns_env
+      );
       r_stop_unreachable();
     }
   }
@@ -180,25 +184,24 @@ int arg_match(r_obj* arg,
   r_stop_unreachable();
 }
 
-int arg_match_legacy(r_obj* arg,
-                     r_obj* values,
-                     r_obj* error_arg,
-                     r_obj* error_call) {
-  struct r_lazy lazy_error_arg = { error_arg, r_null };
-  struct r_lazy lazy_error_call = { error_call, r_null };
+int arg_match_legacy(
+    r_obj* arg,
+    r_obj* values,
+    r_obj* error_arg,
+    r_obj* error_call
+) {
+  struct r_lazy lazy_error_arg = {error_arg, r_null};
+  struct r_lazy lazy_error_call = {error_call, r_null};
 
-  return arg_match(arg,
-                   values,
-                   lazy_error_arg,
-                   lazy_error_call,
-                   r_lazy_null);
+  return arg_match(arg, values, lazy_error_arg, lazy_error_call, r_lazy_null);
 }
 
-static
-int arg_match1(r_obj* arg,
-               r_obj* values,
-               struct r_lazy error_arg,
-               struct r_lazy error_call) {
+static int arg_match1(
+    r_obj* arg,
+    r_obj* values,
+    struct r_lazy error_arg,
+    struct r_lazy error_call
+) {
   // Simple case: one argument, we check if it's one of the values
   r_obj* const* v_values = r_chr_cbegin(values);
   int n_values = r_length(values);
@@ -217,17 +220,18 @@ int arg_match1(r_obj* arg,
   }
   KEEP(ffi_error_call);
 
-  r_eval_with_wxyz(stop_arg_match_call,
-                   KEEP(wrap_chr(arg)),
-                   values,
-                   KEEP(lazy_wrap_chr(error_arg)),
-                   ffi_error_call,
-                   rlang_ns_env);
+  r_eval_with_wxyz(
+      stop_arg_match_call,
+      KEEP(wrap_chr(arg)),
+      values,
+      KEEP(lazy_wrap_chr(error_arg)),
+      ffi_error_call,
+      rlang_ns_env
+  );
   r_stop_unreachable();
 }
 
-static
-r_obj* wrap_chr(r_obj* arg) {
+static r_obj* wrap_chr(r_obj* arg) {
   switch (arg_match_arg_nm_type(arg)) {
   case R_TYPE_string:
     return r_str_as_character(arg);
@@ -240,55 +244,58 @@ r_obj* wrap_chr(r_obj* arg) {
   }
 }
 
-static
-r_obj* lazy_wrap_chr(struct r_lazy arg) {
+static r_obj* lazy_wrap_chr(struct r_lazy arg) {
   r_obj* ffi_arg = KEEP(r_lazy_eval(arg));
   r_obj* out = wrap_chr(ffi_arg);
   FREE(1);
   return out;
 }
 
-static
-enum r_type arg_match_arg_nm_type(r_obj* arg_nm) {
+static enum r_type arg_match_arg_nm_type(r_obj* arg_nm) {
   switch (r_typeof(arg_nm)) {
-  case R_TYPE_string: return R_TYPE_string;
-  case R_TYPE_symbol: return R_TYPE_symbol;
+  case R_TYPE_string:
+    return R_TYPE_string;
+  case R_TYPE_symbol:
+    return R_TYPE_symbol;
   case R_TYPE_character:
     if (r_is_string(arg_nm)) {
       return R_TYPE_character;
     }
     // else fallthrough;
   default:
-      r_abort("`arg_nm` must be a string or symbol.");
+    r_abort("`arg_nm` must be a string or symbol.");
   }
 }
 
-
-int cci_arg_match(r_obj* arg,
-                  r_obj* values,
-                  struct r_lazy error_arg,
-                  struct r_lazy error_call) {
+int cci_arg_match(
+    r_obj* arg,
+    r_obj* values,
+    struct r_lazy error_arg,
+    struct r_lazy error_call
+) {
   return arg_match(arg, values, error_arg, error_call, r_lazy_null);
 }
 
 r_obj* ffi_arg_match0(r_obj* args) {
   args = r_node_cdr(args);
 
-  r_obj* arg = r_node_car(args); args = r_node_cdr(args);
-  r_obj* values = r_node_car(args); args = r_node_cdr(args);
+  r_obj* arg = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* values = r_node_car(args);
+  args = r_node_cdr(args);
   r_obj* frame = r_node_car(args);
 
-  struct r_lazy error_arg = { .x = syms.arg_nm, .env = frame };
-  struct r_lazy error_call = { .x = r_syms.error_call, .env = frame };
-  struct r_lazy call = { .x = frame, .env = r_null };
+  struct r_lazy error_arg = {.x = syms.arg_nm, .env = frame};
+  struct r_lazy error_call = {.x = r_syms.error_call, .env = frame};
+  struct r_lazy call = {.x = frame, .env = r_null};
 
   int i = arg_match(arg, values, error_arg, error_call, call);
   return r_str_as_character(r_chr_get(values, i));
 }
 
-
 void rlang_init_arg(r_obj* ns) {
-  stop_arg_match_call = r_parse("stop_arg_match(w, values = x, error_arg = y, error_call = z)");
+  stop_arg_match_call =
+      r_parse("stop_arg_match(w, values = x, error_arg = y, error_call = z)");
   r_preserve(stop_arg_match_call);
 }
 

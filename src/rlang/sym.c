@@ -2,7 +2,6 @@
 
 #include "rlang.h"
 
-
 // In old R versions `as.name()` does not translate to native which
 // loses the encoding. This symbol constructor always translates.
 r_obj* r_new_symbol(r_obj* x, int* err) {
@@ -22,7 +21,8 @@ r_obj* r_new_symbol(r_obj* x, int* err) {
       const char* type = r_type_as_c_string(r_typeof(x));
       r_abort("Can't create a symbol with a %s", type);
     }
-  }}
+  }
+  }
 }
 
 bool r_is_symbol(r_obj* x, const char* string) {
@@ -49,11 +49,12 @@ bool r_is_symbol_any(r_obj* x, const char** strings, int n) {
   return false;
 }
 
-
 r_obj* (*r_sym_as_utf8_character)(r_obj* x) = NULL;
 r_obj* (*r_sym_as_utf8_string)(r_obj* x) = NULL;
 
 void r_init_library_sym(void) {
-  r_sym_as_utf8_character = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_sym_as_character");
-  r_sym_as_utf8_string = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_sym_as_string");
+  r_sym_as_utf8_character = (r_obj * (*) (r_obj*) )
+      r_peek_c_callable("rlang", "rlang_sym_as_character");
+  r_sym_as_utf8_string =
+      (r_obj * (*) (r_obj*) ) r_peek_c_callable("rlang", "rlang_sym_as_string");
 }

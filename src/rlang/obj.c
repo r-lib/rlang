@@ -2,11 +2,9 @@
 
 #define PRECIOUS_DICT_INIT_SIZE 256
 
-static
-struct r_dict* p_precious_dict = NULL;
+static struct r_dict* p_precious_dict = NULL;
 
 #include "decl/obj-decl.h"
-
 
 r_obj* r_vec_clone(r_obj* x) {
   r_obj* out = KEEP(r_clone(x));
@@ -34,7 +32,7 @@ r_obj* r_vec_clone_shared(r_obj* x) {
   return x;
 }
 
-void (_r_preserve)(r_obj* x) {
+void(_r_preserve)(r_obj* x) {
   if (!_r_use_local_precious_list) {
     return;
   }
@@ -49,7 +47,7 @@ void (_r_preserve)(r_obj* x) {
   push_precious(stack);
 }
 
-void (_r_unpreserve)(r_obj* x) {
+void(_r_unpreserve)(r_obj* x) {
   if (!_r_use_local_precious_list) {
     return;
   }
@@ -69,8 +67,7 @@ void (_r_unpreserve)(r_obj* x) {
   }
 }
 
-static
-r_obj* new_precious_stack(r_obj* x) {
+static r_obj* new_precious_stack(r_obj* x) {
   r_obj* stack = KEEP(r_alloc_list(2));
 
   // Store (0) protection count and (1) element to protect
@@ -81,25 +78,20 @@ r_obj* new_precious_stack(r_obj* x) {
   return stack;
 }
 
-static
-int push_precious(r_obj* stack) {
+static int push_precious(r_obj* stack) {
   r_obj* n = r_list_get(stack, 0);
   int* p_n = r_int_begin(n);
   return ++(*p_n);
 }
 
-static
-int pop_precious(r_obj* stack) {
+static int pop_precious(r_obj* stack) {
   r_obj* n = r_list_get(stack, 0);
   int* p_n = r_int_begin(n);
   return --(*p_n);
 }
 
 // For unit tests
-struct r_dict* rlang__precious_dict(void) {
-  return p_precious_dict;
-}
-
+struct r_dict* rlang__precious_dict(void) { return p_precious_dict; }
 
 enum r_type r_chr_as_r_type(r_obj* type) {
   if (!r_is_string(type)) {
@@ -118,18 +110,16 @@ r_obj* r_obj_address(r_obj* x) {
 
 r_obj* (*r_obj_encode_utf8)(r_obj* x) = NULL;
 
-
 r_obj* r_as_label(r_obj* x) {
   return r_eval_with_x(as_label_call, x, r_ns_env("rlang"));
 }
 
-
 void r_init_library_obj(r_obj* ns) {
   p_precious_dict = r_new_dict(PRECIOUS_DICT_INIT_SIZE);
   KEEP(p_precious_dict->shelter);
-  r_env_bind(ns,
-             r_sym(".__rlang_lib_precious_dict__."),
-             p_precious_dict->shelter);
+  r_env_bind(
+      ns, r_sym(".__rlang_lib_precious_dict__."), p_precious_dict->shelter
+  );
   FREE(1);
 
   // The Microsoft C library doesn't implement the hexadecimal
@@ -139,11 +129,11 @@ void r_init_library_obj(r_obj* ns) {
     obj_address_formatter = "0x%p";
   }
 
-  r_obj_encode_utf8 = (r_obj* (*)(r_obj*)) r_peek_c_callable("rlang", "rlang_obj_encode_utf8");
+  r_obj_encode_utf8 = (r_obj * (*) (r_obj*) )
+      r_peek_c_callable("rlang", "rlang_obj_encode_utf8");
 
   as_label_call = r_parse("as_label(x)");
   r_preserve_global(as_label_call);
 }
 
 static r_obj* as_label_call = NULL;
-

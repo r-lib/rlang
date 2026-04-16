@@ -1,9 +1,7 @@
 #include "rlang.h"
 #include "decl/env-decl.h"
 
-
 r_obj* rlang_ns_env;
-
 
 r_obj* r_ns_env(const char* pkg) {
   r_obj* pkg_str = KEEP(r_chr(pkg));
@@ -18,7 +16,6 @@ r_obj* r_base_ns_get(const char* name) {
 r_obj* rlang_ns_get(const char* name) {
   return r_env_get(rlang_ns_env, r_sym(name));
 }
-
 
 r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
 #if R_VERSION < R_Version(4, 1, 0)
@@ -40,10 +37,7 @@ r_obj* r_alloc_environment(r_ssize size, r_obj* parent) {
 #endif
 }
 
-
-r_obj* r_env_as_list(r_obj* env) {
-  return eval_with_x(env2list_call, env);
-}
+r_obj* r_env_as_list(r_obj* env) { return eval_with_x(env2list_call, env); }
 
 r_obj* r_env_clone(r_obj* env, r_obj* parent) {
   if (parent == NULL) {
@@ -73,8 +67,9 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
   }
 
   r_ssize n = r_length(syms);
-  r_obj* const * v_syms = r_list_cbegin(syms);
-  enum r_env_binding_type* v_types = (enum r_env_binding_type*) r_int_begin(types);
+  r_obj* const* v_syms = r_list_cbegin(syms);
+  enum r_env_binding_type* v_types =
+      (enum r_env_binding_type*) r_int_begin(types);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* sym = v_syms[i];
@@ -94,20 +89,20 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
 
     case R_ENV_BINDING_TYPE_delayed:
       r_env_bind_delayed(
-        env,
-        sym,
-        KEEP(r_env_binding_delayed_expr(from, sym)),
-        KEEP(r_env_binding_delayed_env(from, sym))
+          env,
+          sym,
+          KEEP(r_env_binding_delayed_expr(from, sym)),
+          KEEP(r_env_binding_delayed_env(from, sym))
       );
       FREE(2);
       break;
 
     case R_ENV_BINDING_TYPE_forced:
       r_env_bind_forced(
-        env,
-        sym,
-        KEEP(r_env_binding_forced_expr(from, sym)),
-        KEEP(r_env_get(from, sym))
+          env,
+          sym,
+          KEEP(r_env_binding_forced_expr(from, sym)),
+          KEEP(r_env_get(from, sym))
       );
       FREE(2);
       break;
@@ -127,10 +122,9 @@ void r_env_coalesce(r_obj* env, r_obj* from) {
   return;
 }
 
-static
-void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* syms) {
+static void env_coalesce_plain(r_obj* env, r_obj* from, r_obj* syms) {
   r_ssize n = r_length(syms);
-  r_obj* const * v_syms = r_list_cbegin(syms);
+  r_obj* const* v_syms = r_list_cbegin(syms);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* sym = v_syms[i];
@@ -248,13 +242,12 @@ bool r_env_has_missing(r_obj* env, r_obj* sym) {
   return r_as_bool(out);
 }
 
-void r_init_rlang_ns_env(void) {
-  rlang_ns_env = r_ns_env("rlang");
-}
+void r_init_rlang_ns_env(void) { rlang_ns_env = r_ns_env("rlang"); }
 
 void r_init_library_env(void) {
 #if R_VERSION < R_Version(4, 1, 0)
-  new_env_call = r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_envs.base);
+  new_env_call =
+      r_parse_eval("as.call(list(new.env, TRUE, NULL, NULL))", r_envs.base);
   r_preserve(new_env_call);
 
   new_env__parent_node = r_node_cddr(new_env_call);
@@ -282,27 +275,19 @@ r_obj* rlang_ns_env = NULL;
 r_obj* r_methods_ns_env = NULL;
 
 #if R_VERSION < R_Version(4, 1, 0)
-static
-r_obj* new_env_call = NULL;
+static r_obj* new_env_call = NULL;
 
-static
-r_obj* new_env__parent_node = NULL;
+static r_obj* new_env__parent_node = NULL;
 
-static
-r_obj* new_env__size_node = NULL;
+static r_obj* new_env__size_node = NULL;
 #endif
 
-static
-r_obj* exists_call = NULL;
+static r_obj* exists_call = NULL;
 
-static
-r_obj* remove_call = NULL;
+static r_obj* remove_call = NULL;
 
-static
-r_obj* env2list_call = NULL;
+static r_obj* env2list_call = NULL;
 
-static
-r_obj* list2env_call = NULL;
+static r_obj* list2env_call = NULL;
 
-static
-r_obj* missing_prim = NULL;
+static r_obj* missing_prim = NULL;

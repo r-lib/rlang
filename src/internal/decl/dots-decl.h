@@ -11,21 +11,20 @@ static struct r_lazy dots_ignore_empty_arg;
 
 r_obj* rlang_ns_get(const char* name);
 
-static
-enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty);
+static enum dots_ignore_empty arg_match_ignore_empty(r_obj* ignore_empty);
 
-static
-enum dots_homonyms arg_match_homonyms(r_obj* homonyms);
+static enum dots_homonyms arg_match_homonyms(r_obj* homonyms);
 
-static
-enum arg_named arg_match_named(r_obj* named);
+static enum arg_named arg_match_named(r_obj* named);
 
-static inline
-bool should_ignore(struct dots_capture_info* p_capture_info,
-                   r_obj* expr,
-                   r_obj* name,
-                   bool last);
+static inline bool should_ignore(
+    struct dots_capture_info* p_capture_info,
+    r_obj* expr,
+    r_obj* name,
+    bool last
+);
 
-static inline
-void ignore(struct dots_capture_info* p_capture_info,
-            r_obj* node);
+static inline void ignore(
+    struct dots_capture_info* p_capture_info,
+    r_obj* node
+);

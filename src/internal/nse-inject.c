@@ -3,7 +3,6 @@
 #include "ast-rotate.h"
 #include "utils.h"
 
-
 struct injection_info which_bang_op(r_obj* second, struct injection_info info);
 struct injection_info which_curly_op(r_obj* second, struct injection_info info);
 
@@ -88,52 +87,53 @@ struct injection_info which_curly_op(r_obj* first, struct injection_info info) {
   return info;
 }
 
-
 // These functions are questioning and might be soft-deprecated in the
 // future
 void signal_uq_soft_deprecation(void) {
-  return ;
-  const char* msg =
-    "`UQ()` is soft-deprecated as of rlang 0.2.0. "
-    "Please use the prefix form of `!!` instead.";
+  return;
+  const char* msg = "`UQ()` is soft-deprecated as of rlang 0.2.0. "
+                    "Please use the prefix form of `!!` instead.";
   deprecate_soft(msg, msg, r_envs.empty);
 }
 void signal_uqs_soft_deprecation(void) {
-  return ;
-  const char* msg =
-    "`UQS()` is soft-deprecated as of rlang 0.2.0. "
-    "Please use the prefix form of `!!!` instead.";
+  return;
+  const char* msg = "`UQS()` is soft-deprecated as of rlang 0.2.0. "
+                    "Please use the prefix form of `!!!` instead.";
   deprecate_soft(msg, msg, r_envs.empty);
 }
 
 void signal_namespaced_uq_deprecation(void) {
-  deprecate_warn("namespaced rlang::UQ()",
-    "Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
-    "Please use the non-prefixed form or `!!` instead.\n"
-    "\n"
-    "  # Bad:\n"
-    "  rlang::expr(mean(rlang::UQ(var) * 100))\n"
-    "\n"
-    "  # Ok:\n"
-    "  rlang::expr(mean(UQ(var) * 100))\n"
-    "\n"
-    "  # Good:\n"
-    "  rlang::expr(mean(!!var * 100))\n"
+  deprecate_warn(
+      "namespaced rlang::UQ()",
+      "Prefixing `UQ()` with the rlang namespace is deprecated as of rlang "
+      "0.3.0.\n"
+      "Please use the non-prefixed form or `!!` instead.\n"
+      "\n"
+      "  # Bad:\n"
+      "  rlang::expr(mean(rlang::UQ(var) * 100))\n"
+      "\n"
+      "  # Ok:\n"
+      "  rlang::expr(mean(UQ(var) * 100))\n"
+      "\n"
+      "  # Good:\n"
+      "  rlang::expr(mean(!!var * 100))\n"
   );
 }
 void signal_namespaced_uqs_deprecation(void) {
-  deprecate_warn("namespaced rlang::UQS()",
-    "Prefixing `UQS()` with the rlang namespace is deprecated as of rlang 0.3.0.\n"
-    "Please use the non-prefixed form or `!!!` instead.\n"
-    "\n"
-    "  # Bad:\n"
-    "  rlang::expr(mean(rlang::UQS(args)))\n"
-    "\n"
-    "  # Ok:\n"
-    "  rlang::expr(mean(UQS(args)))\n"
-    "\n"
-    "  # Good:\n"
-    "  rlang::expr(mean(!!!args))\n"
+  deprecate_warn(
+      "namespaced rlang::UQS()",
+      "Prefixing `UQS()` with the rlang namespace is deprecated as of rlang "
+      "0.3.0.\n"
+      "Please use the non-prefixed form or `!!!` instead.\n"
+      "\n"
+      "  # Bad:\n"
+      "  rlang::expr(mean(rlang::UQS(args)))\n"
+      "\n"
+      "  # Ok:\n"
+      "  rlang::expr(mean(UQS(args)))\n"
+      "\n"
+      "  # Good:\n"
+      "  rlang::expr(mean(!!!args))\n"
   );
 }
 
@@ -144,7 +144,7 @@ void maybe_poke_big_bang_op(r_obj* x, struct injection_info* info) {
     }
     info->op = INJECTION_OP_uqs;
     info->operand = r_node_cadr(x);
-    return ;
+    return;
   }
 
   // Handle expressions like foo::`!!`(bar) or foo$`!!`(bar)
@@ -161,7 +161,7 @@ void maybe_poke_big_bang_op(r_obj* x, struct injection_info* info) {
     signal_uqs_soft_deprecation();
     info->op = INJECTION_OP_uqs;
     info->operand = r_node_cadr(x);
-    return ;
+    return;
   }
 }
 
@@ -186,7 +186,6 @@ struct injection_info which_expansion_op(r_obj* x, bool unquote_names) {
     info.op = INJECTION_OP_uqn;
     return info;
   }
-
 
   if (r_is_call(x, "!!")) {
     info.op = INJECTION_OP_uq;
@@ -242,7 +241,8 @@ struct injection_info which_expansion_op(r_obj* x, bool unquote_names) {
     // User had to unquote operand manually before .data[[ was unquote syntax
     struct injection_info nested = which_expansion_op(info.operand, false);
     if (nested.op == INJECTION_OP_uq) {
-      const char* msg = "It is no longer necessary to unquote within the `.data` pronoun";
+      const char* msg =
+          "It is no longer necessary to unquote within the `.data` pronoun";
       deprecate_soft(msg, msg, r_envs.empty);
       info.operand = nested.operand;
     }
@@ -262,7 +262,6 @@ struct injection_info is_big_bang_op(r_obj* x) {
 
   return info;
 }
-
 
 static r_obj* bang_bang_teardown(r_obj* value, struct injection_info info) {
   r_mark_shared(value);
@@ -310,13 +309,12 @@ static r_obj* curly_curly(struct injection_info info, r_obj* env) {
   return bang_bang_teardown(value, info);
 }
 
-
 // Defined below
 static r_obj* call_list_interp(r_obj* x, r_obj* env);
 static r_obj* node_list_interp(r_obj* x, r_obj* env);
 static void call_maybe_poke_string_head(r_obj* call);
 
-r_obj* call_interp(r_obj* x, r_obj* env)  {
+r_obj* call_interp(r_obj* x, r_obj* env) {
   struct injection_info info = which_expansion_op(x, false);
   return call_interp_impl(x, env, info);
 }
@@ -376,7 +374,7 @@ r_obj* call_interp_impl(r_obj* x, r_obj* env, struct injection_info info) {
 static void call_maybe_poke_string_head(r_obj* call) {
   r_obj* head = r_node_car(call);
   if (r_typeof(head) != R_TYPE_character) {
-    return ;
+    return;
   }
 
   r_ssize n = r_length(head);
@@ -429,7 +427,4 @@ r_obj* ffi_interp(r_obj* x, r_obj* env) {
   return x;
 }
 
-
-void rlang_init_expr_interp(void) {
-  dot_data_sym = r_sym(".data");
-}
+void rlang_init_expr_interp(void) { dot_data_sym = r_sym(".data"); }

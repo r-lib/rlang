@@ -12,5 +12,4 @@ r_obj* r_f_lhs(r_obj* f);
 r_obj* r_f_env(r_obj* f);
 bool r_f_has_env(r_obj* f);
 
-
 #endif

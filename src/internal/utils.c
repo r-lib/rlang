@@ -2,7 +2,6 @@
 #include "utils.h"
 #include "internal.h"
 
-
 r_obj* new_preserved_empty_list(void) {
   r_obj* empty_list = r_alloc_list(0);
   r_preserve(empty_list);
@@ -14,7 +13,6 @@ r_obj* new_preserved_empty_list(void) {
 
   return empty_list;
 }
-
 
 /* For debugging with gdb or lldb. Exported as a C callable.
  * Usage with lldb:
@@ -31,9 +29,8 @@ void rlang_print_backtrace(bool full) {
   r_obj* env = KEEP(r_peek_frame());
   r_obj* trace = KEEP(r_parse_eval("rlang::trace_back()", env));
 
-  const char* source = full ?
-    "print(x, simplify = 'none')" :
-    "print(x, simplify = 'branch')";
+  const char* source =
+      full ? "print(x, simplify = 'none')" : "print(x, simplify = 'branch')";
   r_obj* call = KEEP(r_parse(source));
 
   r_eval_with_x(call, trace, r_envs.base);
@@ -56,11 +53,8 @@ void rlang_env_print(r_obj* x) {
   return;
 }
 
-
 static r_obj* deprecate_soft_call = NULL;
-void deprecate_soft(const char* msg,
-                            const char* id,
-                            r_obj* env) {
+void deprecate_soft(const char* msg, const char* id, r_obj* env) {
   id = id ? id : msg;
   env = env ? env : r_envs.empty;
   if (!msg) {
@@ -76,14 +70,14 @@ void deprecate_soft(const char* msg,
 }
 
 #define BUFSIZE 8192
-#define INTERP(BUF, FMT, DOTS)                  \
-  {                                             \
-    va_list dots;                               \
-    va_start(dots, FMT);                        \
-    vsnprintf(BUF, BUFSIZE, FMT, dots);         \
-    va_end(dots);                               \
-                                                \
-    BUF[BUFSIZE - 1] = '\0';                    \
+#define INTERP(BUF, FMT, DOTS)                                                 \
+  {                                                                            \
+    va_list dots;                                                              \
+    va_start(dots, FMT);                                                       \
+    vsnprintf(BUF, BUFSIZE, FMT, dots);                                        \
+    va_end(dots);                                                              \
+                                                                               \
+    BUF[BUFSIZE - 1] = '\0';                                                   \
   }
 
 static void signal_retirement(const char* source, const char* buf);
@@ -119,9 +113,8 @@ static void signal_retirement(const char* source, const char* buf) {
   FREE(2);
 }
 
-
 #define R_SUBSET_NAMES_N 4
-static const char* r_subset_names[R_SUBSET_NAMES_N] = { "$", "@", "::", ":::" };
+static const char* r_subset_names[R_SUBSET_NAMES_N] = {"$", "@", "::", ":::"};
 
 bool r_is_prefixed_call(r_obj* x, const char* name) {
   if (r_typeof(x) != LANGSXP) {
@@ -170,8 +163,12 @@ bool r_is_namespaced_call(r_obj* x, const char* ns, const char* name) {
   return true;
 }
 
-bool r_is_namespaced_call_any(r_obj* x, const char* ns,
-                              const char** names, int n) {
+bool r_is_namespaced_call_any(
+    r_obj* x,
+    const char* ns,
+    const char** names,
+    int n
+) {
   if (!r_is_namespaced_call(x, ns, NULL)) {
     return false;
   }
@@ -183,13 +180,16 @@ bool r_is_namespaced_call_any(r_obj* x, const char* ns,
 
 r_obj* nms_are_duplicated(r_obj* nms, bool from_last) {
   if (r_typeof(nms) != R_TYPE_character) {
-    r_abort("Internal error: Expected a character vector of names for checking duplication");
+    r_abort(
+        "Internal error: Expected a character vector of names for checking "
+        "duplication"
+    );
   }
   r_obj* dups = KEEP(Rf_duplicated(nms, from_last));
 
   r_ssize n = r_length(dups);
   int* p_dups = r_lgl_begin(dups);
-  r_obj* const * p_nms = r_chr_cbegin(nms);
+  r_obj* const* p_nms = r_chr_cbegin(nms);
 
   for (r_ssize i = 0; i < n; ++i) {
     if (p_nms[i] == r_strs.empty || p_nms[i] == r_globals.na_str) {
@@ -231,7 +231,7 @@ r_obj* chr_detect_dups(r_obj* x) {
   r_obj* dup_flag = r_strs.empty;
 
   r_ssize n = r_length(x);
-  r_obj* const * v_data = r_chr_cbegin(x);
+  r_obj* const* v_data = r_chr_cbegin(x);
 
   struct r_dict* p_dict = r_new_dict(n);
   KEEP(p_dict->shelter);
@@ -267,15 +267,13 @@ r_obj* ffi_use_local_precious_list(r_obj* x) {
   return r_lgl(old);
 }
 
-r_obj* ffi_getppid(void) {
-  return r_getppid();
-}
-
+r_obj* ffi_getppid(void) { return r_getppid(); }
 
 void rlang_init_utils(void) {
   deprecate_warn_call = r_parse("rlang:::deprecate_warn(x, id = y)");
   r_preserve(deprecate_warn_call);
 
-  deprecate_soft_call = r_parse("rlang:::deprecate_soft(x, id = y, user_env = z)");
+  deprecate_soft_call =
+      r_parse("rlang:::deprecate_soft(x, id = y, user_env = z)");
   r_preserve(deprecate_soft_call);
 }

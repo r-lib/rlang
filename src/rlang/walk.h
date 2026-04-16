@@ -72,7 +72,6 @@ enum r_sexp_it_raw_relation {
   R_SEXP_IT_RAW_RELATION_vector_elt
 };
 
-
 struct r_sexp_iterator {
   r_obj* shelter;
   bool skip_incoming;
@@ -94,9 +93,9 @@ struct r_sexp_iterator* r_new_sexp_iterator(r_obj* root);
 bool r_sexp_next(struct r_sexp_iterator* p_it);
 bool r_sexp_skip(struct r_sexp_iterator* p_it);
 
-
-static inline
-enum r_sexp_it_raw_relation r_sexp_it_raw_relation(enum r_sexp_it_relation rel) {
+static inline enum r_sexp_it_raw_relation r_sexp_it_raw_relation(
+    enum r_sexp_it_relation rel
+) {
   switch (rel) {
   case R_SEXP_IT_RELATION_root:
     return R_SEXP_IT_RAW_RELATION_root;
@@ -140,6 +139,5 @@ enum r_sexp_it_raw_relation r_sexp_it_raw_relation(enum r_sexp_it_relation rel) 
 const char* r_sexp_it_direction_as_c_string(enum r_sexp_it_direction dir);
 const char* r_sexp_it_relation_as_c_string(enum r_sexp_it_relation rel);
 const char* r_sexp_it_raw_relation_as_c_string(enum r_sexp_it_raw_relation rel);
-
 
 #endif

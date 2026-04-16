@@ -1,0 +1,10 @@
+AlignAfterOpenBracket: BlockIndent
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: false
+BinPackParameters: false
+BreakAfterReturnType: Automatic
+InsertBraces: true
+PenaltyReturnTypeOnItsOwnLine: 10000
+PointerAlignment: Left
+SortIncludes: Never
+SpaceAfterCStyleCast: true

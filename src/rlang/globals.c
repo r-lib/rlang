@@ -1,7 +1,6 @@
 #include "rlang-types.h"
 #include "sym.h"
 
-
 struct r_globals r_globals;
 struct r_globals_chrs r_chrs;
 struct r_globals_classes r_classes;
@@ -12,11 +11,10 @@ struct r_globals_envs r_envs;
 r_obj* r_true = NULL;
 r_obj* r_false = NULL;
 
-
 void r_init_library_globals(r_obj* ns) {
   r_preserve_global(r_classes.data_frame = r_chr("data.frame"));
 
-  const char* v_tibble_class[] = { "tbl_df", "tbl", "data.frame" };
+  const char* v_tibble_class[] = {"tbl_df", "tbl", "data.frame"};
   r_preserve_global(r_globals.empty_lgl = r_alloc_logical(0));
   r_preserve_global(r_globals.empty_int = r_alloc_integer(0));
   r_preserve_global(r_globals.empty_dbl = r_alloc_double(0));
@@ -28,7 +26,7 @@ void r_init_library_globals(r_obj* ns) {
   r_globals.na_lgl = NA_LOGICAL;
   r_globals.na_int = NA_INTEGER;
   r_globals.na_dbl = NA_REAL;
-  r_globals.na_cpl = (r_complex) { .r = NA_REAL, .i = NA_REAL };
+  r_globals.na_cpl = (r_complex) {.r = NA_REAL, .i = NA_REAL};
   r_globals.na_str = NA_STRING;
 
   r_preserve_global(r_chrs.empty_string = r_chr(""));

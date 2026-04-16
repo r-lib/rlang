@@ -1,7 +1,6 @@
 #include "rlang.h"
 #include "decl/stack-decl.h"
 
-
 void r_on_exit(r_obj* expr, r_obj* frame) {
   static r_obj* on_exit_prim = NULL;
   if (!on_exit_prim) {
@@ -15,10 +14,7 @@ void r_on_exit(r_obj* expr, r_obj* frame) {
   FREE(1);
 }
 
-
-r_obj* r_peek_frame(void) {
-  return r_eval(peek_frame_call, r_envs.base);
-}
+r_obj* r_peek_frame(void) { return r_eval(peek_frame_call, r_envs.base); }
 
 r_obj* r_caller_env(r_obj* n) {
   if (r_typeof(n) != R_TYPE_environment) {
@@ -26,7 +22,6 @@ r_obj* r_caller_env(r_obj* n) {
   }
   return r_eval(caller_env_call, n);
 }
-
 
 static r_obj* sys_frame_call = NULL;
 static r_obj* sys_call_call = NULL;
@@ -61,7 +56,6 @@ r_obj* r_sys_call(int n, r_obj* frame) {
   return value;
 }
 
-
 static r_obj* generate_sys_call(const char* name, int** n_addr) {
   r_obj* sys_n = KEEP(r_int(0));
   *n_addr = r_int_begin(sys_n);
@@ -83,7 +77,8 @@ void r_init_library_stack(void) {
   // Call `sys.frame()` from a closure to push a new frame on the
   // stack, and use negative indexing to get the previous frame.
   r_obj* current_frame_body = KEEP(r_parse("sys.frame(-1)"));
-  r_obj* current_frame_fn = KEEP(r_new_function(r_null, current_frame_body, r_envs.base));
+  r_obj* current_frame_fn =
+      KEEP(r_new_function(r_null, current_frame_body, r_envs.base));
   peek_frame_call = r_new_call(current_frame_fn, r_null);
   r_preserve(peek_frame_call);
   FREE(2);

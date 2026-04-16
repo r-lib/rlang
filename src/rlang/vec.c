@@ -2,8 +2,7 @@
 #include <math.h>
 #include <stdint.h>
 
-
-r_obj* r_chr_n(const char* const * strings, r_ssize n) {
+r_obj* r_chr_n(const char* const* strings, r_ssize n) {
   r_obj* out = KEEP(r_alloc_character(n));
 
   for (r_ssize i = 0; i < n; ++i) {
@@ -14,52 +13,51 @@ r_obj* r_chr_n(const char* const * strings, r_ssize n) {
   return out;
 }
 
-#define RESIZE(R_TYPE, C_TYPE, CONST_DEREF, DEREF)                  \
-  do {                                                              \
-    r_ssize old_size = r_length(x);                                 \
-    if (old_size == new_size) {                                     \
-      return x;                                                     \
-    }                                                               \
-    if (!ALTREP(x) && new_size < old_size) {                        \
-      return vec_shrink(x, new_size, old_size);                     \
-    }                                                               \
-                                                                    \
-    const C_TYPE* p_x = CONST_DEREF(x);                             \
-    r_obj* out = KEEP(r_alloc_vector(R_TYPE, new_size));            \
-    C_TYPE* p_out = DEREF(out);                                     \
-                                                                    \
-    r_ssize cpy_size = (new_size > old_size) ? old_size : new_size; \
-    r_memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));                \
-                                                                    \
-    FREE(1);                                                        \
-    return out;                                                     \
+#define RESIZE(R_TYPE, C_TYPE, CONST_DEREF, DEREF)                             \
+  do {                                                                         \
+    r_ssize old_size = r_length(x);                                            \
+    if (old_size == new_size) {                                                \
+      return x;                                                                \
+    }                                                                          \
+    if (!ALTREP(x) && new_size < old_size) {                                   \
+      return vec_shrink(x, new_size, old_size);                                \
+    }                                                                          \
+                                                                               \
+    const C_TYPE* p_x = CONST_DEREF(x);                                        \
+    r_obj* out = KEEP(r_alloc_vector(R_TYPE, new_size));                       \
+    C_TYPE* p_out = DEREF(out);                                                \
+                                                                               \
+    r_ssize cpy_size = (new_size > old_size) ? old_size : new_size;            \
+    r_memcpy(p_out, p_x, cpy_size * sizeof(C_TYPE));                           \
+                                                                               \
+    FREE(1);                                                                   \
+    return out;                                                                \
   } while (0)
 
-#define RESIZE_BARRIER(R_TYPE, CONST_DEREF, SET)                    \
-  do {                                                              \
-    r_ssize old_size = r_length(x);                                 \
-    if (old_size == new_size) {                                     \
-      return x;                                                     \
-    }                                                               \
-    if (!ALTREP(x) && new_size < old_size) {                        \
-      return vec_shrink(x, new_size, old_size);                     \
-    }                                                               \
-                                                                    \
-    r_obj* const * p_x = CONST_DEREF(x);                            \
-    r_obj* out = KEEP(r_alloc_vector(R_TYPE, new_size));            \
-                                                                    \
-    r_ssize cpy_size = (new_size > old_size) ? old_size : new_size; \
-    for (r_ssize i = 0; i < cpy_size; ++i) {                        \
-      SET(out, i, p_x[i]);                                          \
-    }                                                               \
-                                                                    \
-    FREE(1);                                                        \
-    return out;                                                     \
+#define RESIZE_BARRIER(R_TYPE, CONST_DEREF, SET)                               \
+  do {                                                                         \
+    r_ssize old_size = r_length(x);                                            \
+    if (old_size == new_size) {                                                \
+      return x;                                                                \
+    }                                                                          \
+    if (!ALTREP(x) && new_size < old_size) {                                   \
+      return vec_shrink(x, new_size, old_size);                                \
+    }                                                                          \
+                                                                               \
+    r_obj* const* p_x = CONST_DEREF(x);                                        \
+    r_obj* out = KEEP(r_alloc_vector(R_TYPE, new_size));                       \
+                                                                               \
+    r_ssize cpy_size = (new_size > old_size) ? old_size : new_size;            \
+    for (r_ssize i = 0; i < cpy_size; ++i) {                                   \
+      SET(out, i, p_x[i]);                                                     \
+    }                                                                          \
+                                                                               \
+    FREE(1);                                                                   \
+    return out;                                                                \
   } while (0)
 
 // Assumption on older R: `new_size` smaller than `old_size`
-static inline
-r_obj* vec_shrink(r_obj* x, r_ssize new_size, r_ssize old_size) {
+static inline r_obj* vec_shrink(r_obj* x, r_ssize new_size, r_ssize old_size) {
 #if R_VERSION >= R_Version(4, 6, 0)
   if (R_isResizable(x)) {
     R_resizeVector(x, new_size);
@@ -102,13 +100,12 @@ r_obj* r_list_resize(r_obj* x, r_ssize new_size) {
 #undef RESIZE
 #undef RESIZE_BARRIER
 
-
 r_obj* r_list_compact(r_obj* x) {
   r_ssize n = r_length(x);
   r_obj* inc = KEEP(r_alloc_logical(n));
 
   int* v_inc = r_int_begin(inc);
-  r_obj* const * v_x = r_list_cbegin(x);
+  r_obj* const* v_x = r_list_cbegin(x);
 
   r_ssize new_n = 0;
   for (r_ssize i = 0; i < n; ++i) {
@@ -128,9 +125,11 @@ r_obj* r_list_compact(r_obj* x) {
   return out;
 }
 
-r_obj* r_list_of_as_ptr_ssize(r_obj* xs,
-                              enum r_type type,
-                              struct r_pair_ptr_ssize** p_v_out) {
+r_obj* r_list_of_as_ptr_ssize(
+    r_obj* xs,
+    enum r_type type,
+    struct r_pair_ptr_ssize** p_v_out
+) {
   if (r_typeof(xs) != R_TYPE_list) {
     r_abort("`xs` must be a list.");
   }
@@ -139,19 +138,19 @@ r_obj* r_list_of_as_ptr_ssize(r_obj* xs,
   r_obj* shelter = KEEP(r_alloc_raw(sizeof(struct r_pair_ptr_ssize) * n));
   struct r_pair_ptr_ssize* v_out = r_raw_begin(shelter);
 
-  r_obj* const * v_xs = r_list_cbegin(xs);
+  r_obj* const* v_xs = r_list_cbegin(xs);
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* x = v_xs[i];
     if (r_typeof(x) != type) {
-      r_abort("`xs` must be a list of vectors of type `%s`.",
-              r_type_as_c_string(type));
+      r_abort(
+          "`xs` must be a list of vectors of type `%s`.",
+          r_type_as_c_string(type)
+      );
     }
 
-    v_out[i] = (struct r_pair_ptr_ssize) {
-      .ptr = r_int_begin(x),
-      .size = r_length(x)
-    };
+    v_out[i] =
+        (struct r_pair_ptr_ssize) {.ptr = r_int_begin(x), .size = r_length(x)};
   }
 
   FREE(1);
@@ -159,10 +158,8 @@ r_obj* r_list_of_as_ptr_ssize(r_obj* xs,
   return shelter;
 }
 
-
 // FIXME: Does this have a place in the library?
-void r_vec_poke_n(r_obj* x, r_ssize offset,
-                  r_obj* y, r_ssize from, r_ssize n) {
+void r_vec_poke_n(r_obj* x, r_ssize offset, r_obj* y, r_ssize from, r_ssize n) {
 
   if ((r_length(x) - offset) < n) {
     r_abort("Can't copy data to `x` because it is too small");
@@ -175,36 +172,41 @@ void r_vec_poke_n(r_obj* x, r_ssize offset,
   case R_TYPE_logical: {
     int* src_data = r_lgl_begin(y);
     int* dest_data = r_lgl_begin(x);
-    for (r_ssize i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i) {
       dest_data[i + offset] = src_data[i + from];
+    }
     break;
   }
   case R_TYPE_integer: {
     int* src_data = r_int_begin(y);
     int* dest_data = r_int_begin(x);
-    for (r_ssize i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i) {
       dest_data[i + offset] = src_data[i + from];
+    }
     break;
   }
   case R_TYPE_double: {
     double* src_data = r_dbl_begin(y);
     double* dest_data = r_dbl_begin(x);
-    for (r_ssize i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i) {
       dest_data[i + offset] = src_data[i + from];
+    }
     break;
   }
   case R_TYPE_complex: {
     r_complex* src_data = r_cpl_begin(y);
     r_complex* dest_data = r_cpl_begin(x);
-    for (r_ssize i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i) {
       dest_data[i + offset] = src_data[i + from];
+    }
     break;
   }
   case R_TYPE_raw: {
     unsigned char* src_data = RAW(y);
     unsigned char* dest_data = RAW(x);
-    for (r_ssize i = 0; i != n; ++i)
+    for (r_ssize i = 0; i != n; ++i) {
       dest_data[i + offset] = src_data[i + from];
+    }
     break;
   }
   case R_TYPE_character: {
@@ -228,15 +230,20 @@ void r_vec_poke_n(r_obj* x, r_ssize offset,
   }
 }
 
-void r_vec_poke_range(r_obj* x, r_ssize offset,
-                      r_obj* y, r_ssize from, r_ssize to) {
+void r_vec_poke_range(
+    r_obj* x,
+    r_ssize offset,
+    r_obj* y,
+    r_ssize from,
+    r_ssize to
+) {
   r_vec_poke_n(x, offset, y, from, to - from + 1);
 }
 
 bool _r_is_finite(r_obj* x) {
   r_ssize n = r_length(x);
 
-  switch(r_typeof(x)) {
+  switch (r_typeof(x)) {
   case R_TYPE_integer: {
     const int* p_x = r_int_cbegin(x);
     for (r_ssize i = 0; i < n; ++i) {

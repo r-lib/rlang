@@ -1,9 +1,6 @@
 #include "rlang.h"
 
-
-r_obj* r_new_pairlist(const struct r_pair* args,
-                      int n,
-                      r_obj** tail) {
+r_obj* r_new_pairlist(const struct r_pair* args, int n, r_obj** tail) {
   r_obj* shelter = KEEP(r_new_node(R_NilValue, R_NilValue));
   r_obj* node = shelter;
 
@@ -26,7 +23,6 @@ r_obj* r_new_pairlist(const struct r_pair* args,
   FREE(1);
   return r_node_cdr(shelter);
 }
-
 
 // Shallow copy of a node tree. Other objects are not cloned.
 r_obj* r_node_tree_clone(r_obj* x) {

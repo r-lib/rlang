@@ -1,7 +1,6 @@
 #include <rlang.h>
 
-static
-const char* quo_tags[2] = { "quosure", "formula" };
+static const char* quo_tags[2] = {"quosure", "formula"};
 
 r_obj* new_raw_formula(r_obj* lhs, r_obj* rhs, r_obj* env);
 
@@ -76,18 +75,12 @@ r_obj* ffi_get_expression(r_obj* x, r_obj* alternate) {
   }
 }
 
-bool quo_is_missing(r_obj* quo) {
-  return r_node_cadr(quo) == R_MissingArg;
-}
+bool quo_is_missing(r_obj* quo) { return r_node_cadr(quo) == R_MissingArg; }
 bool quo_is_symbol(r_obj* quo) {
   return r_typeof(r_node_cadr(quo)) == R_TYPE_symbol;
 }
 bool quo_is_call(r_obj* quo) {
   return r_typeof(r_node_cadr(quo)) == R_TYPE_call;
 }
-bool quo_is_symbolic(r_obj* quo) {
-  return r_is_symbolic(r_node_cadr(quo));
-}
-bool quo_is_null(r_obj* quo) {
-  return r_node_cadr(quo) == r_null;
-}
+bool quo_is_symbolic(r_obj* quo) { return r_is_symbolic(r_node_cadr(quo)); }
+bool quo_is_null(r_obj* quo) { return r_node_cadr(quo) == r_null; }

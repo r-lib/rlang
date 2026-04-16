@@ -10,7 +10,7 @@
 
 #include "xxhash/xxhash.h"
 
-#include <stdio.h> // sprintf()
+#include <stdio.h>    // sprintf()
 #include <inttypes.h> // PRIx64
 
 #include "decl/hash-decl.h"
@@ -51,10 +51,7 @@ static void hash_cleanup(void* p_data);
 r_obj* ffi_hash(r_obj* x) {
   XXH3_state_t* p_xx_state = XXH3_createState();
 
-  struct exec_data data = {
-    .x = x,
-    .p_xx_state = p_xx_state
-  };
+  struct exec_data data = {.x = x, .p_xx_state = p_xx_state};
 
   return R_ExecWithCleanup(hash_impl, &data, hash_cleanup, &data);
 }
@@ -72,8 +69,7 @@ static inline r_obj* hash_value(XXH3_state_t* p_xx_state);
 static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n);
 static inline void hash_char(R_outpstream_t stream, int input);
 
-static
-r_obj* hash_impl(void* p_data) {
+static r_obj* hash_impl(void* p_data) {
   struct exec_data* p_exec_data = (struct exec_data*) p_data;
   r_obj* x = p_exec_data->x;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
@@ -99,14 +95,14 @@ r_obj* hash_impl(void* p_data) {
   struct R_outpstream_st stream;
 
   R_InitOutPStream(
-    &stream,
-    (R_pstream_data_t) &state,
-    format,
-    version,
-    hash_char,
-    hash_bytes,
-    hook,
-    hook_data
+      &stream,
+      (R_pstream_data_t) &state,
+      format,
+      version,
+      hash_char,
+      hash_bytes,
+      hook,
+      hook_data
   );
 
   R_Serialize(x, &stream);
@@ -118,30 +114,20 @@ r_obj* hash_impl(void* p_data) {
   return out;
 }
 
-static
-void hash_cleanup(void* p_data) {
+static void hash_cleanup(void* p_data) {
   struct exec_data* p_exec_data = (struct exec_data*) p_data;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
   XXH3_freeState(p_xx_state);
 }
 
-static inline
-struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state) {
-  return (struct hash_state_t) {
-    .skip = true,
-    .n_skipped = 0,
-    .n_native_enc = 0,
-    .p_xx_state = p_xx_state
-  };
+static inline struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state) {
+  return (struct hash_state_t
+  ) {.skip = true, .n_skipped = 0, .n_native_enc = 0, .p_xx_state = p_xx_state};
 }
 
-static inline
-int hash_version(void) {
-  return 3;
-}
+static inline int hash_version(void) { return 3; }
 
-static inline
-r_obj* hash_value(XXH3_state_t* p_xx_state) {
+static inline r_obj* hash_value(XXH3_state_t* p_xx_state) {
   XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);
 
   // R assumes C99, so these are always defined as `uint64_t` in xxhash.h
@@ -156,10 +142,13 @@ r_obj* hash_value(XXH3_state_t* p_xx_state) {
   return r_str(out);
 }
 
-static inline void hash_skip(struct hash_state_t* p_state, void* p_input, int n);
+static inline void hash_skip(
+    struct hash_state_t* p_state,
+    void* p_input,
+    int n
+);
 
-static inline
-void hash_bytes(R_outpstream_t stream, void* p_input, int n) {
+static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n) {
   struct hash_state_t* p_state = (struct hash_state_t*) stream->data;
 
   if (p_state->skip) {
@@ -175,16 +164,18 @@ void hash_bytes(R_outpstream_t stream, void* p_input, int n) {
   }
 }
 
-static inline
-void hash_char(R_outpstream_t stream, int input) {
+static inline void hash_char(R_outpstream_t stream, int input) {
   // `R_Serialize()` only ever calls `stream->OutChar()` for ASCII and
   // ASCIIHEX formats, neither of which we are using.
   // https://github.com/wch/r-source/blob/161e21346c024b79db2654d3331298f96cdf6968/src/main/serialize.c#L376
   r_stop_internal("Should never be called with binary format.");
 }
 
-static inline
-void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
+static inline void hash_skip(
+    struct hash_state_t* p_state,
+    void* p_input,
+    int n
+) {
   if (p_state->n_skipped < N_BYTES_SERIALIZATION_INFO) {
     // Skip serialization info bytes
     p_state->n_skipped += n;
@@ -202,9 +193,7 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
   p_state->n_skipped += n;
 
   int n_bytes_header =
-    N_BYTES_SERIALIZATION_INFO +
-    N_BYTES_N_NATIVE_ENC +
-    p_state->n_native_enc;
+      N_BYTES_SERIALIZATION_INFO + N_BYTES_N_NATIVE_ENC + p_state->n_native_enc;
 
   if (p_state->n_skipped == n_bytes_header) {
     // We've skipped all serialization header bytes at this point
@@ -217,18 +206,14 @@ void hash_skip(struct hash_state_t* p_state, void* p_input, int n) {
 r_obj* ffi_hash_file(r_obj* path) {
   XXH3_state_t* p_xx_state = XXH3_createState();
 
-  struct exec_data data = {
-    .x = path,
-    .p_xx_state = p_xx_state
-  };
+  struct exec_data data = {.x = path, .p_xx_state = p_xx_state};
 
   return R_ExecWithCleanup(hash_file_impl, &data, hash_cleanup, &data);
 }
 
 #define CHUNK_SIZE 512 * 1024
 
-static
-r_obj* hash_file_impl(void* p_data) {
+static r_obj* hash_file_impl(void* p_data) {
   struct exec_data* p_exec_data = (struct exec_data*) p_data;
   r_obj* path = p_exec_data->x;
   XXH3_state_t* p_xx_state = p_exec_data->p_xx_state;
@@ -243,7 +228,7 @@ r_obj* hash_file_impl(void* p_data) {
   r_obj* out = KEEP(r_alloc_character(n_path));
 
   // Allocate before opening file to avoid handle leak on allocation failure
-  void* buf = (void*)R_alloc(CHUNK_SIZE, sizeof(char));
+  void* buf = (void*) R_alloc(CHUNK_SIZE, sizeof(char));
 
   for (r_ssize i = 0; i < n_path; ++i) {
     XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
@@ -282,8 +267,7 @@ r_obj* hash_file_impl(void* p_data) {
 
 // -----------------------------------------------------------------------------
 
-static inline
-void hasher_finalizer(r_obj* x) {
+static inline void hasher_finalizer(r_obj* x) {
   void* p_x = R_ExternalPtrAddr(x);
 
   if (!p_x) {
@@ -310,7 +294,7 @@ r_obj* ffi_hasher_init(void) {
   R_RegisterCFinalizerEx(out, hasher_finalizer, TRUE);
 
   FREE(1);
-  return(out);
+  return (out);
 }
 
 r_obj* ffi_hasher_update(r_obj* x, r_obj* data) {

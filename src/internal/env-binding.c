@@ -5,12 +5,13 @@
 
 #include "decl/env-binding-decl.h"
 
-
-r_obj* ffi_env_get(r_obj* env,
-                   r_obj* nm,
-                   r_obj* inherit,
-                   r_obj* last,
-                   r_obj* closure_env) {
+r_obj* ffi_env_get(
+    r_obj* env,
+    r_obj* nm,
+    r_obj* inherit,
+    r_obj* last,
+    r_obj* closure_env
+) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -29,12 +30,13 @@ r_obj* ffi_env_get(r_obj* env,
 
 // This util is a little more complex than it would be by calling `getVar()`
 // directly because it evaluates `default` lazily
-static
-r_obj* env_get_sym(r_obj* env,
-                   r_obj* sym,
-                   bool inherit,
-                   r_obj* last,
-                   r_obj* closure_env) {
+static r_obj* env_get_sym(
+    r_obj* env,
+    r_obj* sym,
+    bool inherit,
+    r_obj* last,
+    r_obj* closure_env
+) {
   if (r_typeof(last) != R_TYPE_environment) {
     r_abort("`last` must be an environment.");
   }
@@ -53,13 +55,15 @@ r_obj* env_get_sym(r_obj* env,
   if (unbound) {
     if (r_env_has_missing(closure_env, r_sym("default"))) {
       struct r_pair args[] = {
-        { r_sym("nm"), KEEP(r_str_as_character(r_sym_string(sym))) }
+          {r_sym("nm"), KEEP(r_str_as_character(r_sym_string(sym)))}
       };
-      r_exec_n(r_null,
-               r_sym("stop_env_get_missing"),
-               args,
-               R_ARR_SIZEOF(args),
-               closure_env);
+      r_exec_n(
+          r_null,
+          r_sym("stop_env_get_missing"),
+          args,
+          R_ARR_SIZEOF(args),
+          closure_env
+      );
       r_stop_unreachable();
     }
 
@@ -77,11 +81,13 @@ r_obj* env_get_sym(r_obj* env,
   }
 }
 
-r_obj* ffi_env_get_list(r_obj* env,
-                        r_obj* nms,
-                        r_obj* inherit,
-                        r_obj* last,
-                        r_obj* closure_env) {
+r_obj* ffi_env_get_list(
+    r_obj* env,
+    r_obj* nms,
+    r_obj* inherit,
+    r_obj* last,
+    r_obj* closure_env
+) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -98,9 +104,9 @@ r_obj* ffi_env_get_list(r_obj* env,
   r_obj* out = KEEP(r_alloc_list(n));
   r_attrib_poke_names(out, nms);
 
-  r_obj* const * p_nms = r_chr_cbegin(nms);
+  r_obj* const* p_nms = r_chr_cbegin(nms);
 
-  for (r_ssize i = 0; i <n; ++i) {
+  for (r_ssize i = 0; i < n; ++i) {
     r_obj* sym = r_str_as_symbol(p_nms[i]);
     r_obj* elt = env_get_sym(env, sym, c_inherit, last, closure_env);
     r_list_poke(out, i, elt);
@@ -125,7 +131,7 @@ r_obj* ffi_env_has(r_obj* env, r_obj* nms, r_obj* inherit) {
   r_obj* out = KEEP(r_alloc_logical(n));
 
   int* p_out = r_lgl_begin(out);
-  r_obj* const * p_nms = r_chr_cbegin(nms);
+  r_obj* const* p_nms = r_chr_cbegin(nms);
 
   if (r_lgl_get(inherit, 0)) {
     for (r_ssize i = 0; i < n; ++i) {
@@ -145,11 +151,22 @@ r_obj* ffi_env_has(r_obj* env, r_obj* nms, r_obj* inherit) {
 }
 
 static void env_poke_or_zap(r_obj* env, r_obj* sym, r_obj* value);
-static void env_poke_delayed(r_obj* env, r_obj* sym, r_obj* value, r_obj* eval_env);
+static void env_poke_delayed(
+    r_obj* env,
+    r_obj* sym,
+    r_obj* value,
+    r_obj* eval_env
+);
 static void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env);
 static r_obj* env_get(r_obj* env, r_obj* sym);
 
-r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* ffi_inherit, r_obj* ffi_create) {
+r_obj* ffi_env_poke(
+    r_obj* env,
+    r_obj* nm,
+    r_obj* value,
+    r_obj* ffi_inherit,
+    r_obj* ffi_create
+) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -177,8 +194,10 @@ r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* ffi_inherit, r_o
   r_obj* old;
   if (unbound) {
     if (!create) {
-      r_abort("Can't find existing binding in `env` for \"%s\".",
-              r_sym_c_string(sym));
+      r_abort(
+          "Can't find existing binding in `env` for \"%s\".",
+          r_sym_c_string(sym)
+      );
     }
     old = rlang_zap;
   } else if (inherit) {
@@ -202,27 +221,28 @@ r_obj* ffi_env_poke(r_obj* env, r_obj* nm, r_obj* value, r_obj* ffi_inherit, r_o
   return old;
 }
 
-
-enum bind_type {
-  BIND_TYPE_value,
-  BIND_TYPE_active,
-  BIND_TYPE_lazy
-};
+enum bind_type { BIND_TYPE_value, BIND_TYPE_active, BIND_TYPE_lazy };
 
 enum bind_type parse_bind_type(r_obj* bind_type) {
   switch (*r_chr_get_c_string(bind_type, 0)) {
-  case 'v': return BIND_TYPE_value;
-  case 'a': return BIND_TYPE_active;
-  case 'l': return BIND_TYPE_lazy;
-  default: r_stop_unreachable();
+  case 'v':
+    return BIND_TYPE_value;
+  case 'a':
+    return BIND_TYPE_active;
+  case 'l':
+    return BIND_TYPE_lazy;
+  default:
+    r_stop_unreachable();
   }
 }
 
-r_obj* ffi_env_bind(r_obj* env,
-                      r_obj* values,
-                      r_obj* needs_old,
-                      r_obj* bind_type,
-                      r_obj* eval_env) {
+r_obj* ffi_env_bind(
+    r_obj* env,
+    r_obj* values,
+    r_obj* needs_old,
+    r_obj* bind_type,
+    r_obj* eval_env
+) {
   if (r_typeof(env) != R_TYPE_environment) {
     r_abort("`env` must be an environment.");
   }
@@ -243,7 +263,7 @@ r_obj* ffi_env_bind(r_obj* env,
   if (n && names == r_null) {
     r_abort("Can't bind data because some elements are not named.");
   }
-  r_obj* const * p_names = r_chr_cbegin(names);
+  r_obj* const* p_names = r_chr_cbegin(names);
 
   r_obj* old = r_null;
   if (c_needs_old) {
@@ -265,9 +285,15 @@ r_obj* ffi_env_bind(r_obj* env,
       r_env_unbind(env, sym);
     } else {
       switch (c_bind_type) {
-      case BIND_TYPE_value: r_env_bind(env, sym, value); break;
-      case BIND_TYPE_lazy: env_poke_delayed(env, sym, value, eval_env); break;
-      case BIND_TYPE_active: env_poke_active(env, sym, value, eval_env); break;
+      case BIND_TYPE_value:
+        r_env_bind(env, sym, value);
+        break;
+      case BIND_TYPE_lazy:
+        env_poke_delayed(env, sym, value, eval_env);
+        break;
+      case BIND_TYPE_active:
+        env_poke_active(env, sym, value, eval_env);
+        break;
       }
     }
   }
@@ -296,17 +322,19 @@ r_obj* ffi_env_unbind(r_obj* env, r_obj* names, r_obj* inherits) {
   return r_null;
 }
 
-
-static
-void env_poke_or_zap(r_obj* env, r_obj* sym, r_obj* value) {
+static void env_poke_or_zap(r_obj* env, r_obj* sym, r_obj* value) {
   if (value == rlang_zap) {
     r_env_unbind(env, sym);
   } else {
     r_env_bind(env, sym, value);
   }
 }
-static
-void env_poke_delayed(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
+static void env_poke_delayed(
+    r_obj* env,
+    r_obj* sym,
+    r_obj* expr,
+    r_obj* eval_env
+) {
   if (is_quosure(expr)) {
     expr = KEEP(rlang_as_function(expr, eval_env));
     expr = r_new_call(expr, r_null);
@@ -317,8 +345,12 @@ void env_poke_delayed(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
   r_env_bind_delayed(env, sym, expr, eval_env);
   FREE(1);
 }
-static
-void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env) {
+static void env_poke_active(
+    r_obj* env,
+    r_obj* sym,
+    r_obj* fn,
+    r_obj* eval_env
+) {
   if (!r_is_function(fn)) {
     fn = rlang_as_function(fn, eval_env);
   }
@@ -328,8 +360,7 @@ void env_poke_active(r_obj* env, r_obj* sym, r_obj* fn, r_obj* eval_env) {
   FREE(1);
 }
 
-static
-r_obj* env_get(r_obj* env, r_obj* sym) {
+static r_obj* env_get(r_obj* env, r_obj* sym) {
   if (!r_env_has(env, sym)) {
     return rlang_zap;
   }

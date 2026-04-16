@@ -2,9 +2,8 @@
 #include "vec.h"
 #include "decl/vec-decl.h"
 
-
 bool r_is_atomic(r_obj* x, r_ssize n) {
-  switch(r_typeof(x)) {
+  switch (r_typeof(x)) {
   case R_TYPE_logical:
   case R_TYPE_integer:
   case R_TYPE_double:
@@ -18,7 +17,7 @@ bool r_is_atomic(r_obj* x, r_ssize n) {
 }
 
 bool r_is_vector(r_obj* x, r_ssize n) {
-  switch(r_typeof(x)) {
+  switch (r_typeof(x)) {
   case R_TYPE_logical:
   case R_TYPE_integer:
   case R_TYPE_double:
@@ -84,10 +83,12 @@ bool r_is_integerish(r_obj* x, r_ssize n, int finite) {
   return true;
 }
 
-bool is_character(r_obj* x,
-                  r_ssize n,
-                  enum option_bool missing,
-                  enum option_bool empty) {
+bool is_character(
+    r_obj* x,
+    r_ssize n,
+    enum option_bool missing,
+    enum option_bool empty
+) {
   if (r_typeof(x) != R_TYPE_character) {
     return false;
   }
@@ -106,7 +107,7 @@ bool is_character(r_obj* x,
   }
 
   n = r_length(x);
-  r_obj* const * v_x = r_chr_cbegin(x);
+  r_obj* const* v_x = r_chr_cbegin(x);
 
   // Could we inspect ALTREP properties for the `missing` case?
   if (!list_match(v_x, n, r_strs.na, missing)) {
@@ -119,11 +120,12 @@ bool is_character(r_obj* x,
   return true;
 }
 
-static
-bool list_match(r_obj* const * v_x,
-                r_ssize n,
-                r_obj* value,
-                enum option_bool match) {
+static bool list_match(
+    r_obj* const* v_x,
+    r_ssize n,
+    r_obj* value,
+    enum option_bool match
+) {
   switch (match) {
   case OPTION_BOOL_null:
     return true;
@@ -169,27 +171,37 @@ r_ssize validate_n(r_obj* n) {
   return r_arg_as_ssize(n, "n");
 }
 
-
 // Coercion ----------------------------------------------------------
 
-static
-r_obj* vec_coercer(r_obj* to) {
+static r_obj* vec_coercer(r_obj* to) {
   switch (r_typeof(to)) {
-  case R_TYPE_logical: return rlang_ns_get("legacy_as_logical");
-  case R_TYPE_integer: return rlang_ns_get("legacy_as_integer");
-  case R_TYPE_double: return rlang_ns_get("legacy_as_double");
-  case R_TYPE_complex: return rlang_ns_get("legacy_as_complex");
-  case R_TYPE_character: return rlang_ns_get("legacy_as_character");
-  case RAWSXP: return rlang_ns_get("legacy_as_raw");
-  default: r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(to)));
+  case R_TYPE_logical:
+    return rlang_ns_get("legacy_as_logical");
+  case R_TYPE_integer:
+    return rlang_ns_get("legacy_as_integer");
+  case R_TYPE_double:
+    return rlang_ns_get("legacy_as_double");
+  case R_TYPE_complex:
+    return rlang_ns_get("legacy_as_complex");
+  case R_TYPE_character:
+    return rlang_ns_get("legacy_as_character");
+  case RAWSXP:
+    return rlang_ns_get("legacy_as_raw");
+  default:
+    r_abort("No coercion implemented for `%s`", Rf_type2str(r_typeof(to)));
   }
 }
 
-void r_vec_poke_coerce_n(r_obj* x, r_ssize offset,
-                         r_obj* y, r_ssize from, r_ssize n) {
+void r_vec_poke_coerce_n(
+    r_obj* x,
+    r_ssize offset,
+    r_obj* y,
+    r_ssize from,
+    r_ssize n
+) {
   if (r_typeof(y) == r_typeof(x)) {
     r_vec_poke_n(x, offset, y, from, n);
-    return ;
+    return;
   }
   if (r_is_object(y)) {
     r_abort("Can't splice S3 objects");
@@ -204,7 +216,12 @@ void r_vec_poke_coerce_n(r_obj* x, r_ssize offset,
   FREE(2);
 }
 
-void r_vec_poke_coerce_range(r_obj* x, r_ssize offset,
-                             r_obj* y, r_ssize from, r_ssize to) {
+void r_vec_poke_coerce_range(
+    r_obj* x,
+    r_ssize offset,
+    r_obj* y,
+    r_ssize from,
+    r_ssize to
+) {
   r_vec_poke_coerce_n(x, offset, y, from, to - from + 1);
 }

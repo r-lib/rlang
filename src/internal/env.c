@@ -13,9 +13,8 @@ void r_env_unbind_anywhere(r_obj* env, r_obj* sym) {
   }
 }
 
-static
-void env_unbind_names(r_obj* env, r_obj* names, bool inherit) {
-  r_obj* const * p_names = r_chr_cbegin(names);
+static void env_unbind_names(r_obj* env, r_obj* names, bool inherit) {
+  r_obj* const* p_names = r_chr_cbegin(names);
   r_ssize n = r_length(names);
 
   if (inherit) {
@@ -43,19 +42,23 @@ void r_env_unbind_c_strings(r_obj* env, const char** names, r_ssize n) {
   r_env_unbind_names(env, nms);
   FREE(1);
 }
-void r_env_unbind_anywhere_c_strings(r_obj* env, const char** names, r_ssize n) {
+void r_env_unbind_anywhere_c_strings(
+    r_obj* env,
+    const char** names,
+    r_ssize n
+) {
   r_obj* nms = KEEP(r_chr_n(names, n));
   r_env_unbind_anywhere_names(env, nms);
   FREE(1);
 }
 
 void r_env_unbind_c_string(r_obj* env, const char* name) {
-  static const char* names[1] = { "" };
+  static const char* names[1] = {""};
   names[0] = name;
   r_env_unbind_c_strings(env, names, 1);
 }
 void r_env_unbind_anywhere_c_string(r_obj* env, const char* name) {
-  static const char* names[1] = { "" };
+  static const char* names[1] = {""};
   names[0] = name;
   r_env_unbind_anywhere_c_strings(env, names, 1);
 }

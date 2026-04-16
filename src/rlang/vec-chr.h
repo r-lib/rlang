@@ -6,11 +6,7 @@
 #include "globals.h"
 #include "rlang-types.h"
 
-
-static inline
-const char* r_str_c_string(r_obj* str) {
-  return CHAR(str);
-}
+static inline const char* r_str_c_string(r_obj* str) { return CHAR(str); }
 
 bool r_chr_has(r_obj* chr, const char* c_string);
 bool r_chr_has_any(r_obj* chr, const char** c_strings);
@@ -18,11 +14,7 @@ r_ssize r_chr_detect_index(r_obj* chr, const char* c_string);
 
 void r_chr_fill(r_obj* chr, r_obj* value, r_ssize n);
 
-
-static inline
-r_obj* r_str_as_character(r_obj* x) {
-  return Rf_ScalarString(x);
-}
+static inline r_obj* r_str_as_character(r_obj* x) { return Rf_ScalarString(x); }
 
 /*
  * A symbol is always in the native encoding. This means that UTF-8
@@ -42,8 +34,7 @@ r_obj* r_str_as_character(r_obj* x) {
  * current encoding of the string. Otherwise we intern the symbol
  * with `install()` without encoding.
  */
-static inline
-r_obj* r_str_as_symbol(r_obj* str) {
+static inline r_obj* r_str_as_symbol(r_obj* str) {
   const char* str_native = Rf_translateChar(str);
 
   if (str_native == CHAR(str)) {
@@ -53,8 +44,7 @@ r_obj* r_str_as_symbol(r_obj* str) {
   }
 }
 
-static inline
-bool r_str_is_name(r_obj* str) {
+static inline bool r_str_is_name(r_obj* str) {
   if (str == r_globals.na_str) {
     return false;
   }
@@ -63,6 +53,5 @@ bool r_str_is_name(r_obj* str) {
   }
   return true;
 }
-
 
 #endif

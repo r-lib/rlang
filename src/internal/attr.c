@@ -4,7 +4,6 @@
 
 #include "decl/attr-decl.h"
 
-
 r_obj* ffi_names2(r_obj* x, r_obj* env) {
   const enum r_type type = r_typeof(x);
 
@@ -38,15 +37,14 @@ r_obj* ffi_names2(r_obj* x, r_obj* env) {
   return nms;
 }
 
-static
-r_obj* node_names(r_obj* x) {
+static r_obj* node_names(r_obj* x) {
   r_ssize n = r_length(x);
 
   r_obj* out = KEEP(r_alloc_character(n));
 
   int i = 0;
 
-  for(; x != r_null; x = r_node_cdr(x), ++i) {
+  for (; x != r_null; x = r_node_cdr(x), ++i) {
     r_obj* tag = r_node_tag(x);
 
     if (tag == r_null) {
@@ -107,8 +105,11 @@ r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
   r_ssize nm_n = r_length(nm);
   if (nm_n != n) {
     if (nm_n != 1) {
-      r_abort("The size of `nm` (%d) must be compatible with the size of `x` (%d).",
-              nm_n, n);
+      r_abort(
+          "The size of `nm` (%d) must be compatible with the size of `x` (%d).",
+          nm_n,
+          n
+      );
     }
 
     // Recycle names vector of size 1.
@@ -128,8 +129,7 @@ r_obj* ffi_set_names(r_obj* x, r_obj* mold, r_obj* nm, r_obj* env) {
   return x;
 }
 
-static
-r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env) {
+static r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env) {
   r_obj* args = KEEP(r_new_node(r_syms.dot_x, dots));
   r_obj* call = KEEP(r_new_call(r_syms.dot_fn, args));
 
@@ -146,30 +146,27 @@ r_obj* eval_fn_dots(r_obj* fn, r_obj* x, r_obj* dots, r_obj* env) {
   return out;
 }
 
-static inline
-r_obj* eval_as_character(r_obj* x, r_obj* env) {
+static inline r_obj* eval_as_character(r_obj* x, r_obj* env) {
   r_env_bind(env, r_syms.dot_x, x);
   return r_eval(as_character_call, env);
 }
 
-static inline
-r_obj* names_dispatch(r_obj* x, r_obj* env) {
+static inline r_obj* names_dispatch(r_obj* x, r_obj* env) {
   r_env_bind(env, r_syms.dot_x, x);
   return r_eval(names_call, env);
 }
 
-// Use `names<-()` rather than setting names directly with `r_attrib_poke_names()`
-// for genericity and for speed. `names<-()` can shallow duplicate `x`'s
-// attributes using ALTREP wrappers, which is not in R's public API.
-static inline
-r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env) {
+// Use `names<-()` rather than setting names directly with
+// `r_attrib_poke_names()` for genericity and for speed. `names<-()` can shallow
+// duplicate `x`'s attributes using ALTREP wrappers, which is not in R's public
+// API.
+static inline r_obj* set_names_dispatch(r_obj* x, r_obj* nm, r_obj* env) {
   r_env_bind(env, r_syms.dot_x, x);
   r_env_bind(env, r_syms.dot_y, nm);
   return r_eval(set_names_call, env);
 }
 
-static inline
-r_ssize length_dispatch(r_obj* x, r_obj* env) {
+static inline r_ssize length_dispatch(r_obj* x, r_obj* env) {
   r_env_bind(env, r_syms.dot_x, x);
   r_obj* n = KEEP(r_eval(length_call, env));
 
@@ -187,7 +184,9 @@ r_ssize length_dispatch(r_obj* x, r_obj* env) {
     out = r_dbl_begin(n)[0];
     break;
   default:
-    r_abort("Object length has unknown type %s", r_type_as_c_string(r_typeof(n)));
+    r_abort(
+        "Object length has unknown type %s", r_type_as_c_string(r_typeof(n))
+    );
   }
 
   FREE(1);
@@ -196,15 +195,18 @@ r_ssize length_dispatch(r_obj* x, r_obj* env) {
 
 r_obj* zap_srcref(r_obj* x) {
   switch (r_typeof(x)) {
-  case R_TYPE_call: return call_zap_srcref(x);
-  case R_TYPE_closure: return fn_zap_srcref(x);
-  case R_TYPE_expression: return expr_vec_zap_srcref(x);
-  default: return x;
+  case R_TYPE_call:
+    return call_zap_srcref(x);
+  case R_TYPE_closure:
+    return fn_zap_srcref(x);
+  case R_TYPE_expression:
+    return expr_vec_zap_srcref(x);
+  default:
+    return x;
   }
 }
 
-static
-r_obj* fn_zap_srcref(r_obj* x) {
+static r_obj* fn_zap_srcref(r_obj* x) {
   r_obj* formals = r_fn_formals(x);
   r_obj* body = r_fn_body(x);
   r_obj* env = r_fn_env(x);
@@ -220,8 +222,7 @@ r_obj* fn_zap_srcref(r_obj* x) {
   return out;
 }
 
-static
-r_obj* call_zap_srcref(r_obj* x) {
+static r_obj* call_zap_srcref(r_obj* x) {
   x = KEEP(r_clone(x));
 
   attrib_zap_srcref(x);
@@ -240,8 +241,7 @@ r_obj* call_zap_srcref(r_obj* x) {
   return x;
 }
 
-static
-r_obj* expr_vec_zap_srcref(r_obj* x) {
+static r_obj* expr_vec_zap_srcref(r_obj* x) {
   x = KEEP(r_clone(x));
 
   attrib_zap_srcref(x);
@@ -260,13 +260,11 @@ r_obj* expr_vec_zap_srcref(r_obj* x) {
   return x;
 }
 
-static
-void attrib_zap_srcref(r_obj* x) {
+static void attrib_zap_srcref(r_obj* x) {
   r_attrib_zap(x, r_syms.srcfile);
   r_attrib_zap(x, r_syms.srcref);
   r_attrib_zap(x, r_syms.wholeSrcref);
 }
-
 
 void rlang_init_attr(r_obj* ns) {
   c_fn = r_eval(r_sym("c"), r_envs.base);

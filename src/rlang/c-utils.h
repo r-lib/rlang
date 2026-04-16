@@ -16,26 +16,24 @@
 #define R_MAX(a, b) ((a) > (b) ? (a) : (b))
 
 // Like `memset()` with support for multi-byte types
-#define R_MEM_SET(TYPE, PTR, VALUE, N) do {     \
-    TYPE* v = (PTR);                            \
-    TYPE value = (VALUE);                       \
-    size_t n = (N);                             \
-    for (size_t i = 0; i < n; ++i) {            \
-      v[i] = value;                             \
-    }                                           \
-  } while(0)
-
+#define R_MEM_SET(TYPE, PTR, VALUE, N)                                         \
+  do {                                                                         \
+    TYPE* v = (PTR);                                                           \
+    TYPE value = (VALUE);                                                      \
+    size_t n = (N);                                                            \
+    for (size_t i = 0; i < n; ++i) {                                           \
+      v[i] = value;                                                            \
+    }                                                                          \
+  } while (0)
 
 void* r_shelter_deref(r_obj* x);
-
 
 // Allow integers up to 2^52, same as R_XLEN_T_MAX when long vector
 // support is enabled
 #define RLANG_MAX_DOUBLE_INT 4503599627370496
 #define RLANG_MIN_DOUBLE_INT -4503599627370496
 
-static inline
-bool r_dbl_is_whole(double x) {
+static inline bool r_dbl_is_whole(double x) {
   if (x > RLANG_MAX_DOUBLE_INT || x < RLANG_MIN_DOUBLE_INT) {
     return false;
   }
@@ -50,27 +48,22 @@ bool r_dbl_is_whole(double x) {
 }
 
 // Adapted from CERT C coding standards
-static inline
-intmax_t r__intmax_add(intmax_t x, intmax_t y) {
-  if ((y > 0 && x > (INTMAX_MAX - y)) ||
-      (y < 0 && x < (INTMAX_MIN - y))) {
+static inline intmax_t r__intmax_add(intmax_t x, intmax_t y) {
+  if ((y > 0 && x > (INTMAX_MAX - y)) || (y < 0 && x < (INTMAX_MIN - y))) {
     r_stop_internal("Values too large to be added.");
   }
 
   return x + y;
 }
-static inline
-intmax_t r__intmax_subtract(intmax_t x, intmax_t y) {
-  if ((y > 0 && x < (INTMAX_MIN + y)) ||
-      (y < 0 && x > (INTMAX_MAX + y))) {
+static inline intmax_t r__intmax_subtract(intmax_t x, intmax_t y) {
+  if ((y > 0 && x < (INTMAX_MIN + y)) || (y < 0 && x > (INTMAX_MAX + y))) {
     r_stop_internal("Subtraction resulted in overflow or underflow.");
   }
 
   return x - y;
 }
 
-static inline
-r_ssize r_ssize_add(r_ssize x, r_ssize y) {
+static inline r_ssize r_ssize_add(r_ssize x, r_ssize y) {
   intmax_t out = r__intmax_add(x, y);
 
   if (out > R_SSIZE_MAX) {
@@ -80,8 +73,7 @@ r_ssize r_ssize_add(r_ssize x, r_ssize y) {
   return (r_ssize) out;
 }
 
-static inline
-r_ssize r_ssize_mult(r_ssize x, r_ssize y) {
+static inline r_ssize r_ssize_mult(r_ssize x, r_ssize y) {
   if (x > 0) {
     if (y > 0) {
       if (x > (R_SSIZE_MAX / y)) {
@@ -98,7 +90,7 @@ r_ssize r_ssize_mult(r_ssize x, r_ssize y) {
         goto error;
       }
     } else {
-      if ( (x != 0) && (y < (R_SSIZE_MAX / x))) {
+      if ((x != 0) && (y < (R_SSIZE_MAX / x))) {
         goto error;
       }
     }
@@ -106,38 +98,28 @@ r_ssize r_ssize_mult(r_ssize x, r_ssize y) {
 
   return x * y;
 
- error:
+error:
   r_stop_internal("Result too large for an `r_ssize`.");
 }
 
-static inline
-int r_int_min(int x, int y) {
+static inline int r_int_min(int x, int y) { return (y < x) ? y : x; }
+static inline int r_int_max(int x, int y) { return (y < x) ? x : y; }
+
+static inline r_ssize r_ssize_min(r_ssize x, r_ssize y) {
   return (y < x) ? y : x;
 }
-static inline
-int r_int_max(int x, int y) {
+static inline r_ssize r_ssize_max(r_ssize x, r_ssize y) {
   return (y < x) ? x : y;
 }
 
-static inline
-r_ssize r_ssize_min(r_ssize x, r_ssize y) {
-  return (y < x) ? y : x;
-}
-static inline
-r_ssize r_ssize_max(r_ssize x, r_ssize y) {
-  return (y < x) ? x : y;
-}
-
-static inline
-int r_ssize_as_integer(r_ssize x) {
+static inline int r_ssize_as_integer(r_ssize x) {
   if (x > INT_MAX || x < INT_MIN) {
     r_stop_internal("Result can't be represented as `int`.");
   }
 
   return (int) x;
 }
-static inline
-double r_ssize_as_double(r_ssize x) {
+static inline double r_ssize_as_double(r_ssize x) {
   if (x > DBL_MAX || x < -DBL_MAX) {
     r_stop_internal("Result can't be represented as `double`.");
   }
@@ -145,8 +127,7 @@ double r_ssize_as_double(r_ssize x) {
   return (double) x;
 }
 
-static inline
-r_ssize r_double_as_ssize(double x) {
+static inline r_ssize r_double_as_ssize(double x) {
   if (x > R_SSIZE_MAX || x < R_SSIZE_MIN) {
     r_stop_internal("Result can't be represented as `r_ssize`.");
   }
@@ -154,8 +135,7 @@ r_ssize r_double_as_ssize(double x) {
   return (r_ssize) x;
 }
 
-static inline
-double r_double_mult(double x, double y) {
+static inline double r_double_mult(double x, double y) {
   double out = x * y;
 
   if (!isfinite(out)) {
@@ -176,8 +156,7 @@ double r_double_mult(double x, double y) {
 //
 // https://github.com/r-lib/vctrs/pull/1968
 // https://github.com/r-devel/r-svn/blob/9976c3d7f08c754593d01ba8380afb6be803dde2/src/main/memory.c#L4137-L4150
-static inline
-void r_memcpy(void* dest, const void* src, size_t count) {
+static inline void r_memcpy(void* dest, const void* src, size_t count) {
   if (count) {
     memcpy(dest, src, count);
   }
@@ -186,8 +165,7 @@ void r_memcpy(void* dest, const void* src, size_t count) {
 // Slightly safer version of `memset()` for use with R object memory
 //
 // See `r_memcpy()` for rationale
-static inline
-void r_memset(void* dest, int value, size_t count) {
+static inline void r_memset(void* dest, int value, size_t count) {
   if (count) {
     memset(dest, value, count);
   }

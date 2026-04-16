@@ -1,6 +1,5 @@
 #include "rlang.h"
 
-
 void r_sexp_inspect(r_obj* x) {
   r_obj* call = KEEP(r_parse(".Internal(inspect(x))"));
   r_eval_with_x(call, x, r_envs.base);

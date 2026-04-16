@@ -4,7 +4,6 @@
 #include "utils.h"
 #include "vec.h"
 
-
 r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {
   if (r_typeof(x) != R_TYPE_call) {
     return r_false;
@@ -16,14 +15,14 @@ r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {
     }
 
     bool found = false;
-    r_obj* const * v_ns = r_chr_cbegin(ns);
+    r_obj* const* v_ns = r_chr_cbegin(ns);
     r_ssize ns_len = r_length(ns);
 
     for (r_ssize i = 0; i < ns_len; ++i) {
       r_obj* elt = v_ns[i];
 
-      if ((elt == r_strs.empty && !call_is_namespaced(x, r_null))
-            || call_is_namespaced(x, elt)) {
+      if ((elt == r_strs.empty && !call_is_namespaced(x, r_null)) ||
+          call_is_namespaced(x, elt)) {
         found = true;
         break;
       }
@@ -53,7 +52,7 @@ r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {
 
     // List of symbols
     case R_TYPE_list: {
-      r_obj* const * v_name = r_list_cbegin(name);
+      r_obj* const* v_name = r_list_cbegin(name);
       r_ssize name_len = r_length(name);
 
       for (r_ssize i = 0; i < name_len; ++i) {
@@ -74,7 +73,7 @@ r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {
     }
 
     fn = r_sym_string(fn);
-    r_obj* const * v_name = r_chr_cbegin(name);
+    r_obj* const* v_name = r_chr_cbegin(name);
     r_ssize name_len = r_length(name);
 
     for (r_ssize i = 0; i < name_len; ++i) {
@@ -85,7 +84,7 @@ r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {
     FREE(1);
     return r_false;
   }
- found_name:
+found_name:
 
   if (ffi_n != r_null) {
     r_ssize n = validate_n(ffi_n);
@@ -99,15 +98,14 @@ r_obj* ffi_is_call(r_obj* x, r_obj* name, r_obj* ffi_n, r_obj* ns) {
   return r_true;
 }
 
-static
-bool call_is_namespaced(r_obj* x, r_obj* ns) {
+static bool call_is_namespaced(r_obj* x, r_obj* ns) {
   if (r_typeof(x) != R_TYPE_call) {
-    return(false);
+    return (false);
   }
 
   r_obj* car = r_node_car(x);
   if (r_typeof(car) != R_TYPE_call) {
-    return(false);
+    return (false);
   }
 
   if (ns != r_null) {
@@ -120,15 +118,13 @@ bool call_is_namespaced(r_obj* x, r_obj* ns) {
   return r_node_car(car) == r_syms.colon2;
 }
 
-static inline
-r_obj* call_unnamespace(r_obj* x) {
+static inline r_obj* call_unnamespace(r_obj* x) {
   if (call_is_namespaced(x, r_null)) {
     return r_new_call(r_node_cadr(r_node_cdar(x)), r_node_cdr(x));
   } else {
     return x;
   }
 }
-
 
 r_obj* rlang_call2(r_obj* fn, r_obj* args, r_obj* ns) {
   if (r_typeof(fn) == R_TYPE_character) {
@@ -172,8 +168,7 @@ r_obj* ffi_call2(r_obj* call, r_obj* op, r_obj* args, r_obj* env) {
   return out;
 }
 
-static
-bool is_callable(r_obj* x) {
+static bool is_callable(r_obj* x) {
   switch (r_typeof(x)) {
   case R_TYPE_symbol:
   case R_TYPE_call:
@@ -186,7 +181,6 @@ bool is_callable(r_obj* x) {
   }
 }
 
-
 r_obj* ffi_call_zap_inline(r_obj* x) {
   if (r_typeof(x) == R_TYPE_call) {
     r_obj* out = KEEP(r_call_clone(x));
@@ -198,8 +192,7 @@ r_obj* ffi_call_zap_inline(r_obj* x) {
   }
 }
 
-static
-void call_zap_inline(r_obj* x) {
+static void call_zap_inline(r_obj* x) {
   if (r_node_car(x) == r_syms.function) {
     call_zap_fn(x);
   } else {
@@ -207,16 +200,14 @@ void call_zap_inline(r_obj* x) {
   }
 }
 
-static
-void node_zap_inline(r_obj* x) {
+static void node_zap_inline(r_obj* x) {
   while (x != r_null) {
     r_node_poke_car(x, call_zap_one(r_node_car(x)));
     x = r_node_cdr(x);
   }
 }
 
-static
-void call_zap_fn(r_obj* x) {
+static void call_zap_fn(r_obj* x) {
   // Formals
   x = r_node_cdr(x);
   node_zap_inline(r_node_car(x));
@@ -230,8 +221,7 @@ void call_zap_fn(r_obj* x) {
   r_node_poke_car(x, r_null);
 }
 
-static
-r_obj* call_zap_one(r_obj* x) {
+static r_obj* call_zap_one(r_obj* x) {
   switch (r_typeof(x)) {
   case R_TYPE_call:
     call_zap_inline(x);
@@ -258,16 +248,13 @@ r_obj* call_zap_one(r_obj* x) {
   }
 }
 
-static
-r_obj* type_sum(r_obj* x) {
+static r_obj* type_sum(r_obj* x) {
   return r_eval_with_x(type_sum_call, x, rlang_ns_env);
 }
-
 
 void rlang_init_call(r_obj* ns) {
   type_sum_call = r_parse("call_type_sum(x)");
   r_preserve_global(type_sum_call);
 }
 
-static
-r_obj* type_sum_call = NULL;
+static r_obj* type_sum_call = NULL;

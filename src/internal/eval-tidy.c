@@ -4,13 +4,12 @@
 #include "quo.h"
 #include "utils.h"
 
-
 static r_obj* quo_mask_flag_sym = NULL;
 static r_obj* data_mask_flag_sym = NULL;
 
 enum rlang_mask_type {
-  RLANG_MASK_DATA,     // Full data mask
-  RLANG_MASK_QUOSURE,  // Quosure mask with only `~` binding
+  RLANG_MASK_DATA,    // Full data mask
+  RLANG_MASK_QUOSURE, // Quosure mask with only `~` binding
   RLANG_MASK_NONE
 };
 
@@ -21,7 +20,7 @@ struct rlang_mask_info {
 
 static struct rlang_mask_info mask_info(r_obj* mask) {
   if (r_typeof(mask) != R_TYPE_environment) {
-    return (struct rlang_mask_info) { r_null, RLANG_MASK_NONE };
+    return (struct rlang_mask_info) {r_null, RLANG_MASK_NONE};
   }
 
   r_obj* flag;
@@ -30,18 +29,17 @@ static struct rlang_mask_info mask_info(r_obj* mask) {
   where = r_env_until(mask, data_mask_flag_sym, r_envs.empty);
   if (where != r_envs.empty) {
     flag = r_env_get(where, data_mask_flag_sym);
-    return (struct rlang_mask_info) { flag, RLANG_MASK_DATA };
+    return (struct rlang_mask_info) {flag, RLANG_MASK_DATA};
   }
 
   where = r_env_until(mask, quo_mask_flag_sym, r_envs.empty);
   if (where != r_envs.empty) {
     flag = r_env_get(where, quo_mask_flag_sym);
-    return (struct rlang_mask_info) { flag, RLANG_MASK_QUOSURE };
+    return (struct rlang_mask_info) {flag, RLANG_MASK_QUOSURE};
   }
 
-  return (struct rlang_mask_info) { r_null, RLANG_MASK_NONE };
+  return (struct rlang_mask_info) {r_null, RLANG_MASK_NONE};
 }
-
 
 static r_obj* data_pronoun_class = NULL;
 static r_obj* ctxt_pronoun_class = NULL;
@@ -75,13 +73,12 @@ void poke_ctxt_env(r_obj* mask, r_obj* env) {
   FREE(1);
 }
 
-
 static r_obj* empty_names_chr;
 
 static void check_unique_names(r_obj* x) {
   // Allow empty lists
   if (!r_length(x)) {
-    return ;
+    return;
   }
 
   r_obj* names = KEEP(r_names(x));
@@ -112,7 +109,10 @@ r_obj* ffi_as_data_pronoun(r_obj* x) {
   case R_TYPE_environment:
     break;
   default:
-    r_abort("`data` must be an uniquely named vector, list, data frame or environment");
+    r_abort(
+        "`data` must be an uniquely named vector, list, data frame or "
+        "environment"
+    );
   }
 
   r_obj* pronoun = rlang_new_data_pronoun(x);
@@ -120,7 +120,6 @@ r_obj* ffi_as_data_pronoun(r_obj* x) {
   FREE(n_kept);
   return pronoun;
 }
-
 
 static r_obj* data_mask_top_env_sym = NULL;
 
@@ -134,7 +133,7 @@ static void check_data_mask_top(r_obj* bottom, r_obj* top) {
 
   while (cur != r_envs.empty) {
     if (cur == top) {
-      return ;
+      return;
     }
     cur = r_env_parent(cur);
   }
@@ -156,7 +155,8 @@ static void on_exit_restore_lexical_env(r_obj* mask, r_obj* old, r_obj* frame) {
   r_env_bind(env, mask_sym, mask);
   r_env_bind(env, old_sym, old);
 
-  r_obj* fn = KEEP(r_new_function(restore_mask_formals, restore_mask_body, env));
+  r_obj* fn =
+      KEEP(r_new_function(restore_mask_formals, restore_mask_body, env));
 
   r_obj* call = KEEP(r_new_call(fn, r_null));
   r_on_exit(call, frame);
@@ -198,7 +198,6 @@ r_obj* ffi_new_data_mask(r_obj* bottom, r_obj* top) {
   return data_mask;
 }
 
-
 r_obj* ffi_is_data_mask(r_obj* env) {
   return r_lgl(mask_info(env).type == RLANG_MASK_DATA);
 }
@@ -208,10 +207,9 @@ static r_obj* mask_find(r_obj* env, r_obj* sym, bool* found) {
     r_abort("Internal error: Data pronoun must be subset with a symbol");
   }
 
-  r_obj* top_env =
-    r_env_has(env, data_mask_top_env_sym) ?
-    r_env_get(env, data_mask_top_env_sym) :
-    r_null;
+  r_obj* top_env = r_env_has(env, data_mask_top_env_sym)
+                       ? r_env_get(env, data_mask_top_env_sym)
+                       : r_null;
 
   if (r_typeof(top_env) == R_TYPE_environment) {
     // Start lookup in the parent if the pronoun wraps a data mask
@@ -263,18 +261,18 @@ r_obj* ffi_data_pronoun_get(r_obj* pronoun, r_obj* sym, r_obj* error_call) {
 
 static void warn_env_as_mask_once(void) {
   const char* msg =
-    "Passing an environment as data mask is deprecated.\n"
-    "Please use `new_data_mask()` to transform your environment to a mask.\n"
-    "\n"
-    "  env <- env(foo = \"bar\")\n"
-    "\n"
-    "  # Bad:\n"
-    "  as_data_mask(env)\n"
-    "  eval_tidy(expr, env)\n"
-    "\n"
-    "  # Good:\n"
-    "  mask <- new_data_mask(env)\n"
-    "  eval_tidy(expr, mask)";
+      "Passing an environment as data mask is deprecated.\n"
+      "Please use `new_data_mask()` to transform your environment to a mask.\n"
+      "\n"
+      "  env <- env(foo = \"bar\")\n"
+      "\n"
+      "  # Bad:\n"
+      "  as_data_mask(env)\n"
+      "  eval_tidy(expr, env)\n"
+      "\n"
+      "  # Good:\n"
+      "  mask <- new_data_mask(env)\n"
+      "  eval_tidy(expr, mask)";
   deprecate_warn(msg, msg);
 }
 
@@ -320,8 +318,8 @@ r_obj* ffi_as_data_mask(r_obj* data) {
     if (names != r_null) {
       r_ssize n = r_length(data);
 
-      r_obj* const * p_names = r_chr_cbegin(names);
-      r_obj* const * p_data = r_list_cbegin(data);
+      r_obj* const* p_names = r_chr_cbegin(names);
+      r_obj* const* p_data = r_list_cbegin(data);
 
       for (r_ssize i = 0; i < n; ++i) {
         // Ignore empty or missing names
@@ -348,9 +346,9 @@ r_obj* ffi_as_data_mask(r_obj* data) {
   return data_mask;
 }
 
-static
-r_ssize mask_length(r_ssize n) {
-  r_ssize n_grown = r_double_as_ssize(r_double_mult(r_ssize_as_double(n), 1.05));
+static r_ssize mask_length(r_ssize n) {
+  r_ssize n_grown =
+      r_double_as_ssize(r_double_mult(r_ssize_as_double(n), 1.05));
   return r_ssize_max(n_grown, r_ssize_add(n, 20));
 }
 
@@ -362,7 +360,6 @@ r_obj* ffi_new_data_mask_compat(r_obj* bottom, r_obj* top, r_obj* parent) {
 r_obj* ffi_as_data_mask_compat(r_obj* data, r_obj* parent) {
   return ffi_as_data_mask(data);
 }
-
 
 static r_obj* tilde_prim = NULL;
 
@@ -397,7 +394,6 @@ r_obj* env_get_top_binding(r_obj* mask) {
   return top;
 }
 
-
 static r_obj* env_poke_parent_fn = NULL;
 static r_obj* env_poke_fn = NULL;
 
@@ -409,7 +405,7 @@ r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
     return base_tilde_eval(tilde, caller_frame);
   }
   if (quo_is_missing(tilde)) {
-    return(r_missing_arg);
+    return (r_missing_arg);
   }
 
   r_obj* expr = quo_get_expr(tilde);
@@ -455,15 +451,16 @@ r_obj* tilde_eval(r_obj* tilde, r_obj* current_frame, r_obj* caller_frame) {
 
 r_obj* ffi_tilde_eval(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
   args = r_node_cdr(args);
-  r_obj* tilde = r_node_car(args); args = r_node_cdr(args);
-  r_obj* current_frame = r_node_car(args); args = r_node_cdr(args);
+  r_obj* tilde = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* current_frame = r_node_car(args);
+  args = r_node_cdr(args);
   r_obj* caller_frame = r_node_car(args);
   return tilde_eval(tilde, current_frame, caller_frame);
 }
 
-static const char* data_mask_objects_names[4] = {
-  ".__tidyeval_data_mask__.", "~", ".top_env", ".env"
-};
+static const char* data_mask_objects_names[4] =
+    {".__tidyeval_data_mask__.", "~", ".top_env", ".env"};
 
 // Soft-deprecated in rlang 0.2.0
 r_obj* ffi_data_mask_clean(r_obj* mask) {
@@ -477,9 +474,9 @@ r_obj* ffi_data_mask_clean(r_obj* mask) {
   }
 
   // At this level we only want to remove our own stuff
-  r_env_unbind_c_strings(mask,
-                         data_mask_objects_names,
-                         R_ARR_SIZEOF(data_mask_objects_names));
+  r_env_unbind_c_strings(
+      mask, data_mask_objects_names, R_ARR_SIZEOF(data_mask_objects_names)
+  );
 
   // Remove everything in the other levels
   r_obj* env = bottom;
@@ -494,7 +491,6 @@ r_obj* ffi_data_mask_clean(r_obj* mask) {
   FREE(1);
   return mask;
 }
-
 
 static r_obj* new_quosure_mask(r_obj* env) {
   r_obj* mask = KEEP(r_alloc_environment(3, env));
@@ -552,12 +548,13 @@ r_obj* rlang_eval_tidy(r_obj* expr, r_obj* data, r_obj* env) {
 
 r_obj* ffi_eval_tidy(r_obj* call, r_obj* op, r_obj* args, r_obj* rho) {
   args = r_node_cdr(args);
-  r_obj* expr = r_node_car(args); args = r_node_cdr(args);
-  r_obj* data = r_node_car(args); args = r_node_cdr(args);
+  r_obj* expr = r_node_car(args);
+  args = r_node_cdr(args);
+  r_obj* data = r_node_car(args);
+  args = r_node_cdr(args);
   r_obj* env = r_node_car(args);
   return rlang_eval_tidy(expr, data, env);
 }
-
 
 void rlang_init_eval_tidy(void) {
   r_obj* rlang_ns_env = KEEP(r_ns_env("rlang"));
@@ -590,20 +587,20 @@ void rlang_init_eval_tidy(void) {
   mask_sym = r_sym("mask");
 
   restore_mask_fn = r_parse_eval(
-    "function() {                          \n"
-    "  ctxt_pronoun <- `mask`$.env         \n"
-    "  if (!is.null(ctxt_pronoun)) {       \n"
-    "    parent.env(ctxt_pronoun) <- `old` \n"
-    "  }                                   \n"
-    "                                      \n"
-    "  top <- `mask`$.top_env              \n"
-    "  if (is.null(top)) {                 \n"
-    "    top <- `mask`                     \n"
-    "  }                                   \n"
-    "                                      \n"
-    "  parent.env(top) <- `old`            \n"
-    "}                                     \n",
-    r_envs.base
+      "function() {                          \n"
+      "  ctxt_pronoun <- `mask`$.env         \n"
+      "  if (!is.null(ctxt_pronoun)) {       \n"
+      "    parent.env(ctxt_pronoun) <- `old` \n"
+      "  }                                   \n"
+      "                                      \n"
+      "  top <- `mask`$.top_env              \n"
+      "  if (is.null(top)) {                 \n"
+      "    top <- `mask`                     \n"
+      "  }                                   \n"
+      "                                      \n"
+      "  parent.env(top) <- `old`            \n"
+      "}                                     \n",
+      r_envs.base
   );
   r_preserve(restore_mask_fn);
 

@@ -5,15 +5,12 @@
 
 #include "decl/sym-unescape-decl.h"
 
-
 // Interface functions ---------------------------------------------------------
 
 void copy_character(r_obj* tgt, r_obj* src, R_xlen_t len);
 R_xlen_t unescape_character_in_copy(r_obj* tgt, r_obj* src, R_xlen_t i);
 
-r_obj* ffi_symbol(r_obj* chr) {
-  return r_str_as_symbol(r_chr_get(chr, 0));
-}
+r_obj* ffi_symbol(r_obj* chr) { return r_str_as_symbol(r_chr_get(chr, 0)); }
 
 r_obj* ffi_sym_as_string(r_obj* sym) {
   return str_unserialise_unicode(PRINTNAME(sym));
@@ -29,7 +26,9 @@ r_obj* ffi_sym_as_character(r_obj* sym) {
 r_obj* ffi_unescape_character(r_obj* chr) {
   R_xlen_t len = Rf_xlength(chr);
   R_xlen_t i = unescape_character_in_copy(r_null, chr, 0);
-  if (i == len) return chr;
+  if (i == len) {
+    return chr;
+  }
 
   r_obj* ret = KEEP(r_alloc_character(len));
   copy_character(ret, chr, i);
@@ -62,7 +61,9 @@ R_xlen_t unescape_character_in_copy(r_obj* tgt, r_obj* src, R_xlen_t i) {
     r_obj* old_elt = r_chr_get(src, i);
     r_obj* new_elt = str_unserialise_unicode(old_elt);
     if (dry_run) {
-      if (old_elt != new_elt) return i;
+      if (old_elt != new_elt) {
+        return i;
+      }
     } else {
       r_chr_poke(tgt, i, new_elt);
     }
@@ -90,19 +91,17 @@ r_obj* str_unserialise_unicode(r_obj* r_string) {
     return unescape_char_to_sexp(tmp);
   } else {
     // The string has been copied so it's safe to use as buffer
-    char* tmp = (char*)re_enc;
+    char* tmp = (char*) re_enc;
     return unescape_char_to_sexp(tmp);
   }
 }
 
-static
-r_obj* unescape_char_to_sexp(char* tmp) {
+static r_obj* unescape_char_to_sexp(char* tmp) {
   int len = unescape_char(tmp);
   return Rf_mkCharLenCE(tmp, len, CE_UTF8);
 }
 
-static
-bool has_unicode_escape(const char* chr) {
+static bool has_unicode_escape(const char* chr) {
   while (*chr) {
     if (has_codepoint(chr)) {
       return true;
@@ -113,8 +112,7 @@ bool has_unicode_escape(const char* chr) {
   return false;
 }
 
-static
-int unescape_char(char* chr) {
+static int unescape_char(char* chr) {
   int len = 0;
 
   while (*chr) {
@@ -129,8 +127,7 @@ int unescape_char(char* chr) {
   return len;
 }
 
-static
-int unescape_char_found(char* chr) {
+static int unescape_char_found(char* chr) {
   char* source = chr;
   char* target = chr;
   int len = 0;
@@ -147,8 +144,7 @@ int unescape_char_found(char* chr) {
   return len;
 }
 
-static
-int process_byte(char* tgt, char* const src, int* len_processed) {
+static int process_byte(char* tgt, char* const src, int* len_processed) {
   if (!has_codepoint(src)) {
     // Copy only the first character (angle bracket or not), advance
     *tgt = *src;
@@ -160,24 +156,36 @@ int process_byte(char* tgt, char* const src, int* len_processed) {
   *len_processed = strlen("<U+xxxx>");
 
   // We have 8 bytes space, codepoints occupy less than that:
-  return (int)Rf_ucstoutf8(tgt, codepoint);
+  return (int) Rf_ucstoutf8(tgt, codepoint);
 }
 
-static
-bool has_codepoint(const char* src) {
-  if (src[0] != '<') return false;
-  if (src[1] != 'U') return false;
-  if (src[2] != '+') return false;
-  for (int i = 3; i < 7; ++i) {
-    if (!is_hex(src[i])) return false;
+static bool has_codepoint(const char* src) {
+  if (src[0] != '<') {
+    return false;
   }
-  if (src[7] != '>') return false;
+  if (src[1] != 'U') {
+    return false;
+  }
+  if (src[2] != '+') {
+    return false;
+  }
+  for (int i = 3; i < 7; ++i) {
+    if (!is_hex(src[i])) {
+      return false;
+    }
+  }
+  if (src[7] != '>') {
+    return false;
+  }
   return true;
 }
 
-static
-bool is_hex(const char chr) {
-  if (chr >= '0' && chr <= '9') return true;
-  if (chr >= 'A' && chr <= 'F') return true;
+static bool is_hex(const char chr) {
+  if (chr >= '0' && chr <= '9') {
+    return true;
+  }
+  if (chr >= 'A' && chr <= 'F') {
+    return true;
+  }
   return false;
 }

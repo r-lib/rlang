@@ -1,7 +1,6 @@
 #include <string.h>
 #include "rlang.h"
 
-
 r_ssize r_chr_detect_index(r_obj* chr, const char* c_string) {
   r_ssize n = r_length(chr);
 
@@ -52,8 +51,7 @@ static void validate_chr_setter(r_obj* chr, r_obj* r_string) {
 }
 
 // From rlang/vec.c
-void r_vec_poke_n(r_obj* x, r_ssize offset,
-                  r_obj* y, r_ssize from, r_ssize n);
+void r_vec_poke_n(r_obj* x, r_ssize offset, r_obj* y, r_ssize from, r_ssize n);
 
 r_obj* chr_prepend(r_obj* chr, r_obj* r_string) {
   if (chr == r_null) {
