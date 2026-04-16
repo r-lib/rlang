@@ -53,7 +53,7 @@ bool r_env_dots_exist(r_obj* env) {
 #else
   r_obj* dots = Rf_findVarInFrame(env, r_syms.dots);
   return dots != R_UnboundValue &&
-         (dots == r_syms.missing || r_typeof(dots) == R_TYPE_dots);
+      (dots == r_syms.missing || r_typeof(dots) == R_TYPE_dots);
 #endif
 }
 
@@ -99,8 +99,8 @@ r_obj* r_env_dots_names(r_obj* env) {
   }
 
   r_ssize n = (dots == r_syms.missing || r_typeof(dots) != R_TYPE_dots)
-                  ? 0
-                  : r_length(dots);
+      ? 0
+      : r_length(dots);
 
   r_obj* out = r_null;
 

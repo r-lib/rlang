@@ -311,11 +311,11 @@ static inline bool _r_is_complex(r_obj* x, r_ssize n, int finite) {
 
 static inline bool r_is_bool(r_obj* x) {
   return r_typeof(x) == R_TYPE_logical && r_length(x) == 1 &&
-         r_lgl_get(x, 0) != r_globals.na_lgl;
+      r_lgl_get(x, 0) != r_globals.na_lgl;
 }
 static inline bool r_is_int(r_obj* x) {
   return r_typeof(x) == R_TYPE_integer && r_length(x) == 1 &&
-         r_int_get(x, 0) != r_globals.na_int;
+      r_int_get(x, 0) != r_globals.na_int;
 }
 static inline bool r_is_true(r_obj* x) {
   return r_is_bool(x) && r_lgl_get(x, 0);
@@ -325,7 +325,7 @@ static inline bool r_is_false(r_obj* x) {
 }
 static inline bool r_is_string(r_obj* x) {
   return r_typeof(x) == R_TYPE_character && r_length(x) == 1 &&
-         r_chr_get(x, 0) != R_NaString;
+      r_chr_get(x, 0) != R_NaString;
 }
 
 static inline bool r_arg_as_bool(r_obj* x, const char* arg) {

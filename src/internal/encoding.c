@@ -180,13 +180,13 @@ static r_obj* obj_attrib_encode_utf8(r_obj* x, bool owned) {
 static inline bool str_is_ascii_or_utf8(r_obj* x) {
 #if (R_VERSION >= R_Version(4, 5, 0))
   return Rf_charIsASCII(x) || (Rf_getCharCE(x) == CE_UTF8) ||
-         (x == r_globals.na_str);
+      (x == r_globals.na_str);
 #else
   const int mask_ascii = 8;
   const int mask_utf8 = 64;
   const int levels = LEVELS(x);
   return (levels & mask_ascii) || (levels & mask_utf8) ||
-         (x == r_globals.na_str);
+      (x == r_globals.na_str);
 #endif
 }
 

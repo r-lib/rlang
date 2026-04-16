@@ -208,8 +208,8 @@ static r_obj* mask_find(r_obj* env, r_obj* sym, bool* found) {
   }
 
   r_obj* top_env = r_env_has(env, data_mask_top_env_sym)
-                       ? r_env_get(env, data_mask_top_env_sym)
-                       : r_null;
+      ? r_env_get(env, data_mask_top_env_sym)
+      : r_null;
 
   if (r_typeof(top_env) == R_TYPE_environment) {
     // Start lookup in the parent if the pronoun wraps a data mask

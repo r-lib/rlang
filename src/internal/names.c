@@ -191,7 +191,7 @@ done:
 
 static bool needs_suffix(r_obj* str) {
   return str == r_strs.na || str == r_strs.dots || str == r_strs.empty ||
-         is_dotdotint(r_str_c_string(str));
+      is_dotdotint(r_str_c_string(str));
 }
 
 static bool is_dotdotint(const char* name) {

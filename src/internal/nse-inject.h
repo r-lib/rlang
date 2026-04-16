@@ -20,7 +20,7 @@ static inline bool is_maybe_rlang_call_any(
     int n
 ) {
   return r_is_call_any(x, names, n) ||
-         r_is_namespaced_call_any(x, "rlang", names, n);
+      r_is_namespaced_call_any(x, "rlang", names, n);
 }
 static inline bool is_splice_call(r_obj* node) {
   return is_maybe_rlang_call_any(node, uqs_names, UQS_N);

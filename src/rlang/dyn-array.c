@@ -78,9 +78,9 @@ void r_dyn_push_back(struct r_dyn_array* p_arr, const void* p_elt) {
 void r_dyn_resize(struct r_dyn_array* p_arr, r_ssize capacity) {
   enum r_type type = p_arr->type;
 
-  r_ssize capacity_multiplier =
-      p_arr->type == R_TYPE_raw ? r_ssize_mult(p_arr->elt_byte_size, capacity)
-                                : capacity;
+  r_ssize capacity_multiplier = p_arr->type == R_TYPE_raw
+      ? r_ssize_mult(p_arr->elt_byte_size, capacity)
+      : capacity;
 
   r_obj* data =
       r_vec_resize0(type, r_list_get(p_arr->shelter, 1), capacity_multiplier);

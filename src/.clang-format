@@ -12,3 +12,5 @@ AllowShortFunctionsOnASingleLine: None
 Cpp11BracedListStyle: true
 AllowAllArgumentsOnNextLine: false
 AllowShortEnumsOnASingleLine: false
+AlignOperands: DontAlign
+BreakBeforeTernaryOperators: true

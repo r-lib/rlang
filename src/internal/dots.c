@@ -381,7 +381,7 @@ static r_obj* dots_unquote(
   // In the case of `dots_list()` we auto-name inputs eagerly while we
   // still have access to the defused expression
   bool needs_autoname = capture_info->type == DOTS_COLLECT_value &&
-                        capture_info->named == ARG_NAMED_auto;
+      capture_info->named == ARG_NAMED_auto;
 
   r_obj* node = dots;
   for (r_ssize i = 0; node != r_null; ++i, node = r_node_cdr(node)) {
