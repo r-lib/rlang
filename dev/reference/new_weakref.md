@@ -67,8 +67,8 @@ identical(wref_key(w), e)
 rm(e)
 gc()
 #>           used (Mb) gc trigger  (Mb) max used  (Mb)
-#> Ncells 1210789 64.7    2222705 118.8  2222705 118.8
-#> Vcells 2242156 17.2    8388608  64.0  8353968  63.8
+#> Ncells 1210787 64.7    2222611 118.8  2222611 118.8
+#> Vcells 2242152 17.2    8388608  64.0  8353806  63.8
 identical(wref_key(w), NULL)
 #> [1] TRUE
 
@@ -88,8 +88,8 @@ identical(wref_value(w), v)
 rm(v)
 gc()
 #>           used (Mb) gc trigger  (Mb) max used  (Mb)
-#> Ncells 1210781 64.7    2222705 118.8  2222705 118.8
-#> Vcells 2241962 17.2    8388608  64.0  8353968  63.8
+#> Ncells 1210782 64.7    2222611 118.8  2222611 118.8
+#> Vcells 2241963 17.2    8388608  64.0  8353806  63.8
 identical(wref_value(w), list(1, 2, 3))
 #> [1] TRUE
 
@@ -97,8 +97,8 @@ identical(wref_value(w), list(1, 2, 3))
 rm(k)
 gc()
 #>           used (Mb) gc trigger  (Mb) max used  (Mb)
-#> Ncells 1210803 64.7    2222705 118.8  2222705 118.8
-#> Vcells 2242000 17.2    8388608  64.0  8353968  63.8
+#> Ncells 1210804 64.7    2222611 118.8  2222611 118.8
+#> Vcells 2242001 17.2    8388608  64.0  8353806  63.8
 identical(wref_key(w), NULL)
 #> [1] TRUE
 identical(wref_value(w), NULL)
