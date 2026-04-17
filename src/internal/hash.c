@@ -188,9 +188,9 @@ static void hash_feed_vector_data(
         break;
 
     case R_TYPE_double: {
-        const double* p_x = r_dbl_cbegin(x);
+        const double* v_x = r_dbl_cbegin(x);
         for (r_ssize i = 0; i < n; ++i) {
-            double val = hash_normalise_dbl(p_x[i]);
+            double val = hash_normalise_dbl(v_x[i]);
             hash_feed(ctx->p_state, &val, sizeof(double));
         }
         break;
@@ -229,7 +229,14 @@ static void hash_feed_vector_data(
         break;
     }
 
-    case R_TYPE_list:
+    case R_TYPE_list: {
+        r_obj* const* v_x = r_list_cbegin(x);
+        for (r_ssize i = 0; i < n; ++i) {
+            hash_object(ctx, v_x[i]);
+        }
+        break;
+    }
+
     case R_TYPE_expression:
         for (r_ssize i = 0; i < n; ++i) {
             hash_object(ctx, r_list_get(x, i));
