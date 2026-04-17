@@ -1425,8 +1425,8 @@ call_restore <- function(x, to) {
 #'
 #' @name rlang_backtrace_on_error
 #' @seealso rlang_backtrace_on_warning
-#' @aliases add_backtrace rlang_backtrace_on_error_report
-#'   rlang_backtrace_on_warning_report
+#' @aliases add_backtrace rlang_backtrace_on_error_report 
+#' @aliases rlang_backtrace_on_warning_report
 #'
 #' @examples
 #' # Display a simplified backtrace on error for both base and rlang

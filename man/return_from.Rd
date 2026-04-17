@@ -15,7 +15,7 @@ function.}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#questioning}{\figure{lifecycle-questioning.svg}{options: alt='[Questioning]'}}}{\strong{[Questioning]}}
 
-While \code{\link[base:function]{base::return()}} can only return from the current local
+While \code{\link[base:return]{base::return()}} can only return from the current local
 frame, \code{return_from()} will return from any frame on the
 current evaluation stack, between the global and the currently
 active context.

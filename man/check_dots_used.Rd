@@ -70,8 +70,8 @@ fn()
 
 }
 \seealso{
-Other dots checking functions: 
-\code{\link{check_dots_empty}()},
-\code{\link{check_dots_unnamed}()}
+Other dots checking functions:
+\code{\link[=check_dots_empty]{check_dots_empty()}},
+\code{\link[=check_dots_unnamed]{check_dots_unnamed()}}
 }
 \concept{dots checking functions}

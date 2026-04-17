@@ -53,8 +53,8 @@ f(1, foofy = 4)
 
 }
 \seealso{
-Other dots checking functions: 
-\code{\link{check_dots_unnamed}()},
-\code{\link{check_dots_used}()}
+Other dots checking functions:
+\code{\link[=check_dots_unnamed]{check_dots_unnamed()}},
+\code{\link[=check_dots_used]{check_dots_used()}}
 }
 \concept{dots checking functions}

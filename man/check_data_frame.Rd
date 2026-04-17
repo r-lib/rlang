@@ -43,9 +43,9 @@ check_data_frame(mtcars)
 try(check_data_frame(1:5))
 }
 \seealso{
-Other input checkers: 
+Other input checkers:
 \code{\link{check_type_number}},
 \code{\link{check_type_scalar}},
-\code{\link{stop_input_type}()}
+\code{\link[=stop_input_type]{stop_input_type()}}
 }
 \concept{input checkers}
