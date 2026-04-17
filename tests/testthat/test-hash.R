@@ -254,6 +254,21 @@ test_that("S4 objects hash structurally, not by identity", {
   expect_false(hash(a) == hash(c))
 })
 
+test_that("S4 objects extending a basic type hash the .Data vector", {
+  on.exit(removeClass("HashTestS4Num"))
+  setClass("HashTestS4Num", contains = "numeric")
+  a <- new("HashTestS4Num", 1:3)
+  b <- new("HashTestS4Num", 1:3)
+  c <- new("HashTestS4Num", 4:6)
+  expect_identical(hash(a), hash(b))
+  expect_false(hash(a) == hash(c))
+
+  # Differs from bare vector with same class attribute due to S4 bit
+  b <- structure(1:3, class = attr(a, "class"))
+  expect_false(hash(a) == hash(b))
+})
+
+
 test_that("resizable vectors hash the same as regular vectors (#1681)", {
   skip_if_not_installed("vctrs")
   expect_identical(hash(vctrs::vec_slice(1:3, 1:3)), hash(1:3))

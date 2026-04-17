@@ -67,6 +67,10 @@ static void hash_object(struct hash_ctx* ctx, r_obj* x) {
     int type = r_typeof(x);
     hash_feed_int(ctx->p_state, type);
 
+    // Vector-like S4 objects only differ from regular objects by the S4 bit. We
+    // hash it here to disambiguate. This can be extended to a bitfield if needed.
+    hash_feed_int(ctx->p_state, Rf_isS4(x));
+
     switch (type) {
     case R_TYPE_null:
         break;
@@ -115,7 +119,10 @@ static void hash_object(struct hash_ctx* ctx, r_obj* x) {
         break;
     }
 
-    // S4 slots are stored as attributes, which are walked below
+    // S4 objects that extend a basic type (e.g. `contains = "numeric"`)
+    // have the SEXPTYPE of the underlying vector, so they are hashed by
+    // the corresponding case above. Only pure S4 objects land here;
+    // their slots are stored as attributes, which are walked below.
     case R_TYPE_s4:
         break;
 
