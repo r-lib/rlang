@@ -29,6 +29,16 @@ test_that("hashes are stable across R versions", {
   })
 })
 
+test_that("hashes are stable across R versions with ALTREP objects", {
+  skip_if_big_endian()
+
+  # ALTREP compact sequence and materialised vector hash identically
+  expect_identical(hash(1:5), hash(1:5 + 0L))
+
+  expect_snapshot({
+    hash(1:5)
+  })
+})
 
 test_that("different objects produce different hashes", {
   skip_if_big_endian()

@@ -61,6 +61,13 @@
     Output
       [1] "6f5acbb9b2bcf91b3ce9a8b831135cad"
 
+# hashes are stable across R versions with ALTREP objects
+
+    Code
+      hash(1:5)
+    Output
+      [1] "79fd186742862fd67996efa5fb38ef6d"
+
 # different objects produce different hashes
 
     Code
