@@ -1,168 +1,79 @@
 # Revdeps
 
-## Failed to check (150)
+## Failed to check (63)
 
-|package               |version  |error |warning |note |
-|:---------------------|:--------|:-----|:-------|:----|
-|a5R                   |0.3.1    |1     |        |     |
-|AnanseSeurat          |?        |      |        |     |
-|apa                   |?        |      |        |     |
-|apaTables             |?        |      |        |     |
-|apaText               |?        |      |        |     |
-|apsimx                |?        |      |        |     |
-|arcgisplaces          |0.1.2    |1     |        |     |
-|aridagri              |?        |      |        |     |
-|AssumpSure            |?        |      |        |     |
-|autovi                |?        |      |        |     |
-|auxvecLASSO           |?        |      |        |     |
-|AVGAS                 |?        |      |        |     |
-|bayesdfa              |1.3.4    |1     |        |     |
-|BayesPET              |0.1.0    |1     |        |     |
-|BayesVolcano          |?        |      |        |     |
-|benthos               |?        |      |        |     |
-|bfboinet              |?        |      |        |     |
-|BGGM                  |?        |      |        |     |
-|BGmisc                |?        |      |        |     |
-|bipd                  |?        |      |        |     |
-|bmm                   |?        |      |        |     |
-|boinet                |?        |      |        |     |
-|brms                  |?        |      |        |     |
-|BSL                   |?        |      |        |     |
-|bullseye              |?        |      |        |     |
-|cases                 |?        |      |        |     |
-|cassowaryr            |?        |      |        |     |
-|cdcatR                |?        |      |        |     |
-|cdmTools              |?        |      |        |     |
-|cheem                 |?        |      |        |     |
-|ChillModels           |?        |      |        |     |
-|chouca                |?        |      |        |     |
-|cinaR                 |?        |      |        |     |
-|ClustAssess           |?        |      |        |     |
-|ClusterGVis           |?        |      |        |     |
-|clusterMI             |?        |      |        |     |
-|ClustImpute           |?        |      |        |     |
-|colleyRstats          |?        |      |        |     |
-|CompAREdesign         |?        |      |        |     |
-|copulaSim             |?        |      |        |     |
-|correlation           |?        |      |        |     |
-|coveR2                |?        |      |        |     |
-|cowbell               |?        |      |        |     |
-|cry                   |?        |      |        |     |
-|ctsem                 |3.10.6   |1     |        |1    |
-|cylcop                |?        |      |        |     |
-|daltoolbox            |?        |      |        |     |
-|DataSimilarity        |?        |      |        |     |
-|dbrobust              |?        |      |        |     |
-|decisionSupport       |?        |      |        |     |
-|deepSTRAPP            |?        |      |        |     |
-|degradr               |?        |      |        |     |
-|detourr               |?        |      |        |     |
-|DFD                   |?        |      |        |     |
-|dimRed                |?        |      |        |     |
-|dMrs                  |?        |      |        |     |
-|DstarM                |?        |      |        |     |
-|dymo                  |?        |      |        |     |
-|dySEM                 |?        |      |        |     |
-|easybgm               |?        |      |        |     |
-|easyEWAS              |?        |      |        |     |
-|ecorisk               |?        |      |        |     |
-|eda4treeR             |1.1.0    |1     |        |     |
-|EFDR                  |?        |      |        |     |
-|effectcheck           |?        |      |        |     |
-|EGAnet                |?        |      |        |     |
-|enderecobr            |0.5.0    |1     |        |     |
-|ER                    |?        |      |        |     |
-|eye                   |?        |      |        |     |
-|FAfA                  |?        |      |        |     |
-|fastei                |0.0.0.12 |1     |        |     |
-|fastqrs               |?        |      |        |     |
-|FCPS                  |?        |      |        |     |
-|fddm                  |?        |      |        |     |
-|FeatureImpCluster     |?        |      |        |     |
-|ferrn                 |?        |      |        |     |
-|ffp                   |?        |      |        |     |
-|fio                   |1.0.0    |1     |        |     |
-|fitteR                |?        |      |        |     |
-|fozziejoin            |0.0.13   |1     |        |     |
-|gasmodel              |?        |      |        |     |
-|GDINA                 |?        |      |        |     |
-|gemR                  |?        |      |        |     |
-|genekitr              |?        |      |        |     |
-|GeneralizedUmatrixGPU |0.1.14   |1     |        |     |
-|ggpicrust2            |?        |      |        |     |
-|ggsem                 |?        |      |        |     |
-|GJRM                  |?        |      |        |     |
-|gMOIP                 |?        |      |        |     |
-|grandR                |?        |      |        |     |
-|gratia                |?        |      |        |     |
-|GRIDCOPULA            |1.1.0    |1     |        |     |
-|gvcR                  |0.4.0    |1     |        |     |
-|h3o                   |0.3.0    |1     |        |     |
-|harbinger             |?        |      |        |     |
-|hbsaems               |?        |      |        |     |
-|heimdall              |?        |      |        |     |
-|iccCompare            |?        |      |        |     |
-|imt                   |?        |      |        |     |
-|IndGenErrors          |?        |      |        |     |
-|intervalpsych         |?        |      |        |     |
-|irt                   |?        |      |        |     |
-|irtQ                  |?        |      |        |     |
-|Kcop                  |?        |      |        |     |
-|LMMstar               |?        |      |        |     |
-|LongDecompHE          |?        |      |        |     |
-|MBAnalysis            |?        |      |        |     |
-|MD2sample             |?        |      |        |     |
-|MDgof                 |?        |      |        |     |
-|MiscMetabar           |?        |      |        |     |
-|MixedIndTests         |?        |      |        |     |
-|MixMashNet            |?        |      |        |     |
-|ModStatR              |?        |      |        |     |
-|MultANOVA             |?        |      |        |     |
-|MultiResponseR        |?        |      |        |     |
-|MVN                   |?        |      |        |     |
-|OlinkAnalyze          |?        |      |        |     |
-|OpenMx                |2.22.11  |1     |        |     |
-|PPbigdata             |?        |      |        |     |
-|QFASA                 |?        |      |        |     |
-|QuadratiK             |?        |      |        |     |
-|RCTrep                |?        |      |        |     |
-|RegDDM                |?        |      |        |     |
-|ReporterScore         |?        |      |        |     |
-|Revticulate           |?        |      |        |     |
-|RGENERATEPREC         |?        |      |        |     |
-|RMOPI                 |?        |      |        |     |
-|RSP                   |?        |      |        |     |
-|RulesTools            |?        |      |        |     |
-|SCpubr                |?        |      |        |     |
-|SeuratExplorer        |?        |      |        |     |
-|Signac                |?        |      |        |     |
-|SimDesign             |?        |      |        |     |
-|Spower                |?        |      |        |     |
-|SRscore               |?        |      |        |     |
-|StatTeacherAssistant  |?        |      |        |     |
-|STCCGEV               |?        |      |        |     |
-|STCYP                 |?        |      |        |     |
-|SurprisalAnalysis     |?        |      |        |     |
-|Surrogate             |?        |      |        |     |
-|TCIU                  |1.2.8    |1     |        |     |
-|TDAkit                |?        |      |        |     |
-|TELP                  |?        |      |        |     |
-|TestAnaAPP            |?        |      |        |     |
-|TransProR             |?        |      |        |     |
-|TriDimRegression      |1.0.3    |1     |        |     |
-|VecDep                |?        |      |        |     |
-|WINS                  |?        |      |        |     |
-|WQM                   |?        |      |        |     |
-|XYomics               |?        |      |        |     |
+|package       |version |error |warning |note |
+|:-------------|:-------|:-----|:-------|:----|
+|a5R           |0.3.1   |1     |        |     |
+|arcgisplaces  |0.1.2   |1     |        |     |
+|bayesdfa      |1.3.4   |1     |        |     |
+|bmm           |?       |      |        |     |
+|brms          |?       |      |        |     |
+|bullseye      |?       |      |        |     |
+|ClustAssess   |?       |      |        |     |
+|ClustImpute   |?       |      |        |     |
+|colleyRstats  |?       |      |        |     |
+|copulaSim     |?       |      |        |     |
+|cylcop        |?       |      |        |     |
+|detourr       |?       |      |        |     |
+|dymo          |?       |      |        |     |
+|dySEM         |?       |      |        |     |
+|ecorisk       |?       |      |        |     |
+|enderecobr    |0.5.0   |1     |        |     |
+|eye           |?       |      |        |     |
+|fastplyr      |?       |      |        |     |
+|ferrn         |?       |      |        |     |
+|ffp           |?       |      |        |     |
+|fio           |1.0.0   |1     |        |     |
+|genekitr      |?       |      |        |     |
+|ggsem         |?       |      |        |     |
+|gMOIP         |?       |      |        |     |
+|grandR        |?       |      |        |     |
+|gratia        |?       |      |        |     |
+|gvcR          |0.4.0   |1     |        |     |
+|h3o           |0.3.0   |1     |        |     |
+|ivolcano      |?       |      |        |     |
+|lcsm          |?       |      |        |     |
+|LMMstar       |?       |      |        |     |
+|measureR      |?       |      |        |     |
+|metrica       |?       |      |        |     |
+|mineSweepR    |?       |      |        |     |
+|MiscMetabar   |?       |      |        |     |
+|MixMashNet    |?       |      |        |     |
+|morepls       |?       |      |        |     |
+|multinma      |?       |      |        |     |
+|OlinkAnalyze  |?       |      |        |     |
+|outstandR     |?       |      |        |     |
+|pandemonium   |?       |      |        |     |
+|pcutils       |?       |      |        |     |
+|prefviz       |?       |      |        |     |
+|projectLSA    |?       |      |        |     |
+|psychonetrics |?       |      |        |     |
+|RegDDM        |?       |      |        |     |
+|rollout       |?       |      |        |     |
+|SCpubr        |?       |      |        |     |
+|semptools     |?       |      |        |     |
+|Signac        |?       |      |        |     |
+|spareg        |?       |      |        |     |
+|sparsevar     |?       |      |        |     |
+|spinebil      |?       |      |        |     |
+|SRscore       |?       |      |        |     |
+|SSVS          |?       |      |        |     |
+|tepr          |?       |      |        |     |
+|tidybins      |?       |      |        |     |
+|tidycomm      |?       |      |        |     |
+|tidylearn     |?       |      |        |     |
+|tna           |?       |      |        |     |
+|TransProR     |?       |      |        |     |
+|univariateML  |?       |      |        |     |
+|wmwAUC        |?       |      |        |     |
 
-## New problems (6)
+## New problems (4)
 
-|package       |version |error  |warning |note     |
-|:-------------|:-------|:------|:-------|:--------|
-|[coursekata](problems.md#coursekata)|0.19.2  |__+2__ |        |         |
-|[DeclareDesign](problems.md#declaredesign)|1.1.0   |__+1__ |        |         |
-|[ebvcube](problems.md#ebvcube)|0.5.2   |__+1__ |        |1        |
-|[ggplot2](problems.md#ggplot2)|4.0.2   |__+1__ |        |2        |
-|[MedDataSets](problems.md#meddatasets)|0.1.0   |       |        |__+1__   |
-|[SmarterPoland](problems.md#smarterpoland)|1.8.1   |       |        |2 __+1__ |
+|package |version |error  |warning |note |
+|:-------|:-------|:------|:-------|:----|
+|[atrrr](problems.md#atrrr)|0.1.1   |__+1__ |        |     |
+|[plotly](problems.md#plotly)|4.12.0  |__+1__ |        |1    |
+|[rollama](problems.md#rollama)|0.3.0   |__+1__ |        |     |
+|[saros](problems.md#saros)|1.6.1   |__+1__ |        |     |
 

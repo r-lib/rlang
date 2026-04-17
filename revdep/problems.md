@@ -1,121 +1,14 @@
-# coursekata
+# atrrr
 
 <details>
 
-* Version: 0.19.2
-* GitHub: https://github.com/coursekata/coursekata-r
-* Source code: https://github.com/cran/coursekata
-* Date/Publication: 2026-03-10 17:10:13 UTC
-* Number of recursive dependencies: 133
+* Version: 0.1.1
+* GitHub: https://github.com/JBGruber/atrrr
+* Source code: https://github.com/cran/atrrr
+* Date/Publication: 2025-07-22 14:03:30 UTC
+* Number of recursive dependencies: 96
 
-Run `revdepcheck::cloud_details(, "coursekata")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘coursekata-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: middle
-    > ### Title: Find a percentage of a distribution
-    > ### Aliases: middle tails outer lower upper
-    > 
-    > ### ** Examples
-    > 
-    > 
-    ...
-     22. │   └─base::data.frame(x = x, original_pos = seq_along(x))
-     23. │     ├─base::as.data.frame(x[[i]], optional = TRUE)
-     24. │     └─base::as.data.frame.default(x[[i]], optional = TRUE)
-     25. │       └─base::stop(...)
-     26. └─base::.handleSimpleError(...)
-     27.   └─rlang (local) h(simpleError(msg, call))
-     28.     └─handlers[[1L]](cnd)
-     29.       └─cli::cli_abort(...)
-     30.         └─rlang::abort(...)
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘gf-squareplot.Rmd’ using rmarkdown
-    
-    Quitting from gf-squareplot.Rmd:106-114 [dgp]
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    <error/rlang_error>
-    Error in `gf_squareplot()`:
-    ! `x` must be numeric.
-    ---
-    ...
-    
-    Error: processing vignette 'gf-squareplot.Rmd' failed with diagnostics:
-    `x` must be numeric.
-    --- failed re-building ‘gf-squareplot.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘gf-squareplot.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-# DeclareDesign
-
-<details>
-
-* Version: 1.1.0
-* GitHub: https://github.com/DeclareDesign/DeclareDesign
-* Source code: https://github.com/cran/DeclareDesign
-* Date/Publication: 2025-10-15 08:30:15 UTC
-* Number of recursive dependencies: 190
-
-Run `revdepcheck::cloud_details(, "DeclareDesign")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(DeclareDesign)
-      Loading required package: randomizr
-      Loading required package: fabricatr
-      Loading required package: estimatr
-      > 
-      > library(AER)
-    ...
-        │ 
-        │ estimator <- declare_estimator(Y ~ Z, inquiry = my_inquiry) 
-        │ 
-        │ my_design <- construct_design(steps = steps) 
-        │ 
-      
-      [ FAIL 9 | WARN 0 | SKIP 7 | PASS 638 ]
-      Error:
-      ! Test failures.
-      Execution halted
-    ```
-
-# ebvcube
-
-<details>
-
-* Version: 0.5.2
-* GitHub: https://github.com/EBVcube/ebvcube
-* Source code: https://github.com/cran/ebvcube
-* Date/Publication: 2025-07-29 19:20:15 UTC
-* Number of recursive dependencies: 114
-
-Run `revdepcheck::cloud_details(, "ebvcube")` for more info
+Run `revdepcheck::cloud_details(, "atrrr")` for more info
 
 </details>
 
@@ -131,39 +24,32 @@ Run `revdepcheck::cloud_details(, "ebvcube")` for more info
       > #
       > # Where should you do additional test configuration?
       > # Learn more about the roles of various files in:
-      > # * https://r-pkgs.org/tests.html
-      > # * https://testthat.r-lib.org/reference/test_package.html#special-files
+      > # * https://r-pkgs.org/testing-design.html#sec-tests-files-overview
+      > # * https://testthat.r-lib.org/articles/special-files.html
     ...
-       3.     └─jsonlite:::parse_and_simplify(...)
-       4.       └─jsonlite:::parseJSON(txt, bigint_as_char)
-       5.         └─jsonlite:::parse_con(txt, bigint_as_char)
-       6.           ├─base::open(con, "rb")
-       7.           └─base::open.connection(con, "rb")
+      ── Error ('test-lists.R:28:3'): test getting list feed ─────────────────────────
+      <purrr_error_indexed/rlang_error/error/condition>
+      Error in `purrr::map_chr(link, function(l) {     if (is_at(l))          return(l)     http_info <- parse_http_url(l)     if (is.na(http_info$repo) | is.na(http_info$rkey))          return(NA_character_)     if (!is_did(http_info$repo)) {         http_info$repo <- resolve_handle(http_info$repo, .token = .token)     }     glue::glue_data(http_info, "at://{repo}/{collection}/{rkey}") })`: i In index: 1.
+      Caused by error in `mock()`:
+      ! file recorded_responses/com.atproto.identity.resolveHandle_3a422.rds does not exist and no token exists
       
-      [ FAIL 1 | WARN 11 | SKIP 0 | PASS 239 ]
+      [ FAIL 19 | WARN 0 | SKIP 2 | PASS 12 ]
       Error:
       ! Test failures.
       Execution halted
     ```
 
-## In both
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 2 marked UTF-8 strings
-    ```
-
-# ggplot2
+# plotly
 
 <details>
 
-* Version: 4.0.2
-* GitHub: https://github.com/tidyverse/ggplot2
-* Source code: https://github.com/cran/ggplot2
-* Date/Publication: 2026-02-03 08:50:23 UTC
-* Number of recursive dependencies: 128
+* Version: 4.12.0
+* GitHub: https://github.com/plotly/plotly.R
+* Source code: https://github.com/cran/plotly
+* Date/Publication: 2026-01-24 07:50:02 UTC
+* Number of recursive dependencies: 134
 
-Run `revdepcheck::cloud_details(, "ggplot2")` for more info
+Run `revdepcheck::cloud_details(, "plotly")` for more info
 
 </details>
 
@@ -174,21 +60,21 @@ Run `revdepcheck::cloud_details(, "ggplot2")` for more info
       Running ‘testthat.R’
     Running the tests in ‘tests/testthat.R’ failed.
     Complete output:
-      > library(testthat)
-      > library(ggplot2)
-      > 
-      > test_check("ggplot2")
-      Saving _problems/test-plot-4.R
-      [ FAIL 1 | WARN 0 | SKIP 270 | PASS 1777 ]
+      > library("testthat")
+      > library("plotly")
+      Loading required package: ggplot2
       
+      Attaching package: 'plotly'
+      
+      The following object is masked from 'package:ggplot2':
     ...
-      'geom-dotplot/bin-y-dodged-coord-flip.svg', 'geom-dotplot/bin-y-dodged.svg',
-      'geom-dotplot/bin-y-dodging-3-stackgroups-histodot.svg',
-      'geom-dotplot/bin-y-three-x-groups-bins-aligned-across-groups.svg',
-      'geom-dotplot/bin-y-three-x-groups-bins-aligned-coord-flip.svg',
-      'geom-dotplot/bin-y-three-x-groups-fill-and-dodge.svg', …,
-      'theme/vertical-legends-placed-apart.svg', and
-      'theme/width-is-3-times-height.svg'
+      Expected `legend_title` to match regexp "factor\\(cyl\\)$".
+      Actual text:
+      ✖ │ factor(cyl)<br />factor(vs)
+      
+      [ FAIL 2 | WARN 23 | SKIP 63 | PASS 1449 ]
+      Deleting unused snapshots: 'ggplot-contour/contour.svg' and
+      'ggplot-heatmap/heatmap.svg'
       Error:
       ! Test failures.
       Execution halted
@@ -196,79 +82,94 @@ Run `revdepcheck::cloud_details(, "ggplot2")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package which this enhances but not available for checking: ‘sp’
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.6Mb
+      installed size is  7.7Mb
       sub-directories of 1Mb or more:
-        R      3.5Mb
-        data   1.5Mb
-        doc    7.6Mb
-        help   1.7Mb
+        R             1.1Mb
+        examples      1.3Mb
+        htmlwidgets   3.9Mb
     ```
 
-# MedDataSets
+# rollama
 
 <details>
 
-* Version: 0.1.0
-* GitHub: https://github.com/lightbluetitan/meddatasets
-* Source code: https://github.com/cran/MedDataSets
-* Date/Publication: 2024-10-24 14:20:02 UTC
-* Number of recursive dependencies: 107
+* Version: 0.3.0
+* GitHub: https://github.com/JBGruber/rollama
+* Source code: https://github.com/cran/rollama
+* Date/Publication: 2026-03-25 20:30:02 UTC
+* Number of recursive dependencies: 65
 
-Run `revdepcheck::cloud_details(, "MedDataSets")` for more info
+Run `revdepcheck::cloud_details(, "rollama")` for more info
 
 </details>
 
 ## Newly broken
 
-*   checking installed package size ... NOTE
+*   checking tests ... ERROR
     ```
-      installed size is  7.4Mb
-      sub-directories of 1Mb or more:
-        R      3.5Mb
-        data   3.5Mb
+      Running ‘spelling.R’
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > # This file is part of the standard setup for testthat.
+      > # It is recommended that you do not modify it.
+      > #
+      > # Where should you do additional test configuration?
+      > # Learn more about the roles of various files in:
+      > # * https://r-pkgs.org/testing-design.html#sec-tests-files-overview
+    ...
+      Expected `req_hash(make_fake_req())` to equal "0227ca5af8ae565c3383d248a8b1010a".
+      Differences:
+      `actual`:   "aa8987c18b69ccd868e451b5426aac70"
+      `expected`: "0227ca5af8ae565c3383d248a8b1010a"
+      
+      
+      [ FAIL 1 | WARN 0 | SKIP 27 | PASS 26 ]
+      Error:
+      ! Test failures.
+      Execution halted
     ```
 
-# SmarterPoland
+# saros
 
 <details>
 
-* Version: 1.8.1
-* GitHub: NA
-* Source code: https://github.com/cran/SmarterPoland
-* Date/Publication: 2023-08-20 21:22:35 UTC
-* Number of recursive dependencies: 29
+* Version: 1.6.1
+* GitHub: https://github.com/NIFU-NO/saros
+* Source code: https://github.com/cran/saros
+* Date/Publication: 2026-01-28 03:50:02 UTC
+* Number of recursive dependencies: 120
 
-Run `revdepcheck::cloud_details(, "SmarterPoland")` for more info
+Run `revdepcheck::cloud_details(, "saros")` for more info
 
 </details>
 
 ## Newly broken
 
-*   checking installed package size ... NOTE
+*   checking tests ... ERROR
     ```
-      installed size is 12.6Mb
-      sub-directories of 1Mb or more:
-        data  12.5Mb
-    ```
-
-## In both
-
-*   checking Rd files ... NOTE
-    ```
-    checkRd: (-1) cities_lon_lat.Rd:6: Lost braces
-         6 | A subset of world.cities{maps}. Extracted in order to shink number of dependencies. 
-           |                         ^
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 1122 marked UTF-8 strings
+      Running ‘spelling.R’
+      Running ‘testthat.R’
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(saros)
+      > 
+      > testthat::test_check("saros")
+      Starting 2 test processes.
+      > test-crowd_plots_as_tabset.R: dev.new(): using pdf(file="Rplots1.pdf")
+    ...
+      Expected `grepl(x = as.character(result), "\\[download figure data\\]\\(.+/d0487363db4e6cc64fdb740cb6617fc0\\.rds\\)$")` to be TRUE.
+      Differences:
+      `actual`:   FALSE
+      `expected`: TRUE 
+      
+      
+      [ FAIL 3 | WARN 0 | SKIP 21 | PASS 1021 ]
+      Error:
+      ! Test failures.
+      Execution halted
     ```
 
