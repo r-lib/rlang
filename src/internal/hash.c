@@ -52,8 +52,10 @@ static inline void hash_feed_int(XXH3_state_t* p_state, int x) {
     hash_feed(p_state, &x, sizeof(int));
 }
 
+// Always feed as 8 bytes so hashes are stable across 32/64-bit platforms
 static inline void hash_feed_ssize(XXH3_state_t* p_state, r_ssize x) {
-    hash_feed(p_state, &x, sizeof(r_ssize));
+    int64_t len = (int64_t) x;
+    hash_feed(p_state, &len, sizeof(int64_t));
 }
 
 static inline void hash_feed_ptr(XXH3_state_t* p_state, const void* ptr) {
