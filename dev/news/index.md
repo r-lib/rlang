@@ -2,6 +2,10 @@
 
 ## rlang (development version)
 
+- Fixed [`env_get()`](https://rlang.r-lib.org/dev/reference/env_get.md)
+  issue causing double evaluation of active bindings on older R versions
+  \<= 4.4 ([\#1893](https://github.com/r-lib/rlang/issues/1893)).
+
 ## rlang 1.2.0
 
 CRAN release: 2026-04-06
