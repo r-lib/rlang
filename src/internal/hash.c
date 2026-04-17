@@ -142,8 +142,7 @@ static void hash_object(struct hash_ctx* ctx, r_obj* x) {
         break;
 
     default:
-        hash_feed_ptr(ctx->p_state, (const void*) x);
-        break;
+        r_abort("Type `%s` can't be hashed.", r_type_as_c_string(type));
     }
 
     r_attrib_map(x, &hash_attribs_cb, ctx);
