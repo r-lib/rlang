@@ -5,15 +5,35 @@ hash() hashes an arbitrary R object.
 hash_file() hashes the data contained in a file.
 
 
-The generated hash is guaranteed to be reproducible across platforms that
-have the same endianness and are using the same R version."><meta property="og:description" content="
+For ordinary data objects (vectors, lists, data frames, etc.), the generated
+hash is reproducible across sessions and R versions on platforms that have
+the same endianness. However, hash values may change between rlang versions,
+although that should be rare. Reference-like objects (environments, external
+pointers, builtins) are hashed by identity, so their hashes are only stable
+within a session. Closures hash their formals, body, and environment
+identity. Byte-compiled and uncompiled closures hash identically
+because the body is always hashed from the original language tree.
+By default, source references are stripped before hashing so that
+closures and calls that are textually identical produce the same
+hash regardless of where they were parsed. Set zap_srcref to
+FALSE to include source references in the hash."><meta property="og:description" content="
 
 hash() hashes an arbitrary R object.
 hash_file() hashes the data contained in a file.
 
 
-The generated hash is guaranteed to be reproducible across platforms that
-have the same endianness and are using the same R version."><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><meta name="robots" content="noindex"><script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-hide-below="1200" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="rlang.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script></head><body>
+For ordinary data objects (vectors, lists, data frames, etc.), the generated
+hash is reproducible across sessions and R versions on platforms that have
+the same endianness. However, hash values may change between rlang versions,
+although that should be rare. Reference-like objects (environments, external
+pointers, builtins) are hashed by identity, so their hashes are only stable
+within a session. Closures hash their formals, body, and environment
+identity. Byte-compiled and uncompiled closures hash identically
+because the body is always hashed from the original language tree.
+By default, source references are stripped before hashing so that
+closures and calls that are textually identical produce the same
+hash regardless of where they were parsed. Set zap_srcref to
+FALSE to include source references in the hash."><meta property="og:image" content="https://rlang.r-lib.org/logo.png"><meta name="robots" content="noindex"><script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-hide-below="1200" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="rlang.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script></head><body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
 
 
@@ -98,13 +118,23 @@ have the same endianness and are using the same R version."><meta property="og:i
 
 <ul><li><p><code>hash()</code> hashes an arbitrary R object.</p></li>
 <li><p><code>hash_file()</code> hashes the data contained in a file.</p></li>
-</ul><p>The generated hash is guaranteed to be reproducible across platforms that
-have the same endianness and are using the same R version.</p>
+</ul><p>For ordinary data objects (vectors, lists, data frames, etc.), the generated
+hash is reproducible across sessions and R versions on platforms that have
+the same endianness. However, hash values may change between rlang versions,
+although that should be rare. Reference-like objects (environments, external
+pointers, builtins) are hashed by identity, so their hashes are only stable
+within a session. Closures hash their formals, body, and environment
+identity. Byte-compiled and uncompiled closures hash identically
+because the body is always hashed from the original language tree.</p>
+<p>By default, source references are stripped before hashing so that
+closures and calls that are textually identical produce the same
+hash regardless of where they were parsed. Set <code>zap_srcref</code> to
+<code>FALSE</code> to include source references in the hash.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hash</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">hash</span><span class="op">(</span><span class="va">x</span>, zap_srcref <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">hash_file</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -115,6 +145,13 @@ have the same endianness and are using the same R version.</p>
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>An object.</p></dd>
+
+
+<dt id="arg-zap-srcref">zap_srcref<a class="anchor" aria-label="anchor" href="#arg-zap-srcref"></a></dt>
+<dd><p>Whether to ignore source references when hashing
+(default <code>TRUE</code>). Source references depend on parse location, so
+including them makes hashes of closures and calls
+non-reproducible across sessions.</p></dd>
 
 
 <dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
@@ -132,17 +169,18 @@ have the same endianness and are using the same R version.</p>
     <p>These hashers use the XXH128 hash algorithm of the xxHash library, which
 generates a 128-bit hash. Both are implemented as streaming hashes, which
 generate the hash with minimal extra memory usage.</p>
-<p>For <code>hash()</code>, objects are converted to binary using R's native serialization
-tools. Serialization version 3 is used. See <code><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize()</a></code> for more
-information about the serialization version.</p>
+<p>For <code>hash()</code>, a custom object walker feeds the object's type, length, data
+bytes, and attributes directly into the hash algorithm. This avoids
+dependency on R's serialization format, making the hash immune to internal
+representation details (e.g. ALTREP compact forms, the growable vector bit).</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">hash</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "702f7dd6e81ea41d26ea3b248627ece4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "7f210cbfa5470651f6f9e9d220634266"</span>
 <span class="r-in"><span><span class="fu">hash</span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "d0487363db4e6cc64fdb740cb6617fc0"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6755d143ff87b73a1196c186cec7e86a"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">authors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Rhome.html" class="external-link">R.home</a></span><span class="op">(</span><span class="st">"doc"</span><span class="op">)</span>, <span class="st">"AUTHORS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">copying</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Rhome.html" class="external-link">R.home</a></span><span class="op">(</span><span class="st">"doc"</span><span class="op">)</span>, <span class="st">"COPYING"</span><span class="op">)</span></span></span>
@@ -154,7 +192,7 @@ information about the serialization version.</p>
 <span class="r-in"><span><span class="co"># If you need a single hash for multiple files,</span></span></span>
 <span class="r-in"><span><span class="co"># hash the result of `hash_file()`</span></span></span>
 <span class="r-in"><span><span class="fu">hash</span><span class="op">(</span><span class="va">hashes</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "a061b5938a6bd7c4beb6e2dc25f470a3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "6f31dd06464e362fbe7e9d4040340326"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

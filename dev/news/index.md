@@ -2,6 +2,19 @@
 
 ## rlang (development version)
 
+- [`hash()`](https://rlang.r-lib.org/dev/reference/hash.md) now uses its
+  own walking strategy to make it independent of pecularities of the R
+  serialiser. This fixes stability issues with function bytecode and
+  shrinkable vectors on R 4.6.0
+  ([\#1681](https://github.com/r-lib/rlang/issues/1681)).
+
+  This does mean that with this version all hash values will now be
+  different. In general we gain stability across versions of R, but may
+  lose some stability across versions of rlang. We’ll try and avoid
+  changes to our hash algorithm for the sake of stability but you should
+  assume it’s always possible for a new version to invalidate existing
+  hashes.
+
 - Fixed [`env_get()`](https://rlang.r-lib.org/dev/reference/env_get.md)
   issue causing double evaluation of active bindings on older R versions
   \<= 4.4 ([\#1893](https://github.com/r-lib/rlang/issues/1893)).
