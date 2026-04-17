@@ -70,6 +70,21 @@ test_that("env_get() evaluates promises and active bindings", {
   expect_equal(env_get(e, "y"), 2)
 })
 
+test_that("env_get() evaluates active bindings only once (#1893)", {
+  n <- 0L
+  e <- env()
+  env_bind_active(e, x = function() { n <<- n + 1L; n })
+
+  out <- env_get(e, "x")
+  expect_equal(out, 1L)
+  expect_equal(n, 1L)
+
+  n <- 0L
+  out <- env_get_list(e, "x")
+  expect_equal(out, list(x = 1L))
+  expect_equal(n, 1L)
+})
+
 test_that("env_get_list() retrieves multiple bindings", {
   env <- env(foo = 1L, bar = 2L)
   expect_identical(env_get_list(env, c("foo", "bar")), list(foo = 1L, bar = 2L))

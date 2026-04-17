@@ -1,5 +1,8 @@
 # rlang (development version)
 
+* Fixed `env_get()` issue causing double evaluation of active bindings on older R versions <= 4.4 (#1893).
+
+
 # rlang 1.2.0
 
 * rlang and tidyeval are now fully backed by official C APIs of R!
