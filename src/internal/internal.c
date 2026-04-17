@@ -194,7 +194,7 @@ static const R_CallMethodDef r_callables[] = {
     {"ffi_has_dots_unnamed", (DL_FUNC) &ffi_has_dots_unnamed, 1},
     {"ffi_has_local_precious_list", (DL_FUNC) &ffi_has_local_precious_list, 0},
     {"ffi_has_size_one_bool", (DL_FUNC) &ffi_has_size_one_bool, 0},
-    {"ffi_hash", (DL_FUNC) &ffi_hash, 1},
+    {"ffi_hash", (DL_FUNC) &ffi_hash, 2},
     {"ffi_hash_file", (DL_FUNC) &ffi_hash_file, 1},
     {"ffi_hasher_init", (DL_FUNC) &ffi_hasher_init, 0},
     {"ffi_hasher_update", (DL_FUNC) &ffi_hasher_update, 2},

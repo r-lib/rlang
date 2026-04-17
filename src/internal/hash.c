@@ -13,61 +13,262 @@
 #include <stdio.h>    // sprintf()
 #include <inttypes.h> // PRIx64
 
+struct hash_ctx {
+    XXH3_state_t* p_state;
+    bool zap_srcref;
+};
+
+static inline bool is_srcref_tag(r_obj* tag) {
+    return tag == r_syms.srcref || tag == r_syms.srcfile ||
+        tag == r_syms.wholeSrcref;
+}
+
 #include "decl/hash-decl.h"
 
-/*
- * Before any R object data is serialized, `R_Serialize()` will first write out:
- *
- * Serialization info:
- * - 2 bytes for `"X\n"` to declare "binary" serialization (i.e. not "ascii")
- * - An `int` representing the serialization version
- * - An `int` representing `R_VERSION`
- * - An `int` representing the minimum R version where this serialization
- *   version was supported. This is `R_Version(3,5,0)` for version 3.
- * - An `int` representing the `strlen()` of a `const char*` containing the
- *   native encoding.
- * - A `const char*` for that native encoding. The length of this comes from
- *   the previous `int` that was written out.
- *
- * Since this changes between R versions, we skip these first bytes before
- * streaming any data into the hashing algorithm.
- *
- * Reference to show where R appends this information:
- * https://github.com/wch/r-source/blob/d48ecd61012fa6ae645d087d9a6e97e200c32fbc/src/main/serialize.c#L1382-L1389
- */
-#define N_BYTES_SERIALIZATION_INFO (2 + 3 * sizeof(int))
-#define N_BYTES_N_NATIVE_ENC (sizeof(int))
+// Finalize the hash state into a 128-bit digest and format it as a
+// 32-character lowercase hex string (two 64-bit halves, zero-padded)
+static inline r_obj* hash_value(XXH3_state_t* p_xx_state) {
+    XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);
+    XXH64_hash_t high = hash.high64;
+    XXH64_hash_t low = hash.low64;
+    char out[32 + 1];
+    snprintf(out, sizeof(out), "%016" PRIx64 "%016" PRIx64, high, low);
+    return r_str(out);
+}
+
+// Update the hash state with incoming bytes. Everything feeds through here.
+static inline void hash_feed(
+    XXH3_state_t* p_state,
+    const void* data,
+    size_t len
+) {
+    XXH_errorcode err = XXH3_128bits_update(p_state, data, len);
+    if (err == XXH_ERROR) {
+        r_abort("Can't update hash state.");
+    }
+}
+
+static inline void hash_feed_int(XXH3_state_t* p_state, int x) {
+    hash_feed(p_state, &x, sizeof(int));
+}
+
+// Always feed as 8 bytes so hashes are stable across 32/64-bit platforms
+static inline void hash_feed_ssize(XXH3_state_t* p_state, r_ssize x) {
+    int64_t len = (int64_t) x;
+    hash_feed(p_state, &len, sizeof(int64_t));
+}
+
+static inline void hash_feed_ptr(XXH3_state_t* p_state, const void* ptr) {
+    hash_feed(p_state, &ptr, sizeof(ptr));
+}
+
+// -----------------------------------------------------------------------------
+
+// Feed the type tag, then user-visible data, then attributes
+static void hash_object(struct hash_ctx* ctx, r_obj* x) {
+    int type = r_typeof(x);
+    hash_feed_int(ctx->p_state, type);
+
+    // Vector-like S4 objects only differ from regular objects by the S4 bit. We
+    // hash it here to disambiguate. This can be extended to a bitfield if needed.
+    hash_feed_int(ctx->p_state, Rf_isS4(x));
+
+    switch (type) {
+    case R_TYPE_null:
+        break;
+
+    case R_TYPE_logical:
+    case R_TYPE_integer:
+    case R_TYPE_double:
+    case R_TYPE_complex:
+    case R_TYPE_raw:
+    case R_TYPE_character:
+    case R_TYPE_list:
+    case R_TYPE_expression: {
+        r_ssize n = r_length(x);
+        hash_feed_ssize(ctx->p_state, n);
+        hash_feed_vector_data(ctx, x, type, n);
+        break;
+    }
+
+    case R_TYPE_pairlist:
+    case R_TYPE_call:
+    case R_TYPE_dots: {
+        r_ssize n = r_length(x);
+
+        // The parser stores srcref info as a 4th element on `function` calls.
+        // When zapping srcrefs, stop after the 3rd node (formals, body, env).
+        if (ctx->zap_srcref && type == R_TYPE_call &&
+            r_node_car(x) == r_syms.function && n > 3) {
+            n = 3;
+        }
+
+        hash_feed_ssize(ctx->p_state, n);
+        r_obj* node = x;
+        for (r_ssize i = 0; i < n; ++i, node = r_node_cdr(node)) {
+            hash_object(ctx, r_node_tag(node));
+            hash_object(ctx, r_node_car(node));
+        }
+        break;
+    }
+
+    case R_TYPE_closure: {
+        hash_object(ctx, r_fn_formals(x));
+        // `r_fn_body()` calls `R_ClosureExpr()` which unwraps bytecode,
+        // so compiled and uncompiled closures hash identically.
+        hash_object(ctx, r_fn_body(x));
+        hash_feed_ptr(ctx->p_state, (const void*) r_fn_env(x));
+        break;
+    }
+
+    // S4 objects that extend a basic type (e.g. `contains = "numeric"`)
+    // have the SEXPTYPE of the underlying vector, so they are hashed by
+    // the corresponding case above. Only pure S4 objects land here;
+    // their slots are stored as attributes, which are walked below.
+    case R_TYPE_s4:
+        break;
+
+    case R_TYPE_symbol: {
+        const char* name = r_sym_c_string(x);
+        int len = strlen(name);
+        hash_feed_int(ctx->p_state, len);
+        hash_feed(ctx->p_state, name, (size_t) len);
+        break;
+    }
+
+    case R_TYPE_environment:
+    case R_TYPE_builtin:
+    case R_TYPE_special:
+    case R_TYPE_pointer:
+        hash_feed_ptr(ctx->p_state, (const void*) x);
+        break;
+
+    default:
+        r_abort("Type `%s` can't be hashed.", r_type_as_c_string(type));
+    }
+
+    r_attrib_map(x, &hash_attribs_cb, ctx);
+}
+
+static r_obj* hash_attribs_cb(r_obj* tag, r_obj* value, void* data) {
+    struct hash_ctx* ctx = (struct hash_ctx*) data;
+    if (ctx->zap_srcref && is_srcref_tag(tag)) {
+        return NULL;
+    }
+    hash_object(ctx, tag);
+    hash_object(ctx, value);
+    return NULL;
+}
+
+// -----------------------------------------------------------------------------
+
+// Match `identical()` semantics: all NA variants -> NA_REAL,
+// all NaN variants -> R_NaN, -0.0 -> +0.0
+static inline double hash_normalise_dbl(double x) {
+    if (R_IsNA(x)) {
+        return NA_REAL;
+    }
+    if (R_IsNaN(x)) {
+        return R_NaN;
+    }
+    if (x == 0.0) {
+        return 0.0;
+    }
+    return x;
+}
+
+static void hash_feed_vector_data(
+    struct hash_ctx* ctx,
+    r_obj* x,
+    int type,
+    r_ssize n
+) {
+    switch (type) {
+    case R_TYPE_logical:
+    case R_TYPE_integer:
+        hash_feed(ctx->p_state, r_vec_cbegin(x), (size_t) n * sizeof(int));
+        break;
+
+    case R_TYPE_double: {
+        const double* v_x = r_dbl_cbegin(x);
+        for (r_ssize i = 0; i < n; ++i) {
+            double val = hash_normalise_dbl(v_x[i]);
+            hash_feed(ctx->p_state, &val, sizeof(double));
+        }
+        break;
+    }
+
+    case R_TYPE_complex: {
+        const r_complex* p_x = r_cpl_cbegin(x);
+        for (r_ssize i = 0; i < n; ++i) {
+            double re = hash_normalise_dbl(p_x[i].r);
+            double im = hash_normalise_dbl(p_x[i].i);
+            hash_feed(ctx->p_state, &re, sizeof(double));
+            hash_feed(ctx->p_state, &im, sizeof(double));
+        }
+        break;
+    }
+
+    case R_TYPE_raw:
+        hash_feed(ctx->p_state, r_raw_cbegin(x), (size_t) n);
+        break;
+
+    case R_TYPE_character: {
+        r_obj* const* p_x = r_chr_cbegin(x);
+        for (r_ssize i = 0; i < n; ++i) {
+            r_obj* elt = p_x[i];
+            if (elt == NA_STRING) {
+                hash_feed_int(ctx->p_state, 1);
+            } else {
+                hash_feed_int(ctx->p_state, 0);
+                int enc = (int) Rf_getCharCE(elt);
+                int len = LENGTH(elt);
+                hash_feed_int(ctx->p_state, enc);
+                hash_feed_int(ctx->p_state, len);
+                hash_feed(ctx->p_state, r_str_c_string(elt), (size_t) len);
+            }
+        }
+        break;
+    }
+
+    case R_TYPE_list: {
+        r_obj* const* v_x = r_list_cbegin(x);
+        for (r_ssize i = 0; i < n; ++i) {
+            hash_object(ctx, v_x[i]);
+        }
+        break;
+    }
+
+    case R_TYPE_expression:
+        for (r_ssize i = 0; i < n; ++i) {
+            hash_object(ctx, r_list_get(x, i));
+        }
+        break;
+
+    default:
+        r_stop_unreachable();
+    }
+}
 
 // -----------------------------------------------------------------------------
 
 struct exec_data {
     r_obj* x;
     XXH3_state_t* p_xx_state;
+    bool zap_srcref;
 };
 
-static r_obj* hash_impl(void* p_data);
-static void hash_cleanup(void* p_data);
-
-r_obj* ffi_hash(r_obj* x) {
+r_obj* ffi_hash(r_obj* x, r_obj* ffi_zap_srcref) {
     XXH3_state_t* p_xx_state = XXH3_createState();
 
-    struct exec_data data = {.x = x, .p_xx_state = p_xx_state};
+    struct exec_data data = {
+        .x = x,
+        .p_xx_state = p_xx_state,
+        .zap_srcref = r_arg_as_bool(ffi_zap_srcref, "zap_srcref"),
+    };
 
     return R_ExecWithCleanup(hash_impl, &data, hash_cleanup, &data);
 }
-
-struct hash_state_t {
-    bool skip;
-    int n_skipped;
-    int n_native_enc;
-    XXH3_state_t* p_xx_state;
-};
-
-static inline struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state);
-static inline int hash_version(void);
-static inline r_obj* hash_value(XXH3_state_t* p_xx_state);
-static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n);
-static inline void hash_char(R_outpstream_t stream, int input);
 
 static r_obj* hash_impl(void* p_data) {
     struct exec_data* p_exec_data = (struct exec_data*) p_data;
@@ -76,37 +277,15 @@ static r_obj* hash_impl(void* p_data) {
 
     XXH_errorcode err = XXH3_128bits_reset(p_xx_state);
     if (err == XXH_ERROR) {
-        r_abort("Couldn't initialize hash state.");
+        r_abort("Can't initialize hash state.");
     }
 
-    struct hash_state_t state = new_hash_state(p_xx_state);
+    struct hash_ctx ctx = {
+        .p_state = p_xx_state,
+        .zap_srcref = p_exec_data->zap_srcref,
+    };
 
-    int version = hash_version();
-
-    // Unused
-    r_obj* (*hook)(r_obj*, r_obj*) = NULL;
-    r_obj* hook_data = r_null;
-
-    // We use the unstructured binary format, rather than XDR, as that is
-    // faster. In theory it may result in different hashes on different
-    // platforms, but in practice only integers can have variable width and here
-    // they are 32 bit.
-    R_pstream_format_t format = R_pstream_binary_format;
-
-    struct R_outpstream_st stream;
-
-    R_InitOutPStream(
-        &stream,
-        (R_pstream_data_t) &state,
-        format,
-        version,
-        hash_char,
-        hash_bytes,
-        hook,
-        hook_data
-    );
-
-    R_Serialize(x, &stream);
+    hash_object(&ctx, x);
 
     r_obj* value = KEEP(hash_value(p_xx_state));
     r_obj* out = r_str_as_character(value);
@@ -121,97 +300,16 @@ static void hash_cleanup(void* p_data) {
     XXH3_freeState(p_xx_state);
 }
 
-static inline struct hash_state_t new_hash_state(XXH3_state_t* p_xx_state) {
-    return (struct hash_state_t) {.skip = true,
-                                  .n_skipped = 0,
-                                  .n_native_enc = 0,
-                                  .p_xx_state = p_xx_state};
-}
-
-static inline int hash_version(void) {
-    return 3;
-}
-
-static inline r_obj* hash_value(XXH3_state_t* p_xx_state) {
-    XXH128_hash_t hash = XXH3_128bits_digest(p_xx_state);
-
-    // R assumes C99, so these are always defined as `uint64_t` in xxhash.h
-    XXH64_hash_t high = hash.high64;
-    XXH64_hash_t low = hash.low64;
-
-    // 32 for hash, 1 for terminating null added by `snprintf()`
-    char out[32 + 1];
-
-    snprintf(out, sizeof(out), "%016" PRIx64 "%016" PRIx64, high, low);
-
-    return r_str(out);
-}
-
-static inline void hash_skip(
-    struct hash_state_t* p_state,
-    void* p_input,
-    int n
-);
-
-static inline void hash_bytes(R_outpstream_t stream, void* p_input, int n) {
-    struct hash_state_t* p_state = (struct hash_state_t*) stream->data;
-
-    if (p_state->skip) {
-        hash_skip(p_state, p_input, n);
-        return;
-    }
-
-    XXH3_state_t* p_xx_state = p_state->p_xx_state;
-    XXH_errorcode err = XXH3_128bits_update(p_xx_state, p_input, n);
-
-    if (err == XXH_ERROR) {
-        r_abort("Couldn't update hash state.");
-    }
-}
-
-static inline void hash_char(R_outpstream_t stream, int input) {
-    // `R_Serialize()` only ever calls `stream->OutChar()` for ASCII and
-    // ASCIIHEX formats, neither of which we are using.
-    // https://github.com/wch/r-source/blob/161e21346c024b79db2654d3331298f96cdf6968/src/main/serialize.c#L376
-    r_stop_internal("Should never be called with binary format.");
-}
-
-static inline void hash_skip(
-    struct hash_state_t* p_state,
-    void* p_input,
-    int n
-) {
-    if (p_state->n_skipped < N_BYTES_SERIALIZATION_INFO) {
-        // Skip serialization info bytes
-        p_state->n_skipped += n;
-        return;
-    }
-
-    if (p_state->n_skipped == N_BYTES_SERIALIZATION_INFO) {
-        // We've skipped all serialization info bytes.
-        // Incoming bytes tell the size of the native encoding string.
-        r_memcpy(&p_state->n_native_enc, p_input, sizeof(int));
-        p_state->n_skipped += n;
-        return;
-    }
-
-    p_state->n_skipped += n;
-
-    int n_bytes_header = N_BYTES_SERIALIZATION_INFO + N_BYTES_N_NATIVE_ENC +
-        p_state->n_native_enc;
-
-    if (p_state->n_skipped == n_bytes_header) {
-        // We've skipped all serialization header bytes at this point
-        p_state->skip = false;
-    }
-}
-
 // -----------------------------------------------------------------------------
 
 r_obj* ffi_hash_file(r_obj* path) {
     XXH3_state_t* p_xx_state = XXH3_createState();
 
-    struct exec_data data = {.x = path, .p_xx_state = p_xx_state};
+    struct exec_data data = {
+        .x = path,
+        .p_xx_state = p_xx_state,
+        .zap_srcref = false,
+    };
 
     return R_ExecWithCleanup(hash_file_impl, &data, hash_cleanup, &data);
 }
@@ -276,7 +374,6 @@ static inline void hasher_finalizer(r_obj* x) {
     void* p_x = R_ExternalPtrAddr(x);
 
     if (!p_x) {
-        // Defensively exit if the external pointer resolves to `NULL`
         return;
     }
 
