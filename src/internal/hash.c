@@ -88,21 +88,20 @@ static void hash_object(struct hash_ctx* ctx, r_obj* x) {
     case R_TYPE_pairlist:
     case R_TYPE_call:
     case R_TYPE_dots: {
+        r_ssize n = r_length(x);
+
         // The parser stores srcref info as a 4th element on `function` calls.
         // When zapping srcrefs, stop after the 3rd node (formals, body, env).
-        bool is_fn_call = ctx->zap_srcref && type == R_TYPE_call &&
-            r_node_car(x) == r_syms.function;
-        r_ssize n = r_length(x);
-        if (is_fn_call && n > 3) {
+        if (ctx->zap_srcref && type == R_TYPE_call &&
+            r_node_car(x) == r_syms.function && n > 3) {
             n = 3;
         }
+
         hash_feed_ssize(ctx->p_state, n);
-        r_ssize i = 0;
-        for (r_obj* node = x; node != r_null && i < n;
-             node = r_node_cdr(node)) {
+        r_obj* node = x;
+        for (r_ssize i = 0; i < n; ++i, node = r_node_cdr(node)) {
             hash_object(ctx, r_node_tag(node));
             hash_object(ctx, r_node_car(node));
-            ++i;
         }
         break;
     }
