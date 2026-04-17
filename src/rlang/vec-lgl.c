@@ -3,7 +3,7 @@
 
 r_ssize r_lgl_sum(r_obj* x, bool na_true) {
     if (r_typeof(x) != R_TYPE_logical) {
-        r_abort("Internal error: Excepted logical vector in `r_lgl_sum()`");
+        r_abort("Internal error: Expected logical vector in `r_lgl_sum()`");
     }
 
     const r_ssize n = r_length(x);
