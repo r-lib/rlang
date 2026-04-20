@@ -28,7 +28,7 @@ See the \href{https://style.tidyverse.org/errors.html}{tidyverse error style gui
 While the rlang package embeds rudimentary formatting routines, the main formatting engine is implemented in the \href{https://cli.r-lib.org/}{cli package}.
 \subsection{Formatting messages with cli}{
 
-By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the \href{https://cli.r-lib.org/}{cli package} by using \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[cli:cli_abort]{cli::cli_inform()}} instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long \code{!} bullet is broken with an indented newline:
+By default, rlang uses an internal mechanism to format bullets. It is preferable to delegate formatting to the \href{https://cli.r-lib.org/}{cli package} by using \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_warn]{cli::cli_warn()}}, and \code{\link[cli:cli_inform]{cli::cli_inform()}} instead of the rlang versions. These wrappers enable cli formatting with sophisticated paragraph wrapping and bullet indenting that make long lines easier to read. In the following example, a long \code{!} bullet is broken with an indented newline:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{rlang::global_entrace(class = "errorr")
 #> Error in `rlang::global_entrace()`:

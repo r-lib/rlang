@@ -19,7 +19,7 @@ Inform about name repair
 
 Name repair messages are signaled with \code{\link[=inform]{inform()}} and are given the class
 \code{"rlib_message_name_repair"}. These messages can be muffled with
-\code{\link[base:message]{base::suppressMessages()}}.
+\code{\link[base:suppressMessages]{base::suppressMessages()}}.
 
 Name repair messages can also be silenced with the global option
 \code{rlib_name_repair_verbosity}. This option takes the values:

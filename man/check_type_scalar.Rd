@@ -64,9 +64,9 @@ try(check_string(42))
 
 }
 \seealso{
-Other input checkers: 
-\code{\link{check_data_frame}()},
+Other input checkers:
+\code{\link[=check_data_frame]{check_data_frame()}},
 \code{\link{check_type_number}},
-\code{\link{stop_input_type}()}
+\code{\link[=stop_input_type]{stop_input_type()}}
 }
 \concept{input checkers}

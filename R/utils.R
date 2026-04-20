@@ -108,6 +108,7 @@ codes <- list(
 )
 
 
+#' @export
 `$.r6lite` <- function(self, arg) {
   field <- env_get(self, as_string(substitute(arg)), inherit = TRUE)
 

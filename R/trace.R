@@ -419,6 +419,7 @@ trace_bind <- function(...) {
 # Methods -----------------------------------------------------------------
 
 # For internal use only
+#' @exportS3Method NULL
 c.rlang_trace <- function(...) {
   traces <- list(...)
 

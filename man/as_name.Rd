@@ -24,8 +24,8 @@ a string to \emph{represent} that object with a short description.
 }
 }
 \details{
-\code{rlang::as_name()} is the \emph{opposite} of \code{\link[base:name]{base::as.name()}}. If
-you're writing base R code, we recommend using \code{\link[base:name]{base::as.symbol()}}
+\code{rlang::as_name()} is the \emph{opposite} of \code{\link[base:as.name]{base::as.name()}}. If
+you're writing base R code, we recommend using \code{\link[base:as.symbol]{base::as.symbol()}}
 which is an alias of \code{as.name()} that follows a more modern
 terminology (R types instead of S modes).
 }

@@ -118,7 +118,9 @@ unbox <- function(box) {
   }
   box[[1]]
 }
-print.box <- function(x, ...) {
+
+#' @export
+print.rlang_box <- function(x, ...) {
   cat_line("<box>")
   print(unbox(x))
 }
