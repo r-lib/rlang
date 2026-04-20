@@ -63,7 +63,7 @@ get_expr(frame)
 
 set_expr(f, quote(baz))
 #> ~baz
-#> <environment: 0x5597480a84a0>
+#> <environment: 0x55705bcfb2e0>
 set_expr(e, quote(baz))
 #> baz
 ```
