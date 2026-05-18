@@ -126,6 +126,7 @@ more information about these differences.
 ## Examples
 
 ``` r
+
 # With simple defused expressions eval_tidy() works the same way as
 # eval():
 fruit <- "apple"

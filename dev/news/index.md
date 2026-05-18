@@ -32,7 +32,6 @@ CRAN release: 2026-04-06
 - New type-checking functions exported from rlang:
   [`check_bool()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md),
   [`check_string()`](https://rlang.r-lib.org/dev/reference/check_type_scalar.md),
-  `check_name()`,
   [`check_number_decimal()`](https://rlang.r-lib.org/dev/reference/check_type_number.md),
   [`check_number_whole()`](https://rlang.r-lib.org/dev/reference/check_type_number.md),
   and
@@ -1709,6 +1708,7 @@ CRAN release: 2020-01-24
   A single pair of braces triggers normal glue interpolation:
 
   ``` r
+
   df <- data.frame(x = 1:3)
 
   suffix <- "foo"
@@ -1725,6 +1725,7 @@ CRAN release: 2020-01-24
   arguments:
 
   ``` r
+
   my_wrapper <- function(data, var, suffix = "foo") {
     data %>% dplyr::mutate("{{ var }}_{suffix}" := {{ var }} * 2)
   }
@@ -2180,6 +2181,7 @@ the future. Finally, a bunch of deparsing issues have been fixed.
   backtraces for all errors, including warnings promoted to errors:
 
   ``` r
+
   if (requireNamespace("rlang", quietly = TRUE)) {
     options(error = rlang::entrace)
   }
@@ -2188,6 +2190,7 @@ the future. Finally, a bunch of deparsing issues have been fixed.
   This handler also works as a calling handler:
 
   ``` r
+
   with_handlers(
     error = calling(entrace),
     foo(bar)
@@ -2197,6 +2200,7 @@ the future. Finally, a bunch of deparsing issues have been fixed.
   However it’s often more practical to use `with_abort()` in that case:
 
   ``` r
+
   with_abort(foo(bar))
   ```
 
@@ -2404,6 +2408,7 @@ list of API changes.
   values.
 
   ``` r
+
   call_modify(call, arg = NULL)  # Add `arg = NULL` to the call
   call_modify(call, arg = zap()) # Remove the `arg` argument from the call
   ```

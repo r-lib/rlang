@@ -73,11 +73,11 @@ authors <- file.path(R.home("doc"), "AUTHORS")
 copying <- file.path(R.home("doc"), "COPYING")
 hashes <- hash_file(c(authors, copying))
 hashes
-#> [1] "fc4d57b62fa48aa0e3fb847cdce2cf88"
+#> [1] "91719ee600dd3908734502d8098b2e98"
 #> [2] "cdb3a24318136e74f38209c219ca104b"
 
 # If you need a single hash for multiple files,
 # hash the result of `hash_file()`
 hash(hashes)
-#> [1] "6f31dd06464e362fbe7e9d4040340326"
+#> [1] "548e3499d61c72e7508c7355a678963b"
 ```
