@@ -182,6 +182,7 @@ reference:
 
 - subtitle: Conditions
   contents:
+  - cnd
   - rlang_error
   - cnd_message
   - format_error_bullets
