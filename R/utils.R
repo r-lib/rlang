@@ -162,6 +162,9 @@ on_load({
 })
 
 style_dim_soft <- function(x) {
+  if (!has_ansi()) {
+    return(x)
+  }
   if (cli::num_ansi_colors() >= 256) {
     crayon::make_style(grDevices::grey(0.6), colors = 256)(x)
   } else {
