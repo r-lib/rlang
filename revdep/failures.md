@@ -2,11 +2,11 @@
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.4.0
 * GitHub: https://github.com/belian-earth/a5R
 * Source code: https://github.com/cran/a5R
-* Date/Publication: 2026-03-26 12:30:02 UTC
-* Number of recursive dependencies: 65
+* Date/Publication: 2026-05-14 13:00:07 UTC
+* Number of recursive dependencies: 67
 
 Run `revdepcheck::cloud_details(, "a5R")` for more info
 
@@ -34,7 +34,7 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 
 Caused by:
@@ -61,7 +61,7 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 
 Caused by:
@@ -73,6 +73,82 @@ Caused by:
 make: *** [Makevars:26: rust/target/release/liba5R.a] Error 101
 ERROR: compilation failed for package ‘a5R’
 * removing ‘/tmp/workdir/a5R/old/a5R.Rcheck/a5R’
+
+
+```
+# AbSolution
+
+<details>
+
+* Version: 1.0.1
+* GitHub: https://github.com/EDS-Bioinformatics-Laboratory/AbSolution
+* Source code: https://github.com/cran/AbSolution
+* Date/Publication: 2026-04-27 08:50:09 UTC
+* Number of recursive dependencies: 217
+
+Run `revdepcheck::cloud_details(, "AbSolution")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/AbSolution/new/AbSolution.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘AbSolution/DESCRIPTION’ ... OK
+...
+* this is package ‘AbSolution’ version ‘1.0.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘alakazam’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/AbSolution/old/AbSolution.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘AbSolution/DESCRIPTION’ ... OK
+...
+* this is package ‘AbSolution’ version ‘1.0.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘alakazam’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
 
 
 ```
@@ -112,15 +188,15 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 export CARGO_HOME=/tmp/workdir/arcgisplaces/new/arcgisplaces.Rcheck/00_pkg_src/arcgisplaces/src/.cargo && \
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tmp/home/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target
-error: package `litemap v0.7.5` cannot be built because it requires rustc 1.81 or newer, while the currently active rustc version is 1.75.0
-Either upgrade to rustc 1.81 or newer, or use
-cargo update litemap@0.7.5 --precise ver
-where `ver` is the latest version of `litemap` supporting rustc 1.75.0
+error: package `native-tls v0.2.14` cannot be built because it requires rustc 1.80.0 or newer, while the currently active rustc version is 1.75.0
+Either upgrade to rustc 1.80.0 or newer, or use
+cargo update native-tls@0.2.14 --precise ver
+where `ver` is the latest version of `native-tls` supporting rustc 1.75.0
 make: *** [Makevars:28: rust/target/release/libarcgisplaces.a] Error 101
 ERROR: compilation failed for package ‘arcgisplaces’
 * removing ‘/tmp/workdir/arcgisplaces/new/arcgisplaces.Rcheck/arcgisplaces’
@@ -139,10 +215,10 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 export CARGO_HOME=/tmp/workdir/arcgisplaces/old/arcgisplaces.Rcheck/00_pkg_src/arcgisplaces/src/.cargo && \
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tmp/home/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target
 error: package `native-tls v0.2.14` cannot be built because it requires rustc 1.80.0 or newer, while the currently active rustc version is 1.75.0
 Either upgrade to rustc 1.80.0 or newer, or use
@@ -162,7 +238,7 @@ ERROR: compilation failed for package ‘arcgisplaces’
 * GitHub: https://github.com/fate-ewi/bayesdfa
 * Source code: https://github.com/cran/bayesdfa
 * Date/Publication: 2025-03-22 20:30:21 UTC
-* Number of recursive dependencies: 85
+* Number of recursive dependencies: 86
 
 Run `revdepcheck::cloud_details(, "bayesdfa")` for more info
 
@@ -210,11 +286,11 @@ ERROR: configuration failed for package ‘bayesdfa’
 
 <details>
 
-* Version: 1.3.0
+* Version: 1.3.1
 * GitHub: https://github.com/venpopov/bmm
 * Source code: https://github.com/cran/bmm
-* Date/Publication: 2026-03-30 11:00:09 UTC
-* Number of recursive dependencies: 137
+* Date/Publication: 2026-06-05 07:40:02 UTC
+* Number of recursive dependencies: 138
 
 Run `revdepcheck::cloud_details(, "bmm")` for more info
 
@@ -231,12 +307,12 @@ Run `revdepcheck::cloud_details(, "bmm")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘bmm/DESCRIPTION’ ... OK
 ...
-* this is package ‘bmm’ version ‘1.3.0’
+* this is package ‘bmm’ version ‘1.3.1’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -261,12 +337,12 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘bmm/DESCRIPTION’ ... OK
 ...
-* this is package ‘bmm’ version ‘1.3.0’
+* this is package ‘bmm’ version ‘1.3.1’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -307,21 +383,21 @@ Run `revdepcheck::cloud_details(, "brms")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘brms/DESCRIPTION’ ... OK
 ...
-  
-  [ FAIL 1 | WARN 0 | SKIP 11 | PASS 2731 ]
-  Error:
-  ! Test failures.
-  Execution halted
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rstan’
+
+Packages suggested but not available for checking: 'shinystan', 'rtdists'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: 1 ERROR, 3 NOTEs
+Status: 1 ERROR
 
 
 
@@ -337,21 +413,21 @@ Status: 1 ERROR, 3 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘brms/DESCRIPTION’ ... OK
 ...
-  
-  [ FAIL 1 | WARN 0 | SKIP 11 | PASS 2731 ]
-  Error:
-  ! Test failures.
-  Execution halted
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rstan’
+
+Packages suggested but not available for checking: 'shinystan', 'rtdists'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: 1 ERROR, 3 NOTEs
+Status: 1 ERROR
 
 
 
@@ -383,7 +459,7 @@ Run `revdepcheck::cloud_details(, "bullseye")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘bullseye/DESCRIPTION’ ... OK
@@ -413,7 +489,7 @@ Status: 2 ERRORs, 2 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘bullseye/DESCRIPTION’ ... OK
@@ -428,82 +504,6 @@ Execution halted
 
 * DONE
 Status: 2 ERRORs, 2 NOTEs
-
-
-
-
-
-```
-# ClustAssess
-
-<details>
-
-* Version: 1.1.0
-* GitHub: https://github.com/Core-Bioinformatics/ClustAssess
-* Source code: https://github.com/cran/ClustAssess
-* Date/Publication: 2025-05-27 23:00:30 UTC
-* Number of recursive dependencies: 249
-
-Run `revdepcheck::cloud_details(, "ClustAssess")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-* using log directory ‘/tmp/workdir/ClustAssess/new/ClustAssess.Rcheck’
-* using R version 4.4.0 (2024-04-24)
-* using platform: x86_64-pc-linux-gnu
-* R was compiled by
-    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
-* using session charset: UTF-8
-* using option ‘--no-manual’
-* checking for file ‘ClustAssess/DESCRIPTION’ ... OK
-...
-* checking Rd contents ... OK
-* checking for unstated dependencies in examples ... OK
-* checking line endings in C/C++/Fortran sources/headers ... OK
-* checking compiled code ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
-* DONE
-Status: 2 NOTEs
-
-
-
-
-
-```
-### CRAN
-
-```
-* using log directory ‘/tmp/workdir/ClustAssess/old/ClustAssess.Rcheck’
-* using R version 4.4.0 (2024-04-24)
-* using platform: x86_64-pc-linux-gnu
-* R was compiled by
-    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
-* using session charset: UTF-8
-* using option ‘--no-manual’
-* checking for file ‘ClustAssess/DESCRIPTION’ ... OK
-...
-* checking Rd contents ... OK
-* checking for unstated dependencies in examples ... OK
-* checking line endings in C/C++/Fortran sources/headers ... OK
-* checking compiled code ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
-* DONE
-Status: 2 NOTEs
 
 
 
@@ -535,7 +535,7 @@ Run `revdepcheck::cloud_details(, "ClustImpute")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ClustImpute/DESCRIPTION’ ... OK
@@ -565,7 +565,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ClustImpute/DESCRIPTION’ ... OK
@@ -586,41 +586,6 @@ Status: 1 ERROR
 
 
 ```
-# colleyRstats
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/colleyRstats
-* Number of recursive dependencies: 225
-
-Run `revdepcheck::cloud_details(, "colleyRstats")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # copulaSim
 
 <details>
@@ -629,7 +594,7 @@ Run `revdepcheck::cloud_details(, "colleyRstats")` for more info
 * GitHub: https://github.com/psyen0824/copulaSim
 * Source code: https://github.com/cran/copulaSim
 * Date/Publication: 2022-08-19 12:10:02 UTC
-* Number of recursive dependencies: 72
+* Number of recursive dependencies: 73
 
 Run `revdepcheck::cloud_details(, "copulaSim")` for more info
 
@@ -646,7 +611,7 @@ Run `revdepcheck::cloud_details(, "copulaSim")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘copulaSim/DESCRIPTION’ ... OK
@@ -676,7 +641,7 @@ Status: 1 ERROR, 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘copulaSim/DESCRIPTION’ ... OK
@@ -722,7 +687,7 @@ Run `revdepcheck::cloud_details(, "cylcop")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘cylcop/DESCRIPTION’ ... OK
@@ -752,7 +717,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘cylcop/DESCRIPTION’ ... OK
@@ -781,7 +746,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/casperhart/detourr
 * Source code: https://github.com/cran/detourr
 * Date/Publication: 2025-08-28 03:00:02 UTC
-* Number of recursive dependencies: 107
+* Number of recursive dependencies: 110
 
 Run `revdepcheck::cloud_details(, "detourr")` for more info
 
@@ -798,21 +763,21 @@ Run `revdepcheck::cloud_details(, "detourr")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘detourr/DESCRIPTION’ ... OK
 ...
-* checking contents of ‘data’ directory ... OK
-* checking data for non-ASCII characters ... OK
-* checking LazyData ... OK
-* checking data for ASCII and uncompressed saves ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+* this is package ‘detourr’ version ‘0.2.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: 1 NOTE
+Status: 1 ERROR
 
 
 
@@ -828,21 +793,21 @@ Status: 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘detourr/DESCRIPTION’ ... OK
 ...
-* checking contents of ‘data’ directory ... OK
-* checking data for non-ASCII characters ... OK
-* checking LazyData ... OK
-* checking data for ASCII and uncompressed saves ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+* this is package ‘detourr’ version ‘0.2.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: 1 NOTE
+Status: 1 ERROR
 
 
 
@@ -856,7 +821,7 @@ Status: 1 NOTE
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/dymo
-* Number of recursive dependencies: 38
+* Number of recursive dependencies: 39
 
 Run `revdepcheck::cloud_details(, "dymo")` for more info
 
@@ -892,7 +857,7 @@ Run `revdepcheck::cloud_details(, "dymo")` for more info
 * GitHub: https://github.com/jsakaluk/dySEM
 * Source code: https://github.com/cran/dySEM
 * Date/Publication: 2025-12-22 20:00:02 UTC
-* Number of recursive dependencies: 194
+* Number of recursive dependencies: 195
 
 Run `revdepcheck::cloud_details(, "dySEM")` for more info
 
@@ -909,7 +874,7 @@ Run `revdepcheck::cloud_details(, "dySEM")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘dySEM/DESCRIPTION’ ... OK
@@ -939,7 +904,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘dySEM/DESCRIPTION’ ... OK
@@ -1003,7 +968,7 @@ Run `revdepcheck::cloud_details(, "ecorisk")` for more info
 * GitHub: https://github.com/ipeaGIT/enderecobr
 * Source code: https://github.com/cran/enderecobr
 * Date/Publication: 2026-01-10 07:51:43 UTC
-* Number of recursive dependencies: 51
+* Number of recursive dependencies: 52
 
 Run `revdepcheck::cloud_details(, "enderecobr")` for more info
 
@@ -1031,10 +996,10 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 export CARGO_HOME=/tmp/workdir/enderecobr/new/enderecobr.Rcheck/00_pkg_src/enderecobr/src/.cargo && \
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tmp/home/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target 
 error: failed to parse lock file at: /tmp/workdir/enderecobr/new/enderecobr.Rcheck/00_pkg_src/enderecobr/src/rust/Cargo.lock
 
@@ -1058,10 +1023,10 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 export CARGO_HOME=/tmp/workdir/enderecobr/old/enderecobr.Rcheck/00_pkg_src/enderecobr/src/.cargo && \
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tmp/home/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target 
 error: failed to parse lock file at: /tmp/workdir/enderecobr/old/enderecobr.Rcheck/00_pkg_src/enderecobr/src/rust/Cargo.lock
 
@@ -1080,7 +1045,7 @@ ERROR: compilation failed for package ‘enderecobr’
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/eye
-* Number of recursive dependencies: 58
+* Number of recursive dependencies: 59
 
 Run `revdepcheck::cloud_details(, "eye")` for more info
 
@@ -1108,6 +1073,82 @@ Run `revdepcheck::cloud_details(, "eye")` for more info
 
 
 ```
+# FAfA
+
+<details>
+
+* Version: 1.1
+* GitHub: https://github.com/AFarukKILIC/FAfA
+* Source code: https://github.com/cran/FAfA
+* Date/Publication: 2026-05-03 14:50:07 UTC
+* Number of recursive dependencies: 271
+
+Run `revdepcheck::cloud_details(, "FAfA")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/FAfA/new/FAfA.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘FAfA/DESCRIPTION’ ... OK
+...
+* this is package ‘FAfA’ version ‘1.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Packages required but not available: 'EGAnet', 'MBESS', 'semPlot'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/FAfA/old/FAfA.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘FAfA/DESCRIPTION’ ... OK
+...
+* this is package ‘FAfA’ version ‘1.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Packages required but not available: 'EGAnet', 'MBESS', 'semPlot'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
 # fastplyr
 
 <details>
@@ -1115,7 +1156,7 @@ Run `revdepcheck::cloud_details(, "eye")` for more info
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/fastplyr
-* Number of recursive dependencies: 41
+* Number of recursive dependencies: 42
 
 Run `revdepcheck::cloud_details(, "fastplyr")` for more info
 
@@ -1151,7 +1192,7 @@ Run `revdepcheck::cloud_details(, "fastplyr")` for more info
 * GitHub: https://github.com/huizezhang-sherry/ferrn
 * Source code: https://github.com/cran/ferrn
 * Date/Publication: 2025-11-20 22:10:10 UTC
-* Number of recursive dependencies: 146
+* Number of recursive dependencies: 150
 
 Run `revdepcheck::cloud_details(, "ferrn")` for more info
 
@@ -1168,21 +1209,21 @@ Run `revdepcheck::cloud_details(, "ferrn")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ferrn/DESCRIPTION’ ... OK
 ...
-* checking contents of ‘data’ directory ... OK
-* checking data for non-ASCII characters ... OK
-* checking LazyData ... OK
-* checking data for ASCII and uncompressed saves ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+* this is package ‘ferrn’ version ‘0.3.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: OK
+Status: 1 ERROR
 
 
 
@@ -1198,21 +1239,21 @@ Status: OK
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ferrn/DESCRIPTION’ ... OK
 ...
-* checking contents of ‘data’ directory ... OK
-* checking data for non-ASCII characters ... OK
-* checking LazyData ... OK
-* checking data for ASCII and uncompressed saves ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
+* this is package ‘ferrn’ version ‘0.3.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: OK
+Status: 1 ERROR
 
 
 
@@ -1227,7 +1268,7 @@ Status: OK
 * GitHub: https://github.com/Reckziegel/FFP
 * Source code: https://github.com/cran/ffp
 * Date/Publication: 2022-09-29 15:10:06 UTC
-* Number of recursive dependencies: 104
+* Number of recursive dependencies: 105
 
 Run `revdepcheck::cloud_details(, "ffp")` for more info
 
@@ -1244,7 +1285,7 @@ Run `revdepcheck::cloud_details(, "ffp")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ffp/DESCRIPTION’ ... OK
@@ -1274,7 +1315,7 @@ Status: 1 ERROR, 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ffp/DESCRIPTION’ ... OK
@@ -1295,15 +1336,91 @@ Status: 1 ERROR, 1 NOTE
 
 
 ```
+# finnts
+
+<details>
+
+* Version: 0.6.0
+* GitHub: https://github.com/microsoft/finnts
+* Source code: https://github.com/cran/finnts
+* Date/Publication: 2025-09-04 17:00:09 UTC
+* Number of recursive dependencies: 247
+
+Run `revdepcheck::cloud_details(, "finnts")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/finnts/new/finnts.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘finnts/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/finnts/old/finnts.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘finnts/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
 # fio
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.1.0
 * GitHub: https://github.com/albersonmiranda/fio
 * Source code: https://github.com/cran/fio
-* Date/Publication: 2026-02-27 08:40:02 UTC
-* Number of recursive dependencies: 89
+* Date/Publication: 2026-06-07 06:10:02 UTC
+* Number of recursive dependencies: 88
 
 Run `revdepcheck::cloud_details(, "fio")` for more info
 
@@ -1380,7 +1497,7 @@ Run `revdepcheck::cloud_details(, "genekitr")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘genekitr/DESCRIPTION’ ... OK
@@ -1410,7 +1527,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘genekitr/DESCRIPTION’ ... OK
@@ -1435,10 +1552,10 @@ Status: 1 ERROR
 
 <details>
 
-* Version: 0.9.9
+* Version: 1.0.0.1
 * GitHub: https://github.com/smin95/ggsem
 * Source code: https://github.com/cran/ggsem
-* Date/Publication: 2026-01-28 07:40:02 UTC
+* Date/Publication: 2026-06-02 02:30:02 UTC
 * Number of recursive dependencies: 228
 
 Run `revdepcheck::cloud_details(, "ggsem")` for more info
@@ -1456,12 +1573,12 @@ Run `revdepcheck::cloud_details(, "ggsem")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ggsem/DESCRIPTION’ ... OK
 ...
-* this is package ‘ggsem’ version ‘0.9.9’
+* this is package ‘ggsem’ version ‘1.0.0.1’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -1486,12 +1603,12 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ggsem/DESCRIPTION’ ... OK
 ...
-* this is package ‘ggsem’ version ‘0.9.9’
+* this is package ‘ggsem’ version ‘1.0.0.1’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -1504,6 +1621,62 @@ Status: 1 ERROR
 
 
 
+
+
+```
+# ggsql
+
+<details>
+
+* Version: 0.3.3
+* GitHub: https://github.com/posit-dev/ggsql-r
+* Source code: https://github.com/cran/ggsql
+* Date/Publication: 2026-06-03 08:20:23 UTC
+* Number of recursive dependencies: 69
+
+Run `revdepcheck::cloud_details(, "ggsql")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘ggsql’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/tmp/workdir/ggsql/new/ggsql.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘ggsql’ ...
+** package ‘ggsql’ successfully unpacked and MD5 sums checked
+** using staged installation
+2026-06-18 09:33:50 URL:https://release-assets.githubusercontent.com/github-production-release-asset/1213346768/5a7c0166-a4e7-4312-87c2-4ba66d673298?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-06-18T10%3A28%3A35Z&rscd=attachment%3B+filename%3Dvendor.tar.xz.sha256&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-06-18T09%3A28%3A01Z&ske=2026-06-18T10%3A28%3A35Z&sks=b&skv=2018-11-09&sig=Dj9zCoGuXuSTX0mUjwwecMsPwUEDdQb2qRiTLyQbt2c%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4MTc3NTUzMCwibmJmIjoxNzgxNzc1MjMwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.0-qLAHfqoXT0_Ymob0Pd_3Y9sZEA7xIsFSPLlDgdiSU&response-content-disposition=attachment%3B%20filename%3Dvendor.tar.xz.sha256&response-content-type=application%2Foctet-stream [65/65] -> "/tmp/RtmpsxvsvV/file9aa7bd4ec6b.sha256" [1]
+Downloading vendor archive from https://github.com/posit-dev/ggsql-r/releases/download/v0.3.3/vendor.tar.xz
+2026-06-18 09:33:50 URL:https://release-assets.githubusercontent.com/github-production-release-asset/1213346768/95bf3db6-701d-4f73-8242-343e76c4fb40?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-06-18T10%3A29%3A26Z&rscd=attachment%3B+filename%3Dvendor.tar.xz&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-06-18T09%3A29%3A22Z&ske=2026-06-18T10%3A29%3A26Z&sks=b&skv=2018-11-09&sig=NxxGrdowGF1p78eal%2BrwtWIeM6V77fKLDh%2BRppKbrKU%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4MTc3NzAzMCwibmJmIjoxNzgxNzc1MjMwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.3IL4sH-W5x4e4RbTxyDrczdMEWs4E5Q9v9Dw34olVYk&response-content-disposition=attachment%3B%20filename%3Dvendor.tar.xz&response-content-type=application%2Foctet-stream [38545072/38545072] -> "/tmp/RtmpsxvsvV/file9aa20d3e031.tar.xz" [1]
+Error: 'sha256sum' is not an exported object from 'namespace:tools'
+Execution halted
+ERROR: configuration failed for package ‘ggsql’
+* removing ‘/tmp/workdir/ggsql/new/ggsql.Rcheck/ggsql’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘ggsql’ ...
+** package ‘ggsql’ successfully unpacked and MD5 sums checked
+** using staged installation
+2026-06-18 09:33:27 URL:https://release-assets.githubusercontent.com/github-production-release-asset/1213346768/5a7c0166-a4e7-4312-87c2-4ba66d673298?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-06-18T10%3A32%3A12Z&rscd=attachment%3B+filename%3Dvendor.tar.xz.sha256&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-06-18T09%3A31%3A32Z&ske=2026-06-18T10%3A32%3A12Z&sks=b&skv=2018-11-09&sig=d6AXc00G5X1jk99OI%2FtWd9F2kS0K5189e5GlgBW77uM%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4MTc3NTUwNywibmJmIjoxNzgxNzc1MjA3LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.RhkfufVGLECe9ubldxHnDEBAyOx9GGEH-IQyorOXRHg&response-content-disposition=attachment%3B%20filename%3Dvendor.tar.xz.sha256&response-content-type=application%2Foctet-stream [65/65] -> "/tmp/RtmpWEH67L/file7be1c510d4e.sha256" [1]
+Downloading vendor archive from https://github.com/posit-dev/ggsql-r/releases/download/v0.3.3/vendor.tar.xz
+2026-06-18 09:33:27 URL:https://release-assets.githubusercontent.com/github-production-release-asset/1213346768/95bf3db6-701d-4f73-8242-343e76c4fb40?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-06-18T10%3A29%3A45Z&rscd=attachment%3B+filename%3Dvendor.tar.xz&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-06-18T09%3A29%3A15Z&ske=2026-06-18T10%3A29%3A45Z&sks=b&skv=2018-11-09&sig=tqM2zPx9P58602RhczUk4YHfzXINpuCWkC6btsoImwY%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4MTc3NzAwNywibmJmIjoxNzgxNzc1MjA3LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.1xSaXTKKj3OOFNXseb37U6SeTJlfZmgmvxK_Ejsj9IM&response-content-disposition=attachment%3B%20filename%3Dvendor.tar.xz&response-content-type=application%2Foctet-stream [38545072/38545072] -> "/tmp/RtmpWEH67L/file7be3f7d2fa3.tar.xz" [1]
+Error: 'sha256sum' is not an exported object from 'namespace:tools'
+Execution halted
+ERROR: configuration failed for package ‘ggsql’
+* removing ‘/tmp/workdir/ggsql/old/ggsql.Rcheck/ggsql’
 
 
 ```
@@ -1567,7 +1740,7 @@ Run `revdepcheck::cloud_details(, "grandR")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘grandR/DESCRIPTION’ ... OK
@@ -1597,7 +1770,7 @@ Status: 2 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘grandR/DESCRIPTION’ ... OK
@@ -1626,7 +1799,7 @@ Status: 2 NOTEs
 * GitHub: https://github.com/gavinsimpson/gratia
 * Source code: https://github.com/cran/gratia
 * Date/Publication: 2026-02-07 06:10:36 UTC
-* Number of recursive dependencies: 176
+* Number of recursive dependencies: 178
 
 Run `revdepcheck::cloud_details(, "gratia")` for more info
 
@@ -1643,21 +1816,21 @@ Run `revdepcheck::cloud_details(, "gratia")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘gratia/DESCRIPTION’ ... OK
 ...
-  'soap-films/draw-smooth-estimates-so-soap-film-bndry.svg', and
-  'soap-films/draw-smooth-estimates-so-soap-film.svg'
-  Error:
-  ! Test failures.
-  Execution halted
+> detaching 'package:mgcv', 'package:GJRM'
+> 
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘test-all.R’
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 1 ERROR
+Status: 2 NOTEs
 
 
 
@@ -1673,21 +1846,21 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘gratia/DESCRIPTION’ ... OK
 ...
-  'soap-films/draw-smooth-estimates-so-soap-film-bndry.svg', and
-  'soap-films/draw-smooth-estimates-so-soap-film.svg'
-  Error:
-  ! Test failures.
-  Execution halted
+> detaching 'package:mgcv', 'package:GJRM'
+> 
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘test-all.R’
 * checking for unstated dependencies in vignettes ... OK
 * checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 1 ERROR
+Status: 2 NOTEs
 
 
 
@@ -1762,7 +1935,7 @@ ERROR: lazy loading failed for package ‘gvcR’
 * GitHub: https://github.com/extendr/h3o
 * Source code: https://github.com/cran/h3o
 * Date/Publication: 2025-08-29 11:00:02 UTC
-* Number of recursive dependencies: 18
+* Number of recursive dependencies: 17
 
 Run `revdepcheck::cloud_details(, "h3o")` for more info
 
@@ -1790,10 +1963,10 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 export CARGO_HOME=/tmp/workdir/h3o/new/h3o.Rcheck/00_pkg_src/h3o/src/.cargo && \
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tmp/home/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target 
 error: failed to parse lock file at: /tmp/workdir/h3o/new/h3o.Rcheck/00_pkg_src/h3o/src/rust/Cargo.lock
 
@@ -1817,10 +1990,10 @@ Building for CRAN.
 Writing `src/Makevars`.
 `tools/config.R` has finished.
 ** libs
-using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
+using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 ...
 export CARGO_HOME=/tmp/workdir/h3o/old/h3o.Rcheck/00_pkg_src/h3o/src/.cargo && \
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cargo/bin" && \
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tmp/home/.cargo/bin" && \
 RUSTFLAGS=" --print=native-static-libs" cargo build -j 2 --offline --lib --release --manifest-path=./rust/Cargo.toml --target-dir ./rust/target 
 error: failed to parse lock file at: /tmp/workdir/h3o/old/h3o.Rcheck/00_pkg_src/h3o/src/rust/Cargo.lock
 
@@ -1832,14 +2005,166 @@ ERROR: compilation failed for package ‘h3o’
 
 
 ```
+# idealstan
+
+<details>
+
+* Version: 1.0
+* GitHub: https://github.com/saudiwin/idealstan
+* Source code: https://github.com/cran/idealstan
+* Date/Publication: 2026-05-12 19:20:18 UTC
+* Number of recursive dependencies: 148
+
+Run `revdepcheck::cloud_details(, "idealstan")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/idealstan/new/idealstan.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘idealstan/DESCRIPTION’ ... OK
+...
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 2 NOTEs
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/idealstan/old/idealstan.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘idealstan/DESCRIPTION’ ... OK
+...
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 2 NOTEs
+
+
+
+
+
+```
+# IOBR
+
+<details>
+
+* Version: 2.2.3
+* GitHub: https://github.com/IOBR/IOBR
+* Source code: https://github.com/cran/IOBR
+* Date/Publication: 2026-05-30 15:30:02 UTC
+* Number of recursive dependencies: 426
+
+Run `revdepcheck::cloud_details(, "IOBR")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/IOBR/new/IOBR.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘IOBR/DESCRIPTION’ ... OK
+...
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘GSVA’
+
+Packages suggested but not available for checking: 'DESeq2', 'easier'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/IOBR/old/IOBR.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘IOBR/DESCRIPTION’ ... OK
+...
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘GSVA’
+
+Packages suggested but not available for checking: 'DESeq2', 'easier'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
 # ivolcano
 
 <details>
 
-* Version: 0.0.5
+* Version: 0.0.6
 * GitHub: https://github.com/YuLab-SMU/ivolcano
 * Source code: https://github.com/cran/ivolcano
-* Date/Publication: 2026-02-14 19:20:02 UTC
+* Date/Publication: 2026-06-05 06:50:02 UTC
 * Number of recursive dependencies: 140
 
 Run `revdepcheck::cloud_details(, "ivolcano")` for more info
@@ -1857,7 +2182,7 @@ Run `revdepcheck::cloud_details(, "ivolcano")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ivolcano/DESCRIPTION’ ... OK
@@ -1887,7 +2212,7 @@ Status: 2 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘ivolcano/DESCRIPTION’ ... OK
@@ -1933,7 +2258,7 @@ Run `revdepcheck::cloud_details(, "lcsm")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘lcsm/DESCRIPTION’ ... OK
@@ -1963,7 +2288,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘lcsm/DESCRIPTION’ ... OK
@@ -1992,7 +2317,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/bozenne/LMMstar
 * Source code: https://github.com/cran/LMMstar
 * Date/Publication: 2024-05-12 21:43:11 UTC
-* Number of recursive dependencies: 170
+* Number of recursive dependencies: 171
 
 Run `revdepcheck::cloud_details(, "LMMstar")` for more info
 
@@ -2009,7 +2334,7 @@ Run `revdepcheck::cloud_details(, "LMMstar")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘LMMstar/DESCRIPTION’ ... OK
@@ -2039,7 +2364,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘LMMstar/DESCRIPTION’ ... OK
@@ -2060,15 +2385,126 @@ Status: 1 ERROR
 
 
 ```
+# manydist
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/manydist
+* Number of recursive dependencies: 190
+
+Run `revdepcheck::cloud_details(, "manydist")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
+# marginaleffects
+
+<details>
+
+* Version: 0.32.0
+* GitHub: https://github.com/vincentarelbundock/marginaleffects
+* Source code: https://github.com/cran/marginaleffects
+* Date/Publication: 2026-02-14 06:40:08 UTC
+* Number of recursive dependencies: 489
+
+Run `revdepcheck::cloud_details(, "marginaleffects")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/marginaleffects/new/marginaleffects.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘marginaleffects/DESCRIPTION’ ... OK
+...
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘spelling.R’
+  Running ‘tinytest.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/marginaleffects/old/marginaleffects.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘marginaleffects/DESCRIPTION’ ... OK
+...
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘spelling.R’
+  Running ‘tinytest.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
 # measureR
 
 <details>
 
-* Version: 0.0.2
+* Version: 0.0.3
 * GitHub: https://github.com/hdmeasure/measureR
 * Source code: https://github.com/cran/measureR
-* Date/Publication: 2026-02-13 15:10:02 UTC
-* Number of recursive dependencies: 221
+* Date/Publication: 2026-05-15 08:40:02 UTC
+* Number of recursive dependencies: 234
 
 Run `revdepcheck::cloud_details(, "measureR")` for more info
 
@@ -2085,12 +2521,12 @@ Run `revdepcheck::cloud_details(, "measureR")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘measureR/DESCRIPTION’ ... OK
 ...
-* this is package ‘measureR’ version ‘0.0.2’
+* this is package ‘measureR’ version ‘0.0.3’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -2115,12 +2551,12 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘measureR/DESCRIPTION’ ... OK
 ...
-* this is package ‘measureR’ version ‘0.0.2’
+* this is package ‘measureR’ version ‘0.0.3’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -2144,7 +2580,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/adriancorrendo/metrica
 * Source code: https://github.com/cran/metrica
 * Date/Publication: 2026-03-18 06:12:46 UTC
-* Number of recursive dependencies: 85
+* Number of recursive dependencies: 86
 
 Run `revdepcheck::cloud_details(, "metrica")` for more info
 
@@ -2161,7 +2597,7 @@ Run `revdepcheck::cloud_details(, "metrica")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘metrica/DESCRIPTION’ ... OK
@@ -2191,7 +2627,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘metrica/DESCRIPTION’ ... OK
@@ -2237,7 +2673,7 @@ Run `revdepcheck::cloud_details(, "mineSweepR")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘mineSweepR/DESCRIPTION’ ... OK
@@ -2267,7 +2703,7 @@ Status: OK
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘mineSweepR/DESCRIPTION’ ... OK
@@ -2292,11 +2728,11 @@ Status: OK
 
 <details>
 
-* Version: 0.14.4
+* Version: 0.16.8
 * GitHub: https://github.com/adrientaudiere/MiscMetabar
 * Source code: https://github.com/cran/MiscMetabar
-* Date/Publication: 2025-09-30 15:30:02 UTC
-* Number of recursive dependencies: 424
+* Date/Publication: 2026-06-08 14:30:02 UTC
+* Number of recursive dependencies: 470
 
 Run `revdepcheck::cloud_details(, "MiscMetabar")` for more info
 
@@ -2313,7 +2749,7 @@ Run `revdepcheck::cloud_details(, "MiscMetabar")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘MiscMetabar/DESCRIPTION’ ... OK
@@ -2327,7 +2763,7 @@ Run `revdepcheck::cloud_details(, "MiscMetabar")` for more info
 * checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 3 NOTEs
+Status: 2 NOTEs
 
 
 
@@ -2343,7 +2779,7 @@ Status: 3 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘MiscMetabar/DESCRIPTION’ ... OK
@@ -2357,7 +2793,7 @@ Status: 3 NOTEs
 * checking package vignettes ... OK
 * checking re-building of vignette outputs ... OK
 * DONE
-Status: 3 NOTEs
+Status: 2 NOTEs
 
 
 
@@ -2368,10 +2804,10 @@ Status: 3 NOTEs
 
 <details>
 
-* Version: 0.6.0
+* Version: 1.1.0
 * GitHub: https://github.com/ARCbiostat/MixMashNet
 * Source code: https://github.com/cran/MixMashNet
-* Date/Publication: 2026-03-03 10:40:09 UTC
+* Date/Publication: 2026-06-16 20:40:02 UTC
 * Number of recursive dependencies: 201
 
 Run `revdepcheck::cloud_details(, "MixMashNet")` for more info
@@ -2389,12 +2825,12 @@ Run `revdepcheck::cloud_details(, "MixMashNet")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘MixMashNet/DESCRIPTION’ ... OK
 ...
-* this is package ‘MixMashNet’ version ‘0.6.0’
+* this is package ‘MixMashNet’ version ‘1.1.0’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -2419,12 +2855,12 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘MixMashNet/DESCRIPTION’ ... OK
 ...
-* this is package ‘MixMashNet’ version ‘0.6.0’
+* this is package ‘MixMashNet’ version ‘1.1.0’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -2465,7 +2901,7 @@ Run `revdepcheck::cloud_details(, "morepls")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘morepls/DESCRIPTION’ ... OK
@@ -2495,7 +2931,7 @@ Status: 1 ERROR, 2 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘morepls/DESCRIPTION’ ... OK
@@ -2524,7 +2960,7 @@ Status: 1 ERROR, 2 NOTEs
 * GitHub: https://github.com/dmphillippo/multinma
 * Source code: https://github.com/cran/multinma
 * Date/Publication: 2026-04-16 23:10:09 UTC
-* Number of recursive dependencies: 152
+* Number of recursive dependencies: 153
 
 Run `revdepcheck::cloud_details(, "multinma")` for more info
 
@@ -2541,7 +2977,7 @@ Run `revdepcheck::cloud_details(, "multinma")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘multinma/DESCRIPTION’ ... OK
@@ -2571,7 +3007,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘multinma/DESCRIPTION’ ... OK
@@ -2592,6 +3028,68 @@ Status: 1 ERROR
 
 
 ```
+# mvalpha
+
+<details>
+
+* Version: 0.6.0
+* GitHub: https://github.com/therealcfdrake/mvalpha
+* Source code: https://github.com/cran/mvalpha
+* Date/Publication: 2026-06-16 02:50:02 UTC
+* Number of recursive dependencies: 32
+
+Run `revdepcheck::cloud_details(, "mvalpha")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘mvalpha’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/tmp/workdir/mvalpha/new/mvalpha.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘mvalpha’ ...
+** package ‘mvalpha’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C++ compiler: ‘g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
+g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG  -I'/tmp/r-deps/Rcpp/include' -I/usr/local/include   -fopenmp -fpic  -g -O2   -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG  -I'/tmp/r-deps/Rcpp/include' -I/usr/local/include   -fopenmp -fpic  -g -O2   -c mvalpha_internal_functions.cpp -o mvalpha_internal_functions.o
+g++ -std=gnu++17 -shared -L/opt/R/4.4.0/lib/R/lib -L/usr/local/lib -o mvalpha.so RcppExports.o mvalpha_internal_functions.o -fopenmp -lomp -L/opt/R/4.4.0/lib/R/lib -lR
+/usr/bin/ld: cannot find -lomp: No such file or directory
+collect2: error: ld returned 1 exit status
+make: *** [/opt/R/4.4.0/lib/R/share/make/shlib.mk:10: mvalpha.so] Error 1
+ERROR: compilation failed for package ‘mvalpha’
+* removing ‘/tmp/workdir/mvalpha/new/mvalpha.Rcheck/mvalpha’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘mvalpha’ ...
+** package ‘mvalpha’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+using C++ compiler: ‘g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
+g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG  -I'/tmp/r-deps/Rcpp/include' -I/usr/local/include   -fopenmp -fpic  -g -O2   -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/opt/R/4.4.0/lib/R/include" -DNDEBUG  -I'/tmp/r-deps/Rcpp/include' -I/usr/local/include   -fopenmp -fpic  -g -O2   -c mvalpha_internal_functions.cpp -o mvalpha_internal_functions.o
+g++ -std=gnu++17 -shared -L/opt/R/4.4.0/lib/R/lib -L/usr/local/lib -o mvalpha.so RcppExports.o mvalpha_internal_functions.o -fopenmp -lomp -L/opt/R/4.4.0/lib/R/lib -lR
+/usr/bin/ld: cannot find -lomp: No such file or directory
+collect2: error: ld returned 1 exit status
+make: *** [/opt/R/4.4.0/lib/R/share/make/shlib.mk:10: mvalpha.so] Error 1
+ERROR: compilation failed for package ‘mvalpha’
+* removing ‘/tmp/workdir/mvalpha/old/mvalpha.Rcheck/mvalpha’
+
+
+```
 # OlinkAnalyze
 
 <details>
@@ -2600,7 +3098,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/Olink-Proteomics/OlinkRPackage
 * Source code: https://github.com/cran/OlinkAnalyze
 * Date/Publication: 2026-03-28 12:00:02 UTC
-* Number of recursive dependencies: 221
+* Number of recursive dependencies: 234
 
 Run `revdepcheck::cloud_details(, "OlinkAnalyze")` for more info
 
@@ -2617,7 +3115,7 @@ Run `revdepcheck::cloud_details(, "OlinkAnalyze")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘OlinkAnalyze/DESCRIPTION’ ... OK
@@ -2647,10 +3145,86 @@ Status: 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘OlinkAnalyze/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
+# omicsTools
+
+<details>
+
+* Version: 1.1.7
+* GitHub: NA
+* Source code: https://github.com/cran/omicsTools
+* Date/Publication: 2025-12-16 15:40:02 UTC
+* Number of recursive dependencies: 230
+
+Run `revdepcheck::cloud_details(, "omicsTools")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/omicsTools/new/omicsTools.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘omicsTools/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/omicsTools/old/omicsTools.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘omicsTools/DESCRIPTION’ ... OK
 ...
 * checking files in ‘vignettes’ ... OK
 * checking examples ... OK
@@ -2672,11 +3246,11 @@ Status: 1 NOTE
 
 <details>
 
-* Version: 1.0.0
+* Version: 2.0.0
 * GitHub: https://github.com/StatisticsHealthEconomics/outstandR
 * Source code: https://github.com/cran/outstandR
-* Date/Publication: 2026-01-21 20:00:02 UTC
-* Number of recursive dependencies: 153
+* Date/Publication: 2026-06-10 08:40:08 UTC
+* Number of recursive dependencies: 160
 
 Run `revdepcheck::cloud_details(, "outstandR")` for more info
 
@@ -2693,12 +3267,12 @@ Run `revdepcheck::cloud_details(, "outstandR")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘outstandR/DESCRIPTION’ ... OK
 ...
-* this is package ‘outstandR’ version ‘1.0.0’
+* this is package ‘outstandR’ version ‘2.0.0’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -2723,12 +3297,12 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘outstandR/DESCRIPTION’ ... OK
 ...
-* this is package ‘outstandR’ version ‘1.0.0’
+* this is package ‘outstandR’ version ‘2.0.0’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -2748,11 +3322,11 @@ Status: 1 ERROR
 
 <details>
 
-* Version: 0.2.4
+* Version: 1.0.0
 * GitHub: NA
 * Source code: https://github.com/cran/pandemonium
-* Date/Publication: 2025-11-03 08:30:02 UTC
-* Number of recursive dependencies: 213
+* Date/Publication: 2026-05-21 04:20:02 UTC
+* Number of recursive dependencies: 217
 
 Run `revdepcheck::cloud_details(, "pandemonium")` for more info
 
@@ -2769,21 +3343,21 @@ Run `revdepcheck::cloud_details(, "pandemonium")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘pandemonium/DESCRIPTION’ ... OK
 ...
-* checking files in ‘vignettes’ ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+* this is package ‘pandemonium’ version ‘1.0.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: OK
+Status: 1 ERROR
 
 
 
@@ -2799,97 +3373,21 @@ Status: OK
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘pandemonium/DESCRIPTION’ ... OK
 ...
-* checking files in ‘vignettes’ ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+* this is package ‘pandemonium’ version ‘1.0.0’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: OK
-
-
-
-
-
-```
-# pcutils
-
-<details>
-
-* Version: 0.2.8
-* GitHub: https://github.com/Asa12138/pcutils
-* Source code: https://github.com/cran/pcutils
-* Date/Publication: 2025-03-27 06:10:02 UTC
-* Number of recursive dependencies: 310
-
-Run `revdepcheck::cloud_details(, "pcutils")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-* using log directory ‘/tmp/workdir/pcutils/new/pcutils.Rcheck’
-* using R version 4.4.0 (2024-04-24)
-* using platform: x86_64-pc-linux-gnu
-* R was compiled by
-    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
-* using session charset: UTF-8
-* using option ‘--no-manual’
-* checking for file ‘pcutils/DESCRIPTION’ ... OK
-...
-* checking for code/documentation mismatches ... OK
-* checking Rd \usage sections ... OK
-* checking Rd contents ... OK
-* checking for unstated dependencies in examples ... OK
-* checking contents of ‘data’ directory ... OK
-* checking data for non-ASCII characters ... OK
-* checking data for ASCII and uncompressed saves ... OK
-* checking examples ... OK
-* DONE
-Status: 1 NOTE
-
-
-
-
-
-```
-### CRAN
-
-```
-* using log directory ‘/tmp/workdir/pcutils/old/pcutils.Rcheck’
-* using R version 4.4.0 (2024-04-24)
-* using platform: x86_64-pc-linux-gnu
-* R was compiled by
-    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
-* using session charset: UTF-8
-* using option ‘--no-manual’
-* checking for file ‘pcutils/DESCRIPTION’ ... OK
-...
-* checking for code/documentation mismatches ... OK
-* checking Rd \usage sections ... OK
-* checking Rd contents ... OK
-* checking for unstated dependencies in examples ... OK
-* checking contents of ‘data’ directory ... OK
-* checking data for non-ASCII characters ... OK
-* checking data for ASCII and uncompressed saves ... OK
-* checking examples ... OK
-* DONE
-Status: 1 NOTE
+Status: 1 ERROR
 
 
 
@@ -2900,11 +3398,11 @@ Status: 1 NOTE
 
 <details>
 
-* Version: 0.1.1
+* Version: 0.1.2
 * GitHub: https://github.com/numbats/prefviz
 * Source code: https://github.com/cran/prefviz
-* Date/Publication: 2026-04-13 11:50:02 UTC
-* Number of recursive dependencies: 107
+* Date/Publication: 2026-05-01 11:00:08 UTC
+* Number of recursive dependencies: 111
 
 Run `revdepcheck::cloud_details(, "prefviz")` for more info
 
@@ -2921,21 +3419,21 @@ Run `revdepcheck::cloud_details(, "prefviz")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘prefviz/DESCRIPTION’ ... OK
 ...
-* checking files in ‘vignettes’ ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+--- finished re-building ‘transform_raw_data.Rmd’
+
+SUMMARY: processing the following files failed:
+  ‘add_ordered_path.Rmd’ ‘draw_ternary_plot.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
 * DONE
-Status: OK
+Status: 1 ERROR, 1 NOTE
 
 
 
@@ -2951,21 +3449,21 @@ Status: OK
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘prefviz/DESCRIPTION’ ... OK
 ...
-* checking files in ‘vignettes’ ... OK
-* checking examples ... OK
-* checking for unstated dependencies in ‘tests’ ... OK
-* checking tests ... OK
-  Running ‘testthat.R’
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+--- finished re-building ‘transform_raw_data.Rmd’
+
+SUMMARY: processing the following files failed:
+  ‘add_ordered_path.Rmd’ ‘draw_ternary_plot.Rmd’
+
+Error: Vignette re-building failed.
+Execution halted
+
 * DONE
-Status: OK
+Status: 1 ERROR, 1 NOTE
 
 
 
@@ -2976,11 +3474,11 @@ Status: OK
 
 <details>
 
-* Version: 0.0.8
+* Version: 0.0.9
 * GitHub: https://github.com/hdmeasure/projectLSA
 * Source code: https://github.com/cran/projectLSA
-* Date/Publication: 2026-02-07 23:20:03 UTC
-* Number of recursive dependencies: 258
+* Date/Publication: 2026-05-09 11:30:02 UTC
+* Number of recursive dependencies: 263
 
 Run `revdepcheck::cloud_details(, "projectLSA")` for more info
 
@@ -2997,12 +3495,12 @@ Run `revdepcheck::cloud_details(, "projectLSA")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘projectLSA/DESCRIPTION’ ... OK
 ...
-* this is package ‘projectLSA’ version ‘0.0.8’
+* this is package ‘projectLSA’ version ‘0.0.9’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -3027,12 +3525,12 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘projectLSA/DESCRIPTION’ ... OK
 ...
-* this is package ‘projectLSA’ version ‘0.0.8’
+* this is package ‘projectLSA’ version ‘0.0.9’
 * package encoding: UTF-8
 * checking package namespace information ... OK
 * checking package dependencies ... ERROR
@@ -3048,6 +3546,82 @@ Status: 1 ERROR
 
 
 ```
+# projpred
+
+<details>
+
+* Version: 2.10.0
+* GitHub: https://github.com/stan-dev/projpred
+* Source code: https://github.com/cran/projpred
+* Date/Publication: 2025-12-06 13:30:02 UTC
+* Number of recursive dependencies: 163
+
+Run `revdepcheck::cloud_details(, "projpred")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/projpred/new/projpred.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘projpred/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 2 NOTEs
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/projpred/old/projpred.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘projpred/DESCRIPTION’ ... OK
+...
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking re-building of vignette outputs ... OK
+* DONE
+Status: 2 NOTEs
+
+
+
+
+
+```
 # psychonetrics
 
 <details>
@@ -3056,7 +3630,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/SachaEpskamp/psychonetrics
 * Source code: https://github.com/cran/psychonetrics
 * Date/Publication: 2026-02-27 06:40:02 UTC
-* Number of recursive dependencies: 140
+* Number of recursive dependencies: 137
 
 Run `revdepcheck::cloud_details(, "psychonetrics")` for more info
 
@@ -3073,7 +3647,7 @@ Run `revdepcheck::cloud_details(, "psychonetrics")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘psychonetrics/DESCRIPTION’ ... OK
@@ -3103,7 +3677,7 @@ Status: 2 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘psychonetrics/DESCRIPTION’ ... OK
@@ -3132,7 +3706,7 @@ Status: 2 NOTEs
 * GitHub: https://github.com/biorabbit/RegDDM
 * Source code: https://github.com/cran/RegDDM
 * Date/Publication: 2025-07-01 18:40:02 UTC
-* Number of recursive dependencies: 72
+* Number of recursive dependencies: 73
 
 Run `revdepcheck::cloud_details(, "RegDDM")` for more info
 
@@ -3149,7 +3723,7 @@ Run `revdepcheck::cloud_details(, "RegDDM")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘RegDDM/DESCRIPTION’ ... OK
@@ -3179,7 +3753,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘RegDDM/DESCRIPTION’ ... OK
@@ -3200,6 +3774,41 @@ Status: 1 ERROR
 
 
 ```
+# RGraphSpace
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/RGraphSpace
+* Number of recursive dependencies: 169
+
+Run `revdepcheck::cloud_details(, "RGraphSpace")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
 # rollout
 
 <details>
@@ -3207,7 +3816,7 @@ Status: 1 ERROR
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/rollout
-* Number of recursive dependencies: 73
+* Number of recursive dependencies: 74
 
 Run `revdepcheck::cloud_details(, "rollout")` for more info
 
@@ -3260,7 +3869,7 @@ Run `revdepcheck::cloud_details(, "SCpubr")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘SCpubr/DESCRIPTION’ ... OK
@@ -3290,7 +3899,7 @@ Status: 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘SCpubr/DESCRIPTION’ ... OK
@@ -3319,7 +3928,7 @@ Status: 1 NOTE
 * GitHub: https://github.com/sfcheung/semptools
 * Source code: https://github.com/cran/semptools
 * Date/Publication: 2026-03-17 12:20:02 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 122
 
 Run `revdepcheck::cloud_details(, "semptools")` for more info
 
@@ -3336,7 +3945,7 @@ Run `revdepcheck::cloud_details(, "semptools")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘semptools/DESCRIPTION’ ... OK
@@ -3366,7 +3975,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘semptools/DESCRIPTION’ ... OK
@@ -3387,6 +3996,82 @@ Status: 1 ERROR
 
 
 ```
+# shinybrms
+
+<details>
+
+* Version: 1.8.1
+* GitHub: https://github.com/fweber144/shinybrms
+* Source code: https://github.com/cran/shinybrms
+* Date/Publication: 2025-12-01 22:30:02 UTC
+* Number of recursive dependencies: 149
+
+Run `revdepcheck::cloud_details(, "shinybrms")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/shinybrms/new/shinybrms.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘shinybrms/DESCRIPTION’ ... OK
+...
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rstan’
+
+Packages suggested but not available for checking: 'shinystan', 'rstanarm'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/shinybrms/old/shinybrms.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘shinybrms/DESCRIPTION’ ... OK
+...
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘rstan’
+
+Packages suggested but not available for checking: 'shinystan', 'rstanarm'
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
 # Signac
 
 <details>
@@ -3395,7 +4080,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/stuart-lab/signac
 * Source code: https://github.com/cran/Signac
 * Date/Publication: 2026-04-06 18:10:07 UTC
-* Number of recursive dependencies: 228
+* Number of recursive dependencies: 227
 
 Run `revdepcheck::cloud_details(, "Signac")` for more info
 
@@ -3412,7 +4097,7 @@ Run `revdepcheck::cloud_details(, "Signac")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘Signac/DESCRIPTION’ ... OK
@@ -3442,7 +4127,7 @@ Status: 3 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘Signac/DESCRIPTION’ ... OK
@@ -3463,6 +4148,82 @@ Status: 3 NOTEs
 
 
 ```
+# SISIR
+
+<details>
+
+* Version: 0.2.4
+* GitHub: NA
+* Source code: https://github.com/cran/SISIR
+* Date/Publication: 2026-05-14 17:10:02 UTC
+* Number of recursive dependencies: 116
+
+Run `revdepcheck::cloud_details(, "SISIR")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/SISIR/new/SISIR.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘SISIR/DESCRIPTION’ ... OK
+...
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/SISIR/old/SISIR.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘SISIR/DESCRIPTION’ ... OK
+...
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* DONE
+Status: 1 NOTE
+
+
+
+
+
+```
 # spareg
 
 <details>
@@ -3471,7 +4232,7 @@ Status: 3 NOTEs
 * GitHub: https://github.com/lauravana/spareg
 * Source code: https://github.com/cran/spareg
 * Date/Publication: 2025-08-19 08:30:02 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 128
 
 Run `revdepcheck::cloud_details(, "spareg")` for more info
 
@@ -3488,7 +4249,7 @@ Run `revdepcheck::cloud_details(, "spareg")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘spareg/DESCRIPTION’ ... OK
@@ -3518,7 +4279,7 @@ Status: 2 ERRORs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘spareg/DESCRIPTION’ ... OK
@@ -3546,7 +4307,7 @@ Status: 2 ERRORs
 * Version: NA
 * GitHub: NA
 * Source code: https://github.com/cran/sparsevar
-* Number of recursive dependencies: 72
+* Number of recursive dependencies: 73
 
 Run `revdepcheck::cloud_details(, "sparsevar")` for more info
 
@@ -3582,7 +4343,7 @@ Run `revdepcheck::cloud_details(, "sparsevar")` for more info
 * GitHub: https://github.com/uschiLaa/spinebil
 * Source code: https://github.com/cran/spinebil
 * Date/Publication: 2025-10-17 06:00:02 UTC
-* Number of recursive dependencies: 109
+* Number of recursive dependencies: 113
 
 Run `revdepcheck::cloud_details(, "spinebil")` for more info
 
@@ -3599,21 +4360,21 @@ Run `revdepcheck::cloud_details(, "spinebil")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘spinebil/DESCRIPTION’ ... OK
 ...
-* checking Rd contents ... OK
-* checking for unstated dependencies in examples ... OK
-* checking installed files from ‘inst/doc’ ... OK
-* checking files in ‘vignettes’ ... OK
-* checking examples ... OK
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+* this is package ‘spinebil’ version ‘1.0.5’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: OK
+Status: 1 ERROR
 
 
 
@@ -3629,21 +4390,56 @@ Status: OK
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘spinebil/DESCRIPTION’ ... OK
 ...
-* checking Rd contents ... OK
-* checking for unstated dependencies in examples ... OK
-* checking installed files from ‘inst/doc’ ... OK
-* checking files in ‘vignettes’ ... OK
-* checking examples ... OK
-* checking for unstated dependencies in vignettes ... OK
-* checking package vignettes ... OK
-* checking re-building of vignette outputs ... OK
+* this is package ‘spinebil’ version ‘1.0.5’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘tourr’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
 * DONE
-Status: OK
+Status: 1 ERROR
+
+
+
+
+
+```
+# spqrp
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/spqrp
+* Number of recursive dependencies: 179
+
+Run `revdepcheck::cloud_details(, "spqrp")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
 
 
 
@@ -3675,7 +4471,7 @@ Run `revdepcheck::cloud_details(, "SRscore")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘SRscore/DESCRIPTION’ ... OK
@@ -3705,7 +4501,7 @@ Status: 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘SRscore/DESCRIPTION’ ... OK
@@ -3769,7 +4565,7 @@ Run `revdepcheck::cloud_details(, "SSVS")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/tepr
 * Date/Publication: 2026-03-06 10:20:02 UTC
-* Number of recursive dependencies: 123
+* Number of recursive dependencies: 124
 
 Run `revdepcheck::cloud_details(, "tepr")` for more info
 
@@ -3786,7 +4582,7 @@ Run `revdepcheck::cloud_details(, "tepr")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tepr/DESCRIPTION’ ... OK
@@ -3816,7 +4612,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tepr/DESCRIPTION’ ... OK
@@ -3845,7 +4641,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/Harrison4192/tidybins
 * Source code: https://github.com/cran/tidybins
 * Date/Publication: 2026-03-05 12:30:02 UTC
-* Number of recursive dependencies: 222
+* Number of recursive dependencies: 224
 
 Run `revdepcheck::cloud_details(, "tidybins")` for more info
 
@@ -3862,7 +4658,7 @@ Run `revdepcheck::cloud_details(, "tidybins")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tidybins/DESCRIPTION’ ... OK
@@ -3892,7 +4688,7 @@ Status: 3 NOTEs
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tidybins/DESCRIPTION’ ... OK
@@ -3921,7 +4717,7 @@ Status: 3 NOTEs
 * GitHub: https://github.com/tidycomm/tidycomm
 * Source code: https://github.com/cran/tidycomm
 * Date/Publication: 2025-08-27 12:00:02 UTC
-* Number of recursive dependencies: 148
+* Number of recursive dependencies: 149
 
 Run `revdepcheck::cloud_details(, "tidycomm")` for more info
 
@@ -3938,7 +4734,7 @@ Run `revdepcheck::cloud_details(, "tidycomm")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tidycomm/DESCRIPTION’ ... OK
@@ -3968,7 +4764,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tidycomm/DESCRIPTION’ ... OK
@@ -3993,11 +4789,11 @@ Status: 1 ERROR
 
 <details>
 
-* Version: 0.3.0
+* Version: 0.3.1
 * GitHub: https://github.com/ces0491/tidylearn
 * Source code: https://github.com/cran/tidylearn
-* Date/Publication: 2026-04-09 09:30:02 UTC
-* Number of recursive dependencies: 272
+* Date/Publication: 2026-05-19 09:20:09 UTC
+* Number of recursive dependencies: 255
 
 Run `revdepcheck::cloud_details(, "tidylearn")` for more info
 
@@ -4014,7 +4810,7 @@ Run `revdepcheck::cloud_details(, "tidylearn")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tidylearn/DESCRIPTION’ ... OK
@@ -4044,7 +4840,7 @@ Status: 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘tidylearn/DESCRIPTION’ ... OK
@@ -4059,41 +4855,6 @@ Status: 1 NOTE
 * checking re-building of vignette outputs ... OK
 * DONE
 Status: 1 NOTE
-
-
-
-
-
-```
-# tna
-
-<details>
-
-* Version: NA
-* GitHub: NA
-* Source code: https://github.com/cran/tna
-* Number of recursive dependencies: 131
-
-Run `revdepcheck::cloud_details(, "tna")` for more info
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
 
 
 
@@ -4125,7 +4886,7 @@ Run `revdepcheck::cloud_details(, "TransProR")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘TransProR/DESCRIPTION’ ... OK
@@ -4155,7 +4916,7 @@ Status: 1 ERROR
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘TransProR/DESCRIPTION’ ... OK
@@ -4184,7 +4945,7 @@ Status: 1 ERROR
 * GitHub: https://github.com/JonasMoss/univariateML
 * Source code: https://github.com/cran/univariateML
 * Date/Publication: 2025-03-04 13:30:02 UTC
-* Number of recursive dependencies: 104
+* Number of recursive dependencies: 105
 
 Run `revdepcheck::cloud_details(, "univariateML")` for more info
 
@@ -4201,7 +4962,7 @@ Run `revdepcheck::cloud_details(, "univariateML")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘univariateML/DESCRIPTION’ ... OK
@@ -4231,7 +4992,7 @@ Status: 1 ERROR, 1 NOTE
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘univariateML/DESCRIPTION’ ... OK
@@ -4252,6 +5013,117 @@ Status: 1 ERROR, 1 NOTE
 
 
 ```
+# valr
+
+<details>
+
+* Version: 0.9.1
+* GitHub: https://github.com/rnabioco/valr
+* Source code: https://github.com/cran/valr
+* Date/Publication: 2026-01-11 06:10:02 UTC
+* Number of recursive dependencies: 139
+
+Run `revdepcheck::cloud_details(, "valr")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+* using log directory ‘/tmp/workdir/valr/new/valr.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘valr/DESCRIPTION’ ... OK
+...
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘cpp11bigwig’
+
+Package suggested but not available for checking: ‘GenomicRanges’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+### CRAN
+
+```
+* using log directory ‘/tmp/workdir/valr/old/valr.Rcheck’
+* using R version 4.4.0 (2024-04-24)
+* using platform: x86_64-pc-linux-gnu
+* R was compiled by
+    gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+    GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+* running under: Ubuntu 24.04.4 LTS
+* using session charset: UTF-8
+* using option ‘--no-manual’
+* checking for file ‘valr/DESCRIPTION’ ... OK
+...
+* checking package namespace information ... OK
+* checking package dependencies ... ERROR
+Package required but not available: ‘cpp11bigwig’
+
+Package suggested but not available for checking: ‘GenomicRanges’
+
+See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+manual.
+* DONE
+Status: 1 ERROR
+
+
+
+
+
+```
+# wjake
+
+<details>
+
+* Version: NA
+* GitHub: NA
+* Source code: https://github.com/cran/wjake
+* Number of recursive dependencies: 118
+
+Run `revdepcheck::cloud_details(, "wjake")` for more info
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
 # wmwAUC
 
 <details>
@@ -4260,7 +5132,7 @@ Status: 1 ERROR, 1 NOTE
 * GitHub: https://github.com/grendar/wmwAUC
 * Source code: https://github.com/cran/wmwAUC
 * Date/Publication: 2025-12-19 14:20:02 UTC
-* Number of recursive dependencies: 144
+* Number of recursive dependencies: 145
 
 Run `revdepcheck::cloud_details(, "wmwAUC")` for more info
 
@@ -4277,7 +5149,7 @@ Run `revdepcheck::cloud_details(, "wmwAUC")` for more info
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘wmwAUC/DESCRIPTION’ ... OK
@@ -4307,7 +5179,7 @@ Status: OK
 * R was compiled by
     gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
     GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-* running under: Ubuntu 24.04.3 LTS
+* running under: Ubuntu 24.04.4 LTS
 * using session charset: UTF-8
 * using option ‘--no-manual’
 * checking for file ‘wmwAUC/DESCRIPTION’ ... OK

@@ -1,14 +1,14 @@
-# atrrr
+# bridgr
 
 <details>
 
-* Version: 0.1.1
-* GitHub: https://github.com/JBGruber/atrrr
-* Source code: https://github.com/cran/atrrr
-* Date/Publication: 2025-07-22 14:03:30 UTC
-* Number of recursive dependencies: 96
+* Version: 0.1.2
+* GitHub: https://github.com/marcburri/bridgr
+* Source code: https://github.com/cran/bridgr
+* Date/Publication: 2026-02-18 18:50:02 UTC
+* Number of recursive dependencies: 79
 
-Run `revdepcheck::cloud_details(, "atrrr")` for more info
+Run `revdepcheck::cloud_details(, "bridgr")` for more info
 
 </details>
 
@@ -27,16 +27,47 @@ Run `revdepcheck::cloud_details(, "atrrr")` for more info
       > # * https://r-pkgs.org/testing-design.html#sec-tests-files-overview
       > # * https://testthat.r-lib.org/articles/special-files.html
     ...
-      ── Error ('test-lists.R:28:3'): test getting list feed ─────────────────────────
-      <purrr_error_indexed/rlang_error/error/condition>
-      Error in `purrr::map_chr(link, function(l) {     if (is_at(l))          return(l)     http_info <- parse_http_url(l)     if (is.na(http_info$repo) | is.na(http_info$rkey))          return(NA_character_)     if (!is_did(http_info$repo)) {         http_info$repo <- resolve_handle(http_info$repo, .token = .token)     }     glue::glue_data(http_info, "at://{repo}/{collection}/{rkey}") })`: i In index: 1.
-      Caused by error in `mock()`:
-      ! file recorded_responses/com.atproto.identity.resolveHandle_3a422.rds does not exist and no token exists
+          ▆
+       1. └─bridgr::bridge(...) at test-bridge.R:62:3
+       2.   └─stats::optim(...)
+       3.     └─stats (local) `<fn>`(`<dbl>`)
+       4.       └─bridgr (local) fn(par, ...)
       
-      [ FAIL 19 | WARN 0 | SKIP 2 | PASS 12 ]
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 13 ]
       Error:
       ! Test failures.
       Execution halted
+    ```
+
+# meta
+
+<details>
+
+* Version: 8.5-0
+* GitHub: https://github.com/guido-s/meta
+* Source code: https://github.com/cran/meta
+* Date/Publication: 2026-05-25 05:10:02 UTC
+* Number of recursive dependencies: 141
+
+Run `revdepcheck::cloud_details(, "meta")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.6Mb
+      sub-directories of 1Mb or more:
+        R      3.5Mb
+        help   1.5Mb
+    ```
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Packages unavailable to check Rd xrefs: ‘metasens’, ‘robumeta’
     ```
 
 # plotly
@@ -99,7 +130,7 @@ Run `revdepcheck::cloud_details(, "plotly")` for more info
 * GitHub: https://github.com/JBGruber/rollama
 * Source code: https://github.com/cran/rollama
 * Date/Publication: 2026-03-25 20:30:02 UTC
-* Number of recursive dependencies: 65
+* Number of recursive dependencies: 66
 
 Run `revdepcheck::cloud_details(, "rollama")` for more info
 
@@ -127,47 +158,6 @@ Run `revdepcheck::cloud_details(, "rollama")` for more info
       
       
       [ FAIL 1 | WARN 0 | SKIP 27 | PASS 26 ]
-      Error:
-      ! Test failures.
-      Execution halted
-    ```
-
-# saros
-
-<details>
-
-* Version: 1.6.1
-* GitHub: https://github.com/NIFU-NO/saros
-* Source code: https://github.com/cran/saros
-* Date/Publication: 2026-01-28 03:50:02 UTC
-* Number of recursive dependencies: 120
-
-Run `revdepcheck::cloud_details(, "saros")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ... ERROR
-    ```
-      Running ‘spelling.R’
-      Running ‘testthat.R’
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(saros)
-      > 
-      > testthat::test_check("saros")
-      Starting 2 test processes.
-      > test-crowd_plots_as_tabset.R: dev.new(): using pdf(file="Rplots1.pdf")
-    ...
-      Expected `grepl(x = as.character(result), "\\[download figure data\\]\\(.+/d0487363db4e6cc64fdb740cb6617fc0\\.rds\\)$")` to be TRUE.
-      Differences:
-      `actual`:   FALSE
-      `expected`: TRUE 
-      
-      
-      [ FAIL 3 | WARN 0 | SKIP 21 | PASS 1021 ]
       Error:
       ! Test failures.
       Execution halted
