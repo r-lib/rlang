@@ -1,1 +1,0 @@
-Fully C API compliant!
