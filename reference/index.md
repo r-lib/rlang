@@ -197,6 +197,12 @@ support.
 
 ### Conditions
 
+- [`cnd()`](https://rlang.r-lib.org/reference/cnd.md)
+  [`error_cnd()`](https://rlang.r-lib.org/reference/cnd.md)
+  [`warning_cnd()`](https://rlang.r-lib.org/reference/cnd.md)
+  [`message_cnd()`](https://rlang.r-lib.org/reference/cnd.md) : Create a
+  condition object
+
 - [`rlang_error`](https://rlang.r-lib.org/reference/rlang_error.md)
   **\[experimental\]** :
 

@@ -94,12 +94,14 @@ rlang provides various interfaces for working with R and R objects.
 Install the released version of rlang from CRAN:
 
 ``` r
+
 install.packages("rlang")
 ```
 
 Or install the development version from GitHub with:
 
 ``` r
+
 # install.packages("pak")
 pak::pkg_install("r-lib/rlang")
 ```

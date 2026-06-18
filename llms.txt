@@ -94,12 +94,14 @@ rlang provides various interfaces for working with R and R objects.
 Install the released version of rlang from CRAN:
 
 ``` r
+
 install.packages("rlang")
 ```
 
 Or install the development version from GitHub with:
 
 ``` r
+
 # install.packages("pak")
 pak::pkg_install("r-lib/rlang")
 ```
@@ -308,6 +310,12 @@ support.
   Capture a backtrace
 
 ### Conditions
+
+- [`cnd()`](https://rlang.r-lib.org/reference/cnd.md)
+  [`error_cnd()`](https://rlang.r-lib.org/reference/cnd.md)
+  [`warning_cnd()`](https://rlang.r-lib.org/reference/cnd.md)
+  [`message_cnd()`](https://rlang.r-lib.org/reference/cnd.md) : Create a
+  condition object
 
 - [`rlang_error`](https://rlang.r-lib.org/reference/rlang_error.md)
   **\[experimental\]** :
