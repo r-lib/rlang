@@ -30,3 +30,6 @@
 ^\.jj$
 ^\.claude$
 ^\.git-blame-ignore-revs$
+\.o$
+\.so$
+\.dll$
