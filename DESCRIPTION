@@ -1,25 +1,21 @@
 Package: rlang
 Version: 1.2.0.9000
 Title: Functions for Base Types and Core R and 'Tidyverse' Features
-Description: A toolbox for working with base types, core R features
-  like the condition system, and core 'Tidyverse' features like tidy
-  evaluation.
 Authors@R: c(
-    person("Lionel", "Henry", ,"lionel@posit.co", c("aut", "cre")),
-    person("Hadley", "Wickham", ,"hadley@posit.co", "aut"),
-    person(given = "mikefc",
-           email = "mikefc@coolbutuseless.com",
-           role = "cph",
+    person("Lionel", "Henry", , "lionel@posit.co", role = c("aut", "cre")),
+    person("Hadley", "Wickham", , "hadley@posit.co", role = "aut"),
+    person("mikefc", , , "mikefc@coolbutuseless.com", role = "cph",
            comment = "Hash implementation based on Mike's xxhashlite"),
-    person(given = "Yann",
-           family = "Collet",
-           role = "cph",
+    person("Yann", "Collet", role = "cph",
            comment = "Author of the embedded xxHash library"),
-    person(given = "Posit, PBC", role = c("cph", "fnd"))
-    )
+    person("Posit, PBC", role = c("cph", "fnd"))
+  )
+Description: A toolbox for working with base types, core R features like
+    the condition system, and core 'Tidyverse' features like tidy
+    evaluation.
 License: MIT + file LICENSE
-ByteCompile: true
-Biarch: true
+URL: https://rlang.r-lib.org, https://github.com/r-lib/rlang
+BugReports: https://github.com/r-lib/rlang/issues
 Depends:
     R (>= 4.0.0)
 Imports:
@@ -45,13 +41,11 @@ Suggests:
     withr
 Enhances:
     winch
+Biarch: true
+ByteCompile: true
+Config/build/compilation-database: true
+Config/Needs/website:dplyr, tidyverse/tidytemplate
+Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-URL: https://rlang.r-lib.org, https://github.com/r-lib/rlang
-BugReports: https://github.com/r-lib/rlang/issues
-Config/build/compilation-database: true
-Config/testthat/edition: 3
-Config/Needs/website:
-    dplyr,
-    tidyverse/tidytemplate
-Config/roxygen2/version: 8.0.0
