@@ -33,3 +33,4 @@
 \.o$
 \.so$
 \.dll$
+^AGENTS\.md$
