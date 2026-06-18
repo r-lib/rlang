@@ -25,7 +25,7 @@ coerce_class(.x, .to, ...)
 function. If supplied, this should be a string indicating the
 target type. A catch-all clause is then added to signal an error
 stating the conversion failure. This type is prettified unless
-\code{.to} inherits from the S3 class \code{"AsIs"} (see \code{\link[base:AsIs]{base::I()}}).}
+\code{.to} inherits from the S3 class \code{"AsIs"} (see \code{\link[base:I]{base::I()}}).}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#soft-deprecated}{\figure{lifecycle-soft-deprecated.svg}{options: alt='[Soft-deprecated]'}}}{\strong{[Soft-deprecated]}}

@@ -245,7 +245,7 @@ when an error is thrown with \code{\link{rlang_backtrace_on_error}}.
 
 Signalling a condition with \code{inform()} or \code{warn()} displays a
 message in the console. These messages can be muffled as usual with
-\code{\link[base:message]{base::suppressMessages()}} or \code{\link[base:warning]{base::suppressWarnings()}}.
+\code{\link[base:suppressMessages]{base::suppressMessages()}} or \code{\link[base:suppressWarnings]{base::suppressWarnings()}}.
 
 \code{inform()} and \code{warn()} messages can also be silenced with the
 global options \code{rlib_message_verbosity} and

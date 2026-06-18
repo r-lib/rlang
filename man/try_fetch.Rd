@@ -129,6 +129,6 @@ handler is called. Because the call stack is preserved, this makes
 it possible to capture a full backtrace from within the handler,
 e.g. when rethrowing the error with \code{abort(parent = cnd)}.
 Technically, \code{try_fetch()} is more similar to (and implemented on
-top of) \code{\link[base:conditions]{base::withCallingHandlers()}} than \verb{tryCatch().}
+top of) \code{\link[base:withCallingHandlers]{base::withCallingHandlers()}} than \verb{tryCatch().}
 }
 

@@ -27,7 +27,7 @@ in \code{env}.}
 environments.}
 
 \item{last}{Last environment inspected when \code{inherit} is \code{TRUE}.
-Can be useful in conjunction with \code{\link[base:ns-topenv]{base::topenv()}}.}
+Can be useful in conjunction with \code{\link[base:topenv]{base::topenv()}}.}
 
 \item{nms}{Names of bindings, a character vector.}
 }
