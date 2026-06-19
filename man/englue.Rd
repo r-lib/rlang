@@ -89,6 +89,7 @@ in your \code{englue()} wrapper so users can wrap your wrapper.
 }
 
 \examples{
+\dontshow{if (is_installed("glue")) withAutoprint(\{ # examplesIf}
 g <- function(var) englue("{{ var }}")
 g(cyl)
 g(1 + 1)
@@ -98,7 +99,7 @@ g(!!letters)
 as_label(quote(cyl))
 as_label(quote(1 + 1))
 as_label(letters)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \itemize{
