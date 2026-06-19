@@ -23,18 +23,6 @@ na_chr
 na_cpl
 ```
 
-## Format
-
-An object of class `logical` of length 1.
-
-An object of class `integer` of length 1.
-
-An object of class `numeric` of length 1.
-
-An object of class `character` of length 1.
-
-An object of class `complex` of length 1.
-
 ## Details
 
 Typed missing values are necessary because R needs sentinel values of
