@@ -103,7 +103,7 @@ purposes but rlang provides these other operations, either for
 completeness or because they are useful to experts.
 \itemize{
 \item \code{exprs()} is the plural variant of \code{expr()}. It returns a list of
-expressions. It is like \code{\link[base:list]{base::alist()}} but with
+expressions. It is like \code{\link[base:alist]{base::alist()}} but with
 \link[=nse-inject]{injection} support.
 \item \code{quo()} and \code{quos()} are like \code{expr()} and \code{exprs()} but return
 quosures instead of naked expressions. When you are defusing

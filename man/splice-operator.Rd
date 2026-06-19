@@ -14,7 +14,7 @@ The two main cases for splice injection are:
 \itemize{
 \item Turning a list of inputs into distinct arguments. This is
 especially useful with functions that take data in \code{...}, such as
-\code{\link[base:cbind]{base::rbind()}}.
+\code{\link[base:rbind]{base::rbind()}}.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{dfs <- list(mtcars, mtcars)
 inject(rbind(!!!dfs))
@@ -49,7 +49,7 @@ see \ifelse{html}{\link[=topic-inject-out-of-context]{What happens if I use inje
 \section{Splicing a list of arguments}{
 
 
-Take a function like \code{\link[base:cbind]{base::rbind()}} that takes data in \code{...}. This
+Take a function like \code{\link[base:rbind]{base::rbind()}} that takes data in \code{...}. This
 sort of functions takes a variable number of arguments.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{df1 <- data.frame(x = 1)
