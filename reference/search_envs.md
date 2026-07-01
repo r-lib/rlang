@@ -136,5 +136,5 @@ pkg_env("utils")
 #> attr(,"name")
 #> [1] "package:utils"
 #> attr(,"path")
-#> [1] "/opt/R/4.6.0/lib/R/library/utils"
+#> [1] "/opt/R/4.6.1/lib/R/library/utils"
 ```

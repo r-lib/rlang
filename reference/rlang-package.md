@@ -19,6 +19,8 @@ Useful links:
 
 Authors:
 
+- Lionel Henry <lionel@posit.co>
+
 - Hadley Wickham <hadley@posit.co>
 
 Other contributors:
