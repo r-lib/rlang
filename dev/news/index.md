@@ -2,6 +2,10 @@
 
 ## rlang (development version)
 
+## rlang 1.3.0
+
+CRAN release: 2026-07-05
+
 - [`hash()`](https://rlang.r-lib.org/dev/reference/hash.md) now uses its
   own walking strategy to make it independent of pecularities of the R
   serialiser. This fixes stability issues with function bytecode and

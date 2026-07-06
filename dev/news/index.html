@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rlang</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.2.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,6 +81,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.3.0" id="rlang-130">rlang 1.3.0<a class="anchor" aria-label="anchor" href="#rlang-130"></a></h2><p class="text-muted">CRAN release: 2026-07-05</p>
 <ul><li>
 <p><code><a href="../reference/hash.html">hash()</a></code> now uses its own walking strategy to make it independent of pecularities of the R serialiser. This fixes stability issues with function bytecode and shrinkable vectors on R 4.6.0 (<a href="https://github.com/r-lib/rlang/issues/1681" class="external-link">#1681</a>).</p>
 <p>This does mean that with this version all hash values will now be different. In general we gain stability across versions of R, but may lose some stability across versions of rlang. We’ll try and avoid changes to our hash algorithm for the sake of stability but you should assume it’s always possible for a new version to invalidate existing hashes.</p>
