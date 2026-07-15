@@ -875,11 +875,54 @@ src_loc <- function(srcref) {
   line <- srcref[[1]]
   column <- srcref[[5]]
 
+  loc <- paste0(file_trim, ":", line, ":", column)
+
+  # The displayed text stays as-is, but the hyperlink needs a real local path.
+  # Some sources record the filename as a `file://` URL rather than a plain
+  # path, so decode it first.
+  path <- path_from_file_url(file)
+
+  # `srcfile$filename` may be relative to the working directory in effect when
+  # the file was parsed, which `srcfile$wd` records. Resolve against it so the
+  # link points at the right file even when the current directory has changed
+  # since (e.g. testthat sources files then runs them from another directory).
+  wd <- srcfile$wd
+  if (is_string(wd) && !is_absolute_path(path)) {
+    path <- file.path(wd, path)
+  }
+
+  # A hyperlink to a missing file is misleading in every terminal. Packages
+  # installed with kept srcrefs record the `R CMD INSTALL` staging directory,
+  # which is deleted right after installation, so the link would be dead
+  # (https://github.com/r-lib/rlang/issues/1908).
+  if (!file.exists(path)) {
+    return(loc)
+  }
+
   style_hyperlink(
-    paste0(file_trim, ":", line, ":", column),
-    paste0("file://", normalizePath(file, mustWork = FALSE)),
+    loc,
+    paste0("file://", normalizePath(path, mustWork = FALSE)),
     params = c(line = line, col = column)
   )
+}
+
+is_absolute_path <- function(path) {
+  grepl("^(/|[A-Za-z]:|\\\\|~)", path)
+}
+
+path_from_file_url <- function(file) {
+  if (!grepl("^file://", file)) {
+    return(file)
+  }
+
+  path <- sub("^file://(localhost)?", "", file)
+
+  # `file:///C:/path` on Windows decodes to `/C:/path`; drop the leading slash.
+  if (grepl("^/[A-Za-z]:", path)) {
+    path <- sub("^/", "", path)
+  }
+
+  utils::URLdecode(path)
 }
 
 trace_root <- function() {
