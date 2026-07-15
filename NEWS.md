@@ -1,6 +1,8 @@
 # rlang (development version)
 
-* Backtraces no longer emit `file://` hyperlinks for source files that don't exist on disk, such as the `R CMD INSTALL` staging directory recorded when a package is installed kept srcrefs. The location is shown as plain text instead (#1908).
+* Fixed backtrace links for `file://` URLs in srcrefs.
+
+* Backtraces no longer emit file hyperlinks for source files that don't exist on disk, such as the `R CMD INSTALL` staging directory recorded when a package is installed kept srcrefs. The location is shown as plain text instead (#1908).
 
 # rlang 1.3.0
 

@@ -688,6 +688,21 @@ test_that("src_loc() hyperlinks files sourced from another directory (#1908)", {
   expect_match(src_loc(attr(env$f, "srcref")), "\033]8;", fixed = TRUE)
 })
 
+test_that("src_loc() decodes file:// URL filenames", {
+  rlang_cli_local_hyperlinks()
+
+  file <- withr::local_tempfile(fileext = ".R", lines = "x <- 1")
+  url <- paste0("file://", normalizePath(file))
+
+  srcfile <- srcfilecopy(url, "x <- 1")
+  srcref <- srcref(srcfile, c(1L, 1L, 1L, 6L, 1L, 6L))
+
+  # A `file://` URL filename must be decoded to a real path so the file is
+  # found and the link points at it, not `file://file:///...`.
+  expect_match(src_loc(srcref), "\033]8;", fixed = TRUE)
+  expect_no_match(src_loc(srcref), "file://file:", fixed = TRUE)
+})
+
 test_that("sibling streaks in tree backtraces", {
   f <- function(x) identity(identity(x))
   g <- function() f(f(h()))
