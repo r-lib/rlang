@@ -877,6 +877,15 @@ src_loc <- function(srcref) {
 
   loc <- paste0(file_trim, ":", line, ":", column)
 
+  # `srcfile$filename` may be relative to the working directory in effect when
+  # the file was parsed, which `srcfile$wd` records. Resolve against it so the
+  # link points at the right file even when the current directory has changed
+  # since (e.g. testthat sources files then runs them from another directory).
+  wd <- srcfile$wd
+  if (is_string(wd) && !is_absolute_path(file)) {
+    file <- file.path(wd, file)
+  }
+
   # A hyperlink to a missing file is misleading in every terminal. Packages
   # installed with kept srcrefs record the `R CMD INSTALL` staging directory,
   # which is deleted right after installation, so the link would be dead
@@ -890,6 +899,10 @@ src_loc <- function(srcref) {
     paste0("file://", normalizePath(file, mustWork = FALSE)),
     params = c(line = line, col = column)
   )
+}
+
+is_absolute_path <- function(path) {
+  grepl("^(/|[A-Za-z]:|\\\\|~)", path)
 }
 
 trace_root <- function() {

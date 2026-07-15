@@ -673,6 +673,21 @@ test_that("src_loc() emits plain text for missing files (#1908)", {
   expect_match(src_loc(srcref), "exist\\.R:1:1")
 })
 
+test_that("src_loc() hyperlinks files sourced from another directory (#1908)", {
+  rlang_cli_local_hyperlinks()
+
+  dir <- withr::local_tempdir()
+  writeLines("f <- function() abort('foo')", file.path(dir, "code.R"))
+
+  env <- env()
+  withr::with_dir(dir, source("code.R", local = env, keep.source = TRUE))
+
+  # `srcfile$filename` is the relative "code.R", parsed from `dir`. Now that
+  # we're back in testthat's directory, resolution must use `srcfile$wd` for
+  # the link to point at the real file.
+  expect_match(src_loc(attr(env$f, "srcref")), "\033]8;", fixed = TRUE)
+})
+
 test_that("sibling streaks in tree backtraces", {
   f <- function(x) identity(identity(x))
   g <- function() f(f(h()))
