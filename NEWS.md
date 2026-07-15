@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Backtraces no longer emit `file://` hyperlinks for source files that don't exist on disk, such as the `R CMD INSTALL` staging directory recorded when a package is installed kept srcrefs. The location is shown as plain text instead (#1908).
+
 # rlang 1.3.0
 
 * `hash()` now uses its own walking strategy to make it independent of pecularities of the R serialiser. This fixes stability issues with function bytecode and shrinkable vectors on R 4.6.0 (#1681).

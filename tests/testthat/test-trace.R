@@ -643,14 +643,17 @@ test_that("can format empty traces", {
 })
 
 test_that("backtrace is formatted with sources (#1396)", {
-  file <- tempfile("my_source", fileext = ".R")
-  with_srcref(
-    file = file,
-    "
-    f <- function() g()
-    g <- function() abort('foo')
-  "
+  # Keep the file on disk during `format()` so a live hyperlink is emitted.
+  # A hyperlink to a missing file is now suppressed (#1908).
+  file <- withr::local_tempfile(
+    pattern = "my_source",
+    lines = c(
+      "f <- function() g()",
+      "g <- function() abort('foo')"
+    ),
+    fileext = ".R"
   )
+  source(file, local = environment(), keep.source = TRUE)
   err <- catch_cnd(f(), "error")
 
   rlang_cli_local_hyperlinks()
@@ -658,6 +661,16 @@ test_that("backtrace is formatted with sources (#1396)", {
   lines <- format(err$trace)
   n_links <- sum(grepl("\033]8;.*my_source.*\\.R:", lines))
   expect_true(n_links > 0)
+})
+
+test_that("src_loc() emits plain text for missing files (#1908)", {
+  rlang_cli_local_hyperlinks()
+
+  srcfile <- srcfilecopy("/does/not/exist.R", "x <- 1")
+  srcref <- srcref(srcfile, c(1L, 1L, 1L, 6L, 1L, 6L))
+
+  expect_no_match(src_loc(srcref), "\033]8;", fixed = TRUE)
+  expect_match(src_loc(srcref), "exist\\.R:1:1")
 })
 
 test_that("sibling streaks in tree backtraces", {

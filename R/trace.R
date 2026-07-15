@@ -875,8 +875,18 @@ src_loc <- function(srcref) {
   line <- srcref[[1]]
   column <- srcref[[5]]
 
+  loc <- paste0(file_trim, ":", line, ":", column)
+
+  # A hyperlink to a missing file is misleading in every terminal. Packages
+  # installed with kept srcrefs record the `R CMD INSTALL` staging directory,
+  # which is deleted right after installation, so the link would be dead
+  # (https://github.com/r-lib/rlang/issues/1908).
+  if (!file.exists(file)) {
+    return(loc)
+  }
+
   style_hyperlink(
-    paste0(file_trim, ":", line, ":", column),
+    loc,
     paste0("file://", normalizePath(file, mustWork = FALSE)),
     params = c(line = line, col = column)
   )
