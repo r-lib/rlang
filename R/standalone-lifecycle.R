@@ -14,6 +14,12 @@
 #
 # ## Changelog
 #
+# 2025-08-02
+#
+# - Added `deprecated()` and `is_present()`, intended to use as
+#   deprecated arguments' default value.
+#   Same as `lifecycle::deprecated()` and `lifecycle::is_present()`.
+#
 # 2024-09-27
 #
 # - Depends on `standalone-cli.R` instead of the cli package.
@@ -251,6 +257,12 @@ with_lifecycle_errors <- function(expr) {
   }
 
   opt
+}
+
+deprecated <- function() missing_arg()
+
+is_present <- function(arg) {
+  !is_missing(maybe_missing(arg))
 }
 
 # nocov end
