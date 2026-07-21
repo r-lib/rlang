@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-vctrs.R
-# last-updated: 2021-08-27
+# last-updated: 2024-04-17
 # license: https://unlicense.org
 # ---
 
@@ -16,11 +16,11 @@
 # 2024-04-17:
 # * `vec_recycle_common()` throws intended error when `size = 1` but input
 #   is larger.
-
+#
 # 2021-08-27:
 # * `vec_slice()` now preserves attributes of data frames and vectors.
 # * `vec_ptype2()` detects unspecified columns of data frames.
-
+#
 # 2021-08-26:
 # * Added compat for `vec_as_location()`.
 #
