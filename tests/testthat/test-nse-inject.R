@@ -148,6 +148,20 @@ test_that("lower pivot is correctly found (#1125)", {
   expect_equal_(expr(1 + !!2 * 3 * 4 + 5), expr(1 + 2 * 3 * 4 + 5))
 })
 
+test_that("rotated AST is protected from the GC during expansion (#1910)", {
+  f <- function() {
+    gc()
+    for (i in 1:200000) pairlist(i)
+    2
+  }
+  a <- 1
+  # Interpolate before the expectation so the injection is not done by
+  # the testthat-imported rlang, which may be a different installation
+  # in `load_all()` sessions
+  out <- expr(1 + !!a + !!f())
+  expect_identical(out, quote(1 + 1 + 2))
+})
+
 test_that("`!!` handles binary and unary `-` and `+`", {
   expect_identical_(expr(!!1 + 2), quote(1 + 2))
   expect_identical_(expr(!!1 - 2), quote(1 - 2))
