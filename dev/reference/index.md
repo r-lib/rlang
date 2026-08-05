@@ -37,14 +37,14 @@ The programmable data-masking framework developed for the tidyverse.
 
   Splice operator `!!!`
 
-- [`qq_show`](https://rlang.r-lib.org/dev/reference/qq_show.md) : Show
+- [`qq_show()`](https://rlang.r-lib.org/dev/reference/qq_show.md) : Show
   injected expression
 
 - [`englue()`](https://rlang.r-lib.org/dev/reference/englue.md) : Defuse
   function arguments with glue
 
-- [`expr`](https://rlang.r-lib.org/dev/reference/expr.md) : Defuse an R
-  expression
+- [`expr()`](https://rlang.r-lib.org/dev/reference/expr.md) : Defuse an
+  R expression
 
 - [`enquo()`](https://rlang.r-lib.org/dev/reference/enquo.md)
   [`enquos()`](https://rlang.r-lib.org/dev/reference/enquo.md) : Defuse
@@ -162,8 +162,8 @@ support.
   : Prompt user to install missing packages
 - [`try_fetch()`](https://rlang.r-lib.org/dev/reference/try_fetch.md)
   **\[experimental\]** : Try an expression with condition handlers
-- [`caller_arg`](https://rlang.r-lib.org/dev/reference/caller_arg.md) :
-  Find the caller argument for error messages
+- [`caller_arg()`](https://rlang.r-lib.org/dev/reference/caller_arg.md)
+  : Find the caller argument for error messages
 - [`local_error_call()`](https://rlang.r-lib.org/dev/reference/local_error_call.md)
   : Set local error call in an execution environment
 - [`args_error_context`](https://rlang.r-lib.org/dev/reference/args_error_context.md)

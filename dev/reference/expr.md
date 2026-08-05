@@ -9,6 +9,12 @@ support.
 It is equivalent to
 [`base::bquote()`](https://rdrr.io/r/base/bquote.html).
 
+## Usage
+
+``` r
+expr(expr)
+```
+
 ## Arguments
 
 - expr:

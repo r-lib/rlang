@@ -15,6 +15,12 @@ string which can be included in error messages.
 - Use `@inheritParams rlang::args_error_context` to document an `arg` or
   `error_arg` argument that takes `error_arg()` as default.
 
+## Usage
+
+``` r
+caller_arg(arg)
+```
+
 ## Arguments
 
 - arg:

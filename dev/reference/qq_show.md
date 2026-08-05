@@ -5,6 +5,12 @@ expressions](https://rlang.r-lib.org/dev/reference/topic-inject.md)
 inside a function. This is useful for learning about injection and for
 debugging injection code.
 
+## Usage
+
+``` r
+qq_show(expr)
+```
+
 ## Arguments
 
 - expr:
