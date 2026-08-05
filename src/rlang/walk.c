@@ -209,19 +209,9 @@ static bool sexp_next_incoming(
     bool has_attrib = sexp_has_attrib(child.type, child.x);
     enum sexp_iterator_type it_type = sexp_iterator_type(child.type, child.x);
 
-    if (it_type == SEXP_ITERATOR_TYPE_atomic && !has_attrib) {
-        child.p_state = NULL;
-        child.dir = R_SEXP_IT_DIRECTION_leaf;
-    } else {
-        init_incoming_stack_info(&child, it_type, has_attrib);
-
-        // Push incoming node on the stack so it can be visited again,
-        // either to descend its children or to visit it again on the
-        // outgoing trip
-        r_dyn_push_back(p_it->p_stack, &child);
-    }
-
-    // Bump state for next iteration
+    // Bump state for next iteration. This must be done before pushing
+    // `child` on the stack: the push may resize the stack and `p_info`
+    // points into the pre-resize buffer.
     if (state == SEXP_ITERATOR_STATE_elt) {
         ++p_info->v_arr;
         if (p_info->v_arr == p_info->v_arr_end) {
@@ -237,6 +227,18 @@ static bool sexp_next_incoming(
     // visit when `n > 0` and that the stack can be popped.
     if (*p_info->p_state == SEXP_ITERATOR_STATE_done) {
         p_info->dir = R_SEXP_IT_DIRECTION_outgoing;
+    }
+
+    if (it_type == SEXP_ITERATOR_TYPE_atomic && !has_attrib) {
+        child.p_state = NULL;
+        child.dir = R_SEXP_IT_DIRECTION_leaf;
+    } else {
+        init_incoming_stack_info(&child, it_type, has_attrib);
+
+        // Push incoming node on the stack so it can be visited again,
+        // either to descend its children or to visit it again on the
+        // outgoing trip
+        r_dyn_push_back(p_it->p_stack, &child);
     }
 
     r_ssize i = -1;
