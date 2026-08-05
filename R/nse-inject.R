@@ -514,7 +514,6 @@ glue_first_pass_eval <- function(text, env) {
 #' inside a function. This is useful for learning about injection and
 #' for debugging injection code.
 #'
-#' @usage NULL
 #' @param expr An expression involving [injection
 #'   operators][topic-inject].
 #'

@@ -44,7 +44,6 @@ NULL
 #'
 #' It is equivalent to [base::bquote()].
 #'
-#' @usage NULL
 #' @param expr An expression to defuse.
 #'
 #' @seealso

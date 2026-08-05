@@ -3,6 +3,9 @@
 \name{qq_show}
 \alias{qq_show}
 \title{Show injected expression}
+\usage{
+qq_show(expr)
+}
 \arguments{
 \item{expr}{An expression involving \link[=topic-inject]{injection operators}.}
 }

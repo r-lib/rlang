@@ -542,8 +542,12 @@ export(wref_key)
 export(wref_value)
 export(zap)
 export(zap_srcref)
-importFrom(stats,median)
-importFrom(stats,quantile)
-importFrom(utils,adist)
-importFrom(utils,str)
+importFrom(stats,
+  median,
+  quantile
+)
+importFrom(utils,
+  adist,
+  str
+)
 useDynLib(rlang, .registration = TRUE)

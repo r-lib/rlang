@@ -3,6 +3,9 @@
 \name{caller_arg}
 \alias{caller_arg}
 \title{Find the caller argument for error messages}
+\usage{
+caller_arg(arg)
+}
 \arguments{
 \item{arg}{An argument name in the current function.}
 }

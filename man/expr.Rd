@@ -3,6 +3,9 @@
 \name{expr}
 \alias{expr}
 \title{Defuse an R expression}
+\usage{
+expr(expr)
+}
 \arguments{
 \item{expr}{An expression to defuse.}
 }

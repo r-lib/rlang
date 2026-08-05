@@ -35,3 +35,4 @@ field named \code{call}. An easy way to do this is by passing a \code{call}
 argument to \code{\link[=abort]{abort()}}. See also \code{\link[=local_error_call]{local_error_call()}}.
 }
 }
+\keyword{internal}

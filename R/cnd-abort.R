@@ -1105,6 +1105,7 @@ local_error_call <- function(call, frame = caller_env()) {
 #'   `call` argument of [rlang::abort()] for more information.
 #'
 #' @name args_error_context
+#' @keywords internal
 NULL
 
 #' Find the caller argument for error messages
@@ -1124,7 +1125,6 @@ NULL
 #'   `arg` or `error_arg` argument that takes `error_arg()` as default.
 #'
 #' @param arg An argument name in the current function.
-#' @usage NULL
 #'
 #' @examples
 #' arg_checker <- function(x, arg = caller_arg(x), call = caller_env()) {
