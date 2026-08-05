@@ -81,7 +81,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="rlang-development-version">rlang (development version)<a class="anchor" aria-label="anchor" href="#rlang-development-version"></a></h2>
-<ul><li><p>Fixed backtrace links for <code>file://</code> URLs in srcrefs.</p></li>
+<ul><li><p>Fixed a use-after-free that could corrupt the result of <code><a href="../reference/expr.html">expr()</a></code> and other injection functions when <code>!!</code> injection required an operator precedence fixup of the AST and a garbage collection occurred during injection (<a href="https://github.com/r-lib/rlang/issues/1910" class="external-link">#1910</a>).</p></li>
+<li><p>Fixed backtrace links for <code>file://</code> URLs in srcrefs.</p></li>
 <li><p>Backtraces no longer emit file hyperlinks for source files that don’t exist on disk, such as the <code>R CMD INSTALL</code> staging directory recorded when a package is installed kept srcrefs. The location is shown as plain text instead (<a href="https://github.com/r-lib/rlang/issues/1908" class="external-link">#1908</a>).</p></li>
 </ul></div>
     <div class="section level2">

@@ -2,6 +2,12 @@
 
 ## rlang (development version)
 
+- Fixed a use-after-free that could corrupt the result of
+  [`expr()`](https://rlang.r-lib.org/dev/reference/expr.md) and other
+  injection functions when `!!` injection required an operator
+  precedence fixup of the AST and a garbage collection occurred during
+  injection ([\#1910](https://github.com/r-lib/rlang/issues/1910)).
+
 - Fixed backtrace links for `file://` URLs in srcrefs.
 
 - Backtraces no longer emit file hyperlinks for source files that don’t
