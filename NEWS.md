@@ -1,4 +1,4 @@
-# rlang (development version)
+# rlang 1.3.1
 
 * Fixed a use-after-free that could corrupt the result of `expr()` and other injection functions when `!!` injection required an operator precedence fixup of the AST and a garbage collection occurred during injection (#1910).
 
