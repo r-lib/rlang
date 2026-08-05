@@ -315,9 +315,17 @@ static r_obj* maybe_rotate(
     // reuse it in the recursion
     initialise_rotation_info(info);
 
+    // After a rotation `op` is the detached upper pivot whose only
+    // reference is this C local, so protect it while the recursion
+    // below evaluates `!!` operands (#1910)
+    KEEP(op);
+
     // Recurse on the RHS of the upper pivot (which is now the new root)
     node_list_interp_fixup(op, NULL, env, info, false);
-    return maybe_rotate(op, env, info);
+    r_obj* out = maybe_rotate(op, env, info);
+
+    FREE(1);
+    return out;
 }
 
 /**

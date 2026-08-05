@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* Fixed a use-after-free that could corrupt the result of `expr()` and other injection functions when `!!` injection required an operator precedence fixup of the AST and a garbage collection occurred during injection (#1910).
+
 * Fixed backtrace links for `file://` URLs in srcrefs.
 
 * Backtraces no longer emit file hyperlinks for source files that don't exist on disk, such as the `R CMD INSTALL` staging directory recorded when a package is installed kept srcrefs. The location is shown as plain text instead (#1908).
