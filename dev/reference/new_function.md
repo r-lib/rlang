@@ -45,30 +45,30 @@ identical(f, g)
 new_function(list(x = 10), quote(x))
 #> function (x = 10) 
 #> x
-#> <environment: 0x55d05ac99588>
+#> <environment: 0x5612eb971f38>
 new_function(pairlist2(x = 10), quote(x))
 #> function (x = 10) 
 #> x
-#> <environment: 0x55d05ac99588>
+#> <environment: 0x5612eb971f38>
 
 # Use `exprs()` to create quoted defaults. Compare:
 new_function(pairlist2(x = 5 + 5), quote(x))
 #> function (x = 10) 
 #> x
-#> <environment: 0x55d05ac99588>
+#> <environment: 0x5612eb971f38>
 new_function(exprs(x = 5 + 5), quote(x))
 #> function (x = 5 + 5) 
 #> x
-#> <environment: 0x55d05ac99588>
+#> <environment: 0x5612eb971f38>
 
 # Pass empty arguments to omit defaults. `list()` doesn't allow
 # empty arguments but `pairlist2()` does:
 new_function(pairlist2(x = , y = 5 + 5), quote(x + y))
 #> function (x, y = 10) 
 #> x + y
-#> <environment: 0x55d05ac99588>
+#> <environment: 0x5612eb971f38>
 new_function(exprs(x = , y = 5 + 5), quote(x + y))
 #> function (x, y = 5 + 5) 
 #> x + y
-#> <environment: 0x55d05ac99588>
+#> <environment: 0x5612eb971f38>
 ```
