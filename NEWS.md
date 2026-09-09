@@ -1,5 +1,10 @@
 # rlang (development version)
 
+* `.env[[1]]` now fails with the intended "Must subset the context pronoun
+  with a string" error instead of `argument "call" is missing, with no
+  default`. The `$` and `[[` methods for the context pronoun now pass the
+  `call` argument to `ctxt_pronoun_get()`, like the data pronoun methods.
+
 * Fixed a use-after-free that could corrupt the result of `expr()` and other injection functions when `!!` injection required an operator precedence fixup of the AST and a garbage collection occurred during injection (#1910).
 
 * Fixed backtrace links for `file://` URLs in srcrefs.

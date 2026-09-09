@@ -433,11 +433,11 @@ abort_data_pronoun <- function(nm, call) {
 
 #' @export
 `$.rlang_ctxt_pronoun` <- function(x, nm) {
-  ctxt_pronoun_get(x, nm)
+  ctxt_pronoun_get(x, nm, call = I(call("$", quote(.env), sym(nm))))
 }
 #' @export
 `[[.rlang_ctxt_pronoun` <- function(x, i, ...) {
-  ctxt_pronoun_get(x, i)
+  ctxt_pronoun_get(x, i, call = I(call("[[", quote(.env), substitute(i))))
 }
 ctxt_pronoun_get <- function(x, nm, call) {
   if (!is_string(nm)) {

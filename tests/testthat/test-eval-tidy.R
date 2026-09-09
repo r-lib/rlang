@@ -468,6 +468,10 @@ test_that("the `.env` pronoun is not an environment", {
 })
 
 test_that("subsetting `.env` evaluates", {
+  expect_error(
+    eval_tidy(quote(.env[[1]]), mtcars, env()),
+    "Must subset the context pronoun with a string"
+  )
   expect_error(eval_tidy(quote(.env[["cyl"]]), mtcars, env()), "not found")
   cyl <- "foo"
   expect_identical(eval_tidy(quote(.env$cyl), mtcars, env()), "foo")
