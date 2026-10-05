@@ -153,6 +153,9 @@ pkg_version_info <- function(
 
     compare <- compare %||% ">="
     compare <- compare %|% ">="
+    if (length(compare) == length(has_version)) {
+      compare <- compare[has_version]
+    }
 
     info$ver[has_version] <- version[has_version]
     info$cmp[has_version] <- compare

@@ -1,5 +1,7 @@
 # rlang (development version)
 
+* `is_installed()` and `check_installed()` no longer warn and now apply `compare` to the correct packages when `version` contains missing values and `compare` is supplied for every package (#1694, @taekop).
+
 * Fixed a use-after-free that could corrupt the result of `expr()` and other injection functions when `!!` injection required an operator precedence fixup of the AST and a garbage collection occurred during injection (#1910).
 
 * Fixed backtrace links for `file://` URLs in srcrefs.
