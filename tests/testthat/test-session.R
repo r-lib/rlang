@@ -60,6 +60,27 @@ test_that("is_installed() supports `compare` with missing `version` (#1694)", {
     version = c("0.1", NA, "0.1"),
     compare = c(">=", NA, "<")
   ))
+  expect_false(is_installed(
+    c("rlang", "testthat"),
+    version = c("0.1", "0.1"),
+    compare = "<"
+  ))
+})
+
+test_that("is_installed() and check_installed() check length of `compare`", {
+  local_options(rlang_interactive = FALSE)
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    is_installed(
+      c("rlang", "testthat", "base"),
+      version = c("0.1", "0.1", "0.1"),
+      compare = c(">=", ">=")
+    )
+    check_installed(
+      c("rlang", "testthat", "base"),
+      version = c("0.1", "0.1", "0.1"),
+      compare = c(">=", ">=")
+    )
+  })
 })
 
 test_that("check_installed() checks minimal versions", {
