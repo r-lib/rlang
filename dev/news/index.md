@@ -2,6 +2,14 @@
 
 ## rlang (development version)
 
+- [`is_installed()`](https://rlang.r-lib.org/dev/reference/is_installed.md)
+  and
+  [`check_installed()`](https://rlang.r-lib.org/dev/reference/is_installed.md)
+  no longer warn and now apply `compare` to the correct packages when
+  `version` contains missing values and `compare` is supplied for every
+  package ([\#1694](https://github.com/r-lib/rlang/issues/1694),
+  [@taekop](https://github.com/taekop)).
+
 - Fixed a use-after-free that could corrupt the result of
   [`expr()`](https://rlang.r-lib.org/dev/reference/expr.md) and other
   injection functions when `!!` injection required an operator
