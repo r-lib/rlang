@@ -39,6 +39,50 @@ test_that("is_installed() checks minimal versions", {
   expect_false(is_installed(c("rlang (<= 0.4.0)", "testthat (>= 0.1)")))
 })
 
+test_that("is_installed() supports `compare` with missing `version` (#1694)", {
+  expect_no_warning(expect_true(is_installed(
+    c("rlang", "testthat"),
+    version = c("0.1", NA),
+    compare = c(">=", NA)
+  )))
+  expect_no_warning(expect_true(is_installed(
+    c("rlang", "testthat"),
+    version = c(NA, "0.1"),
+    compare = c(NA, ">=")
+  )))
+  expect_no_warning(expect_false(is_installed(
+    c("rlang", "testthat"),
+    version = c(NA, "0.1"),
+    compare = c(NA, "<")
+  )))
+  expect_false(is_installed(
+    c("rlang", "testthat", "base"),
+    version = c("0.1", NA, "0.1"),
+    compare = c(">=", NA, "<")
+  ))
+  expect_false(is_installed(
+    c("rlang", "testthat"),
+    version = c("0.1", "0.1"),
+    compare = "<"
+  ))
+})
+
+test_that("is_installed() and check_installed() check length of `compare`", {
+  local_options(rlang_interactive = FALSE)
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    is_installed(
+      c("rlang", "testthat", "base"),
+      version = c("0.1", "0.1", "0.1"),
+      compare = c(">=", ">=")
+    )
+    check_installed(
+      c("rlang", "testthat", "base"),
+      version = c("0.1", "0.1", "0.1"),
+      compare = c(">=", ">=")
+    )
+  })
+})
+
 test_that("check_installed() checks minimal versions", {
   local_options(rlang_interactive = FALSE)
   local_error_call(call("foo"))

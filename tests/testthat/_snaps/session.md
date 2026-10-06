@@ -24,6 +24,21 @@
       Error in `is_installed()`:
       ! `version` must be `NULL` or a vector of versions the same length as `pkg`.
 
+# is_installed() and check_installed() check length of `compare`
+
+    Code
+      is_installed(c("rlang", "testthat", "base"), version = c("0.1", "0.1", "0.1"),
+      compare = c(">=", ">="))
+    Condition <rlang_error>
+      Error in `is_installed()`:
+      ! `compare` must be `NULL` or a vector of length 1 or the same length as `pkg`.
+    Code
+      check_installed(c("rlang", "testthat", "base"), version = c("0.1", "0.1", "0.1"),
+      compare = c(">=", ">="))
+    Condition <rlang_error>
+      Error in `check_installed()`:
+      ! `compare` must be `NULL` or a vector of length 1 or the same length as `pkg`.
+
 # check_installed() checks minimal versions
 
     Code

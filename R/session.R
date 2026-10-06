@@ -153,6 +153,7 @@ pkg_version_info <- function(
 
     compare <- compare %||% ">="
     compare <- compare %|% ">="
+    compare <- vec_recycle(compare, length(pkg))[has_version]
 
     info$ver[has_version] <- version[has_version]
     info$cmp[has_version] <- compare
@@ -333,6 +334,17 @@ check_pkg_version <- function(pkg, version, compare, call = caller_env()) {
   }
 
   if (!is_null(compare)) {
+    if (!length(compare) %in% c(1L, length(pkg))) {
+      abort(
+        sprintf(
+          "%s must be `NULL` or a vector of length 1 or the same length as %s.",
+          format_arg("compare"),
+          format_arg("pkg")
+        ),
+        call = call
+      )
+    }
+
     if (is_null(version) || any((!detect_na(compare)) & detect_na(version))) {
       msg <- sprintf(
         "%s must be supplied when %s is supplied.",
