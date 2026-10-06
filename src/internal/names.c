@@ -63,16 +63,16 @@ r_obj* names_as_unique(r_obj* names, bool quiet) {
 
         int size = strlen(name);
         int buf_size = size + MAX_IOTA_SIZE;
-
-        R_CheckStack2(buf_size);
-        char buf[buf_size];
+        char stack_buf[256];
+        char* buf = (buf_size <= (int) sizeof(stack_buf))
+            ? stack_buf
+            : (char*) R_alloc(buf_size, sizeof(char));
         buf[0] = '\0';
 
         r_memcpy(buf, name, size);
-        int remaining = buf_size - size;
 
-        int needed = snprintf(buf + size, remaining, "...%" R_PRI_SSIZE, i + 1);
-        if (needed >= remaining) {
+        int needed = snprintf(buf + size, MAX_IOTA_SIZE, "...%" R_PRI_SSIZE, i + 1);
+        if (needed >= MAX_IOTA_SIZE) {
             stop_large_name();
         }
 

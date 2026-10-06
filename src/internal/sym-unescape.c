@@ -88,7 +88,10 @@ r_obj* str_unserialise_unicode(r_obj* r_string) {
         // The string was not copied because we're in a UTF-8 locale.
         // Need to check first if the string has any UTF-8 escapes.
         int orig_len = strlen(re_enc);
-        char tmp[orig_len + 1];
+        char stack_buf[256];
+        char* tmp = (orig_len + 1 <= (int) sizeof(stack_buf))
+            ? stack_buf
+            : (char*) R_alloc(orig_len + 1, sizeof(char));
         r_memcpy(tmp, re_enc, orig_len + 1);
         return unescape_char_to_sexp(tmp);
     } else {
