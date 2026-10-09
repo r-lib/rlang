@@ -22,7 +22,7 @@ Imports:
     stats,
     utils
 Suggests:
-    cli (>= 3.1.0),
+    cli (>= 3.1.1),
     covr,
     crayon,
     desc,
