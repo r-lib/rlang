@@ -1,7 +1,7 @@
 # ---
 # repo: r-lib/rlang
 # file: standalone-vctrs.R
-# last-updated: 2021-08-27
+# last-updated: 2024-10-04
 # license: https://unlicense.org
 # ---
 
@@ -419,7 +419,7 @@ vec_ptype_common <- function(xs, ptype = NULL) {
   if (length(xs) == 1) {
     out <- vec_ptype(xs[[1]])
   } else {
-    xs <- map(xs, vec_ptype)
+    xs <- lapply(xs, vec_ptype)
     out <- Reduce(vec_ptype2, xs)
   }
 
