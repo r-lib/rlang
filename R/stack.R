@@ -21,7 +21,6 @@
 #'   as returned by [caller_env()]. `NULL` is returned if the
 #'   environment does not exist on the stack.
 #'
-#' @seealso [caller_env()] and [current_env()]
 #' @name stack
 NULL
 
