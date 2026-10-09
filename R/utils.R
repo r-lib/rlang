@@ -1,5 +1,3 @@
-deprecated <- function() missing_arg()
-
 abort_coercion <- function(
   x,
   to_type,
