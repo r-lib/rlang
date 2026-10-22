@@ -153,12 +153,11 @@ static enum is_number dbl_standalone_check_number(
             return r_as_bool(allow_na) ? IS_NUMBER_true : IS_NUMBER_false;
         } else if (isnan(value)) {
             return IS_NUMBER_false;
-        } else {
-            return r_as_bool(allow_infinite) ? IS_NUMBER_true : IS_NUMBER_false;
+        } else if (!r_as_bool(allow_infinite)) {
+            return IS_NUMBER_false;
         }
-    }
-
-    if (!r_as_bool(allow_decimal) && !r_dbl_is_whole(value)) {
+        // Allowed infinite values are still subject to `min` and `max`
+    } else if (!r_as_bool(allow_decimal) && !r_dbl_is_whole(value)) {
         return IS_NUMBER_false;
     }
 
