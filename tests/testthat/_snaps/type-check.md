@@ -169,6 +169,18 @@
       Error in `checker()`:
       ! `foo` must be a whole number between 1 and 5, not the number 10.
     Code
+      err(checker(Inf, max = 5, check_number_whole, allow_infinite = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a whole number smaller than or equal to 5, not `Inf`.
+    Code
+      err(checker(-Inf, min = 0, check_number_whole, allow_infinite = TRUE))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a whole number larger than or equal to 0, not `-Inf`.
+    Code
       err(checker(10, min = NA, check_number_whole))
     Output
       <error/rlang_error>
@@ -243,6 +255,24 @@
       <error/rlang_error>
       Error in `checker()`:
       ! `foo` must be a number, not `-Inf`.
+    Code
+      err(checker(Inf, max = 5, check_number_decimal))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a number smaller than or equal to 5, not `Inf`.
+    Code
+      err(checker(-Inf, min = 0, check_number_decimal))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a number larger than or equal to 0, not `-Inf`.
+    Code
+      err(checker(Inf, min = 0, max = 5, check_number_decimal))
+    Output
+      <error/rlang_error>
+      Error in `checker()`:
+      ! `foo` must be a number between 0 and 5, not `Inf`.
     Code
       err(checker(10, min = NA, check_number_decimal))
     Output

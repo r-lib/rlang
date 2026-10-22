@@ -46,6 +46,8 @@ test_that("`check_number_whole()` checks", {
   check_number_whole(0, max = 0)
   check_number_whole(0, min = 0)
   check_number_whole(1, min = 0, max = 2)
+  expect_null(check_number_whole(Inf, min = 0, allow_infinite = TRUE))
+  expect_null(check_number_whole(-Inf, max = 0, allow_infinite = TRUE))
 
   expect_snapshot({
     err(checker(, check_number_whole))
@@ -61,6 +63,8 @@ test_that("`check_number_whole()` checks", {
     err(checker(1, max = 0, check_number_whole))
     err(checker(-1, min = 0, check_number_whole))
     err(checker(10, min = 1, max = 5, check_number_whole))
+    err(checker(Inf, max = 5, check_number_whole, allow_infinite = TRUE))
+    err(checker(-Inf, min = 0, check_number_whole, allow_infinite = TRUE))
     err(checker(10, min = NA, check_number_whole))
     err(checker(10, min = NaN, check_number_whole))
     err(checker(10, max = NaN, check_number_whole))
@@ -77,6 +81,8 @@ test_that("`check_number_decimal()` checks", {
   expect_null(check_number_decimal(NULL, allow_null = TRUE))
   expect_null(check_number_decimal(Inf))
   expect_null(check_number_decimal(-Inf))
+  expect_null(check_number_decimal(Inf, min = 0))
+  expect_null(check_number_decimal(-Inf, max = 0))
 
   expect_snapshot({
     err(checker(, check_number_decimal))
@@ -93,6 +99,9 @@ test_that("`check_number_decimal()` checks", {
     ))
     err(checker(Inf, check_number_decimal, allow_infinite = FALSE))
     err(checker(-Inf, check_number_decimal, allow_infinite = FALSE))
+    err(checker(Inf, max = 5, check_number_decimal))
+    err(checker(-Inf, min = 0, check_number_decimal))
+    err(checker(Inf, min = 0, max = 5, check_number_decimal))
     err(checker(10, min = NA, check_number_decimal))
     err(checker(10, min = NaN, check_number_decimal))
     err(checker(10, max = NaN, check_number_decimal))
