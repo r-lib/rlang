@@ -15,6 +15,18 @@ test_that("gives an error with more than one arg", {
   })
 })
 
+test_that("arg_match0() reports choices for invalid argument types and lengths", {
+  f <- function(value) arg_match0(value, c("a", "b", "c"))
+
+  expect_snapshot(error = TRUE, cnd_class = TRUE, {
+    f(TRUE)
+    f(NULL)
+    f(character())
+    f(c("a", "a"))
+    arg_match0_wrapper(c("a", "b", "b"), c("a", "a", "b"))
+  })
+})
+
 test_that("gives error with different than rearranged arg vs value", {
   f <- function(myarg = c("foo", "bar", "fun")) {
     arg_match(myarg, c("fun", "bar"))

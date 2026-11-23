@@ -10,6 +10,34 @@
       Error in `arg_match0_wrapper()`:
       ! `arg` must be length 1 or a permutation of `c("bar", "baz")`.
 
+# arg_match0() reports choices for invalid argument types and lengths
+
+    Code
+      f(TRUE)
+    Condition <rlang_error>
+      Error in `f()`:
+      ! `value` must be one of "a", "b", or "c", not `TRUE`.
+    Code
+      f(NULL)
+    Condition <rlang_error>
+      Error in `f()`:
+      ! `value` must be one of "a", "b", or "c", not `NULL`.
+    Code
+      f(character())
+    Condition <rlang_error>
+      Error in `f()`:
+      ! `value` must be length 1 or a permutation of `c("a", "b", "c")`.
+    Code
+      f(c("a", "a"))
+    Condition <rlang_error>
+      Error in `f()`:
+      ! `value` must be length 1 or a permutation of `c("a", "b", "c")`.
+    Code
+      arg_match0_wrapper(c("a", "b", "b"), c("a", "a", "b"))
+    Condition <rlang_error>
+      Error in `arg_match0_wrapper()`:
+      ! `arg` must be length 1 or a permutation of `c("a", "a", "b")`.
+
 # gives error with different than rearranged arg vs value
 
     Code
@@ -21,7 +49,7 @@
       arg_match0_wrapper(c("foo", "foo"), c("foo", "bar"), arg_nm = "x")
     Condition
       Error in `arg_match0_wrapper()`:
-      ! `arg` must be length 1 or a permutation of `c("foo", "bar")`.
+      ! `x` must be length 1 or a permutation of `c("foo", "bar")`.
 
 # `arg_match()` has informative error messages
 
@@ -194,7 +222,7 @@
       f(1)
     Condition <rlang_error>
       Error in `f()`:
-      ! `my_arg` must be a string or character vector.
+      ! `my_arg` must be one of "a", not the number 1.
     Code
       g(1)
     Condition <rlang_error>

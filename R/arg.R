@@ -115,17 +115,22 @@ chr_interpolate <- function(x) {
 }
 
 stop_arg_match <- function(arg, values, error_arg, error_call) {
-  if (length(arg) > 1) {
-    sorted_arg <- sort(unique(arg))
-    sorted_values <- sort(unique(values))
-    if (!identical(sorted_arg, sorted_values)) {
-      msg <- sprintf(
-        "%s must be length 1 or a permutation of %s.",
-        format_arg("arg"),
-        format_code(chr_interpolate(values))
-      )
-      abort(msg, call = error_call, arg = "arg")
-    }
+  if (!is_character(arg)) {
+    stop_input_type(
+      arg,
+      arg_match_choices(values),
+      arg = error_arg,
+      call = error_call
+    )
+  }
+
+  if (length(arg) != 1L) {
+    msg <- sprintf(
+      "%s must be length 1 or a permutation of %s.",
+      format_arg(error_arg),
+      format_code(chr_interpolate(values))
+    )
+    abort(msg, call = error_call, arg = error_arg)
   }
 
   if (is_na(arg)) {
@@ -165,8 +170,7 @@ stop_arg_match <- function(arg, values, error_arg, error_call) {
 }
 
 arg_match_invalid_msg <- function(val, values, error_arg) {
-  msg <- paste0(format_arg(error_arg), " must be one of ")
-  msg <- paste0(msg, oxford_comma(chr_quoted(values, "\"")))
+  msg <- paste0(format_arg(error_arg), " must be ", arg_match_choices(values))
 
   if (is_null(val)) {
     msg <- paste0(msg, ".")
@@ -175,6 +179,10 @@ arg_match_invalid_msg <- function(val, values, error_arg) {
   }
 
   msg
+}
+
+arg_match_choices <- function(values) {
+  paste0("one of ", oxford_comma(chr_quoted(values, "\"")))
 }
 
 #' Check that argument is supplied
