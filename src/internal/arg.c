@@ -79,6 +79,33 @@ r_obj* ffi_enquo(r_obj* sym, r_obj* frame) {
 
 // Match ------------------------------------------------------------------
 
+static r_no_return void arg_match_error(
+    r_obj* arg,
+    r_obj* values,
+    struct r_lazy error_arg,
+    struct r_lazy error_call
+) {
+    KEEP(arg);
+    KEEP(values);
+
+    r_obj* ffi_error_call = r_lazy_eval(error_call);
+    if (ffi_error_call == r_missing_arg) {
+        // Preserve the caller before evaluating in an out-of-stack mask.
+        ffi_error_call = r_peek_frame();
+    }
+    KEEP(ffi_error_call);
+
+    r_eval_with_wxyz(
+        stop_arg_match_call,
+        arg,
+        values,
+        KEEP(lazy_wrap_chr(error_arg)),
+        ffi_error_call,
+        rlang_ns_env
+    );
+    r_stop_unreachable();
+}
+
 static int arg_match(
     r_obj* arg,
     r_obj* values,
@@ -103,11 +130,7 @@ static int arg_match(
     case R_TYPE_symbol:
         return arg_match1(r_sym_string(arg), values, error_arg, error_call);
     default:
-        r_abort_lazy_call(
-            error_call,
-            "%s must be a string or character vector.",
-            r_format_lazy_error_arg(error_arg)
-        );
+        arg_match_error(arg, values, error_arg, error_call);
     }
 
     int arg_len = r_length(arg);
@@ -117,10 +140,7 @@ static int arg_match(
     }
 
     if (arg_len != values_len) {
-        r_abort_lazy_call(
-            call,
-            "`arg` must be a string or have the same length as `values`."
-        );
+        arg_match_error(arg, values, error_arg, error_call);
     }
 
     r_obj* const* v_values = r_chr_cbegin(values);
@@ -163,15 +183,7 @@ static int arg_match(
         }
 
         if (!matched) {
-            r_eval_with_wxyz(
-                stop_arg_match_call,
-                arg,
-                values,
-                KEEP(lazy_wrap_chr(error_arg)),
-                KEEP(r_lazy_eval(error_call)),
-                rlang_ns_env
-            );
-            r_stop_unreachable();
+            arg_match_error(arg, values, error_arg, error_call);
         }
     }
 
@@ -214,23 +226,7 @@ static int arg_match1(
         }
     }
 
-    r_obj* ffi_error_call = r_lazy_eval(error_call);
-    if (ffi_error_call == r_missing_arg) {
-        // Replace `error_call` by environment on the stack because
-        // `r_eval_with_` evaluates in an out-of-stack mask
-        ffi_error_call = r_peek_frame();
-    }
-    KEEP(ffi_error_call);
-
-    r_eval_with_wxyz(
-        stop_arg_match_call,
-        KEEP(wrap_chr(arg)),
-        values,
-        KEEP(lazy_wrap_chr(error_arg)),
-        ffi_error_call,
-        rlang_ns_env
-    );
-    r_stop_unreachable();
+    arg_match_error(wrap_chr(arg), values, error_arg, error_call);
 }
 
 static r_obj* wrap_chr(r_obj* arg) {
