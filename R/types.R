@@ -192,9 +192,11 @@ is_bool <- function(x) {
 
 #' Bare type predicates
 #'
-#' These predicates check for a given type but only return `TRUE` for
-#' bare R objects. Bare objects have no class attributes. For example,
-#' a data frame is a list, but not a bare list.
+#' These predicates check for a given type and require a bare R object.
+#' A bare object has no explicit `class` attribute. R derives the class of
+#' ordinary matrices and arrays from the `dim` attribute, so they can be bare.
+#' Other attributes, such as `names`, can also be present. A data frame has
+#' an explicit class, so `is_bare_list()` returns `FALSE` for it.
 #'
 #' * The predicates for vectors include the `n` argument for
 #'   pattern-matching on the vector length.
@@ -207,6 +209,11 @@ is_bool <- function(x) {
 #'   `TRUE` for floating point numbers.
 #' @inheritParams type-predicates
 #' @seealso [type-predicates], [scalar-type-predicates]
+#' @examples
+#' is_bare_numeric(matrix(1:4, nrow = 2))
+#' is_bare_numeric(array(1:8, dim = c(2, 2, 2)))
+#' is_bare_numeric(c(one = 1, two = 2))
+#' is_bare_list(data.frame(x = 1))
 #' @name bare-type-predicates
 NULL
 
