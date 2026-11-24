@@ -80,6 +80,19 @@ error. Note that some chained conditions are not inherited, see the
 downgraded conditions (e.g. from error to warning or from warning
 to message) are not matched across parents.
 }
+\section{Restarts}{
+
+
+A handler can invoke an active restart with \code{\link[base:invokeRestart]{base::invokeRestart()}}. While
+\code{expr} is still on the stack, this includes restarts established inside it
+with \code{\link[base:withRestarts]{base::withRestarts()}}. For warnings and messages, \code{\link[=cnd_muffle]{cnd_muffle()}} can
+invoke the matching muffling restart when it is available.
+
+The value returned by a restart becomes the value of its \code{withRestarts()}
+call. This includes the \code{\link[=zap]{zap()}} sentinel. Returning \code{zap()} directly from a
+\code{try_fetch()} handler lets the next matching handler run.
+}
+
 \section{Stack overflows}{
 
 
@@ -132,3 +145,20 @@ Technically, \code{try_fetch()} is more similar to (and implemented on
 top of) \code{\link[base:withCallingHandlers]{base::withCallingHandlers()}} than \verb{tryCatch().}
 }
 
+\examples{
+try_fetch(
+  {
+    value <- withRestarts(
+      abort("No result", class = "no_result"),
+      use_default = function() {
+        41L
+      }
+    )
+    value + 1L
+  },
+  no_result = function(cnd) {
+    invokeRestart("use_default")
+  }
+)
+
+}

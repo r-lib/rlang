@@ -151,6 +151,17 @@ environment(hnd_prompt_install) <- baseenv()
 #'   handlers. The names specify the condition class for which a
 #'   handler will be called.
 #'
+#' @section Restarts:
+#'
+#' A handler can invoke an active restart with [base::invokeRestart()]. While
+#' `expr` is still on the stack, this includes restarts established inside it
+#' with [base::withRestarts()]. For warnings and messages, [cnd_muffle()] can
+#' invoke the matching muffling restart when it is available.
+#'
+#' The value returned by a restart becomes the value of its `withRestarts()`
+#' call. This includes the [zap()] sentinel. Returning `zap()` directly from a
+#' `try_fetch()` handler lets the next matching handler run.
+#'
 #' @section Stack overflows:
 #'
 #' A stack overflow occurs when a program keeps adding to itself until
@@ -199,6 +210,22 @@ environment(hnd_prompt_install) <- baseenv()
 #' e.g. when rethrowing the error with `abort(parent = cnd)`.
 #' Technically, `try_fetch()` is more similar to (and implemented on
 #' top of) [base::withCallingHandlers()] than `tryCatch().`
+#'
+#' @examples
+#' try_fetch(
+#'   {
+#'     value <- withRestarts(
+#'       abort("No result", class = "no_result"),
+#'       use_default = function() {
+#'         41L
+#'       }
+#'     )
+#'     value + 1L
+#'   },
+#'   no_result = function(cnd) {
+#'     invokeRestart("use_default")
+#'   }
+#' )
 #'
 #' @export
 try_fetch <- function(expr, ...) {
