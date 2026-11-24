@@ -46,9 +46,11 @@ is_bare_bytes(x, n = NULL)
 \item{n}{Expected length of a vector.}
 }
 \description{
-These predicates check for a given type but only return \code{TRUE} for
-bare R objects. Bare objects have no class attributes. For example,
-a data frame is a list, but not a bare list.
+These predicates check for a given type and require a bare R object.
+A bare object has no explicit \code{class} attribute. R derives the class of
+ordinary matrices and arrays from the \code{dim} attribute, so they can be bare.
+Other attributes, such as \code{names}, can also be present. A data frame has
+an explicit class, so \code{is_bare_list()} returns \code{FALSE} for it.
 }
 \details{
 \itemize{
@@ -60,6 +62,12 @@ R 4.4.0, \code{is.atomic(NULL)} returns FALSE.
 \item Unlike base R \code{is.numeric()}, \code{is_bare_double()} only returns
 \code{TRUE} for floating point numbers.
 }
+}
+\examples{
+is_bare_numeric(matrix(1:4, nrow = 2))
+is_bare_numeric(array(1:8, dim = c(2, 2, 2)))
+is_bare_numeric(c(one = 1, two = 2))
+is_bare_list(data.frame(x = 1))
 }
 \seealso{
 \link{type-predicates}, \link{scalar-type-predicates}
